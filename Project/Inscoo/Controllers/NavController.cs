@@ -84,8 +84,8 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 var item = new NavigationItem();
-                item.action = model.action;
-                item.controller = model.controller;
+                item.action = model.action.ToLower();
+                item.controller = model.controller.ToLower();
                 item.isShow = model.isShow;
                 item.level = model.level;
                 item.memo = model.memo;
@@ -131,8 +131,8 @@ namespace Inscoo.Controllers
                 var item = _navService.GetById(model.Id);
                 if (item != null) 
                 {                    
-                    item.action = model.action;
-                    item.controller = model.controller;
+                    item.action = model.action.ToLower();
+                    item.controller = model.controller.ToLower();
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;

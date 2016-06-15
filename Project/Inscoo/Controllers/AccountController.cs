@@ -64,7 +64,7 @@ namespace Inscoo.Controllers
                 var result = _appUserService.CreateAsync(user, model.UserName, model.Password);
                 if (result.Result.Succeeded)
                 {
-                    _appUserService.SignIn(AuthenticationManager, user,false);
+                    _appUserService.SignIn(AuthenticationManager, user, false);
                     return RedirectToLocal("/");
                 }
             }
@@ -91,7 +91,7 @@ namespace Inscoo.Controllers
                 var user = _appUserService.Find(model.UserName, model.Password);
                 if (user != null)
                 {
-                     _appUserService.SignIn(AuthenticationManager, user, model.RememberMe);
+                    _appUserService.SignIn(AuthenticationManager, user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -103,11 +103,9 @@ namespace Inscoo.Controllers
             // 如果我们进行到这一步时某个地方出错，则重新显示表单
             return View(model);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public ActionResult SignOut()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            _appUserService.SignOut(AuthenticationManager);
             return RedirectToAction("Index", "Home");
         }
         /// <summary>

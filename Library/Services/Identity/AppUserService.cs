@@ -36,7 +36,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "创建用户出错");
+                _loggerService.insert(e, LogLevel.Error, "AppUserService:CreateAsync");
                 throw e;
             }
         }
@@ -49,7 +49,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "授权登陆失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentityAsync");
                 return null;
             }
         }
@@ -62,7 +62,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "授权登陆失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentity");
                 return null;
             }
         }
@@ -75,7 +75,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "删除用户失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:DeleteAsync");
                 return null;
             }
         }
@@ -88,7 +88,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "修改用户失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync");
                 return null;
             }
         }
@@ -101,7 +101,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "修改用户安全标识失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync");
                 return null;
             }
         }
@@ -192,6 +192,10 @@ namespace Services.Identity
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+        }
+        public void SignOut(IAuthenticationManager AuthenticationManager)
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
         }
         public IPagedList<UserViewModel> GetUserList(int pageIndex, int pageSize, string userName, string email)
         {

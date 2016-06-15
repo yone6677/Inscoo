@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Test</h2>
+
+<ul>
+    <li>
+        @Html.ActionLink("ExportExcelFile", "ExportExcel");
+    </li>
+    <li>
+        @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <p>上传文件：<input type="file" name="fileUrl" /></p>
+            <input type="submit" value="提交" />
+        }
+    </li>
+</ul>

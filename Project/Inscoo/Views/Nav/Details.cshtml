@@ -1,0 +1,105 @@
+﻿@model Models.Navigation.NavigationViewModel
+
+@{
+    ViewBag.Title = "功能详细";
+}
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.level)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.level)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.controller)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.controller)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.action)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.action)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isShow)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isShow)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sequence)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sequence)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.memo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.memo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.htmlAtt)
+        </dt>
+        <dd>
+            <pre>
+              @Model.htmlAtt
+            </pre>
+        </dd>
+    </dl>
+</div>
+@section firstPanelFooter{
+    <div class="panel-footer">
+        <div class="col-md-offset-1">
+            @if (Model.level < 2)
+            {
+                @Html.ActionLink("新增子功能", "Create", new { id = Model.Id, level = Model.level + 1 }, new { @class = "btn btn-success " })
+            }
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+            <a href="#" class="btn btn-danger" data-toggle="modal" onclick="showDelModal('/Navigation/')">Delete</a>
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
+        </div>
+    </div>
+}
+
+@if (Model.SonMenu != null)
+{
+    @section secondPanel{
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">子功能</h3>
+            </div>
+            <div class="panel-body">
+                @Html.Action("List", null, new { pId = Model.Id })
+            </div>
+        </div>
+    }}

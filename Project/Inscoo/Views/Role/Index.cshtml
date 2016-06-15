@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "角色管理";
+}
+<div>
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
+</div>
+<div id="dadaGrid">
+    @Html.Action("List")
+</div>
+

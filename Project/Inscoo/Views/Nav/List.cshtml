@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Models.Navigation.NavigationViewModel>
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.level)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.controller)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.action)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isShow)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sequence)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.name, "Details", new { id=item.Id})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.controller)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isShow)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sequence)
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

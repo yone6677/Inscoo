@@ -1,0 +1,37 @@
+﻿<!-- 模态框（Modal） -->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    警告
+                </h4>
+            </div>
+            <div class="modal-body">
+                你确定要删除此项?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    取消
+                </button>
+                @Ajax.ActionLink("确定", "Delete", new { id = ViewBag.Id }, new AjaxOptions { HttpMethod = "post", OnSuccess = "DelSuccess" }, new { @class="btn btn-primary"})
+                <input type="hidden" id="delModalVal" />
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    function DelSuccess() {
+        window.location.href = $('#delModalVal').val();
+    }
+    function showDelModal(e) {                                                       
+        $('#delModal').modal('show')
+        $('#delModalVal').val(e);
+    }
+</script>

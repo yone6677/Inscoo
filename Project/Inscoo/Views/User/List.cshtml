@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Models.User.UserViewModel>
+<table class="table  table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LinkMan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TiYong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FanBao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LinkMan)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TiYong)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FanBao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoleName)
+        </td>
+    </tr>
+}
+
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

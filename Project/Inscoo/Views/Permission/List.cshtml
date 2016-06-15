@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Models.Navigation.NavigationViewModel>
+<div class="securuty">
+    <div class="form-group">
+        <label for="name">全选：</label>
+        <input type="checkbox" onclick="selectAll(this, 'permissionList')" />
+    </div>
+    @foreach (var item in Model)
+    {
+        <dl>
+            <dt>
+                @item.name
+                @Html.CheckBox("permissionList", item.hasPermission)
+            </dt>
+            @if (item.SonMenu != null)
+            {
+                foreach (var sonItem in item.SonMenu)
+                {
+                    <dd>
+                        <ul>
+                            <li>
+                                @sonItem.name
+                                @Html.CheckBox("permissionList", sonItem.hasPermission)
+                            </li>
+                            @if (sonItem.SonMenu != null)
+                            {
+                                foreach (var subItem in sonItem.SonMenu)
+                                {
+                                    <li>
+                                        @subItem.name
+                                        @Html.CheckBox("permissionList", subItem.hasPermission)
+                                    </li>
+                                }
+                            }
+                        </ul>
+
+                    </dd>
+                }
+            }
+        </dl>
+    }
+</div>

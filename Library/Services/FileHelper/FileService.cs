@@ -1,0 +1,254 @@
+﻿using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using Services;
+using Services.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Web;
+
+namespace Services
+{
+    public class FileService : IFileService
+    {
+        private readonly HttpContextBase _httpContext;
+        private readonly IWebHelper _webHelper;
+        private readonly IResourceService _resource;
+        private readonly ILoggerService _loggerService;
+
+        public FileService(HttpContextBase httpContext, IWebHelper webHelper, IResourceService resource, ILoggerService loggerService)
+        {
+            _httpContext = httpContext;
+            _webHelper = webHelper;
+            _resource = resource;
+            _loggerService = loggerService;
+        }
+        public virtual string SaveFile(HttpPostedFileBase postedFileBase)
+        {
+            try
+            {
+                //源文件名
+                var fileName = Path.GetFileName(postedFileBase.FileName);
+                //后缀
+                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+                switch (postfix)
+                {
+                    case ".jpge":
+                        savePath += "img/";
+                        break;
+                    case ".jpg":
+                        savePath += "img/";
+                        break;
+                    case ".bmp":
+                        savePath += "img/";
+                        break;
+                    case ".gif":
+                        savePath += "img/";
+                        break;
+                    case ".png":
+                        savePath += "img/";
+                        break;
+                    default:
+                        savePath = savePath += "doc/";
+                        break;
+                }
+                savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var saveName = _webHelper.GetTimeStamp() + postfix;
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                postedFileBase.SaveAs(phyPath + saveName);
+                return savePath + saveName;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+                return null;
+            }
+        }
+        public virtual string MakeHtmlFile(string TempName)
+        {
+            return null;
+            //try
+            //{
+            //    var filePath = "";
+            //    switch (TempName)
+            //    {
+            //        case "Article":
+            //            filePath = _httpContext.Server.MapPath("Infrastructure/Template/Article.html");
+            //            break;
+            //    }
+            //    FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            //    StreamReader reader = new StreamReader(fs);
+            //    StringBuilder sb = new StringBuilder(reader.ReadToEnd());
+            //    reader.Close();
+            //    sb.Replace("@title", model.title);
+            //    sb.Replace("@content", model.content);
+            //    sb.Replace("@author", model.author);
+            //    sb.Replace("@date", model.date.ToString());
+            //    string newFileName = _webHelper.GetTimeStamp(DateTime.Now) + ".html";
+            //    FileStream newFile = File.Create(_httpContext.Server.MapPath("Archive") + "/" + newFileName);
+            //    StreamWriter writer = new StreamWriter(newFile, Encoding.UTF8);
+            //    writer.Write(sb.ToString());
+            //    writer.Flush();
+            //    writer.Close();
+            //    return "Archive/" + newFileName;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception(e.Message);
+            //}
+        }
+        public bool ExportExcel(DataSet ds, string activateName = null)
+        {
+            try
+            {
+                HSSFWorkbook wk = new HSSFWorkbook();
+                int sheetNum = ds.Tables.Count;
+                for (int c = 0; c < sheetNum; c++)
+                {
+                    var dt = ds.Tables[c];
+                    ISheet ist = wk.CreateSheet(ds.Tables[c].TableName);
+                    int rowCount = dt.Rows.Count;//行数
+                    int columnCount = dt.Columns.Count;//列数  
+                    for (int i = 0; i < rowCount; i++)
+                    {
+                        if (i == 0)
+                        {
+                            IRow ro = ist.CreateRow(i);//表头
+                            for (int x = 0; x < columnCount; x++)//在刚开始写入Sheet第1行的列名
+                            {
+                                ICell cell = ro.CreateCell(x);
+                                cell.SetCellValue(dt.Columns[x].ColumnName);
+                            }
+                        }
+                        else
+                        {
+                            IRow row = ist.CreateRow(i);//创建第I行,从1开始
+                            for (int j = 0; j < columnCount; j++)
+                            {
+                                string ss = dt.Rows[i][j].ToString().Trim();//获得数据
+                                ICell col = row.CreateCell(j);
+                                col.SetCellValue(dt.Rows[i][j].ToString().Trim());
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(activateName))
+                    {
+                        if (ds.Tables[c].TableName.Trim() == activateName.Trim())
+                        {
+                            wk.SetActiveSheet(c);
+                        }
+                    }
+                }
+                //产生文件
+                string fileName = _webHelper.GetTimeStamp() + ".xls";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + "/" + _resource.GetFileCatalog() + "/Download/");
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                string filePath = phyPath + fileName;
+                using (FileStream fs = File.OpenWrite(filePath)) //打开一个xls文件，如果没有则自行创建，如果存在myxls.xls文件则在创建是不要打开该文件！
+                {
+                    wk.Write(fs);   //向打开的这个xls文件中写入mySheet表并保存。
+                    fs.Dispose();
+                    DownloadFile(filePath, fileName);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Excel导出失败");
+                return false;
+            }
+        }
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="url">路径</param>
+        /// <param name="fileName">文件名称</param>
+        public void DownloadFile(string url, string fileName)
+        {
+            try
+            {
+                FileStream fs = new FileStream(url, FileMode.Open);
+                byte[] bytes = new byte[(int)fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                fs.Close();
+                HttpContext.Current.Response.ContentType = "application/octet-stream";
+                HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, Encoding.UTF8));
+                HttpContext.Current.Response.BinaryWrite(bytes);
+                HttpContext.Current.Response.Flush();
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                try
+                {
+                    HttpContext.Current.Response.End();
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Close();
+                    File.Delete(url);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// 使用反射获取类的属性和值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public Dictionary<string, string> GetProperties<T>(T t)
+        {
+            Dictionary<string, string> ret = new Dictionary<string, string>();
+
+            if (t == null)
+            {
+                return null;
+            }
+            PropertyInfo[] properties = t.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            if (properties.Length <= 0)
+            {
+                return null;
+            }
+            foreach (PropertyInfo item in properties)
+            {
+                string name = item.Name;//实体类字段名称
+                string value = item.GetValue(t, null).ToString();//该字段的值
+
+                if (item.PropertyType.IsValueType || item.PropertyType.Name.StartsWith("String"))
+                {
+                    ret.Add(name, value);        //在此可转换value的类型
+                }
+            }
+
+            return ret;
+        }
+    }
+}

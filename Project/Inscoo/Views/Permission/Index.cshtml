@@ -1,0 +1,21 @@
+﻿@model Models.Permission.PermissionViewModel
+@{
+    ViewBag.Title = "授权";
+}
+
+@using (Ajax.BeginForm("Save", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <p>
+        <div class="form-group">
+            <label for="name">角色</label>
+            @Html.DropDownListFor(model => model.Id, Model.roles, new { @class = "form-control", onchange = "getPermissions(this.value, '/permission/list', 'dadaGrid')" })
+        </div>
+    </p>
+    <div id="dadaGrid">
+        @Html.Action("List")
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="保存" />
+    </div>
+}

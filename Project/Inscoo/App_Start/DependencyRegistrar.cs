@@ -6,6 +6,7 @@ using Core.Identity;
 using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
 using Services.Identity;
 using Services.Navigation;
 using Services.Permission;
@@ -39,7 +40,7 @@ namespace Services
             builder.RegisterType<AppRoleManager>();
             builder.RegisterType<AppUserService>().As<IAppUserService>().InstancePerDependency();
             builder.RegisterType<AppRoleService>().As<IAppRoleService>().InstancePerDependency();
-            builder.RegisterType<AppDbInitializer>();
+            builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
 
             //EFHelper
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerDependency();

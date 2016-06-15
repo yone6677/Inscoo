@@ -16,6 +16,6 @@ namespace Services
         /// <param name="e"></param>
         /// <param name="level"></param>
         /// <param name="Message"></param>
-        void insert(Exception e, LogLevel level, string Message = null);
+        void insert(Exception e, LogLevel level, string message = null, string userName = null);
     }
 }

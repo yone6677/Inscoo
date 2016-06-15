@@ -1,5 +1,6 @@
 ﻿using Core.Data;
 using Domain.Permission;
+using Microsoft.Owin.Security;
 using Models.Navigation;
 using Services.Identity;
 using Services.Infrastructure;
@@ -17,15 +18,17 @@ namespace Services.Permission
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleService;
         private readonly INavigationService _navService;
+        private readonly IAuthenticationManager _authenticationManager;
 
         public PermissionService(ILoggerService loggerService, IRepository<PermissionItem> permissionRepository, IAppUserService appUserService, IAppRoleService appRoleService,
-            INavigationService navService)
+            INavigationService navService, IAuthenticationManager authenticationManager)
         {
             _loggerService = loggerService;
             _permissionRepository = permissionRepository;
             _appUserService = appUserService;
             _appRoleService = appRoleService;
             _navService = navService;
+            _authenticationManager = authenticationManager;
         }
         public bool Insert(PermissionItem item)
         {
@@ -36,7 +39,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert", _authenticationManager.User.Identity.Name);
                 return false;
             }
 
@@ -50,7 +53,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Update");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Update", _authenticationManager.User.Identity.Name);
                 return false;
             }
         }
@@ -63,7 +66,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete", _authenticationManager.User.Identity.Name);
                 return false;
             }
 
@@ -77,7 +80,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetById");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetById", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -89,7 +92,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole", _authenticationManager.User.Identity.Name);
                 return false;
             }
         }
@@ -108,7 +111,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser", _authenticationManager.User.Identity.Name);
 
             }
             return false;
@@ -121,7 +124,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -145,7 +148,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser", _authenticationManager.User.Identity.Name);
             }
             return result;
         }
@@ -183,7 +186,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetAll");
+                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetAll", _authenticationManager.User.Identity.Name);
             }
             return null;
         }

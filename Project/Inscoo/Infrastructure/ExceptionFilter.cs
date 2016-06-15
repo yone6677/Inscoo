@@ -1,4 +1,6 @@
-﻿using Services;
+﻿using Microsoft.Owin.Security;
+using Newtonsoft.Json;
+using Services;
 using Services.Infrastructure;
 using System;
 using System.Web;
@@ -8,12 +10,12 @@ namespace Inscoo.Infrastructure
 {
     public class ExceptionFilter : HandleErrorAttribute
     {
-        private readonly ILoggerService _loggerService;
         private readonly IWebHelper _webHelper;
-        public ExceptionFilter(ILoggerService loggerService, IWebHelper webHelper)
+        private readonly IResourceService _resourceService;
+        public ExceptionFilter(IWebHelper webHelper, IResourceService resourceService)
         {
-            _loggerService = loggerService;
             _webHelper = webHelper;
+            _resourceService = resourceService;
         }
         public override void OnException(ExceptionContext filterContext)
         {
@@ -60,8 +62,18 @@ namespace Inscoo.Infrastructure
             logs.CreateDate = DateTime.Now;
             logs.Ip = _webHelper.GetCurrentIpAddress();
             logs.Url = _webHelper.GetCurrentUrl();
-            _loggerService.insertOnFitter(logs);//写入日志服务器
-
+            if (_resourceService.LogEnable())
+            {
+                try
+                {
+                    string sendData = JsonConvert.SerializeObject(logs);
+                    var respStr = _webHelper.PostData(_resourceService.GetLogger() + "logs", sendData, "post", "json");
+                }
+                catch (Exception)//日志服务器若返回异常不能抛至当前程序
+                {
+                    ;
+                }
+            }
             //设置异常已经处理,否则会被其他异常过滤器覆盖
             filterContext.ExceptionHandled = true;
             //在派生类中重写时，获取或设置一个值，该值指定是否禁用IIS自定义错误。

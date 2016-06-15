@@ -7,8 +7,8 @@ namespace Inscoo
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-          //  filters.Add(DependencyResolver.Current.GetService<ExceptionFilter>());
-           // filters.Add(DependencyResolver.Current.GetService<ActionFilter>());
+            filters.Add(DependencyResolver.Current.GetService<ExceptionFilter>());
+            filters.Add(DependencyResolver.Current.GetService<ActionFilter>());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Core.Data;
 using Core.Pager;
 using Domain.Navigation;
+using Microsoft.Owin.Security;
 using Models.Navigation;
 using Services.Infrastructure;
 using System;
@@ -15,8 +16,10 @@ namespace Services.Navigation
     {
         private readonly ILoggerService _loggerService;
         private readonly IRepository<NavigationItem> _navRepository;
-        public NavigationService(ILoggerService loggerService, IRepository<NavigationItem> navRepository)
+        private readonly IAuthenticationManager _authenticationManager;
+        public NavigationService(ILoggerService loggerService, IRepository<NavigationItem> navRepository, IAuthenticationManager authenticationManager)
         {
+            _authenticationManager = authenticationManager;
             _loggerService = loggerService;
             _navRepository = navRepository;
         }
@@ -29,7 +32,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Insert", _authenticationManager.User.Identity.Name);
                 return false;
             }
 
@@ -44,7 +47,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：Update");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Update", _authenticationManager.User.Identity.Name);
                 return false;
             }
 
@@ -59,7 +62,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：Delete");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Delete", _authenticationManager.User.Identity.Name);
                 return false;
             }
 
@@ -78,7 +81,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetById");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetById", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -91,7 +94,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetByUrl");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetByUrl", _authenticationManager.User.Identity.Name);
                 return null;
             }
 
@@ -107,7 +110,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetSonList");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList", _authenticationManager.User.Identity.Name);
             }
             return null;
         }
@@ -133,7 +136,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetSonList");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList", _authenticationManager.User.Identity.Name);
             }
             return null;
         }
@@ -173,7 +176,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetListOfPager");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetListOfPager", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -198,7 +201,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetAll");
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetAll", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }

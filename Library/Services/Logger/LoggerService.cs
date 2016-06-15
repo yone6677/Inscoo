@@ -15,7 +15,7 @@ namespace Services
         {
             _webHelper = webHelper;
             _resourceService = resourceService;
-            _authenticationManager = authenticationManager;  
+            _authenticationManager = authenticationManager;
         }
         public void insertOnFitter(LogsModel model)
         {

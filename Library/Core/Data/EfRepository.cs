@@ -44,7 +44,7 @@ namespace Core.Data
         /// </summary>
         /// <param name="id">Identifier</param>
         /// <returns>Entity</returns>
-        public virtual T GetById(object id, bool isCached)
+        public virtual T GetById(object id, bool isCached, int expire)
         {
             if (isCached)
             {
@@ -52,16 +52,21 @@ namespace Core.Data
                 string key = typeof(T).Name;
                 if (_cachingManager.IsSet(key))
                 {
-                    var cacheList = _cachingManager.Get<List<T>>(key);
-                    if (cacheList != null)
+                    var bufferTable = TableFormBuffer(expire);
+                    if (bufferTable.Any())
                     {
-                        int ident = int.Parse(id.ToString());
-                        cacheList = cacheList.Where(t => t.Id == ident).ToList();
-                    }
-                    if (cacheList != null)
-                    {
-                        return cacheList.FirstOrDefault();
-                    }
+                        var item = bufferTable.Where(c => c.Id == int.Parse(id.ToString()));
+                        if (item.Any())
+                        {
+                            return item.FirstOrDefault();
+                        }
+                    }       
+                }
+                else
+                {
+                    var item = Entities.Find(id);
+                    _cachingManager.Set(key, item, expire);
+                    return item;
                 }
             }
             //see some suggested performance optimization (not tested)
@@ -90,8 +95,6 @@ namespace Core.Data
                     {
                         _cachingManager.Remove(key);
                     }
-                    var list = Entities.ToList();
-                    _cachingManager.Set(key, list, 100);
                 }
             }
             catch (DbEntityValidationException dbEx)
@@ -120,8 +123,15 @@ namespace Core.Data
 
                 foreach (var entity in entities)
                     Entities.Add(entity);
-
                 _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -146,8 +156,15 @@ namespace Core.Data
             {
                 if (entity == null)
                     throw new ArgumentNullException("entity");
-
-                this._context.SaveChanges();
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -172,8 +189,15 @@ namespace Core.Data
             {
                 if (entities == null)
                     throw new ArgumentNullException("entities");
-
-                this._context.SaveChanges();
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -187,21 +211,47 @@ namespace Core.Data
                 throw fail;
             }
         }
-
+        public virtual void DeleteById(object id, bool isCached, bool disable)
+        {
+            try
+            {
+                var entity = Entities.Find(id);
+                Delete(entity, isCached, disable);
+            }
+            catch (Exception dbe)
+            {
+                throw dbe;
+            }
+        }
         /// <summary>
         /// Delete entity
         /// </summary>
         /// <param name="entity">Entity</param>
-        public virtual void Delete(T entity, bool isCached)
+        public virtual void Delete(T entity, bool isCached, bool disable)
         {
             try
             {
                 if (entity == null)
                     throw new ArgumentNullException("entity");
-
-                this.Entities.Remove(entity);
-
-                this._context.SaveChanges();
+                if (disable)
+                {
+                    Entities.Remove(entity);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    entity.IsDeleted = true;
+                    DbContext.ChangeTracker.DetectChanges();
+                    _context.SaveChanges();
+                }
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -231,6 +281,14 @@ namespace Core.Data
                     Entities.Remove(entity);
 
                 _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -259,7 +317,25 @@ namespace Core.Data
                 return Entities;
             }
         }
-
+        public virtual IQueryable<T> TableFormBuffer(int expire)
+        {
+            string key = typeof(T).Name;
+            if (_cachingManager.IsSet(key))
+            {
+                var cacheData = _cachingManager.Get<List<T>>(key);
+                if (cacheData.Any())
+                {
+                    return cacheData.AsQueryable();
+                }
+            }
+            var data = Entities;
+            if (data.Any())
+            {
+                _cachingManager.Set(key, data.ToList(), expire);
+                return data;
+            }
+            return null;
+        }
         /// <summary>
         /// Gets a table with "no tracking" enabled (EF feature) Use it only when you load record(s) only for read-only operations
         /// </summary>
@@ -283,7 +359,13 @@ namespace Core.Data
                 return _entities;
             }
         }
-
+        public AppDbContext DbContext
+        {
+            get
+            {
+                return _context as AppDbContext;
+            }
+        }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Core.Data
         /// </summary>
         /// <param name="id">Identifier</param>
         /// <returns>Entity</returns>
-        T GetById(object id, bool isCached = false);
+        T GetById(object id, bool isCached = false, int expire = 24);
 
         /// <summary>
         /// Insert entity
@@ -38,11 +38,9 @@ namespace Core.Data
         /// <param name="entities">Entities</param>
         void Update(IEnumerable<T> entities, bool isCached = false);
 
-        /// <summary>
-        /// Delete entity
-        /// </summary>
-        /// <param name="entity">Entity</param>
-        void Delete(T entity, bool isCached = false);
+        void DeleteById(object id, bool isCached = false, bool disable = true);
+
+        void Delete(T entity, bool isCached = false, bool disable = true);
 
         /// <summary>
         /// Delete entities
@@ -59,5 +57,7 @@ namespace Core.Data
         /// Gets a table with "no tracking" enabled (EF feature) Use it only when you load record(s) only for read-only operations
         /// </summary>
         IQueryable<T> TableNoTracking { get; }
+
+        IQueryable<T> TableFormBuffer(int expire = 24);
     }
 }

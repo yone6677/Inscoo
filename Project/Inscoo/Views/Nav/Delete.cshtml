@@ -1,9 +1,11 @@
 ﻿@model Models.Navigation.NavigationViewModel
 
 @{
-    ViewBag.Title = "功能详细";
+    ViewBag.Title = "删除功能";
 }
-<div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.name)
@@ -76,30 +78,8 @@
             </pre>
         </dd>
     </dl>
-</div>
-@section firstPanelFooter{
-    <div class="panel-footer">
-        <div class="col-md-offset-1">
-            @if (Model.level < 2)
-            {
-                @Html.ActionLink("新增子功能", "Create", new { id = Model.Id, level = Model.level + 1 }, new { @class = "btn btn-success " })
-            }
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
-        </div>
-    </div>
+    <p>
+        <input type="submit" value="删除" class="btn btn-danger col-md-offset-2"/>
+        @Html.ActionLink("取消", "Details", new { id = Model.Id }, new { @class = "btn btn-info col-md-offset-1" })
+    </p>
 }
-
-@if (Model.SonMenu != null)
-{
-    @section secondPanel{
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">子功能</h3>
-            </div>
-            <div class="panel-body">
-                @Html.Action("List", null, new { pId = Model.Id })
-            </div>
-        </div>
-    }}

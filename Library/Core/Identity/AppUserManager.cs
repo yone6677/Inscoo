@@ -11,9 +11,5 @@ namespace Core.Identity
             : base(store)
         {
         }
-        //public static AppUserManager Create()
-        //{
-        //    return new AppUserManager();
-        //}
     }
 }

@@ -12,5 +12,6 @@ namespace Domain
         public int Id { get; set; }
         public DateTime CreateTime { set; get; }
 
+        public bool IsDeleted { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Services.Permission
         bool Insert(PermissionItem item);
         bool Update(PermissionItem item);
         bool Delete(PermissionItem item);
+        bool DeleteById(int id);
         PermissionItem GetById(int id);
         bool HasPermissionByRole(int pid, string roleId);
         bool HasPermissionByUser(int pid, string uid);

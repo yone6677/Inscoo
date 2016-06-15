@@ -9,7 +9,7 @@ namespace Services.Navigation
     {
         bool Insert(NavigationItem item);
         bool Update(NavigationItem item);
-        bool Delete(NavigationItem item);
+        bool DeleteById(int id);
         NavigationItem GetById(int id);
         NavigationItem GetByUrl(string controller, string action);
         List<NavigationViewModel> GetSonViewList(int pid = 0);

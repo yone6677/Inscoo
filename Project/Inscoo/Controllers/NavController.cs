@@ -2,10 +2,7 @@
 using Innscoo.Infrastructure;
 using Models.Navigation;
 using Services.Navigation;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -29,6 +26,21 @@ namespace Inscoo.Controllers
         public ActionResult List(int pid = 0)
         {
             var model = _navService.GetList(1, 15, null, pid);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult List(int PageIndex = 1, int PageSize = 15, int pid = 0)
+        {
+            var model = _navService.GetList(PageIndex, PageSize, null, pid);
             var command = new PageCommand()
             {
                 PageIndex = model.PageIndex,
@@ -84,8 +96,14 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 var item = new NavigationItem();
-                item.action = model.action.Trim().ToLower();
-                item.controller = model.controller.Trim().ToLower();
+                if (!string.IsNullOrEmpty(item.action))
+                {
+                    item.action = model.action.Trim().ToLower();
+                }
+                if (!string.IsNullOrEmpty(item.controller))
+                {
+                    item.controller = model.controller.Trim().ToLower();
+                }
                 item.isShow = model.isShow;
                 item.level = model.level;
                 item.memo = model.memo;
@@ -126,13 +144,19 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(NavigationViewModel model)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 var item = _navService.GetById(model.Id);
-                if (item != null) 
-                {                    
-                    item.action = model.action.Trim().ToLower();
-                    item.controller = model.controller.Trim().ToLower();
+                if (item != null)
+                {
+                    if (!string.IsNullOrEmpty(item.action))
+                    {
+                        item.action = model.action.Trim().ToLower();
+                    }
+                    if (!string.IsNullOrEmpty(item.controller))
+                    {
+                        item.controller = model.controller.Trim().ToLower();
+                    }
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;
@@ -151,22 +175,47 @@ namespace Inscoo.Controllers
         // GET: Nav/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (id > 0)
+            {
+                var item = _navService.GetById(id);
+                if (item != null)
+                {
+                    var model = new NavigationViewModel()
+                    {
+                        Id = item.Id,
+                        action = item.action,
+                        controller = item.controller,
+                        isShow = item.isShow,
+                        level = item.level,
+                        memo = item.memo,
+                        name = item.name,
+                        pId = item.pId,
+                        url = item.url,
+                        htmlAtt = item.htmlAtt,
+                        SonMenu = _navService.GetSonViewList(id)
+                    };
+                    return View(model);
+                }
+            }
+            return View("Index");
         }
 
         // POST: Nav/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(NavigationViewModel model)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                if (model.Id > 0)
+                {
+                    _navService.DeleteById(model.Id);
+                }
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
 

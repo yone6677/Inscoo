@@ -18,28 +18,26 @@ namespace Services.Permission
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleService;
         private readonly INavigationService _navService;
-        private readonly IAuthenticationManager _authenticationManager;
 
         public PermissionService(ILoggerService loggerService, IRepository<PermissionItem> permissionRepository, IAppUserService appUserService, IAppRoleService appRoleService,
-            INavigationService navService, IAuthenticationManager authenticationManager)
+            INavigationService navService)
         {
             _loggerService = loggerService;
             _permissionRepository = permissionRepository;
             _appUserService = appUserService;
             _appRoleService = appRoleService;
             _navService = navService;
-            _authenticationManager = authenticationManager;
         }
         public bool Insert(PermissionItem item)
         {
             try
             {
-                _permissionRepository.Insert(item);
+                _permissionRepository.Insert(item, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
                 return false;
             }
 
@@ -48,12 +46,12 @@ namespace Services.Permission
         {
             try
             {
-                _permissionRepository.Update(item);
+                _permissionRepository.Update(item, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Update", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Update");
                 return false;
             }
         }
@@ -61,26 +59,39 @@ namespace Services.Permission
         {
             try
             {
-                _permissionRepository.Delete(item);
+                _permissionRepository.Delete(item, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
                 return false;
             }
 
         }
+        public bool DeleteById(int id)
+        {
+            try
+            {
+                _permissionRepository.DeleteById(id, true);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
+                return false;
+            }
 
+        }
         public PermissionItem GetById(int id)
         {
             try
             {
-                return _permissionRepository.GetById(id);
+                return _permissionRepository.GetById(id, true, 72);
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetById", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetById");
                 return null;
             }
         }
@@ -88,11 +99,11 @@ namespace Services.Permission
         {
             try
             {
-                return _permissionRepository.Table.Where(p => p.func == pid && p.roleId == roleId).Any();
+                return _permissionRepository.TableFormBuffer().Where(p => p.func == pid && p.roleId == roleId).Any();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
                 return false;
             }
         }
@@ -111,7 +122,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser");
 
             }
             return false;
@@ -120,11 +131,11 @@ namespace Services.Permission
         {
             try
             {
-                return _permissionRepository.Table.Where(p => p.roleId == roleId).ToList();
+                return _permissionRepository.TableFormBuffer().Where(p => p.roleId == roleId).ToList();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
                 return null;
             }
         }
@@ -148,7 +159,7 @@ namespace Services.Permission
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser");
             }
             return result;
         }
@@ -161,6 +172,7 @@ namespace Services.Permission
                 var first = query.Where(s => s.level == 0 && s.pId == 0).ToList();
                 for (var i = 0; i < first.Count(); i++)
                 {
+                    first[i].SonMenu = new List<NavigationViewModel>();
                     first[i].hasPermission = HasPermissionByRole(first[i].Id, roleid);
                     var second = query.Where(s => s.pId == first[i].Id).ToList();
                     if (second.Any())
@@ -168,13 +180,14 @@ namespace Services.Permission
                         for (var x = 0; x < second.Count; x++)
                         {
                             second[x].hasPermission = HasPermissionByRole(second[x].Id, roleid);
-                            var third= query.Where(s => s.pId == second[x].Id).ToList();
+                            second[x].SonMenu = new List<NavigationViewModel>();
+                            var third = query.Where(s => s.pId == second[x].Id).ToList();
                             if (third.Any())
                             {
                                 for (var n = 0; n < third.Count; n++)
                                 {
                                     third[n].hasPermission = HasPermissionByRole(second[x].Id, roleid);
-                                    second.Add(third[n]);
+                                    second[x].SonMenu.Add(third[n]);
                                 }
                             }
                             first[i].SonMenu.Add(second[x]);
@@ -182,13 +195,13 @@ namespace Services.Permission
                     }
                     result.Add(first[i]);
                 }
-                return result;
+                return result.OrderBy(s => s.sequence).ToList();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetAll", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "系统功能：GetAll");
             }
-            return null;
+            return new List<NavigationViewModel>();
         }
     }
 }

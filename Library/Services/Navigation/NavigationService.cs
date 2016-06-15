@@ -16,10 +16,8 @@ namespace Services.Navigation
     {
         private readonly ILoggerService _loggerService;
         private readonly IRepository<NavigationItem> _navRepository;
-        private readonly IAuthenticationManager _authenticationManager;
-        public NavigationService(ILoggerService loggerService, IRepository<NavigationItem> navRepository, IAuthenticationManager authenticationManager)
+        public NavigationService(ILoggerService loggerService, IRepository<NavigationItem> navRepository)
         {
-            _authenticationManager = authenticationManager;
             _loggerService = loggerService;
             _navRepository = navRepository;
         }
@@ -27,12 +25,12 @@ namespace Services.Navigation
         {
             try
             {
-                _navRepository.Insert(item);
+                _navRepository.Insert(item, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：Insert", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Insert");
                 return false;
             }
 
@@ -42,27 +40,27 @@ namespace Services.Navigation
         {
             try
             {
-                _navRepository.Update(item);
+                _navRepository.Update(item, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：Update", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Update");
                 return false;
             }
 
         }
 
-        public bool Delete(NavigationItem item)
+        public bool DeleteById(int id)
         {
             try
             {
-                _navRepository.Delete(item);
+                _navRepository.DeleteById(id, true);
                 return true;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：Delete", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：Delete");
                 return false;
             }
 
@@ -72,7 +70,7 @@ namespace Services.Navigation
         {
             try
             {
-                var item = _navRepository.GetById(id);
+                var item = _navRepository.GetById(id, true, 72);
                 if (item != null)
                 {
                     item.SonMenu = GetSonEnitityList(item.Id);
@@ -81,7 +79,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetById", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetById");
                 return null;
             }
         }
@@ -90,11 +88,11 @@ namespace Services.Navigation
         {
             try
             {
-                return _navRepository.Table.Where(s => s.controller == controller && s.action == action).FirstOrDefault();
+                return _navRepository.TableFormBuffer(72).Where(s => s.controller == controller && s.action == action).FirstOrDefault();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetByUrl", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetByUrl");
                 return null;
             }
 
@@ -105,12 +103,12 @@ namespace Services.Navigation
             {
                 if (pid > 0)
                 {
-                    return _navRepository.Table.Where(s => s.pId == pid).ToList();
+                    return _navRepository.TableFormBuffer(72).Where(s => s.pId == pid).ToList();
                 }
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList");
             }
             return null;
         }
@@ -120,7 +118,7 @@ namespace Services.Navigation
             {
                 if (pid > 0)
                 {
-                    return _navRepository.Table.Where(s => s.pId == pid).Select(s => new NavigationViewModel()
+                    return _navRepository.TableFormBuffer(72).Where(s => s.pId == pid).Select(s => new NavigationViewModel()
                     {
                         action = s.action,
                         controller = s.controller,
@@ -136,7 +134,7 @@ namespace Services.Navigation
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetSonList");
             }
             return null;
         }
@@ -144,47 +142,54 @@ namespace Services.Navigation
         {
             try
             {
-                var query = _navRepository.Table;
-                query = query.Where(q => q.pId == pId);
-                if (level > 0)
+                var query = _navRepository.TableFormBuffer(72);
+                if (query != null)
                 {
-                    query = query.Where(q => q.level == level);
+                    query = query.Where(q => q.pId == pId);
+                    if (level > 0)
+                    {
+                        query = query.Where(q => q.level == level);
+                    }
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        query = query.Where(q => q.name == name);
+                    }
+                    if (isShow)
+                    {
+                        query = query.Where(q => q.isShow == true);
+                    }
+                    query = query.OrderBy(q => q.sequence);
+                    return new PagedList<NavigationViewModel>(query.Select(s => new NavigationViewModel()
+                    {
+                        Id = s.Id,
+                        action = s.action,
+                        controller = s.controller,
+                        isShow = s.isShow,
+                        level = s.level,
+                        memo = s.memo,
+                        name = s.name,
+                        pId = s.pId,
+                        url = s.url,
+                        htmlAtt = s.htmlAtt,
+                        sequence = s.sequence
+                    }), pageIndex, pageSize);
                 }
-                if (!string.IsNullOrEmpty(name))
+                else
                 {
-                    query = query.Where(q => q.name == name);
+                    return new PagedList<NavigationViewModel>(new List<NavigationViewModel>(), pageIndex, pageSize);
                 }
-                if (isShow)
-                {
-                    query = query.Where(q => q.isShow == true);
-                }
-                query = query.OrderByDescending(q => q.Id);
-                return new PagedList<NavigationViewModel>(query.Select(s => new NavigationViewModel()
-                {
-                    Id = s.Id,
-                    action = s.action,
-                    controller = s.controller,
-                    isShow = s.isShow,
-                    level = s.level,
-                    memo = s.memo,
-                    name = s.name,
-                    pId = s.pId,
-                    url = s.url,
-                    htmlAtt = s.htmlAtt,
-                    sequence=s.sequence
-                }), pageIndex, pageSize);
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetListOfPager", _authenticationManager.User.Identity.Name);
-                return null;
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetListOfPager");
             }
+            return null;
         }
         public List<NavigationViewModel> GetAll()
         {
             try
             {
-                return _navRepository.Table.Select(s => new NavigationViewModel()
+                return _navRepository.TableFormBuffer(72).Select(s => new NavigationViewModel()
                 {
                     Id = s.Id,
                     action = s.action,
@@ -196,13 +201,13 @@ namespace Services.Navigation
                     pId = s.pId,
                     url = s.url,
                     htmlAtt = s.htmlAtt,
-                    sequence=s.sequence
+                    sequence = s.sequence
                 }).ToList();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Nav：GetAll", _authenticationManager.User.Identity.Name);
-                return null;
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetAll");
+                return new List<NavigationViewModel>();
             }
         }
     }

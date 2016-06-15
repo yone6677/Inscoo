@@ -168,13 +168,13 @@ namespace Innscoo.Infrastructure
             //DislayCount.AddCssClass( "form-control");
             DislayCount.MergeAttribute("onchange", PageerSubmit(VpageIndex.ToString(), "this.value"));
 
-            Pagination.InnerHtml = "<p>" + span + "每页显示" + DislayCount + "条" + tLastPage + "第" + CurrentPage + "页" + tNextPage + "</p>";
+            Pagination.InnerHtml = "<p>" + span + "每页显示" + DislayCount + "条" + tLastPage + "第" + CurrentPage + "页" + tNextPage + "</p><input type='hidden' name='PageSize' id='PageSize' value='' /><input type = 'hidden' name = 'PageIndex' id = 'PageIndex' value = '' /> ";
             return new MvcHtmlString(Pagination.ToString());
         }
         //事件
         private static string PageerSubmit(string pageIndex, string pageSize)
         {
-            return string.Format("mtxAjaxPager(pageIndex={0},pageSize={1})", pageIndex, pageSize);
+            return string.Format("AjaxPager(pageIndex={0},pageSize={1})", pageIndex, pageSize);
         }
     }
     public partial class PageCommand
@@ -185,7 +185,7 @@ namespace Innscoo.Infrastructure
             PageSize = 0;
             TotalCount = 0;
             TotalPages = 0;
-            
+
         }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }

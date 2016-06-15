@@ -1,8 +1,9 @@
-﻿using Microsoft.Owin.Security;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Services;
 using Services.Infrastructure;
 using System;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,11 +11,9 @@ namespace Inscoo.Infrastructure
 {
     public class ExceptionFilter : HandleErrorAttribute
     {
-        private readonly IWebHelper _webHelper;
         private readonly IResourceService _resourceService;
         public ExceptionFilter(IWebHelper webHelper, IResourceService resourceService)
         {
-            _webHelper = webHelper;
             _resourceService = resourceService;
         }
         public override void OnException(ExceptionContext filterContext)
@@ -44,30 +43,39 @@ namespace Inscoo.Infrastructure
                 filterContext.HttpContext.Response.StatusCode = 500;
                 filterContext.HttpContext.Response.Redirect("~/Error/InternalError");
             }
-            logs.Controller = filterContext.RouteData.Values["controller"].ToString();
-            logs.Action = filterContext.RouteData.Values["action"].ToString();
-            logs.Message = filterContext.Exception.Message;
-            if (filterContext.Exception.InnerException != null)
+
+            if (_resourceService.LogEnable())//若启用日志
             {
-                logs.Memo = filterContext.Exception.InnerException.Message;
-                logs.HResult = filterContext.Exception.InnerException.HResult;
-            }
-            else
-            {
-                logs.HResult = filterContext.Exception.HResult;
-            }
-            logs.Uid = null;
-            logs.Level = 3;
-            logs.Browser = HttpContext.Current.Request.Browser.Browser;
-            logs.CreateDate = DateTime.Now;
-            logs.Ip = _webHelper.GetCurrentIpAddress();
-            logs.Url = _webHelper.GetCurrentUrl();
-            if (_resourceService.LogEnable())
-            {
+                logs.Controller = filterContext.RouteData.Values["controller"].ToString();
+                logs.Action = filterContext.RouteData.Values["action"].ToString();
+                logs.Message = filterContext.Exception.Message;
+                if (filterContext.Exception.InnerException != null)
+                {
+                    logs.Memo = filterContext.Exception.InnerException.Message;
+                    logs.HResult = filterContext.Exception.InnerException.HResult;
+                }
+                else
+                {
+                    logs.HResult = filterContext.Exception.HResult;
+                }
+                if (filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity != null)
+                {
+                    logs.Uid = filterContext.HttpContext.User.Identity.Name;
+                }
+                logs.Level = 3;
+                logs.Browser = filterContext.HttpContext.Request.Browser.Browser;
+                logs.CreateDate = DateTime.Now;
+                logs.Ip = filterContext.HttpContext.Request.UserHostAddress;
+                logs.Url = filterContext.HttpContext.Request.UrlReferrer.ToString();
+
                 try
                 {
                     string sendData = JsonConvert.SerializeObject(logs);
-                    var respStr = _webHelper.PostData(_resourceService.GetLogger() + "logs", sendData, "post", "json");
+
+                    var client = new WebClient();
+                    client.Encoding = Encoding.UTF8;
+                    client.Headers.Add("Content-Type", "application/json");
+                    client.UploadString(_resourceService.GetLogger(), "post", sendData);
                 }
                 catch (Exception)//日志服务器若返回异常不能抛至当前程序
                 {

@@ -2,10 +2,14 @@
 @{
     ViewBag.Title = "系统功能";
 }
-<p>
-    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
-</p>
 
-<div id="dadaGrid">
-    @Html.Action("List")
-</div>
+@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
+    </p>
+    @Html.AntiForgeryToken()
+    <div id="dadaGrid">
+        @Html.Action("List")
+    </div>
+}

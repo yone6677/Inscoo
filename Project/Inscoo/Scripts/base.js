@@ -8,13 +8,12 @@ function RestSumbit(e) {
     $(e).submit();
 }
 function getPermissions(id, url, updateId) {
-    var id = $("#Id").val();
     $.ajax({
         type: 'get',
-        data: 'Id=' + id,
+        data: 'rid=' + id,
         url: url,
         success: function (e) {
-            $(updateId).html(e);
+            document.getElementById(updateId).innerHTML = e;
         }
     });
 }

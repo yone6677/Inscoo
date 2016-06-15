@@ -30,15 +30,17 @@ namespace Inscoo.Controllers
             var defaItem = new SelectListItem()
             {
                 Text = "请选择",
-                Value = "0",
+                Value = "",
                 Selected = true
             };
+            model.roles.Add(defaItem);
+
             return View(model);
         }
-        public ActionResult List(string Id = "")
+        public ActionResult List(string rid = "")
         {
-            var model = _permisService.GetAll(Id);
-            //var model = new List<PermissionViewModel>();
+
+            var model = _permisService.GetAll(rid);
             return PartialView(model);
         }
         [HttpPost]
@@ -65,7 +67,7 @@ namespace Inscoo.Controllers
                         pidList.Add(pids);
                     }
                     var permissList = _permisService.GetPermissionByRole(rid);
-                    if (!permissList.Any())
+                    if (permissList == null)
                     {
                         foreach (var f in pidList)
                         {
@@ -105,7 +107,7 @@ namespace Inscoo.Controllers
             {
                 throw new Exception("权限更改失败", e);
             }
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,41 +1,64 @@
 ﻿@model IEnumerable<Models.Navigation.NavigationViewModel>
-<div class="securuty">
-    <div class="form-group">
-        <label for="name">全选：</label>
-        <input type="checkbox" onclick="selectAll(this, 'permissionList')" />
-    </div>
-    @foreach (var item in Model)
-    {
-        <dl>
-            <dt>
-                @item.name
-                @Html.CheckBox("permissionList", item.hasPermission)
-            </dt>
-            @if (item.SonMenu != null)
-            {
-                foreach (var sonItem in item.SonMenu)
+    <div class="securuty">
+        <div class="form-group">
+            <label for="name">全选：</label>
+            <input type="checkbox" onclick="selectAll(this, 'pids')" />
+        </div>
+        @foreach (var item in Model)
+        {
+            <dl>
+                <dt>
+                    @item.name
+                    @if (item.hasPermission)
+                    {
+                        <input type="checkbox" name="pids" checked="checked" value=@item.Id />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="pids" value=@item.Id />
+                    }
+                </dt>
+                @if (item.SonMenu != null)
                 {
-                    <dd>
-                        <ul>
-                            <li>
-                                @sonItem.name
-                                @Html.CheckBox("permissionList", sonItem.hasPermission)
-                            </li>
-                            @if (sonItem.SonMenu != null)
-                            {
-                                foreach (var subItem in sonItem.SonMenu)
-                                {
-                                    <li>
-                                        @subItem.name
-                                        @Html.CheckBox("permissionList", subItem.hasPermission)
-                                    </li>
-                                }
-                            }
-                        </ul>
+                    foreach (var sonItem in item.SonMenu)
+                    {
+                        <dd>
+                            <ul>
+                                <li>
+                                    @sonItem.name
+                                    @if (sonItem.hasPermission)
+                                    {
+                                        <input type="checkbox" name="pids" checked="checked" value=@sonItem.Id />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="pids" value=@sonItem.Id />
+                                    }
 
-                    </dd>
+                                </li>
+                                @if (sonItem.SonMenu != null)
+                                {
+                                    foreach (var subItem in sonItem.SonMenu)
+                                    {
+                                        <li>
+                                            @subItem.name
+                                            @if (subItem.hasPermission)
+                                            {
+                                                <input type="checkbox" name="pids" checked="checked" value=@subItem.Id />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="pids" value=@subItem.Id />
+                                            }
+
+                                        </li>
+                                    }
+                                }
+                            </ul>
+
+                        </dd>
+                    }
                 }
-            }
-        </dl>
-    }
-</div>
+            </dl>
+        }
+    </div>

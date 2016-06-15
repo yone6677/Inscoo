@@ -167,7 +167,8 @@ namespace Services.Navigation
                     name = s.name,
                     pId = s.pId,
                     url = s.url,
-                    htmlAtt = s.htmlAtt
+                    htmlAtt = s.htmlAtt,
+                    sequence=s.sequence
                 }), pageIndex, pageSize);
             }
             catch (Exception e)
@@ -191,7 +192,8 @@ namespace Services.Navigation
                     name = s.name,
                     pId = s.pId,
                     url = s.url,
-                    htmlAtt = s.htmlAtt
+                    htmlAtt = s.htmlAtt,
+                    sequence=s.sequence
                 }).ToList();
             }
             catch (Exception e)

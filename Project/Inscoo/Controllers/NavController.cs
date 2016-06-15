@@ -26,7 +26,7 @@ namespace Inscoo.Controllers
         {
             return View();
         }
-        public ActionResult List(int pid=0)
+        public ActionResult List(int pid = 0)
         {
             var model = _navService.GetList(1, 15, null, pid);
             var command = new PageCommand()
@@ -58,7 +58,7 @@ namespace Inscoo.Controllers
                         name = item.name,
                         pId = item.pId,
                         url = item.url,
-                        htmlAtt=item.htmlAtt,
+                        htmlAtt = item.htmlAtt,
                         SonMenu = _navService.GetSonViewList(id)
                     };
                     return View(model);
@@ -91,7 +91,7 @@ namespace Inscoo.Controllers
                 item.memo = model.memo;
                 item.name = model.name;
                 item.pId = model.pId;
-                item.isShow = model.isShow;               
+                item.isShow = model.isShow;
                 item.url = model.controller + "/" + model.action;
                 item.htmlAtt = model.htmlAtt;
                 item.sequence = model.sequence;
@@ -109,14 +109,13 @@ namespace Inscoo.Controllers
             var item = _navService.GetById(id);
             var model = new NavigationViewModel()
             {
+                Id = item.Id,
                 action = item.action,
                 controller = item.controller,
                 isShow = item.isShow,
-                level = item.level,
                 memo = item.memo,
                 name = item.name,
-                pId = item.pId,
-                url = item.url,
+                sequence = item.sequence,
                 htmlAtt = item.htmlAtt
             };
             return View(model);
@@ -124,18 +123,29 @@ namespace Inscoo.Controllers
 
         // POST: Nav/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(NavigationViewModel model)
         {
-            try
+            if (ModelState.IsValid) 
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                var item = _navService.GetById(model.Id);
+                if (item != null) 
+                {                    
+                    item.action = model.action;
+                    item.controller = model.controller;
+                    item.isShow = model.isShow;
+                    item.memo = model.memo;
+                    item.name = model.name;
+                    item.isShow = model.isShow;
+                    item.htmlAtt = model.htmlAtt;
+                    item.sequence = model.sequence;
+                    if (_navService.Update(item))
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
         // GET: Nav/Delete/5

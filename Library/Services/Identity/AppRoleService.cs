@@ -1,6 +1,7 @@
 ﻿using Core;
 using Core.Identity;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Services.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,12 @@ namespace Services.Identity
     {
         private readonly AppRoleManager _roleManager;
         private readonly ILoggerService _loggerService;
-        //public AppRoleService(ILoggerService loggerService)
-        //{
-        //    _roleManager = AppRoleManager.Create();
-        //    _loggerService = loggerService;
-        //}
-        public AppRoleService(ILoggerService loggerService, AppRoleManager roleManager)
+        private readonly IAuthenticationManager _authenticationManager;
+        public AppRoleService(ILoggerService loggerService, AppRoleManager roleManager, IAuthenticationManager authenticationManager)
         {
             _roleManager = roleManager;
             _loggerService = loggerService;
+            _authenticationManager = authenticationManager;
         }
         public Task<IdentityResult> CreateAsync(AppRole role)
         {
@@ -35,7 +33,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "创建角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:CreateAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -48,7 +46,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "删除角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:DeleteAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -61,7 +59,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "修改角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:UpdateAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -74,7 +72,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "查找角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByIdAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -87,7 +85,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "查找角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByNameAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -100,7 +98,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "查找角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:RoleExistsAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -113,7 +111,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "查找角色出错");
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:Roles", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }

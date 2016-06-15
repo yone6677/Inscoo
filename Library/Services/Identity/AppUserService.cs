@@ -18,14 +18,17 @@ namespace Services.Identity
 {
     public class AppUserService : IAppUserService
     {
-        private AppUserManager _userManager;
-        private AppRoleManager _appRoleManager;
+        private readonly AppUserManager _userManager;
+        private readonly AppRoleManager _appRoleManager;
+        private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
-        public AppUserService(ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager)
+        public AppUserService(ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
+            IAuthenticationManager authenticationManager)
         {
             _userManager = userManager;
             _appRoleManager = appRoleManager;
             _loggerService = loggerService;
+            _authenticationManager = authenticationManager;
         }
         public Task<IdentityResult> CreateAsync(AppUser user, string name, string password)
         {
@@ -36,7 +39,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "创建用户出错");
+                _loggerService.insert(e, LogLevel.Error, "AppUserService:CreateAsync", _authenticationManager.User.Identity.Name);
                 throw e;
             }
         }
@@ -49,7 +52,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "授权登陆失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentityAsync", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -62,7 +65,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "授权登陆失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentity", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -75,7 +78,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "删除用户失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:DeleteAsync", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -88,7 +91,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "修改用户失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -101,7 +104,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "修改用户安全标识失败");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -115,7 +118,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByEmail");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByEmail", _authenticationManager.User.Identity.Name);
                 return null;
             }
 
@@ -129,7 +132,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByName");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByName", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -143,7 +146,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindById");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindById", _authenticationManager.User.Identity.Name);
                 return null;
             }
 
@@ -157,7 +160,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "密码或用户名错误");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -170,7 +173,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "密码或用户名错误");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
@@ -183,15 +186,19 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "密码或用户名错误");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:AddToRoleAsync", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }
-        public void SignIn(IAuthenticationManager AuthenticationManager, AppUser user, bool isPersistent)
+        public void SignIn(AppUser user, bool isPersistent)
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            _authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            _authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+        }
+        public void SignOut()
+        {
+            _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
         public IPagedList<UserViewModel> GetUserList(int pageIndex, int pageSize, string userName, string email)
         {
@@ -230,7 +237,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "Error:查询用户列表");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserList", _authenticationManager.User.Identity.Name);
                 return null;
             }
         }

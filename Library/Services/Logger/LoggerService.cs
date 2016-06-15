@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Owin.Security;
+using Newtonsoft.Json;
 using Services.Infrastructure;
 using System;
 using System.Web;
@@ -9,10 +10,12 @@ namespace Services
     {
         private readonly IWebHelper _webHelper;
         private readonly IResourceService _resourceService;
-        public LoggerService(IWebHelper webHelper, IResourceService resourceService)
+        private readonly IAuthenticationManager _authenticationManager;
+        public LoggerService(IWebHelper webHelper, IResourceService resourceService, IAuthenticationManager authenticationManager)
         {
             _webHelper = webHelper;
             _resourceService = resourceService;
+            _authenticationManager = authenticationManager;  
         }
         public void insertOnFitter(LogsModel model)
         {
@@ -20,6 +23,7 @@ namespace Services
             {
                 try
                 {
+                    model.Uid =model.Uid;
                     string sendData = JsonConvert.SerializeObject(model);
                     var respStr = _webHelper.PostData(_resourceService.GetLogger() + "logs", sendData, "post", "json");
                 }
@@ -30,16 +34,16 @@ namespace Services
             }
         }
 
-        public void insert(Exception e, LogLevel level, string Message = null)
+        public void insert(Exception e, LogLevel level, string message,string userName)
         {
             if (_resourceService.LogEnable())
             {
                 try
                 {
                     var model = new LogsModel();
-                    if (!string.IsNullOrEmpty(Message))
+                    if (!string.IsNullOrEmpty(message))
                     {
-                        model.Message = Message;
+                        model.Message = message;
                     }
                     if (e.InnerException != null)
                     {
@@ -51,7 +55,14 @@ namespace Services
                         model.HResult = e.HResult;
                         model.Memo = e.Message;
                     }
-                    model.Uid = null;
+                    if (!string.IsNullOrEmpty(userName))
+                    {
+                        model.Uid = _authenticationManager.User.Identity.Name;
+                    }
+                    else
+                    {
+                        model.Uid = userName;
+                    }
                     model.Level = (int)level;
                     model.Browser = HttpContext.Current.Request.Browser.Browser;
                     model.CreateDate = DateTime.Now;

@@ -91,8 +91,10 @@ namespace Inscoo.Controllers
                 item.memo = model.memo;
                 item.name = model.name;
                 item.pId = model.pId;
+                item.isShow = model.isShow;               
                 item.url = model.controller + "/" + model.action;
                 item.htmlAtt = model.htmlAtt;
+                item.sequence = model.sequence;
                 if (_navService.Insert(item))
                 {
                     return RedirectToAction("Index");

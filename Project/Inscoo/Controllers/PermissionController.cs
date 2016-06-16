@@ -107,7 +107,7 @@ namespace Inscoo.Controllers
             {
                 throw new Exception("权限更改失败", e);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("List");
         }
     }
 }

@@ -85,7 +85,7 @@ namespace Inscoo.Controllers
                         {
                             if (!pidList.Contains(f.Id.ToString()))
                             {
-                                _permisService.Delete(f);
+                                _permisService.DeleteById(f.Id);
                             }
                         }
                         foreach (var f in pidList)

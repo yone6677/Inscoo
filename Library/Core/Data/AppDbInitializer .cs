@@ -35,10 +35,10 @@ namespace Core.Identity
 
             var adminRole = new AppRole { Name = "Admin", Description = "Admin" };
             _context.Roles.Add(adminRole);
-            _context.Roles.Add(new AppRole { Name = "BD", Description = "BD" });
+            _context.Roles.Add(new AppRole { Name = "BusinessDeveloper", Description = "BusinessDeveloper" });
             _context.Roles.Add(new AppRole { Name = "Channel", Description = "Channel" });
-            _context.Roles.Add(new AppRole { Name = "Company", Description = "Company" });
-            _context.Roles.Add(new AppRole { Name = "Finance", Description = "财务" });
+            _context.Roles.Add(new AppRole { Name = "CompanyHR", Description = "CompanyHR" });
+            _context.Roles.Add(new AppRole { Name = "InscooFinance", Description = "InscooFinance" });
             _context.Roles.Add(new AppRole { Name = "InsuranceCompany", Description = "保险公司" });
             _context.SaveChanges();
             user.CreaterId = user.Id;

@@ -53,7 +53,6 @@ namespace Services
             //global filter
             builder.RegisterFilterProvider();
             builder.RegisterType<ExceptionFilter>().InstancePerLifetimeScope();//异常过滤
-            builder.RegisterType<ActionFilter>().InstancePerLifetimeScope();//
             builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerDependency();
             builder.RegisterType<CachingManager>().As<ICachingManager>().InstancePerDependency();
             builder.RegisterType<FileService>().As<IFileService>().InstancePerDependency();

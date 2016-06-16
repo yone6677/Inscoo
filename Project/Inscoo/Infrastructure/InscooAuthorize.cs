@@ -64,7 +64,7 @@ namespace Inscoo.Infrastructure
             }
             catch (Exception e)
             {
-                throw new HttpException(401, "抱歉，您未被授权查看此页面");
+                throw new HttpException(401, "抱歉，您未被授权查看此页面",e);
             }
         }
     }

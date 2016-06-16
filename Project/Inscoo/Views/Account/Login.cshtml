@@ -1,74 +1,444 @@
 ﻿@using Inscoo.Models.Account
-    @model LoginViewModel
-    @{
-        ViewBag.Title = "登录";
-        Layout = null;
-    }
-
-    <!DOCTYPE html>
-
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>Login</title>
-    </head>
-    <body>
-        <h2>@ViewBag.Title。</h2>
-        <div class="row">
-            <div class="col-md-8">
-                <section id="loginForm">
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                        @Html.AntiForgeryToken()
-                        <h4>使用本地帐户登录。</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                    @Html.LabelFor(m => m.RememberMe)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="登录" class="btn btn-default" />
-                            </div>
-                        </div>
-                        <p>
-                            @Html.ActionLink("注册为新用户", "Register")
-                        </p>
-                        @* 在为密码重置功能启用帐户确认后启用此项
-                            <p>
-                                @Html.ActionLink("忘记了密码?", "ForgotPassword")
-                            </p>*@
-                    }
-                </section>
+@model LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, target-densityDpi=device-dpi, user-scalable=yes">
+    <title>保酷</title>
+    @Styles.Render("~/Content/index")
+</head>
+<body>
+    <div class="header">
+        <div class="wrapper">
+            <div class="logo">
+                <img src="~/Content/imgIndex/logo.png" height="58" alt="">
             </div>
-            @*<div class="col-md-4">
-                <section id="socialLoginForm">
-                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                </section>
-            </div>*@
+            <div class="login">
+                <a href="javascript:;" class="loginButton">登录</a>
+                <span class="phonecall">400-612-6750</span>
+            </div>
         </div>
-
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
-    </body>
+    </div>
+    <div class="contain">
+        <div class="slider">
+            <div class="floor floor1">
+                <div class="box">
+                    <div class="hello">
+                        <span class="fontGreen">Hi 我是保酷</span><br>
+                        <span class="fontBlack">您企业的健康与保险专家</span>
+                    </div>
+                    <div class="loginWrp">
+                        <div class="txt">登录</div>
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="inputControl">
+                                <span class="icon1"></span>
+                                @Html.TextBoxFor(m => m.UserName)
+                            </div>
+                            <div class="inputControl">
+                                <span class="icon2"></span>
+                                @Html.PasswordFor(m => m.Password)
+                            </div>
+                            <input type="submit" class="submitBtn" value="登录">
+                            <a href="javascript:;" class="forgetPwd">忘记密码?</a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="floor floor2">
+                <div class="box">
+                    <div class="title">
+                        <h2>保酷专属宝盒</h2>
+                        <div class="txt">
+                            <span>&emsp;更高的品质 更低的价格&emsp;</span>
+                        </div>
+                    </div>
+                    <div class="banner clearfix">
+                        <div class="banner_cont">
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="captions">
+                                        <div class="top">保酷一号</div>
+                                        <img src="~/Content/imgIndex/p1.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷二号</div>
+                                        <img src="~/Content/imgIndex/p2.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.5元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷三号</div>
+                                        <img src="~/Content/imgIndex/p3.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷四号</div>
+                                        <img src="~/Content/imgIndex/p4.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">50万保额</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="captions">
+                                        <div class="top">保酷一号</div>
+                                        <img src="~/Content/imgIndex/p1.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷二号</div>
+                                        <img src="~/Content/imgIndex/p2.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.5元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷三号</div>
+                                        <img src="~/Content/imgIndex/p3.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷四号</div>
+                                        <img src="~/Content/imgIndex/p4.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">50万保额</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="captions">
+                                        <div class="top">保酷一号</div>
+                                        <img src="~/Content/imgIndex/p1.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷二号</div>
+                                        <img src="~/Content/imgIndex/p2.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.5元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷三号</div>
+                                        <img src="~/Content/imgIndex/p3.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷四号</div>
+                                        <img src="~/Content/imgIndex/p4.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">50万保额</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="captions">
+                                        <div class="top">保酷一号</div>
+                                        <img src="~/Content/imgIndex/p1.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷二号</div>
+                                        <img src="~/Content/imgIndex/p2.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天0.5元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷三号</div>
+                                        <img src="~/Content/imgIndex/p3.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">每天1元</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                    <div class="captions">
+                                        <div class="top">保酷四号</div>
+                                        <img src="~/Content/imgIndex/p4.jpg" width="220" height="216" alt="">
+                                        <div class="bgGray">50万保额</div>
+                                        <div class="bgWhite">
+                                            意外医疗
+                                            <a href="javascript:;" class="seemore">查看</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="banner_point"></div>
+                        </div>
+                        <span class="prev"><</span>
+                        <span class="next">></span>
+                    </div>
+                </div>
+            </div>
+            <div class="floor floor3">
+                <div class="box">
+                    <div class="title">
+                        <h2>保酷专属宝盒</h2>
+                        <div class="txt">
+                            <span>&emsp;让企业的健康保险 随心而动&emsp;</span>
+                        </div>
+                    </div>
+                    <div class="planWrp">
+                        <div class="plan"></div>
+                        <div class="options option1">
+                            <span class="pattern"></span>
+                            <span class="wz">住院津贴</span>
+                        </div>
+                        <div class="options option2">
+                            <span class="pattern"></span>
+                            <span class="wz">重大疾病</span>
+                        </div>
+                        <div class="options option2">
+                            <span class="pattern"></span>
+                            <span class="wz">疾病身故</span>
+                        </div>
+                        <div class="options option3">
+                            <span class="pattern"></span>
+                            <span class="wz">意外医疗</span>
+                        </div>
+                        <div class="options option4">
+                            <span class="pattern"></span>
+                            <span class="wz">门急诊补充</span>
+                        </div>
+                        <div class="options option5">
+                            <span class="pattern"></span>
+                            <span class="wz">人身意外</span>
+                        </div>
+                        <div class="options option6">
+                            <span class="pattern"></span>
+                            <span class="wz">中高端医疗</span>
+                        </div>
+                        <div class="options option7">
+                            <span class="pattern"></span>
+                            <span class="wz">中高端医疗</span>
+                        </div>
+                        <a href="javascript:;" class="button">想怎么选 就怎么选<span>>></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="floor floor4">
+                <div class="box">
+                    <div class="title">
+                        <h2>保酷快递 自助投保</h2>
+                        <div class="txt">
+                            <span>&emsp;SELF-INSURED&emsp;</span>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <div class="imgWrp">
+                            <img src="~/Content/imgIndex/img01.jpg" width="202" height="302" alt="">
+                            <div class="cover">
+                                <span class="icon icon1"></span>
+                                <div class="txt1">登录</div>
+                                <div class="txt2">(您需要一个企业账号)</div>
+                            </div>
+                        </div>
+                        <div class="numPattern num1"></div>
+                    </div>
+                    <div class="square">
+                        <div class="numPattern num2"></div>
+                        <div class="imgWrp">
+                            <img src="~/Content/imgIndex/img02.jpg" width="202" height="302" alt="">
+                            <div class="cover">
+                                <span class="icon icon2"></span>
+                                <div class="txt1">甄选方案</div>
+                                <div class="txt2">(推荐+自选)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <div class="imgWrp">
+                            <img src="~/Content/imgIndex/img03.jpg" width="202" height="302" alt="">
+                            <div class="cover">
+                                <span class="icon icon3"></span>
+                                <div class="txt1">上传资料</div>
+                                <div class="txt2">(投保单等相关资料)</div>
+                            </div>
+                        </div>
+                        <div class="numPattern num3"></div>
+                    </div>
+                    <div class="square">
+                        <div class="numPattern num4"></div>
+                        <div class="imgWrp">
+                            <img src="~/Content/imgIndex/img04.jpg" width="202" height="302" alt="">
+                            <div class="cover">
+                                <span class="icon icon4"></span>
+                                <div class="txt1">缴费投保</div>
+                                <div class="txt2">(确认保费金额付款)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="floor floor5">
+                <div class="box">
+                    <div class="title">
+                        <h2>保酷理赔递 闪速快捷</h2>
+                        <div class="txt">
+                            <span>&emsp;FAST CLAMS&emsp;</span>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <img src="~/Content/imgIndex/p1.png" width="212" height="401" alt="">
+                        <div class="cover">
+                            <span class="icon icon1"></span>
+                            <div class="txt">申请理赔<br>微信/APP/web</div>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <img src="~/Content/imgIndex/p2.png" width="212" height="401" alt="">
+                        <div class="cover">
+                            <span class="icon icon2"></span>
+                            <div class="txt">单据拍照 上传资料</div>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <img src="~/Content/imgIndex/p3.png" width="212" height="401" alt="">
+                        <div class="cover">
+                            <span class="icon icon3"></span>
+                            <div class="txt">自动理算 理赔审核</div>
+                        </div>
+                    </div>
+                    <div class="square">
+                        <img src="~/Content/imgIndex/p4.png" width="212" height="401" alt="">
+                        <div class="cover">
+                            <span class="icon icon4"></span>
+                            <div class="txt">闪速赔付</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="floor floor6">
+                <div class="box">
+                    <div class="title">
+                        <h2>保酷合作</h2>
+                        <div class="txt">
+                            <span>&emsp;老伙计&新朋友&emsp;</span>
+                        </div>
+                    </div>
+                    <div class="partners">
+                        <div class="partner">
+                            <!-- <img src="" width="146" height="80" alt=""> -->
+                        </div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                        <div class="partner"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="floor floor7">
+                <div class="box">
+                    <div class="title">
+                        <h2>联系我们</h2>
+                    </div>
+                    <div class="cont">
+                        <div class="top clearfix">
+                            <div class="phone">电话:400-612-6750</div>
+                            <div class="email">邮箱:sarvkca@inscoo.com</div>
+                            <div class="address">地址:上海杨浦区榕江路1690号凤凰大厦1707</div>
+                        </div>
+                        <hr>
+                        <div class="bottom clearfix">
+                            <ul class="ulist">
+                                <li class="title">发现 Discovery</li>
+                                <li><a href="javascript:;">更新产品</a></li>
+                                <li><a href="javascript:;">更新服务</a></li>
+                                <li><a href="javascript:;">更新体验</a></li>
+                            </ul>
+                            <ul class="ulist">
+                                <li class="title">探索 Explore</li>
+                                <li><a href="javascript:;">关于我们</a></li>
+                                <li><a href="javascript:;">关于保酷</a></li>
+                                <li><a href="javascript:;">战略合作</a></li>
+                            </ul>
+                            <ul class="ulist">
+                                <li class="title">帮助Help</li>
+                                <li><a href="javascript:;">新手指南</a></li>
+                                <li><a href="javascript:;">常见问题</a></li>
+                                <li><a href="javascript:;">服务协议</a></li>
+                                <li><a href="javascript:;">使用手册</a></li>
+                            </ul>
+                            <div class="VRcode">
+                                <img src="~/Content/imgIndex/v2.jpg" width="114" height="114" alt="">
+                                <span class="font">服务号</span>
+                            </div>
+                            <div class="VRcode">
+                                <img src="~/Content/imgIndex/v1.jpg" width="114" height="114" alt="">
+                                <span class="font">订阅号</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyRignt">Copyright© 2000-2000 上海皓为商务咨询有限公司 版权所有 沪ICP备00000000</div>
+            </div>
+        </div>
+    </div>
+    <div class="floor_points"></div>
+    <ul class="sitebar">
+        <li class="list1"><a href="javascript:;"></a></li>
+        <li class="list2"><a href="javascript:;"></a></li>
+        <li class="list3"><a href="javascript:;"></a></li>
+        <li class="list4"><a href="javascript:;"></a></li>
+    </ul>
+    @Scripts.Render("~/bundles/index")
+</body>
 </html>

@@ -121,6 +121,7 @@ namespace Services.Identity
             if (table.Any())
             {
                 var select = new List<SelectListItem>();
+                select.Add(new SelectListItem { Text = "请选择角色", Value = "", Selected = true });
                 foreach (var s in table)
                 {
                     var item = new SelectListItem();

@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Services.Identity;
 using Services.Navigation;
 using Services.Permission;
+using Services.Product;
 using System.Configuration;
 using System.Reflection;
 using System.Web;
@@ -42,7 +43,7 @@ namespace Services
             builder.RegisterType<AppRoleService>().As<IAppRoleService>().InstancePerDependency();
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
 
-            //EFHelper
+            //EF
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerDependency();
             //HTTP context and other related stuff
             builder.Register(c => new HttpContextWrapper(HttpContext.Current) as HttpContextBase).InstancePerDependency();
@@ -60,6 +61,8 @@ namespace Services
             builder.RegisterType<LoggerService>().As<ILoggerService>().InstancePerDependency();
             builder.RegisterType<NavigationService>().As<INavigationService>().InstancePerDependency();
             builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerDependency();
+            builder.RegisterType<ProductService>().As<IProductService>().InstancePerDependency();
+            
 
         }
     }

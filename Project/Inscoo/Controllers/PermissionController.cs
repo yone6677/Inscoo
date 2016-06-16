@@ -27,14 +27,6 @@ namespace Inscoo.Controllers
         {
             var model = new PermissionViewModel();
             model.roles = _roleService.GetSelectList();
-            var defaItem = new SelectListItem()
-            {
-                Text = "请选择",
-                Value = "",
-                Selected = true
-            };
-            model.roles.Add(defaItem);
-
             return View(model);
         }
         public ActionResult List(string rid = "")

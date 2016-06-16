@@ -10,6 +10,13 @@ namespace Inscoo
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
+            /*登陆页面*/
+            bundles.Add(new ScriptBundle("~/bundles/index").Include(
+                       "~/Scripts/jquery-{version}.js",
+                       "~/Scripts/index.js",
+                       "~/Scripts/respond.js"));
+            bundles.Add(new StyleBundle("~/Content/index").Include(
+                    "~/Content/index.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                        "~/Scripts/jquery.unobtrusive*",

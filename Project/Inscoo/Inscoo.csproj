@@ -160,6 +160,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Sql\menu.sql" />
+    <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
@@ -172,7 +174,62 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\imgIndex\bg1.jpg" />
+    <Content Include="Content\imgIndex\bg2.jpg" />
+    <Content Include="Content\imgIndex\bg2.png" />
+    <Content Include="Content\imgIndex\bg3.jpg" />
+    <Content Include="Content\imgIndex\bg5.jpg" />
+    <Content Include="Content\imgIndex\bg6.jpg" />
+    <Content Include="Content\imgIndex\bg6.png" />
+    <Content Include="Content\imgIndex\iconGroup.png" />
+    <Content Include="Content\imgIndex\img01.jpg" />
+    <Content Include="Content\imgIndex\img02.jpg" />
+    <Content Include="Content\imgIndex\img03.jpg" />
+    <Content Include="Content\imgIndex\img04.jpg" />
+    <Content Include="Content\imgIndex\logo.png" />
+    <Content Include="Content\imgIndex\n1.png" />
+    <Content Include="Content\imgIndex\n2.png" />
+    <Content Include="Content\imgIndex\n3.png" />
+    <Content Include="Content\imgIndex\n4.png" />
+    <Content Include="Content\imgIndex\p1.jpg" />
+    <Content Include="Content\imgIndex\p1.png" />
+    <Content Include="Content\imgIndex\p2.jpg" />
+    <Content Include="Content\imgIndex\p2.png" />
+    <Content Include="Content\imgIndex\p3.jpg" />
+    <Content Include="Content\imgIndex\p3.png" />
+    <Content Include="Content\imgIndex\p4.jpg" />
+    <Content Include="Content\imgIndex\p4.png" />
+    <Content Include="Content\imgIndex\patternGroup.png" />
+    <Content Include="Content\imgIndex\polygon.png" />
+    <Content Include="Content\imgIndex\v1.jpg" />
+    <Content Include="Content\imgIndex\v2.jpg" />
+    <Content Include="Content\imgIndex\新建文件夹\i1.png" />
+    <Content Include="Content\imgIndex\新建文件夹\i2.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon01.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon02.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon03.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon04.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon05.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon06.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon07.png" />
+    <Content Include="Content\imgIndex\新建文件夹\icon08.png" />
+    <Content Include="Content\imgIndex\新建文件夹\img01.png" />
+    <Content Include="Content\imgIndex\新建文件夹\n1.png" />
+    <Content Include="Content\imgIndex\新建文件夹\n2.png" />
+    <Content Include="Content\imgIndex\新建文件夹\n3.png" />
+    <Content Include="Content\imgIndex\新建文件夹\n4.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p1.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p2.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p3.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p4.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p5.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p6.png" />
+    <Content Include="Content\imgIndex\新建文件夹\p7.png" />
+    <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
+    <Content Include="Content\img\inscoo.png" />
     <Content Include="Content\img\tt.png" />
+    <Content Include="Content\index.css" />
+    <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -197,8 +254,10 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -248,7 +307,6 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Portrait.cshtml" />
@@ -263,6 +321,7 @@
     <Content Include="Views\Permission\Index.cshtml" />
     <Content Include="Views\Permission\List.cshtml" />
     <Content Include="Views\Nav\Delete.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -277,10 +336,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Archive\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Core\Core.csproj">

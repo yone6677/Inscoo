@@ -149,6 +149,8 @@
     <Compile Include="Navigation\NavigationService.cs" />
     <Compile Include="Permission\IPermissionService.cs" />
     <Compile Include="Permission\PermissionService.cs" />
+    <Compile Include="Product\IProductService.cs" />
+    <Compile Include="Product\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

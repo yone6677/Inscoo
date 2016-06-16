@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Inscoo.Infrastructure;
+using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {

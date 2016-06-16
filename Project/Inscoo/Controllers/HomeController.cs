@@ -1,16 +1,12 @@
 ﻿using Services;
-using Services.Navigation;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IFileService _fileService;
         private readonly IResourceService _resource;
@@ -21,7 +17,6 @@ namespace Inscoo.Controllers
             _resource = resource;
         }
         // GET: Home
-
         public ActionResult Index()
         {           
             return View();

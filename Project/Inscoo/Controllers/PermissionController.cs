@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class PermissionController : Controller
+    public class PermissionController : BaseController
     {
         private readonly IPermissionService _permisService;
         private readonly INavigationService _navService;

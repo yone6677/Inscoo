@@ -9,7 +9,7 @@ using Innscoo.Infrastructure;
 
 namespace Inscoo.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleManager;

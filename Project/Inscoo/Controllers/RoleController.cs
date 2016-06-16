@@ -6,12 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private readonly IAppRoleService _appRoleService;
         public RoleController(IAppRoleService appRoleService)

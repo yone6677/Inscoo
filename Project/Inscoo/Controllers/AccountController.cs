@@ -1,17 +1,10 @@
-﻿using Core;
-using Domain;
-using Inscoo.Models.Account;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
+﻿using Inscoo.Models.Account;
 using Services.Identity;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly IAppUserService _appUserService;
@@ -33,37 +26,6 @@ namespace Inscoo.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        public ActionResult Register()
-        {
-            //var roles = _appRoleService.Roles();
-            //var select = new List<SelectListItem>();
-            //foreach (var s in roles)
-            //{
-            //    var item = new SelectListItem();
-            //    item.Text = s.Description;
-            //    item.Value = s.Name;
-            //}
-            //ViewBag.roles = select;
-            return View();
-        }
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new AppUser() { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, LinkMan = model.Linkman, CompanyName = model.CompanyName };
-                var result = _appUserService.CreateAsync(user, model.UserName, model.Password);
-                if (result.Result.Succeeded)
-                {
-                    _appUserService.SignIn(user, false);
-                    return RedirectToLocal("/");
-                }
-            }
-            return View();
-        }
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(returnUrl))
@@ -75,7 +37,6 @@ namespace Inscoo.Controllers
         //
         // POST: /Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {

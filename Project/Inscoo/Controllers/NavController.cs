@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class NavController : Controller
+    public class NavController : BaseController
     {
         private readonly INavigationService _navService;
         public NavController(INavigationService navService)

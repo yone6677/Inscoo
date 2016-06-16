@@ -83,14 +83,14 @@ namespace Inscoo.Controllers
                     {
                         foreach (var f in permissList)
                         {
-                            if (!pidList.Contains(f.Id.ToString()))
+                            if (!pidList.Contains(f.func.ToString()))
                             {
                                 _permisService.DeleteById(f.Id);
                             }
                         }
                         foreach (var f in pidList)
                         {
-                            if (!permissList.Where(s => s.Id == int.Parse(f)).Any())
+                            if (!permissList.Where(s => s.func == int.Parse(f)).Any())
                             {
                                 var item = new PermissionItem()
                                 {

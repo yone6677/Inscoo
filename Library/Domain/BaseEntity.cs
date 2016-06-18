@@ -10,8 +10,8 @@ namespace Domain
             CreateTime = DateTime.Now;
         }
         public int Id { get; set; }
+        public string Author { get; set; }
         public DateTime CreateTime { set; get; }
-
         public bool IsDeleted { get; set; }
     }
 }

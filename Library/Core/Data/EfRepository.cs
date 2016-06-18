@@ -44,31 +44,31 @@ namespace Core.Data
         /// </summary>
         /// <param name="id">Identifier</param>
         /// <returns>Entity</returns>
-        public virtual T GetById(object id, bool isCached, int expire)
+        public virtual T GetById(object id)
         {
-            if (isCached)
-            {
-                //var list = new List<T>();
-                string key = typeof(T).Name;
-                if (_cachingManager.IsSet(key))
-                {
-                    var bufferTable = TableFormBuffer(expire);
-                    if (bufferTable.Any())
-                    {
-                        var item = bufferTable.Where(c => c.Id == int.Parse(id.ToString()));
-                        if (item.Any())
-                        {
-                            return item.FirstOrDefault();
-                        }
-                    }       
-                }
-                else
-                {
-                    var item = Entities.Find(id);
-                    _cachingManager.Set(key, item, expire);
-                    return item;
-                }
-            }
+            //if (isCached)
+            //{
+            //    //var list = new List<T>();
+            //    string key = typeof(T).Name;
+            //    if (_cachingManager.IsSet(key))
+            //    {
+            //        var bufferTable = TableFromBuffer(expire);
+            //        if (bufferTable.Any())
+            //        {
+            //            var item = bufferTable.Where(c => c.Id == int.Parse(id.ToString()));
+            //            if (item.Any())
+            //            {
+            //                return item.FirstOrDefault();
+            //            }
+            //        }       
+            //    }
+            //    else
+            //    {
+            //        var item = Entities.Find(id);
+            //        _cachingManager.Set(key, item, expire);
+            //        return item;
+            //    }
+            //}
             //see some suggested performance optimization (not tested)
             //http://stackoverflow.com/questions/11686225/dbset-find-method-ridiculously-slow-compared-to-singleordefault-on-id/11688189#comment34876113_11688189
             return Entities.Find(id);
@@ -317,7 +317,7 @@ namespace Core.Data
                 return Entities;
             }
         }
-        public virtual IQueryable<T> TableFormBuffer(int expire)
+        public virtual IQueryable<T> TableFromBuffer(int expire)
         {
             string key = typeof(T).Name;
             if (_cachingManager.IsSet(key))

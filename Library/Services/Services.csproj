@@ -129,11 +129,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\GenericAttributeService.cs" />
+    <Compile Include="Common\IGenericAttributeService.cs" />
     <Compile Include="Identity\AppRoleService.cs" />
     <Compile Include="Identity\AppUserService.cs" />
     <Compile Include="Identity\IAppRoleService.cs" />
     <Compile Include="Identity\IAppUserService.cs" />
-    <Compile Include="BaseService.cs" />
     <Compile Include="Common\IResourceService.cs" />
     <Compile Include="Common\IWebHelper.cs" />
     <Compile Include="Common\ResourceService.cs" />
@@ -145,12 +146,16 @@
     <Compile Include="Infrastructure\LogsModel.cs" />
     <Compile Include="Logger\ILoggerService.cs" />
     <Compile Include="Logger\LoggerService.cs" />
-    <Compile Include="Navigation\INavigationService.cs" />
-    <Compile Include="Navigation\NavigationService.cs" />
-    <Compile Include="Permission\IPermissionService.cs" />
-    <Compile Include="Permission\PermissionService.cs" />
-    <Compile Include="Product\IProductService.cs" />
-    <Compile Include="Product\ProductService.cs" />
+    <Compile Include="Navigations\INavigationService.cs" />
+    <Compile Include="Navigations\NavigationService.cs" />
+    <Compile Include="Permissions\IPermissionService.cs" />
+    <Compile Include="Permissions\PermissionService.cs" />
+    <Compile Include="Products\IMixProductItemService.cs" />
+    <Compile Include="Products\IMixProductService.cs" />
+    <Compile Include="Products\IProductService.cs" />
+    <Compile Include="Products\MixProductItemService.cs" />
+    <Compile Include="Products\MixProductService.cs" />
+    <Compile Include="Products\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

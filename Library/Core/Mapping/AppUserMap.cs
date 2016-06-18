@@ -11,10 +11,10 @@ namespace Core.Mapping
             Property(p => p.TiYong).IsRequired();
             Property(p => p.FanBao).IsRequired();
             Property(p => p.CreaterId).IsOptional().HasMaxLength(128);
-            Property(p => p.ModifierId).IsOptional().HasMaxLength(128);
+            Property(p => p.Changer).IsOptional().HasMaxLength(128);
             Property(p => p.Email).IsRequired().HasMaxLength(32);
-            Property(p => p.CompanyName).IsRequired().HasMaxLength(32);
-            Property(p => p.LinkMan).IsOptional().HasMaxLength(16);
+            Property(p => p.CompanyName).IsRequired().HasMaxLength(128);
+            Property(p => p.LinkMan).IsOptional().HasMaxLength(32);
             Property(p => p.Ident).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
     }

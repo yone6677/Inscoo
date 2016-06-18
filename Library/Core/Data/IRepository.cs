@@ -12,7 +12,7 @@ namespace Core.Data
         /// </summary>
         /// <param name="id">Identifier</param>
         /// <returns>Entity</returns>
-        T GetById(object id, bool isCached = false, int expire = 24);
+        T GetById(object id);
 
         /// <summary>
         /// Insert entity
@@ -58,6 +58,6 @@ namespace Core.Data
         /// </summary>
         IQueryable<T> TableNoTracking { get; }
 
-        IQueryable<T> TableFormBuffer(int expire = 24);
+        IQueryable<T> TableFromBuffer(int expire = 24);
     }
 }

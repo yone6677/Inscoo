@@ -38,7 +38,7 @@ namespace Inscoo.Controllers
         // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -61,15 +61,6 @@ namespace Inscoo.Controllers
         {
             _appUserService.SignOut();
             return RedirectToAction("Index", "Home");
-        }
-        /// <summary>
-        /// 头像/NAME
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Portrait()
-        {
-            ViewBag.UserName = User.Identity.Name;
-            return PartialView();
         }
     }
 }

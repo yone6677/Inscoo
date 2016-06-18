@@ -19,7 +19,7 @@ namespace Core.Data
         private void InitUserAndRoles()
         {
             //添加admin用户，密码123456
-            var user = new AppUser() { UserName = "Admin", CreaterId = "", ModifierId = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo" };
+            var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo" };
             _context.Users.Add(user);          
             var admin = new AppRole { Name = "Admin", Description = "Admin" };
             _context.Roles.Add(admin);
@@ -30,7 +30,7 @@ namespace Core.Data
             _context.Roles.Add(new AppRole { Name = "InsuranceCompany", Description = "保险公司" });
             _context.SaveChanges();
             user.CreaterId = user.Id;
-            user.ModifierId = user.ModifierId;
+            user.Changer = user.Id;
             var sqlAddAdminRoleForAdmin = string.Format("insert into [AspNetUserRoles] values('{0}','{1}','{2}')", user.Id, admin.Id, "IdentityUserRole");
             _context.Database.ExecuteSqlCommand(sqlAddAdminRoleForAdmin);
             _context.SaveChanges();
@@ -41,6 +41,8 @@ namespace Core.Data
             var customCommands = new List<string>();
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/menu.sql"), false));//菜单和权限
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Products.sql"), false));//产品
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/MixProduct.sql"), false));//推荐产品
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性
             if (customCommands != null && customCommands.Count > 0)
             {
                 foreach (var command in customCommands)

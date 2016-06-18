@@ -2,7 +2,6 @@
 using Inscoo.Models.Account;
 using Microsoft.AspNet.Identity;
 using Services.Identity;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Innscoo.Infrastructure;
@@ -46,14 +45,14 @@ namespace Inscoo.Controllers
         public ActionResult Create()
         {
             var roles = _appRoleManager.GetSelectList();
-            var model = new RegisterViewModel() { selectList = roles };
+            var model = new RegisterModel() { selectList = roles };
             return View(model);
         }
 
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RegisterViewModel model)
+        public ActionResult Create(RegisterModel model)
         {
             if (ModelState.IsValid)
             {

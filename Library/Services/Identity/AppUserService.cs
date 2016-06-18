@@ -86,6 +86,8 @@ namespace Services.Identity
         {
             try
             {
+                user.Changer = _authenticationManager.User.Identity.Name;
+                user.ModifyTime = DateTime.Now;
                 var result = _userManager.UpdateAsync(user);
                 return result;
             }
@@ -99,6 +101,8 @@ namespace Services.Identity
         {
             try
             {
+                user.Changer = _authenticationManager.User.Identity.Name;
+                user.ModifyTime = DateTime.Now;
                 var result = _userManager.UpdateSecurityStampAsync(user.Id);
                 return result;
             }
@@ -200,11 +204,11 @@ namespace Services.Identity
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
-        public IPagedList<UserViewModel> GetUserList(int pageIndex, int pageSize, string userName, string email)
+        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email)
         {
             try
             {
-                var model = new List<UserViewModel>();
+                var model = new List<UserModel>();
                 var user = _userManager.Users.ToList();
                 if (!string.IsNullOrEmpty(userName))
                 {
@@ -216,7 +220,7 @@ namespace Services.Identity
                 }
                 if (user.Count > 0)
                 {
-                    model = user.Select(u => new UserViewModel
+                    model = user.Select(u => new UserModel
                     {
                         CompanyName = u.CompanyName,
                         Id = u.Id,
@@ -233,7 +237,7 @@ namespace Services.Identity
                     }).ToList();
                 }
 
-                return new PagedList<UserViewModel>(model, pageIndex, pageSize);
+                return new PagedList<UserModel>(model, pageIndex, pageSize);
             }
             catch (Exception e)
             {

@@ -1,8 +1,8 @@
 ﻿using Domain.Navigation;
 using Innscoo.Infrastructure;
 using Models.Navigation;
-using Services.Navigation;
-using System.Collections.Generic;
+using Services.Navigations;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -14,6 +14,7 @@ namespace Inscoo.Controllers
         {
             _navService = navService;
         }
+        [AllowAnonymous]
         public ActionResult Menu()
         {
             return PartialView();
@@ -59,7 +60,7 @@ namespace Inscoo.Controllers
                 var item = _navService.GetById(id);
                 if (item != null)
                 {
-                    var model = new NavigationViewModel()
+                    var model = new NavigationModel()
                     {
                         Id = item.Id,
                         action = item.action,
@@ -82,7 +83,7 @@ namespace Inscoo.Controllers
         // GET: Nav/Create
         public ActionResult Create(int id = 0, int level = 0)
         {
-            var model = new NavigationViewModel();
+            var model = new NavigationModel();
             model.pId = id;
             model.level = level;
             return View(model);
@@ -91,11 +92,11 @@ namespace Inscoo.Controllers
         // POST: Nav/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(NavigationViewModel model)
+        public ActionResult Create(NavigationModel model)
         {
             if (ModelState.IsValid)
             {
-                var item = new NavigationItem();
+                var item = new Navigation();
                 if (!string.IsNullOrEmpty(item.action))
                 {
                     item.action = model.action.Trim().ToLower();
@@ -125,7 +126,7 @@ namespace Inscoo.Controllers
         public ActionResult Edit(int id)
         {
             var item = _navService.GetById(id);
-            var model = new NavigationViewModel()
+            var model = new NavigationModel()
             {
                 Id = item.Id,
                 action = item.action,
@@ -142,18 +143,18 @@ namespace Inscoo.Controllers
         // POST: Nav/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(NavigationViewModel model)
+        public ActionResult Edit(NavigationModel model)
         {
             if (ModelState.IsValid)
             {
                 var item = _navService.GetById(model.Id);
                 if (item != null)
                 {
-                    if (!string.IsNullOrEmpty(item.action))
+                    if (!string.IsNullOrEmpty(model.action))
                     {
                         item.action = model.action.Trim().ToLower();
                     }
-                    if (!string.IsNullOrEmpty(item.controller))
+                    if (!string.IsNullOrEmpty(model.controller))
                     {
                         item.controller = model.controller.Trim().ToLower();
                     }
@@ -180,7 +181,7 @@ namespace Inscoo.Controllers
                 var item = _navService.GetById(id);
                 if (item != null)
                 {
-                    var model = new NavigationViewModel()
+                    var model = new NavigationModel()
                     {
                         Id = item.Id,
                         action = item.action,
@@ -201,23 +202,24 @@ namespace Inscoo.Controllers
         }
 
         // POST: Nav/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(NavigationViewModel model)
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
+            if (!_navService.DeleteById(id))
             {
-                if (model.Id > 0)
-                {
-                    _navService.DeleteById(model.Id);
-                }
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            catch
-            {
-                return View(model);
-            }
+            return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// 头像/NAME
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Portrait()
+        {
+            ViewBag.UserName = User.Identity.Name;
+            return PartialView();
+        }
     }
 }

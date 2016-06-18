@@ -101,8 +101,11 @@
     <Compile Include="Identity\AppUserRole.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\PermissionMap.cs" />
+    <Compile Include="Mapping\ProductMixItemMap.cs" />
+    <Compile Include="Mapping\ProductMixMap.cs" />
     <Compile Include="Mapping\ProductsMap.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />

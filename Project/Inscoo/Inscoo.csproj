@@ -160,7 +160,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Sql\GenericAttribute.sql" />
     <Content Include="App_Data\Sql\menu.sql" />
+    <Content Include="App_Data\Sql\MixProduct.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
@@ -227,6 +229,10 @@
     <Content Include="Content\imgIndex\新建文件夹\p7.png" />
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
     <Content Include="Content\img\inscoo.png" />
+    <Content Include="Content\img\p1.jpg" />
+    <Content Include="Content\img\p2.jpg" />
+    <Content Include="Content\img\p3.jpg" />
+    <Content Include="Content\img\p4.jpg" />
     <Content Include="Content\img\tt.png" />
     <Content Include="Content\index.css" />
     <Content Include="favicon.ico" />
@@ -281,7 +287,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GenericAttributeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InsuranceController.cs" />
+    <Compile Include="Controllers\MixProductController.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -309,7 +318,7 @@
     <Content Include="Views\Nav\Menu.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\Portrait.cshtml" />
+    <Content Include="Views\Nav\Portrait.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\List.cshtml" />
@@ -322,6 +331,17 @@
     <Content Include="Views\Permission\List.cshtml" />
     <Content Include="Views\Nav\Delete.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\MixProduct\Create.cshtml" />
+    <Content Include="Views\GenericAttribute\Create.cshtml" />
+    <Content Include="Views\GenericAttribute\Edit.cshtml" />
+    <Content Include="Views\GenericAttribute\Details.cshtml" />
+    <Content Include="Views\GenericAttribute\List.cshtml" />
+    <Content Include="Views\GenericAttribute\Index.cshtml" />
+    <Content Include="Views\GenericAttribute\Delete.cshtml" />
+    <Content Include="Views\Insurance\MixProduct.cshtml" />
+    <Content Include="Views\Insurance\Index.cshtml" />
+    <Content Include="Views\Insurance\CustomizeProduct.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

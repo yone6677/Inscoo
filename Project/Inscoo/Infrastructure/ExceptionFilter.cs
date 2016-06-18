@@ -38,6 +38,11 @@ namespace Inscoo.Infrastructure
                 filterContext.HttpContext.Response.StatusCode = 404;
                 filterContext.HttpContext.Response.Redirect("~/Error/NotFound");
             }
+            if (httpException != null && (errorCode == 401))
+            {
+                filterContext.HttpContext.Response.StatusCode = 401;
+                filterContext.HttpContext.Response.Redirect("~/Error/Unauthorized");
+            }
             else
             {
                 filterContext.HttpContext.Response.StatusCode = 500;
@@ -66,8 +71,10 @@ namespace Inscoo.Infrastructure
                 logs.Browser = filterContext.HttpContext.Request.Browser.Browser;
                 logs.CreateDate = DateTime.Now;
                 logs.Ip = filterContext.HttpContext.Request.UserHostAddress;
-                logs.Url = filterContext.HttpContext.Request.UrlReferrer.ToString();
-
+                if (filterContext.HttpContext.Request.UrlReferrer != null)
+                {
+                    logs.Url = filterContext.HttpContext.Request.UrlReferrer.ToString();
+                }
                 try
                 {
                     string sendData = JsonConvert.SerializeObject(logs);
@@ -75,7 +82,7 @@ namespace Inscoo.Infrastructure
                     var client = new WebClient();
                     client.Encoding = Encoding.UTF8;
                     client.Headers.Add("Content-Type", "application/json");
-                    client.UploadString(_resourceService.GetLogger(), "post", sendData);
+                    client.UploadString(_resourceService.GetLogger()+"logs", "post", sendData);
                 }
                 catch (Exception)//日志服务器若返回异常不能抛至当前程序
                 {

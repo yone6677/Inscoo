@@ -15,12 +15,17 @@
 a {
   text-decoration: none;
 }
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 header {
   width: 100%;
   height: 60px;
-  background-color: #28AAE4;
-  color: #FFF;
+  background-color: #fff;
+  color: #333F4D;
   margin-bottom: 1em;
+  box-shadow: 0 1px 3px #999;
 }
 header ul {
   margin: 0 auto;
@@ -167,4 +172,116 @@ body {
 }
 .dl-horizontal {
   margin: 1em auto;
+}
+.panel-footer {
+  padding: 0 0;
+}
+.inscooCase {
+  width: 48%;
+  float: left;
+  margin: 0 1%;
+  box-shadow: 0 0 .5em #ddd;
+}
+.inscooCase-title-left {
+  height: 55px;
+  line-height: 55px;
+  text-align: center;
+}
+.inscooCase-title-left strong {
+  display: block;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #555;
+}
+.inscooCase-title-left span {
+  height: 25px;
+  font-size: .8em;
+  display: block;
+  width: 100%;
+  line-height: 25px;
+  color: gray;
+}
+.inscooCase-body {
+  width: 96%;
+  margin: 0 auto;
+  box-shadow: 0 1px 0 #ddd inset;
+  height: 260px;
+}
+.inscooCase-title-right {
+  text-align: center;
+  background-color: #83BA21;
+  border-bottom: 5px solid #71A01E;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.3em;
+  color: #fff;
+  border-radius: 3px;
+}
+.inscoo-programme-left {
+  width: 40%;
+  height: 124px;
+  float: left;
+  margin: 3px 5%;
+  text-align: center;
+}
+.inscoo-programme-left a {
+  display: block;
+  width: 100px;
+  margin: 0 auto;
+  height: 100px;
+}
+.inscoo-programme-left a img {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  border: .8em solid #ccc;
+  cursor: pointer;
+}
+.inscoo-programme-left a img:hover {
+  border: 0.8em solid #83BA21;
+}
+.inscoo-programme-left p {
+  display: block;
+  width: 100%;
+  line-height: 24px;
+  height: 24px;
+}
+.programme-details {
+  width: 100%;
+}
+.programme-details tr {
+  width: 100%;
+}
+.programme-details tr th {
+  width: 50%;
+  color: #83BA21;
+  height: 2em;
+  line-height: 2em;
+  box-shadow: 0 1px 0 #ddd;
+}
+.programme-details tr td {
+  width: 50%;
+  color: #666;
+  height: 1.8em;
+  line-height: 1.8em;
+  box-shadow: 0 1px 0 #ddd;
+}
+.programme-price {
+  color: #83BA21;
+  line-height: 2em;
+  height: 2em;
+  font-size: 1.5em;
+  text-align: center;
+}
+.programme-pur {
+  line-height: 2em;
+  height: 2em;
+  text-align: center;
+}
+.programme-clause {
+  width: 100%;
+  text-align: center;
+  line-height: 1.5em;
+  height: 1.5em;
 }

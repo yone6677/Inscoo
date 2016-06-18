@@ -25,6 +25,6 @@ namespace Services.Identity
         Task<IdentityResult> AddToRoleAsync(string uid, string roleid);
         void SignIn(AppUser user, bool isPersistent);
         void SignOut();
-        IPagedList<UserViewModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null);
+        IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null);
     }
 }

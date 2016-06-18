@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Models.Insurance.RecommendationModel>
+
+<div class="panel inscooCase">
+    <div class="inscooCase-title-left">
+        <strong>选择一个方案</strong>
+        <span>SELECT A PROGRAMME</span>
+    </div>
+
+    <div class="panel-body inscooCase-body">
+        @{
+            var ids = "";
+            int icon = 1;
+            foreach (var item in Model)
+            {
+                if (icon == Model.Count())
+                {
+                    ids += item.Id;
+                }
+                else
+                {
+                    ids += item.Id + ",";
+                }
+
+                var src = "/Content/img/p" + icon + ".jpg";
+                icon++;
+                <div class="inscoo-programme-left">
+                    <a>
+                        <img onclick="showDetails(@item.Id)" src="@src" class="img-circle" />
+                    </a>
+                    <p>  @Html.DisplayFor(modelItem => item.Name)</p>
+                </div>
+
+            }
+            <input type="hidden" id="ids" value="@ids" />
+        }
+    </div>
+</div>
+@{
+    var i = 0;
+    foreach (var item in Model)
+    {
+        var isHide = "";
+        if (i > 0)
+        {
+            isHide = "style=display:none;";
+        }
+        <div class="panel inscooCase" @isHide id="programme_@item.Id">
+            <div class="inscooCase-title-right">
+                <b>@item.Name</b>
+            </div>
+            <div class="panel-body">
+                <table class="programme-details">
+                    <tr>
+                        <th>保障项目</th>
+                        <th>保障额度</th>
+                    </tr>
+                    @foreach (var s in item.item)
+                    {
+                        <tr>
+                            <td>@s.SafefuardName</td>
+                            <td>@s.CoverageSum</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
+                        <th style="color:#83BA21">@item.StaffRange</th>
+                    </tr>
+                    <tr>
+                        <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
+                        <th style="color:#83BA21">@item.AgeRange</th>
+                    </tr>
+                </table>
+                <div class="programme-price">@item.Price / 年</div>
+                <p class="programme-clause"><a href="/">保险条款</a></p>
+                <p class="programme-clause"><a href="#" class="btn btn-success">立即购买</a></p>
+            </div>  
+        </div>
+        i++;
+    }
+}
+<script>
+    function showDetails(e) {
+        var ary = new Array();
+        var ids = $('#ids').val();
+        ary = ids.split(',');
+        for (var i = 0; i < ary.length; i++) {
+            if (e == ary[i]) {
+                $('#programme_' + ary[i]).show();
+            }
+            else {
+                $('#programme_' + ary[i]).hide();
+            }
+        }
+    }
+</script>
+
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffRange)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgeRange)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffRange)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgeRange)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
+
+    </table>*@

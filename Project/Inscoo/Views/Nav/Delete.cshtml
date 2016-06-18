@@ -1,85 +1,86 @@
-﻿@model Models.Navigation.NavigationViewModel
+﻿@model Models.Navigation.NavigationModel
 
 @{
     ViewBag.Title = "删除功能";
 }
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.level)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.level)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.controller)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.controller)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.action)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.action)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.url)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.url)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.isShow)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.isShow)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.sequence)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.sequence)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.memo)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.memo)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.htmlAtt)
+    </dt>
+    <dd>
+        <pre>
+              @Model.htmlAtt
+            </pre>
+    </dd>
+</dl>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.level)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.level)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.controller)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.controller)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.action)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.action)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.url)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.url)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isShow)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isShow)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.sequence)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sequence)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.memo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.memo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.htmlAtt)
-        </dt>
-        <dd>
-            <pre>
-              @Model.htmlAtt
-            </pre>
-        </dd>
-    </dl>
-    <p>
-        <input type="submit" value="删除" class="btn btn-danger col-md-offset-2"/>
+    <div class="form-actions no-color">
+        <input type="submit" value="删除" class="btn btn-danger col-md-offset-2" />
         @Html.ActionLink("取消", "Details", new { id = Model.Id }, new { @class = "btn btn-info col-md-offset-1" })
-    </p>
+    </div>
 }

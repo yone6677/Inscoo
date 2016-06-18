@@ -17,7 +17,7 @@ namespace Core
         public DateTime CreateTime { set; get; }
         public DateTime ModifyTime { set; get; }
         public string CreaterId { set; get; }
-        public string ModifierId { set; get; }
+        public string Changer { set; get; }
         public string CompanyName { set; get; }
         public string LinkMan { set; get; }
         public bool TiYong { set; get; }

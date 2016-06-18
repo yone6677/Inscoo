@@ -1,13 +1,12 @@
 ﻿using Domain.Permission;
-using Microsoft.AspNet.Identity;
 using Models.Permission;
 using Services.Identity;
-using Services.Navigation;
-using Services.Permission;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Services.Permissions;
+using Services.Navigations;
 
 namespace Inscoo.Controllers
 {
@@ -25,7 +24,7 @@ namespace Inscoo.Controllers
         // GET: Permission
         public ActionResult Index()
         {
-            var model = new PermissionViewModel();
+            var model = new PermissionModel();
             model.roles = _roleService.GetSelectList();
             return View(model);
         }
@@ -63,7 +62,7 @@ namespace Inscoo.Controllers
                     {
                         foreach (var f in pidList)
                         {
-                            var item = new PermissionItem()
+                            var item = new Permission()
                             {
                                 func = int.Parse(f),
                                 roleId = rid
@@ -84,7 +83,7 @@ namespace Inscoo.Controllers
                         {
                             if (!permissList.Where(s => s.func == int.Parse(f)).Any())
                             {
-                                var item = new PermissionItem()
+                                var item = new Permission()
                                 {
                                     func = int.Parse(f),
                                     roleId = rid

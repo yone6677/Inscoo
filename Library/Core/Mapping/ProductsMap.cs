@@ -3,11 +3,11 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
 {
-    public class ProductsMap : EntityTypeConfiguration<ProductItem>
+    public class ProductsMap : EntityTypeConfiguration<Product>
     {
         public ProductsMap()
         {
-            ToTable("Porducts");
+            ToTable("Products");
             Property(p => p.ItemNo).IsOptional().HasMaxLength(10);
             Property(p => p.ProdType).IsOptional().HasMaxLength(20);
             Property(p => p.SafeguardCode).IsOptional().HasMaxLength(20);

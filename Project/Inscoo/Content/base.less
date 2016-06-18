@@ -1,6 +1,7 @@
-﻿@headColor: #28AAE4;
+﻿@headColor: #fff; //#28AAE4;
 @menuColor: #333F4D;
 @mainBgColor: #EBEBEB;
+@inscooGreen: #83BA21;
 
 .contentWidth {
     margin: 0 auto;
@@ -23,12 +24,18 @@ a {
     text-decoration: none;
 }
 
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
 header {
     width: 100%;
     height: 60px;
     background-color: @headColor;
-    color: #FFF;
+    color: @menuColor;
     margin-bottom: 1em;
+    box-shadow: 0 1px 3px #999;
 
     ul {
         .contentWidth;
@@ -43,10 +50,11 @@ header {
 
     ul li:last-child {
         text-align: right;
-        padding-right:2em;
+        padding-right: 2em;
         font-size: 1.6em;
-        line-height: 60px;       
+        line-height: 60px;
     }
+
     ul li a img {
         margin-top: 5px;
         width: auto;
@@ -198,3 +206,129 @@ body {
 .dl-horizontal {
     margin: 1em auto;
 }
+
+.panel-footer {
+    padding: 0 0;
+}
+
+.inscooCase {
+    width: 48%;
+    float: left;
+    margin: 0 1%;
+    box-shadow: 0 0 .5em #ddd;
+}
+
+.inscooCase-title-left {
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+
+    strong {
+        display: block;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        color: #555;
+    }
+
+    span {
+        height: 25px;
+        font-size: .8em;
+        display: block;
+        width: 100%;
+        line-height: 25px;
+        color: gray;
+    }
+}
+
+.inscooCase-body {
+    width: 96%;
+    margin: 0 auto;
+    box-shadow: 0 1px 0 #ddd inset;
+    height: 260px;
+}
+
+.inscooCase-title-right {
+    text-align: center;
+    background-color: @inscooGreen;
+    border-bottom: 5px solid #71A01E;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.3em;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.inscoo-programme-left {
+    width: 40%;
+    height: 124px;
+    float: left;
+    margin: 3px 5%;
+    text-align: center;
+
+    a {
+        display: block;
+        width: 100px;
+        margin: 0 auto;
+        height: 100px;
+    }
+
+    a img {
+        width: 100%;
+        height: auto;
+        text-align: center;
+        border: .8em solid #ccc;
+        cursor: pointer;
+    }
+
+    a img:hover {
+        border: .8em solid @inscooGreen;
+    }
+
+    p {
+        display: block;
+        width: 100%;
+        line-height: 24px;
+        height: 24px;
+    }
+}
+
+.programme-details {
+    width: 100%;
+
+    tr {
+        width: 100%;
+
+        th {
+            width: 50%;
+            color: @inscooGreen;
+            height: 2em;
+            line-height: 2em;
+            box-shadow: 0 1px 0 #ddd;
+        }
+        td {
+            width: 50%;
+            color: #666;
+            height: 1.8em;
+            line-height: 1.8em;
+            box-shadow: 0 1px 0 #ddd;
+        }
+    }
+}
+.programme-price{
+    color:@inscooGreen;
+    line-height:2em;
+    height:2em;
+    font-size:1.5em;
+    text-align:center;
+}
+.programme-pur{
+    line-height:2em;
+    height:2em;
+    text-align:center;
+}.programme-clause{
+     width:100%;
+     text-align:center;
+     line-height:1.5em;
+     height:1.5em;
+ }

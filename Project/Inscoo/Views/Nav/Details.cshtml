@@ -1,4 +1,4 @@
-﻿@model Models.Navigation.NavigationViewModel
+﻿@model Models.Navigation.NavigationModel
 
 @{
     ViewBag.Title = "功能详细";
@@ -82,7 +82,7 @@
         <div class="col-md-offset-1">
             @if (Model.level < 2)
             {
-                @Html.ActionLink("新增子功能", "Create", new { id = Model.Id, level = Model.level + 1 }, new { @class = "btn btn-success " })
+                @Html.ActionLink("新增子功能", "Create","Nav", new { id = Model.Id, level = Model.level + 1}, new { @class = "btn btn-success " })
             }
             @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
             @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })

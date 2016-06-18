@@ -25,10 +25,10 @@ namespace Inscoo.Controllers
         public ActionResult List()
         {
             var roles = _appRoleService.Roles();
-            var model = new List<RoleViewModel>();
+            var model = new List<RoleModel>();
             foreach (var s in roles)
             {
-                var item = new RoleViewModel()
+                var item = new RoleModel()
                 {
                     Name = s.Name,
                     Description = s.Description
@@ -55,7 +55,7 @@ namespace Inscoo.Controllers
         // POST: Role/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(RoleViewModel model)
+        public async Task<ActionResult> Create(RoleModel model)
         {
             if (ModelState.IsValid)
             {

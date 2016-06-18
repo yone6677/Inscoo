@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
 {
-    public class NavigationMap : EntityTypeConfiguration<NavigationItem>
+    public class NavigationMap : EntityTypeConfiguration<Navigation>
     {
         public NavigationMap()
         {

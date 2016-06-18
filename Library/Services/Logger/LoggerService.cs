@@ -23,7 +23,7 @@ namespace Services
             {
                 try
                 {
-                    model.Uid =model.Uid;
+                    model.Uid = model.Uid;
                     string sendData = JsonConvert.SerializeObject(model);
                     var respStr = _webHelper.PostData(_resourceService.GetLogger() + "logs", sendData, "post", "json");
                 }
@@ -34,7 +34,7 @@ namespace Services
             }
         }
 
-        public void insert(Exception e, LogLevel level, string message,string userName)
+        public void insert(Exception e, LogLevel level, string message, string userName)
         {
             if (_resourceService.LogEnable())
             {

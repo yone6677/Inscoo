@@ -1,6 +1,6 @@
 ﻿using Services.Identity;
-using Services.Navigation;
-using Services.Permission;
+using Services.Navigations;
+using Services.Permissions;
 using System;
 using System.Web;
 using System.Web.Mvc;

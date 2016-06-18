@@ -7,10 +7,11 @@ using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Services.Common;
 using Services.Identity;
-using Services.Navigation;
-using Services.Permission;
-using Services.Product;
+using Services.Navigations;
+using Services.Permissions;
+using Services.Products;
 using System.Configuration;
 using System.Reflection;
 using System.Web;
@@ -54,14 +55,20 @@ namespace Services
             //global filter
             builder.RegisterFilterProvider();
             builder.RegisterType<ExceptionFilter>().InstancePerLifetimeScope();//异常过滤
-            builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerDependency();
+
+            //baseServices
             builder.RegisterType<CachingManager>().As<ICachingManager>().InstancePerDependency();
+            builder.RegisterType<WebHelper>().As<IWebHelper>().InstancePerDependency();
             builder.RegisterType<FileService>().As<IFileService>().InstancePerDependency();
             builder.RegisterType<ResourceService>().As<IResourceService>().InstancePerDependency();
             builder.RegisterType<LoggerService>().As<ILoggerService>().InstancePerDependency();
+            //services
+            builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerDependency();
             builder.RegisterType<NavigationService>().As<INavigationService>().InstancePerDependency();
             builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerDependency();
             builder.RegisterType<ProductService>().As<IProductService>().InstancePerDependency();
+            builder.RegisterType<MixProductService>().As<IMixProductService>().InstancePerDependency();
+            builder.RegisterType<MixProductItemService>().As<IMixProductItemService>().InstancePerDependency();
             
 
         }

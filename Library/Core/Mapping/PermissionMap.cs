@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
 {
-    public class PermissionMap : EntityTypeConfiguration<PermissionItem>
+    public class PermissionMap : EntityTypeConfiguration<Permission>
     {
         public PermissionMap()
         {

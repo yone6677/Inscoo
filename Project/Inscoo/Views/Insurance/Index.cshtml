@@ -1,14 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "保险酷";
+    ViewBag.Title = "推荐产品";
 }
 
 @Html.Action("MixProduct")
-@section secondPanel{
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">自选产品</h3>
-        </div>
-        @Html.Action("CustomizeProduct")
-    </div>
-}

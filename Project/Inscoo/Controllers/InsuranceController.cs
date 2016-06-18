@@ -1,5 +1,6 @@
 ﻿using Models.Insurance;
 using Models.Products;
+using Services.Common;
 using Services.Products;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -9,10 +10,14 @@ namespace Inscoo.Controllers
     public class InsuranceController : Controller
     {
         private readonly IMixProductService _mixProductService;
+        private readonly IGenericAttributeService _genericAttributeService;
+        private readonly IProductService _productService;
 
-        public InsuranceController(IMixProductService mixProductService)
+        public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService)
         {
             _mixProductService = mixProductService;
+            _genericAttributeService = genericAttributeService;
+            _productService = productService;
         }
         // GET: Insurance
         public ActionResult Index()
@@ -54,7 +59,16 @@ namespace Inscoo.Controllers
         }
         public ActionResult CustomizeProduct()
         {
-            return PartialView();
+            var model = new CustomProductModel();
+            model.Avarage = _genericAttributeService.GetSelectList("AgeRange");
+            model.StaffsNumber = _genericAttributeService.GetSelectList("StaffRange");
+            return View(model);
+        }
+        public ActionResult ProductList(string company = null, string productType = "员工福利保险")
+        {
+            var model = new List<ProductListModel>();
+            model = _productService.GetProductListForInscoo(company, productType);
+            return PartialView(model);
         }
     }
 }

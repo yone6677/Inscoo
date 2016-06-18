@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Models.Insurance.ProductListModel>
+
+<table class="inscoo-productTable">
+    <tr>
+        <th style="width:5%;">
+
+        </th>
+        <th style="width:30%;">
+            @Html.DisplayNameFor(model => model.SafeguardName)
+        </th>
+        <th style="width:20%;">
+            @Html.DisplayNameFor(model => model.CoverageSum)
+        </th>
+        <th style="width:30%;">
+            @Html.DisplayNameFor(model => model.PayoutRatio)
+        </th>
+        <th style="width:15%;">
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.SafeguardName == "人身意外保险")
+                {
+                    <input type="checkbox" checked="checked" disabled="disabled" />
+                }
+                else
+                {
+                    <input type="checkbox" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SafeguardName)
+            </td>
+            <td>
+                @Html.DropDownList("CoverageSum", item.CoverageSumList)
+
+            </td>
+            <td>
+                @if (item.PayoutRatioList.Count > 0)
+                {
+                    @Html.DropDownList("PayoutRatio", item.PayoutRatioList)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+        </tr>
+    }
+</table>

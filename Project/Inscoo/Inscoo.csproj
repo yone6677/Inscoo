@@ -342,6 +342,7 @@
     <Content Include="Views\Insurance\MixProduct.cshtml" />
     <Content Include="Views\Insurance\Index.cshtml" />
     <Content Include="Views\Insurance\CustomizeProduct.cshtml" />
+    <Content Include="Views\Insurance\ProductList.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

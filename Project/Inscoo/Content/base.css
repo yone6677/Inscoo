@@ -285,3 +285,42 @@ body {
   line-height: 1.5em;
   height: 1.5em;
 }
+.programme-query {
+  height: 3em;
+  line-height: 3em;
+  font-size: 1.1em;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.programme-footer {
+  line-height: 3em;
+  text-align: center;
+  height: 3em;
+}
+.inscoo-productTable {
+  margin: .5em auto;
+  width: 100%;
+  border-left: 1px solid #ddd;
+}
+.inscoo-productTable tr th {
+  text-align: center;
+  background-color: #24A9E4;
+  color: #fff;
+  line-height: 2.5em;
+  height: 2.5em;
+  border-right: 1px solid #24A9E4;
+  border-bottom: .5em solid #1f91c7;
+}
+.inscoo-productTable tr td {
+  text-align: center;
+  line-height: 2em;
+  height: 2em;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.inscoo-productTable tr td select {
+  width: 50%;
+  line-height: 1.5em;
+  height: 1.5em;
+}

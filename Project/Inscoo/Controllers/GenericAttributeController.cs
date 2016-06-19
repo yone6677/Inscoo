@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Innscoo.Infrastructure;
+using Models.Common;
 using Services.Common;
 using System.Net;
 using System.Web.Mvc;
@@ -48,16 +49,23 @@ namespace Inscoo.Controllers
         }
         public ActionResult Create()
         {
-            var model = new GenericAttribute();
+            var model = new GenericAttributeModel();
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(GenericAttribute model)
+        public ActionResult Create(GenericAttributeModel model)
         {
             if (ModelState.IsValid)
             {
-                if (_genericAttributeService.Insert(model))
+                var item = new GenericAttribute()
+                {
+                    Description = model.Description,
+                    Key = model.Key,
+                    KeyGroup = model.KeyGroup,
+                    Value = model.Value
+                };
+                if (_genericAttributeService.Insert(item))
                 {
                     return RedirectToAction("Index");
                 }
@@ -69,9 +77,17 @@ namespace Inscoo.Controllers
         {
             if (id > 0)
             {
-                var model = _genericAttributeService.GetById(id);
-                if (model != null)
+                var item = _genericAttributeService.GetById(id);
+                if (item != null)
                 {
+                    var model = new GenericAttributeModel()
+                    {
+                        Id = item.Id,
+                        Description = item.Description,
+                        Key = item.Key,
+                        KeyGroup = item.KeyGroup,
+                        Value = item.Value
+                    };
                     return View(model);
                 }
             }
@@ -79,7 +95,7 @@ namespace Inscoo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(GenericAttribute model)
+        public ActionResult Edit(GenericAttributeModel model)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +106,7 @@ namespace Inscoo.Controllers
                     item.Key = model.Key;
                     item.KeyGroup = model.KeyGroup;
                     item.Value = model.Value;
-                    if (_genericAttributeService.Update(model))
+                    if (_genericAttributeService.Update(item))
                     {
                         return RedirectToAction("Index");
                     }
@@ -102,9 +118,17 @@ namespace Inscoo.Controllers
         {
             if (id > 0)
             {
-                var model = _genericAttributeService.GetById(id);
-                if (model != null)
+                var item = _genericAttributeService.GetById(id);
+                if (item != null)
                 {
+                    var model = new GenericAttributeModel()
+                    {
+                        Id = item.Id,
+                        Description = item.Description,
+                        Key = item.Key,
+                        KeyGroup = item.KeyGroup,
+                        Value = item.Value
+                    };
                     return View(model);
                 }
             }
@@ -114,9 +138,19 @@ namespace Inscoo.Controllers
         {
             if (id > 0)
             {
-                var model = _genericAttributeService.GetById(id);
-                if (model != null)
+                var item = _genericAttributeService.GetById(id);
+                if (item != null)
                 {
+                    var model = new GenericAttributeModel()
+                    {
+                        Id = item.Id,
+                        Description = item.Description,
+                        Key = item.Key,
+                        KeyGroup = item.KeyGroup,
+                        Value = item.Value,
+                        Author = item.Author,
+                        CreateTime = item.CreateTime
+                    };
                     return View(model);
                 }
             }

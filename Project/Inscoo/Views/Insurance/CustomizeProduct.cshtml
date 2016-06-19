@@ -5,106 +5,79 @@
 }
 <div class="panel-body">
     <ul id="myTab" class="nav nav-tabs">
-        <li class="active">
-            <a href="#Yaic" data-toggle="tab">YAIC</a>
-        </li>
-        <li>
-            <a href="#Pingan" data-toggle="tab">PINGAN</a>
-        </li>
-        <li>
-            <a href="#Picc" data-toggle="tab">PICC</a>
-        </li>
-    </ul>
-    <script>
-        function getProduct(e, p) {
-            $.ajax({
-                type: 'get',
-                url: '/Insurance/ProductList',
-                data: { company: e, productType: p },
-                success: function (da) {
-                    document.getElementById('Product_' + e).innerHTML = da;
+        @{
+            int i = 0;
+            foreach (var s in Model.CompanyList)
+            {
+                if (i == 0)
+                {
+                    <li class="active">
+                        <a href="#@s.Value" data-toggle="tab">@s.Key</a>
+                    </li>
                 }
-            });
+                else
+                {
+                    <li>
+                        <a href="#@s.Value" data-toggle="tab">@s.Key</a>
+                    </li>
+                }
+                i++;
+            }
         }
-    </script>
+    </ul>
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="Yaic">
-            <div class="programme-query">
-                <label class="checkbox-inline">
-                    <input type="radio" name="YaicProductType" value="员工福利保险" checked="checked" onchange="getProduct('YAIC', this.value)" />
-                    员工福利保险
-                </label>
-                <label class="checkbox-inline">
-                    <input type="radio" name="YaicProductType" value="雇主责任保险" onchange="getProduct('YAIC', this.value)" />
-                    雇主责任保险
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.StaffsNumber)
-                    @Html.DropDownList("StaffsNumber", Model.StaffsNumber)
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.Avarage)
-                    @Html.DropDownList("StaffsNumber", Model.Avarage)
-                </label>
-            </div>
-            <div id="Product_YAIC">
-                @Html.Action("ProductList", new { company = "YAIC", })
-            </div>
-            <div class="">
-                <a href="#" class="btn btn-success">立即购买</a>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="Pingan">
-            <div class="programme-query">
-                <label class="checkbox-inline">
-                    <input type="radio" name="PinganProductType" value="员工福利保险" checked="checked" onchange="getProduct('PINGAN', this.value)" />
-                    员工福利保险
-                </label>
-                <label class="checkbox-inline">
-                    <input type="radio" name="PinganProductType" value="雇主责任保险" onchange="getProduct('PINGAN', this.value)" />
-                    雇主责任保险
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.StaffsNumber)
-                    @Html.DropDownList("StaffsNumber", Model.StaffsNumber)
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.Avarage)
-                    @Html.DropDownList("StaffsNumber", Model.Avarage)
-                </label>
-            </div>
-            <div id="Product_PINGAN">
-                @Html.Action("ProductList", new { company = "PINGAN" })
-            </div>
-            <div class="">
-                <a href="#" class="btn btn-success">立即购买</a>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="Picc">
-            <div class="programme-query">
-                <label class="checkbox-inline">
-                    <input type="radio" name="PiccProductType" value="员工福利保险" checked="checked" onchange="getProduct('PICC', this.value)" />
-                    员工福利保险
-                </label>
-                <label class="checkbox-inline">
-                    <input type="radio" name="PiccProductType" value="雇主责任保险" onchange="getProduct('PICC', this.value)" />
-                    雇主责任保险
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.StaffsNumber)
-                    @Html.DropDownList("StaffsNumber", Model.StaffsNumber)
-                </label>
-                <label class="checkbox-inline">
-                    @Html.DisplayNameFor(m => m.Avarage)
-                    @Html.DropDownList("StaffsNumber", Model.Avarage)
-                </label>
-            </div>
-            <div id="Product_PICC">
-                @Html.Action("ProductList", new { company = "PICC" })
-            </div>
-            <div class="">
-                <a href="#" class="btn btn-success">立即购买</a>
-            </div>
-        </div>
+        @{
+            var n = 0;
+            foreach (var s in Model.CompanyList)
+            {
+                var radioName = s.Value + "ProductType";
+                var ProductName = "Product_" + s.Value;
+                var isShow = "";
+                if (n == 0)
+                {
+                    isShow = " in active";
+                }
+                n++;
+                <div class="tab-pane fade @isShow" id="@s.Value">
+                    <div class="programme-query">
+                        <label class="checkbox-inline">
+                            <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@s.Value', this.value)" />
+                            员工福利保险
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name=@radioName value="雇主责任保险" onchange="getProduct('@s.Value', this.value)" />
+                            雇主责任保险
+                        </label>
+                        <label class="checkbox-inline">
+                            @Html.DisplayNameFor(m => m.StaffsNumber)
+                            @Html.DropDownList("StaffsNumber", Model.StaffsNumber)
+                        </label>
+                        <label class="checkbox-inline">
+                            @Html.DisplayNameFor(m => m.Avarage)
+                            @Html.DropDownList("StaffsNumber", Model.Avarage)
+                        </label>
+                    </div>
+                    <div id="@ProductName">
+                        @Html.Action("ProductList", new { company = s.Value, })
+                    </div>
+                    <div class="">
+                        <a href="#" class="btn btn-success">立即购买</a>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
+
+<script>
+    function getProduct(e, p) {
+        $.ajax({
+            type: 'get',
+            url: '/Insurance/ProductList',
+            data: { company: e, productType: p },
+            success: function (da) {
+                document.getElementById('Product_' + e).innerHTML = da;
+            }
+        });
+    }
+</script>

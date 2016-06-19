@@ -91,12 +91,14 @@ namespace Services.Products
                                 p.SafeguardName,
                                 p.ProdType,
                                 p.InsuredCom,
+                                p.SafeguardCode
                             } into g
                             select new
                             {
                                 SafeguardName = g.Key.SafeguardName,
                                 ProdType = g.Key.ProdType,
-                                InsuredCom = g.Key.InsuredCom
+                                InsuredCom = g.Key.InsuredCom,
+                                SafeguardCode = g.Key.SafeguardCode
                             };
                 if (gQuey.Any())
                 {
@@ -112,6 +114,8 @@ namespace Services.Products
                     {
                         var productItem = new ProductListModel();
                         productItem.SafeguardName = s.SafeguardName;
+                        productItem.InsuredCom = s.InsuredCom;
+                        productItem.SafeguardCode = s.SafeguardCode;
                         var CoverageSumList = new List<SelectListItem>();
                         var selectCove = slectList.Where(c => c.SafeguardName == s.SafeguardName && c.InsuredCom == s.InsuredCom && c.ProdType == s.ProdType && c.InsuredWho == InsuredWho).OrderBy(c => c.Id);
                         foreach (var a in selectCove)

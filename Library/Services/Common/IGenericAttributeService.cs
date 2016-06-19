@@ -1,5 +1,6 @@
 ﻿using Core.Pager;
 using Domain.Common;
+using Models.Common;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -12,6 +13,7 @@ namespace Services.Common
         bool Delete(int id, bool disable = true);
         GenericAttribute GetById(int id);
         List<SelectListItem> GetSelectList(string keyGroup = null);
-        IPagedList<GenericAttribute> GetListOfPager(int pageIndex = 1, int pageSize = 15, string keyGroup = null, bool IsDeleted = false);
+        List<GenericAttributeModel> GetList(string keyGroup = null, bool IsDeleted = false);
+        IPagedList<GenericAttributeModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, string keyGroup = null, bool IsDeleted = false);
     }
 }

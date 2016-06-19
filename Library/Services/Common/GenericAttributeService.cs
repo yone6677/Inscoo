@@ -2,6 +2,7 @@
 using Core.Pager;
 using Domain.Common;
 using Microsoft.Owin.Security;
+using Models.Common;
 using Services.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,7 @@ namespace Services.Common
             }
             return select;
         }
-        public IPagedList<GenericAttribute> GetListOfPager(int pageIndex = 1, int pageSize = 15, string keyGroup = null, bool IsDeleted = false)
+        public List<GenericAttributeModel> GetList(string keyGroup = null, bool IsDeleted = false)
         {
             try
             {
@@ -117,7 +118,17 @@ namespace Services.Common
                     }
                     if (query.Any())
                     {
-                        return new PagedList<GenericAttribute>(query.OrderByDescending(c => c.Id), pageIndex, pageSize);
+                        return query.OrderByDescending(c => c.Id).Select(s => new GenericAttributeModel()
+                        {
+                            Author = s.Author,
+                            CreateTime = s.CreateTime,
+                            Description = s.Description,
+                            Id = s.Id,
+                            Key = s.Key,
+                            KeyGroup = s.KeyGroup,
+                            Value = s.Value
+                        }
+                        ).ToList();
                     }
                 }
             }
@@ -125,7 +136,19 @@ namespace Services.Common
             {
                 _loggerService.insert(e, LogLevel.Warning, "Nav：GetListOfPager");
             }
-            return new PagedList<GenericAttribute>(new List<GenericAttribute>(), pageIndex, pageSize);
+            return new List<GenericAttributeModel>();
+        }
+        public IPagedList<GenericAttributeModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, string keyGroup = null, bool IsDeleted = false)
+        {
+            try
+            {
+                return new PagedList<GenericAttributeModel>(GetList(keyGroup, IsDeleted), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetListOfPager");
+            }
+            return new PagedList<GenericAttributeModel>(new List<GenericAttributeModel>(), pageIndex, pageSize);
         }
     }
 }

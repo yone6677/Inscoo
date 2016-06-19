@@ -1,4 +1,4 @@
-﻿@model Domain.Common.GenericAttribute
+﻿@model Models.Common.GenericAttributeModel
 
 @{
     ViewBag.Title = "删除数据";
@@ -21,15 +21,6 @@
     <dd>
         @Html.DisplayFor(model => model.CreateTime)
     </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.IsDeleted)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.IsDeleted)
-    </dd>
-
     <dt>
         @Html.DisplayNameFor(model => model.KeyGroup)
     </dt>

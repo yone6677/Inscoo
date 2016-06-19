@@ -23,13 +23,16 @@
     {
         <tr>
             <td>
-                @if (item.SafeguardName == "人身意外保险")
-                {
-                    <input type="checkbox" checked="checked" disabled="disabled" />
-                }
-                else
-                {
-                    <input type="checkbox" />
+                @{
+                    var checkName = item.InsuredCom + "_check";
+                    if (item.SafeguardName == "人身意外保险")
+                    {
+                        <input type="checkbox" checked="checked" disabled="disabled" name=@checkName value=@item.SafeguardCode />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name=@checkName value=@item.SafeguardCode />
+                    }
                 }
             </td>
             <td>
@@ -49,5 +52,5 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
         </tr>
-    }
+                    }
 </table>

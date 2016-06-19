@@ -62,6 +62,7 @@ namespace Inscoo.Controllers
             var model = new CustomProductModel();
             model.Avarage = _genericAttributeService.GetSelectList("AgeRange");
             model.StaffsNumber = _genericAttributeService.GetSelectList("StaffRange");
+            model.CompanyList = _genericAttributeService.GetList("InsuranceCompany");
             return View(model);
         }
         public ActionResult ProductList(string company = null, string productType = "员工福利保险")
@@ -69,6 +70,10 @@ namespace Inscoo.Controllers
             var model = new List<ProductListModel>();
             model = _productService.GetProductListForInscoo(company, productType);
             return PartialView(model);
+        }
+        public decimal GetProductPrice()
+        {
+
         }
     }
 }

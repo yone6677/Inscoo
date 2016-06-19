@@ -16,6 +16,7 @@ namespace Services.Products
         /// <returns></returns>
         bool Delete(int id, bool disable = true);
         Product GetById(int id);
+        List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人");
         /// <summary>
         /// 保险酷自定义产品展示
         /// </summary>

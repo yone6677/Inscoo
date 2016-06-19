@@ -1,8 +1,10 @@
-﻿using Models.Insurance;
+﻿using Domain.Products;
+using Models.Insurance;
 using Models.Products;
 using Services.Common;
 using Services.Products;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -71,9 +73,75 @@ namespace Inscoo.Controllers
             model = _productService.GetProductListForInscoo(company, productType);
             return PartialView(model);
         }
-        public decimal GetProductPrice()
+        [HttpPost]
+        public string GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
         {
-
+            var result = "0";
+            if (cid == 0)
+            {
+                return result;
+            }
+            var model = new Product();
+            var item = _productService.GetById(cid);
+            if (item != null)
+            {
+                if (string.IsNullOrEmpty(payrat))
+                {
+                    model = item;
+                }
+                else
+                {
+                    var list = _productService.GetList(item.InsuredCom, item.SafeguardCode, item.CoverageSum, payrat);
+                    if (list.Count > 0)
+                    {
+                        model = list.FirstOrDefault();
+                    }
+                }
+            }
+            if (model.Id > 0)
+            {
+                switch (staffsNumber)
+                {
+                    case 1:
+                        result = model.HeadCount3;
+                        break;
+                    case 2:
+                        result = model.HeadCount5;
+                        break;
+                    case 3:
+                        result = model.HeadCount11;
+                        break;
+                    case 4:
+                        result = model.HeadCount31;
+                        break;
+                    case 5:
+                        result = model.HeadCount51;
+                        break;
+                    case 6:
+                        result = model.HeadCount100;
+                        break;
+                }
+            }
+            if (result.Trim() != "-")
+            {
+                double price = double.Parse(result);
+                if (avarage > 1)
+                {
+                    switch (avarage)
+                    {
+                        case 2:
+                            result = (price * 1.1).ToString();
+                            break;
+                        case 3:
+                            result = (price * 1.2).ToString();
+                            break;
+                        case 4:
+                            result = (price * 1.3).ToString();
+                            break;
+                    }
+                }
+            }
+            return result;
         }
     }
 }

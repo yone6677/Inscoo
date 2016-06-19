@@ -324,3 +324,22 @@ body {
   line-height: 1.5em;
   height: 1.5em;
 }
+.inscoo-productTable tr td b {
+  color: #83BA21;
+}
+.customProduct_purchase {
+  border-top: 1px solid #24A9E4;
+  width: 100%;
+  height: 4em;
+  line-height: 4em;
+  box-shadow: 0 0 3px #999;
+}
+.customProduct_purchase p {
+  width: 30%;
+  text-align: center;
+  float: left;
+  margin: 0 auto;
+}
+.customProduct_purchase p b {
+  color: #83BA21;
+}

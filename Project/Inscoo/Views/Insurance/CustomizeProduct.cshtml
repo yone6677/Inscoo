@@ -28,56 +28,106 @@
     <div class="tab-content">
         @{
             var n = 0;
+            var compangName = "";
             foreach (var s in Model.CompanyList)
             {
                 var radioName = s.Value + "ProductType";
                 var ProductName = "Product_" + s.Value;
+                var staffsNumName = "StaffsNumber_" + s.Value;
+                var AvarageName = "Avarage_" + s.Value;
                 var isShow = "";
+                var onchangeFun = "reset(c='" + s.Value + "')";              
                 if (n == 0)
                 {
                     isShow = " in active";
                 }
-                n++;
+                compangName += "reset('" + s.Value + "');";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
                         <label class="checkbox-inline">
-                            <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@s.Value', this.value)" />
+                            <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
                             员工福利保险
                         </label>
                         <label class="checkbox-inline">
-                            <input type="radio" name=@radioName value="雇主责任保险" onchange="getProduct('@s.Value', this.value)" />
+                            <input type="radio" name=@radioName value="雇主责任保险" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
                             雇主责任保险
                         </label>
                         <label class="checkbox-inline">
                             @Html.DisplayNameFor(m => m.StaffsNumber)
-                            @Html.DropDownList("StaffsNumber", Model.StaffsNumber)
+                            @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(onchangeFun) })
                         </label>
                         <label class="checkbox-inline">
                             @Html.DisplayNameFor(m => m.Avarage)
-                            @Html.DropDownList("StaffsNumber", Model.Avarage)
+                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(onchangeFun) })
                         </label>
                     </div>
                     <div id="@ProductName">
                         @Html.Action("ProductList", new { company = s.Value, })
-                    </div>
-                    <div class="">
-                        <a href="#" class="btn btn-success">立即购买</a>
-                    </div>
+                    </div>                   
                 </div>
+                n++;
             }
-        }
+            @section scripts{
+                <script>
+                    $(document).ready(function () {
+                        @Html.Raw(compangName)
+                    });
+                    function getProduct(e, p) {
+                        $.ajax({
+                            type: 'get',
+                            url: '/Insurance/ProductList',
+                            data: { company: e, productType: p },
+                            success: function (da) {
+                                document.getElementById('Product_' + e).innerHTML = da;
+                            }
+                        });
+                    }
+                    function reckonAmount(e) {
+                        var total = 0;
+                        for (var i = 1; i < 20; i++) {
+                            var pname = "#price" + e + "_" + i;
+                            var price = parseFloat($(pname).text());
+                            if (typeof (price) == "number" && !isNaN(price)) {
+                                total += parseFloat(price);
+                            }
+                        }
+                        $("#total_" + e).text(total.toFixed(2));
+                    }
+                    function getPrice(c, e) {
+                        var isChecked = $("#check_" + c + "_" + e).is(':checked');
+                        if (isChecked) {
+                            var cove = $("#CoverageSum_" + c + "_" + e).val();
+                            var payrat = $("#PayoutRatio" + c + "_" + e).val();
+                            var price = $("#price" + c + "_" + e);
+                            var StaffsNumber = $("#StaffsNumber_" + c).val();
+                            var AvarageName = $("#Avarage_" + c).val();
+                            var data = "";
+                            if (typeof (payrat) == "undefined") {
+                                data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
+                            }
+                            else {
+                                data = { cid: cove, payrat: payrat, staffsNumber: StaffsNumber, avarage: AvarageName };
+                            }
+                            $.ajax({
+                                type: 'post',
+                                url: '/Insurance/GetProductPrice',
+                                data: data,
+                                success: function (da) {
+                                    price.text(da);
+                                    reckonAmount(e = c);
+                                }
+                            });
+                        }
+                        else {
+                            $("#price" + c + "_" + e).text("0.00");
+                        }
+                    }
+                    function reset(c) {
+                        for (var i = 1; i < 20; i++) {
+                            getPrice(c, i);
+                        }
+                    }
+                </script>
+            }}
     </div>
 </div>
-
-<script>
-    function getProduct(e, p) {
-        $.ajax({
-            type: 'get',
-            url: '/Insurance/ProductList',
-            data: { company: e, productType: p },
-            success: function (da) {
-                document.getElementById('Product_' + e).innerHTML = da;
-            }
-        });
-    }
-</script>

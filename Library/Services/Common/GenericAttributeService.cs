@@ -80,16 +80,19 @@ namespace Services.Common
                 return false;
             }
         }
-        public List<SelectListItem> GetSelectList(string keyGroup = null)
+        public List<SelectListItem> GetSelectList(string keyGroup = null, bool isTip = false, bool IsDeleted = false)
         {
             var select = new List<SelectListItem>();
-            select.Add(new SelectListItem { Text = "请选择", Value = "", Selected = true });
+            if (isTip)
+            {
+                select.Add(new SelectListItem { Text = "请选择", Value = "0", Selected = true });
+            }
             var query = _genericAttributeRepository.TableFromBuffer(72);
             if (query != null)
             {
                 if (!string.IsNullOrEmpty(keyGroup))
                 {
-                    query = query.Where(s => s.KeyGroup == keyGroup);
+                    query = query.Where(s => s.KeyGroup == keyGroup && s.IsDeleted == IsDeleted);
                     if (query.Any())
                     {
                         foreach (var s in query)

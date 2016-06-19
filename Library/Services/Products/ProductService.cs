@@ -78,6 +78,42 @@ namespace Services.Products
                 return false;
             }
         }
+        public List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = null)
+        {
+            try
+            {
+                var query = _productRepository.TableFromBuffer(72);
+                if (!string.IsNullOrEmpty(company))
+                {
+                    query = query.Where(q => q.InsuredCom == company);
+                }
+                if (!string.IsNullOrEmpty(SafeguardCode))
+                {
+                    query = query.Where(q => q.SafeguardCode == SafeguardCode);
+                }
+                if (!string.IsNullOrEmpty(CoverageSum))
+                {
+                    query = query.Where(q => q.CoverageSum == CoverageSum);
+                }
+                if (!string.IsNullOrEmpty(PayoutRatio))
+                {
+                    query = query.Where(q => q.PayoutRatio == PayoutRatio);
+                }
+                if (!string.IsNullOrEmpty(InsuredWho))
+                {
+                    query = query.Where(q => q.InsuredWho == InsuredWho);
+                }
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetList");
+            }
+            return new List<Product>();
+        }
         public List<ProductListModel> GetProductListForInscoo(string company, string productType, string InsuredWho)
         {
             try
@@ -131,7 +167,7 @@ namespace Services.Products
                             {
                                 var PayoutRatioList = new SelectListItem();
                                 PayoutRatioList.Text = a.PayoutRatio;
-                                PayoutRatioList.Value = a.Id.ToString();
+                                PayoutRatioList.Value = a.PayoutRatio;
                                 productItem.PayoutRatioList.Add(PayoutRatioList);
                             }
                         }

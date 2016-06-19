@@ -36,7 +36,7 @@
                 var staffsNumName = "StaffsNumber_" + s.Value;
                 var AvarageName = "Avarage_" + s.Value;
                 var isShow = "";
-                var onchangeFun = "reset(c='" + s.Value + "')";              
+                var onchangeFun = "reset(c='" + s.Value + "')";
                 if (n == 0)
                 {
                     isShow = " in active";
@@ -63,12 +63,13 @@
                     </div>
                     <div id="@ProductName">
                         @Html.Action("ProductList", new { company = s.Value, })
-                    </div>                   
+                    </div>
                 </div>
                 n++;
             }
             @section scripts{
                 <script>
+                    var cartIds = [];
                     $(document).ready(function () {
                         @Html.Raw(compangName)
                     });
@@ -79,6 +80,7 @@
                             data: { company: e, productType: p },
                             success: function (da) {
                                 document.getElementById('Product_' + e).innerHTML = da;
+                                reset(e);
                             }
                         });
                     }
@@ -102,6 +104,7 @@
                             var StaffsNumber = $("#StaffsNumber_" + c).val();
                             var AvarageName = $("#Avarage_" + c).val();
                             var data = "";
+                            var productIds = $("#productIds_" + c);
                             if (typeof (payrat) == "undefined") {
                                 data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
                             }
@@ -113,8 +116,21 @@
                                 url: '/Insurance/GetProductPrice',
                                 data: data,
                                 success: function (da) {
-                                    price.text(da);
+                                    price.text(da.price);
                                     reckonAmount(e = c);
+                                    var p = parseFloat(da.price);
+                                    if (typeof (p) == "number" && !isNaN(p)) {
+                                        cartIds.push(da.id);
+                                        console.log(cartIds);
+                                        //var oids = productIds.val();
+                                        //var nids = "";
+                                        //if (oids == "") {
+                                        //    nids = da.id;
+                                        //} else {
+                                        //    nids = oids + "," + da.id;
+                                        //}
+                                        //productIds.val(nids);
+                                    }
                                 }
                             });
                         }

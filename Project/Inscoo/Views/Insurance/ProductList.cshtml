@@ -31,7 +31,7 @@
                         var priceName = "price" + item.InsuredCom + "_" + i;
                         var onchangeFun = "getPrice(c='" + item.InsuredCom + "',e=" + i + ")";
 
-                        if (item.SafeguardName == "人身意外保险")
+                        if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
                         {
                             <input type="checkbox" checked="checked" disabled="disabled" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
                         }
@@ -68,7 +68,7 @@
             总保费：<b id=@totalName>0.00</b>
         </p>
         <p>
-            <a href="#" class="btn btn-success">立即购买</a>
+            @Html.Action("Buy", new { company = Model.FirstOrDefault().InsuredCom })
         </p>
         <p>
             <a href="#">保险条款</a>

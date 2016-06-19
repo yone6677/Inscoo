@@ -73,13 +73,29 @@ namespace Inscoo.Controllers
             model = _productService.GetProductListForInscoo(company, productType);
             return PartialView(model);
         }
-        [HttpPost]
-        public string GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
+        public ActionResult Buy(string company = null)
         {
-            var result = "0";
+            var model = new CustomizeBuyModel()
+            {
+                companyName = company,
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Buy()
+        {
+            return null;
+        }
+
+        [HttpPost]
+        public JsonResult GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
+        {
+
+            var price = "0.00";
             if (cid == 0)
             {
-                return result;
+                return null;
             }
             var model = new Product();
             var item = _productService.GetById(cid);
@@ -103,45 +119,45 @@ namespace Inscoo.Controllers
                 switch (staffsNumber)
                 {
                     case 1:
-                        result = model.HeadCount3;
+                        price = model.HeadCount3;
                         break;
                     case 2:
-                        result = model.HeadCount5;
+                        price = model.HeadCount5;
                         break;
                     case 3:
-                        result = model.HeadCount11;
+                        price = model.HeadCount11;
                         break;
                     case 4:
-                        result = model.HeadCount31;
+                        price = model.HeadCount31;
                         break;
                     case 5:
-                        result = model.HeadCount51;
+                        price = model.HeadCount51;
                         break;
                     case 6:
-                        result = model.HeadCount100;
+                        price = model.HeadCount100;
                         break;
                 }
             }
-            if (result.Trim() != "-")
+            if (price.Trim() != "-")
             {
-                double price = double.Parse(result);
+                double pr = double.Parse(price);
                 if (avarage > 1)
                 {
                     switch (avarage)
                     {
                         case 2:
-                            result = (price * 1.1).ToString();
+                            price = (pr * 1.1).ToString();
                             break;
                         case 3:
-                            result = (price * 1.2).ToString();
+                            price = (pr * 1.2).ToString();
                             break;
                         case 4:
-                            result = (price * 1.3).ToString();
+                            price = (pr * 1.3).ToString();
                             break;
                     }
                 }
             }
-            return result;
+            return new JsonResult { Data = new { id = model.Id, price = price } };
         }
     }
 }

@@ -72,7 +72,26 @@
                 </table>
                 <div class="programme-price">@item.Price / 年</div>
                 <p class="programme-clause"><a href="/">保险条款</a></p>
-                <p class="programme-clause"><a href="#" class="btn btn-success">立即购买</a></p>
+
+                <p class="programme-clause">
+                    @using (Html.BeginForm("Buy", "Insurance", FormMethod.Post))
+                    {
+                        string pids = "";
+                        for (var x = 0; x < item.pids.Count; x++)
+                        {
+                            if (x == 0)
+                            {
+                                pids += item.pids[x].ToString();
+                            }
+                            else
+                            {
+                                pids += "," + item.pids[x].ToString();
+                            }
+                        }
+                        <input type="hidden" name="productIds" value=@pids />
+                        <input type="submit" value="立即购买" class="btn btn-success" />
+                    }
+                </p>
             </div>
         </div>
         i++;

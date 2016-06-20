@@ -1,9 +1,0 @@
-﻿@model Models.Products.CustomizeBuyModel
-
-@using (Html.BeginForm("Buy"))
-{
-    var name = "productIds_" + Model.companyName;
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="productIds" id=@name value="" />
-    <input type="submit" class="btn btn-success" value="立即购买" />
-}

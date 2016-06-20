@@ -1,0 +1,19 @@
+﻿@model Models.Products.CustomizeBuyModel
+
+@using (Html.BeginForm("Buy", "Insurance", FormMethod.Post))
+{
+    var totalName = "total_" + Model.companyName;
+    var name = "productIds_" + Model.companyName;
+    <ul class="customProduct_purchaseul">
+        <li>
+            总保费：<b id=@totalName>0.00</b>
+            <input type="hidden" name="productIds" id=@name value="" />
+        </li>
+        <li>
+            <input type="submit" class="btn btn-success" value="立即购买" />
+        </li>
+        <li>
+            <a href="#">保险条款</a>
+        </li>
+    </ul>
+}

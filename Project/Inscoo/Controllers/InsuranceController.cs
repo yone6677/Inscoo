@@ -53,6 +53,7 @@ namespace Inscoo.Controllers
                         SafefuardName = s.SafefuardName
                     };
                     itemModelList.Add(itemModel);
+                    item.pids.Add(s.product.Id);
                 }
                 item.item = itemModelList;
                 model.Add(item);
@@ -73,7 +74,7 @@ namespace Inscoo.Controllers
             model = _productService.GetProductListForInscoo(company, productType, stuffsNum);
             return PartialView(model);
         }
-        public ActionResult Buy(string company = null)
+        public ActionResult Cart(string company = null)
         {
             var model = new CustomizeBuyModel()
             {
@@ -82,9 +83,17 @@ namespace Inscoo.Controllers
             return PartialView(model);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        public ActionResult Buy(CustomizeBuyModel model)
+        {
+            if (!string.IsNullOrEmpty(model.productIds))
+            {
+                return Content(model.productIds);
+            }
+            return null;
+        }
         public ActionResult Buy()
         {
+            var model = new CustomizeBuyModel();
             return null;
         }
 

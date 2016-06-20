@@ -25,6 +25,6 @@ namespace Services.Products
         /// <param name="staffNum"></param>
         /// <param name="avarage"></param>
         /// <returns></returns>
-        List<ProductListModel> GetProductListForInscoo(string company = null, string productType = null, string InsuredWho = "主被保险人");
+        List<ProductListModel> GetProductListForInscoo(string company = null, string productType = null, int staffsNum = 0, string InsuredWho = "主被保险人");
     }
 }

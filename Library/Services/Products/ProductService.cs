@@ -114,7 +114,7 @@ namespace Services.Products
             }
             return new List<Product>();
         }
-        public List<ProductListModel> GetProductListForInscoo(string company, string productType, string InsuredWho)
+        public List<ProductListModel> GetProductListForInscoo(string company, string productType, int staffsNum,string InsuredWho)
         {
             try
             {
@@ -156,6 +156,45 @@ namespace Services.Products
                         var selectCove = slectList.Where(c => c.SafeguardName == s.SafeguardName && c.InsuredCom == s.InsuredCom && c.ProdType == s.ProdType && c.InsuredWho == InsuredWho).OrderBy(c => c.Id);
                         foreach (var a in selectCove)
                         {
+                            switch (staffsNum)
+                            {
+                                case 1:
+                                    if (a.HeadCount3 == "-")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                case 2:
+                                    if (a.HeadCount5 == "-")
+                                    {
+                                        continue;
+                                    }                                   
+                                    break;
+                                case 3:
+                                    if (a.HeadCount11 == "-")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                case 4:
+                                    if (a.HeadCount31 == "-")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                case 5:
+                                    if (a.HeadCount51 == "-")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                case 6:
+                                    if (a.HeadCount100 == "-")
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                            }
                             if (!productItem.CoverageSumList.Where(pc => pc.Text == a.CoverageSum).Any())
                             {
                                 var coveSumList = new SelectListItem();
@@ -171,7 +210,10 @@ namespace Services.Products
                                 productItem.PayoutRatioList.Add(PayoutRatioList);
                             }
                         }
-                        model.Add(productItem);
+                        if (productItem.CoverageSumList.Count > 0)
+                        {
+                            model.Add(productItem);
+                        }
                     }
                     if (model.Count > 0)
                     {

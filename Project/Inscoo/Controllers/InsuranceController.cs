@@ -67,10 +67,10 @@ namespace Inscoo.Controllers
             model.CompanyList = _genericAttributeService.GetList("InsuranceCompany");
             return View(model);
         }
-        public ActionResult ProductList(string company = null, string productType = "员工福利保险")
+        public ActionResult ProductList(string company = null, string productType = "员工福利保险", int stuffsNum = 1)
         {
             var model = new List<ProductListModel>();
-            model = _productService.GetProductListForInscoo(company, productType);
+            model = _productService.GetProductListForInscoo(company, productType, stuffsNum);
             return PartialView(model);
         }
         public ActionResult Buy(string company = null)

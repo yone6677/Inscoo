@@ -36,7 +36,7 @@
                 var staffsNumName = "StaffsNumber_" + s.Value;
                 var AvarageName = "Avarage_" + s.Value;
                 var isShow = "";
-                var onchangeFun = "reset(c='" + s.Value + "')";
+                var onchangeFun = "getProduct(c='" + s.Value + "',p='0')";
                 if (n == 0)
                 {
                     isShow = " in active";
@@ -74,10 +74,15 @@
                         @Html.Raw(compangName)
                     });
                     function getProduct(e, p) {
+                        if (p == "0") {
+                            var radioName = e + "ProductType";
+                            p = $("#" + radioName).val();
+                        }
+                        var stuffsNum = $("#StaffsNumber_" + e).val();
                         $.ajax({
                             type: 'get',
                             url: '/Insurance/ProductList',
-                            data: { company: e, productType: p },
+                            data: { company: e, productType: p, stuffsNum: stuffsNum },
                             success: function (da) {
                                 document.getElementById('Product_' + e).innerHTML = da;
                                 reset(e);
@@ -121,7 +126,6 @@
                                     var p = parseFloat(da.price);
                                     if (typeof (p) == "number" && !isNaN(p)) {
                                         cartIds.push(da.id);
-                                        console.log(cartIds);
                                         //var oids = productIds.val();
                                         //var nids = "";
                                         //if (oids == "") {

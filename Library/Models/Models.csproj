@@ -77,12 +77,15 @@
     <Compile Include="Insurance\ProductListModel.cs" />
     <Compile Include="Insurance\RecommendationModel.cs" />
     <Compile Include="Navigation\NavigationModel.cs" />
+    <Compile Include="Order\ConfirmOrderModel.cs" />
     <Compile Include="Permission\PermissionModel.cs" />
-    <Compile Include="Products\CustomizeBuyModel.cs" />
+    <Compile Include="Order\CustomizeBuyModel.cs" />
     <Compile Include="Products\MixProductItemModel.cs" />
     <Compile Include="Products\MixProductModel.cs" />
+    <Compile Include="Products\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleModel.cs" />
+    <Compile Include="Role\UserRoleModel.cs" />
     <Compile Include="User\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>

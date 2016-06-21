@@ -1,19 +1,22 @@
 ﻿using Domain.Products;
 using Models.Insurance;
+using Models.Order;
 using Models.Products;
 using Services.Common;
+using Services.Identity;
 using Services.Products;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class InsuranceController : Controller
+    public class InsuranceController : BaseController
     {
         private readonly IMixProductService _mixProductService;
         private readonly IGenericAttributeService _genericAttributeService;
-        private readonly IProductService _productService;
+        private readonly IProductService _productService;       
 
         public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService)
         {
@@ -53,7 +56,6 @@ namespace Inscoo.Controllers
                         SafefuardName = s.SafefuardName
                     };
                     itemModelList.Add(itemModel);
-                    item.pids.Add(s.product.Id);
                 }
                 item.item = itemModelList;
                 model.Add(item);
@@ -82,21 +84,6 @@ namespace Inscoo.Controllers
             };
             return PartialView(model);
         }
-        [HttpPost]
-        public ActionResult Buy(CustomizeBuyModel model)
-        {
-            if (!string.IsNullOrEmpty(model.productIds))
-            {
-                return Content(model.productIds);
-            }
-            return null;
-        }
-        public ActionResult Buy()
-        {
-            var model = new CustomizeBuyModel();
-            return null;
-        }
-
         [HttpPost]
         public JsonResult GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
         {

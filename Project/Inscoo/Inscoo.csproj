@@ -293,6 +293,7 @@
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\MixProductController.cs" />
     <Compile Include="Controllers\NavController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -345,6 +346,7 @@
     <Content Include="Views\Insurance\CustomizeProduct.cshtml" />
     <Content Include="Views\Insurance\ProductList.cshtml" />
     <Content Include="Views\Insurance\Cart.cshtml" />
+    <Content Include="Views\Order\Buy.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

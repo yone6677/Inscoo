@@ -1,6 +1,6 @@
-﻿@model Models.Products.CustomizeBuyModel
+﻿@model Models.Order.CustomizeBuyModel
 
-@using (Html.BeginForm("Buy", "Insurance", FormMethod.Post))
+@using (Html.BeginForm("Buy", "Order",FormMethod.Post))
 {
     var totalName = "total_" + Model.companyName;
     var name = "productIds_" + Model.companyName;

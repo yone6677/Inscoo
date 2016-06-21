@@ -3,11 +3,9 @@ using Core.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Services.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -33,7 +31,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:CreateAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:CreateAsync");
                 throw e;
             }
         }
@@ -46,7 +44,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:DeleteAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:DeleteAsync");
                 throw e;
             }
         }
@@ -59,7 +57,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:UpdateAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:UpdateAsync");
                 throw e;
             }
         }
@@ -72,7 +70,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByIdAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByIdAsync");
                 throw e;
             }
         }
@@ -85,7 +83,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByNameAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByNameAsync");
                 throw e;
             }
         }
@@ -98,7 +96,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:RoleExistsAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:RoleExistsAsync");
                 throw e;
             }
         }
@@ -111,7 +109,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppRoleService:Roles", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:Roles");
                 throw e;
             }
         }

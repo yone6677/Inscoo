@@ -2,8 +2,11 @@
 using Core.Pager;
 using Domain;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Models.Role;
 using Models.User;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -27,5 +30,6 @@ namespace Services.Identity
         void SignIn(AppUser user, bool isPersistent);
         void SignOut();
         IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null);
+        List<UserRoleModel> GetUserRoles();
     }
 }

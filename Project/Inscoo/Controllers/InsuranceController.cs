@@ -1,19 +1,22 @@
 ﻿using Domain.Products;
 using Models.Insurance;
+using Models.Order;
 using Models.Products;
 using Services.Common;
+using Services.Identity;
 using Services.Products;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class InsuranceController : Controller
+    public class InsuranceController : BaseController
     {
         private readonly IMixProductService _mixProductService;
         private readonly IGenericAttributeService _genericAttributeService;
-        private readonly IProductService _productService;
+        private readonly IProductService _productService;       
 
         public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService)
         {
@@ -73,7 +76,7 @@ namespace Inscoo.Controllers
             model = _productService.GetProductListForInscoo(company, productType, stuffsNum);
             return PartialView(model);
         }
-        public ActionResult Buy(string company = null)
+        public ActionResult Cart(string company = null)
         {
             var model = new CustomizeBuyModel()
             {
@@ -81,13 +84,6 @@ namespace Inscoo.Controllers
             };
             return PartialView(model);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Buy()
-        {
-            return null;
-        }
-
         [HttpPost]
         public JsonResult GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
         {

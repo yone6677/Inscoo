@@ -340,7 +340,7 @@ body {
 }
 
 .programme-query {
-    width:100%;
+    width: 100%;
     line-height: 3em;
     font-size: 1.1em;
     border-bottom: 1px solid #ccc;
@@ -358,6 +358,7 @@ body {
     margin: .5em auto;
     width: 100%;
     border-left: 1px solid #ddd;
+
     tr {
         th {
             text-align: center;
@@ -367,36 +368,50 @@ body {
             height: 2.5em;
             border-right: 1px solid @iscooBlue;
         }
+
         td {
             text-align: center;
             line-height: 2em;
             height: 2em;
             border-right: 1px solid #ddd;
             border-bottom: 1px solid #ddd;
-            select{
-                width:50%;
-                line-height:1.5em;
-                height:1.5em;                
+
+            select {
+                width: 50%;
+                line-height: 1.5em;
+                height: 1.5em;
             }
-            b{
-                color:@inscooGreen;
+
+            b {
+                color: @inscooGreen;
             }
         }
     }
 }
-.customProduct_purchase{
-    border-top:1px solid @iscooBlue;
-    width:100%;
-    height:4em;
-    line-height:4em;
-    box-shadow:0 0 3px #999;
-    p{
-        width:30%;
-        text-align:center;
-        float:left;
-        margin:0 auto;
-        b{
-            color:@inscooGreen;
+
+.customProduct_purchase {
+    border-top: 1px solid @iscooBlue;
+    width: 100%;
+    height: 4em;
+    line-height: 4em;
+    box-shadow: 0 0 3px #999;
+    from {
+        width: 100%;
+    }
+}
+
+.customProduct_purchaseul {
+    width: 100%;
+    height: 4em;
+
+    li {
+        width: 300px;
+        text-align: center;
+        float: left;
+        margin: 0 auto;
+
+        b {
+            color: @inscooGreen;
         }
     }
 }

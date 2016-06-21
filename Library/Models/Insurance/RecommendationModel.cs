@@ -7,6 +7,10 @@ namespace Models.Insurance
 {
     public class RecommendationModel : BaseViewModel
     {
+        public RecommendationModel()
+        {
+            pids = new List<int>();
+        }
         [DisplayName("名称")]
         [Required]
         public string Name { get; set; }
@@ -20,6 +24,7 @@ namespace Models.Insurance
         public string StaffRange { get; set; }
         [DisplayName("参保年龄")]
         public string AgeRange { get; set; }
+        public List<int> pids { get; set; }
         public List<MixProductItemModel> item { get; set; }
     }
 }

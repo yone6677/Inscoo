@@ -20,6 +20,10 @@ namespace Domain.Products
         /// </summary>
         public string CoverageSum { get; set; }
         /// <summary>
+        /// 赔付比率
+        /// </summary>
+        public string PayoutRatio { get; set; }
+        /// <summary>
         /// 所属混合产品
         /// </summary>
         public virtual MixProduct prodMix { get; set; }

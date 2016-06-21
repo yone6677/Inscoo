@@ -20,6 +20,7 @@
     </tr>
     @{
         var i = 1;
+        var pcount = Model.Count();
         foreach (var item in Model.OrderBy(a => a.Id))
         {
             <tr>
@@ -29,7 +30,7 @@
                         var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
                         var payratName = "PayoutRatio" + item.InsuredCom + "_" + i;
                         var priceName = "price" + item.InsuredCom + "_" + i;
-                        var onchangeFun = "getPrice(c='" + item.InsuredCom + "',e=" + i + ")";
+                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + pcount + ")";
 
                         if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
                         {
@@ -61,17 +62,8 @@
                         }
     }
 </table>
-@{
-    var totalName = "total_" + Model.FirstOrDefault().InsuredCom;
+@{  
     <div class="customProduct_purchase">
-        <p>
-            总保费：<b id=@totalName>0.00</b>
-        </p>
-        <p>
-            @Html.Action("Buy", new { company = Model.FirstOrDefault().InsuredCom })
-        </p>
-        <p>
-            <a href="#">保险条款</a>
-        </p>
+        @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
     </div>
 }

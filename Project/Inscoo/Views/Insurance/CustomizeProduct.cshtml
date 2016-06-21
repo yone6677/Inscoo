@@ -36,12 +36,12 @@
                 var staffsNumName = "StaffsNumber_" + s.Value;
                 var AvarageName = "Avarage_" + s.Value;
                 var isShow = "";
-                var onchangeFun = "getProduct(c='" + s.Value + "',p='0')";
+                var onchangeFun = "getProduct(c='" + s.Value + "',p=0)";
                 if (n == 0)
                 {
                     isShow = " in active";
                 }
-                compangName += "reset('" + s.Value + "');";
+                compangName += "getPriceAndIds(e='" + s.Value + "',p=1);";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
                         <label class="checkbox-inline">
@@ -69,7 +69,6 @@
             }
             @section scripts{
                 <script>
-                    var cartIds = [];
                     $(document).ready(function () {
                         @Html.Raw(compangName)
                     });
@@ -81,73 +80,63 @@
                         var stuffsNum = $("#StaffsNumber_" + e).val();
                         $.ajax({
                             type: 'get',
+                            async: false,
                             url: '/Insurance/ProductList',
                             data: { company: e, productType: p, stuffsNum: stuffsNum },
                             success: function (da) {
                                 document.getElementById('Product_' + e).innerHTML = da;
-                                reset(e);
+                                getPriceAndIds(e, 10);
                             }
                         });
                     }
-                    function reckonAmount(e) {
+                    function getPriceAndIds(c, e) {
+                        var ids = new Array();
                         var total = 0;
-                        for (var i = 1; i < 20; i++) {
-                            var pname = "#price" + e + "_" + i;
-                            var price = parseFloat($(pname).text());
-                            if (typeof (price) == "number" && !isNaN(price)) {
-                                total += parseFloat(price);
-                            }
-                        }
-                        $("#total_" + e).text(total.toFixed(2));
-                    }
-                    function getPrice(c, e) {
-                        var isChecked = $("#check_" + c + "_" + e).is(':checked');
-                        if (isChecked) {
-                            var cove = $("#CoverageSum_" + c + "_" + e).val();
-                            var payrat = $("#PayoutRatio" + c + "_" + e).val();
-                            var price = $("#price" + c + "_" + e);
-                            var StaffsNumber = $("#StaffsNumber_" + c).val();
-                            var AvarageName = $("#Avarage_" + c).val();
-                            var data = "";
-                            var productIds = $("#productIds_" + c);
-                            if (typeof (payrat) == "undefined") {
-                                data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
+                        for (var j = 1; j <= e; j++) {
+                            var isChecked = $("#check_" + c + "_" + j).is(':checked');
+                            if (isChecked) {
+                                var cove = $("#CoverageSum_" + c + "_" + j).val();
+                                var payrat = $("#PayoutRatio" + c + "_" + j).val();
+                                var price = $("#price" + c + "_" + j);
+                                var StaffsNumber = $("#StaffsNumber_" + c).val();
+                                var AvarageName = $("#Avarage_" + c).val();
+                                var totalLab = $("#total_" + c);
+                                var idsele = $("#productIds_" + c);
+                                var data = "";
+                                if (typeof (payrat) == "undefined") {
+                                    data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
+                                }
+                                else {
+                                    data = { cid: cove, payrat: payrat, staffsNumber: StaffsNumber, avarage: AvarageName };
+                                }
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/Insurance/GetProductPrice',
+                                    async: false,
+                                    data: data,
+                                    success: function (da) {
+                                        var pr = parseFloat(da.price);
+                                        var id = parseInt(da.id);
+                                        if (typeof (pr) == "number" && !isNaN(pr) && typeof (id) == "number") {
+                                            total += pr;
+                                            price.text(da.price);
+                                            ids.push(id);
+                                        }
+                                        else {
+                                            price.text("无可选产品");
+                                        }
+                                    }
+                                });
                             }
                             else {
-                                data = { cid: cove, payrat: payrat, staffsNumber: StaffsNumber, avarage: AvarageName };
+                                $("#price" + c + "_" + j).text("0.00");
                             }
-                            $.ajax({
-                                type: 'post',
-                                url: '/Insurance/GetProductPrice',
-                                data: data,
-                                success: function (da) {
-                                    price.text(da.price);
-                                    reckonAmount(e = c);
-                                    var p = parseFloat(da.price);
-                                    if (typeof (p) == "number" && !isNaN(p)) {
-                                        cartIds.push(da.id);
-                                        //var oids = productIds.val();
-                                        //var nids = "";
-                                        //if (oids == "") {
-                                        //    nids = da.id;
-                                        //} else {
-                                        //    nids = oids + "," + da.id;
-                                        //}
-                                        //productIds.val(nids);
-                                    }
-                                }
-                            });
-                        }
-                        else {
-                            $("#price" + c + "_" + e).text("0.00");
-                        }
-                    }
-                    function reset(c) {
-                        for (var i = 1; i < 20; i++) {
-                            getPrice(c, i);
+                            totalLab.text(total.toFixed(2));
+                            idsele.val(ids);
                         }
                     }
                 </script>
-            }}
+            }
+        }
     </div>
 </div>

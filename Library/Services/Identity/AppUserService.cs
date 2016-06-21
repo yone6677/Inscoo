@@ -3,7 +3,9 @@ using Core.Data;
 using Core.Identity;
 using Core.Pager;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Models.Role;
 using Models.User;
 using Services.Infrastructure;
 using System;
@@ -39,7 +41,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Error, "AppUserService:CreateAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Error, "AppUserService:CreateAsync");
                 throw e;
             }
         }
@@ -52,7 +54,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentityAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentityAsync");
                 return null;
             }
         }
@@ -65,7 +67,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentity", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:CreateIdentity");
                 return null;
             }
         }
@@ -95,7 +97,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:DeleteAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:DeleteAsync");
                 return null;
             }
         }
@@ -110,7 +112,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync");
                 return null;
             }
         }
@@ -125,7 +127,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync");
                 return null;
             }
         }
@@ -139,7 +141,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByEmail", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByEmail");
                 return null;
             }
 
@@ -153,7 +155,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByName", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindByName");
                 return null;
             }
         }
@@ -167,7 +169,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindById", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:FindById");
                 return null;
             }
 
@@ -181,7 +183,7 @@ namespace Services.Identity
             }
             catch (DbEntityValidationException e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find");
                 return null;
             }
         }
@@ -194,7 +196,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:Find");
                 return null;
             }
         }
@@ -207,7 +209,7 @@ namespace Services.Identity
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:AddToRoleAsync", _authenticationManager.User.Identity.Name);
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:AddToRoleAsync");
                 return null;
             }
         }
@@ -253,14 +255,39 @@ namespace Services.Identity
                         CreaterId = u.CreaterId
                     }).ToList();
                 }
-
                 return new PagedList<UserModel>(model, pageIndex, pageSize);
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserList", _authenticationManager.User.Identity.Name);
-                return null;
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserList");
             }
+            return null;
+        }
+        public List<UserRoleModel> GetUserRoles()
+        {
+            try
+            {
+                var roles = FindByName(_authenticationManager.User.Identity.Name).Roles;
+                if (roles.Any())
+                {
+                    var list = new List<UserRoleModel>();
+                    foreach (var s in roles)
+                    {
+                        var item = new UserRoleModel()
+                        {
+                            RoleId = s.RoleId,
+                            UserId = s.UserId
+                        };
+                        list.Add(item);
+                    }
+                    return list;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
+            }
+            return new List<UserRoleModel>();
         }
     }
 }

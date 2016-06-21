@@ -69,6 +69,23 @@ namespace Services.Identity
                 return null;
             }
         }
+        public bool ChangePassword(string id, string oldPassword, string password)
+        {
+            try
+            {
+                var result = _userManager.ChangePassword(id, oldPassword, password);
+                if (result.Succeeded) return true;
+                else
+                {
+                    throw new Exception(result.Errors.First());
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
         public Task<IdentityResult> DeleteAsync(AppUser user)
         {
             try

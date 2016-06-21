@@ -83,6 +83,7 @@
     <Compile Include="Products\MixProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleModel.cs" />
+    <Compile Include="User\ChangePasswordModel.cs" />
     <Compile Include="User\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>

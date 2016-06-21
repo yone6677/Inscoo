@@ -1,5 +1,6 @@
 ﻿using Core;
 using Inscoo.Models.Account;
+using Models.User;
 using Microsoft.AspNet.Identity;
 using Services.Identity;
 using System.Threading.Tasks;
@@ -97,6 +98,35 @@ namespace Inscoo.Controllers
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public ActionResult ChangePassword()
+        {
+            var model = new ChangePasswordModel();
+            return View(model);
+        }
+
+        // POST: User/Edit/5
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // TODO: Add update logic here
+                    _appUserService.ChangePassword(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(model);
+                }
+
             }
             catch
             {

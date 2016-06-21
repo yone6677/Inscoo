@@ -11,6 +11,7 @@ namespace Services.Identity
 {
     public interface IAppUserService
     {
+        bool ChangePassword(string id, string oldPassword, string password);
         Task<IdentityResult> CreateAsync(AppUser user, string name, string password);
         Task<ClaimsIdentity> CreateIdentityAsync(AppUser user, string appCookie);
         ClaimsIdentity CreateIdentity(AppUser user, string appCookie);

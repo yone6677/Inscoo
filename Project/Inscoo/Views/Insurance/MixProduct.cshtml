@@ -74,7 +74,7 @@
                 <p class="programme-clause"><a href="/">保险条款</a></p>
 
                 <p class="programme-clause">
-                    @using (Html.BeginForm("Buy", "Order",FormMethod.Post))
+                    @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
                     {
                         <input type="hidden" name="CustomizeProductId" value=@item.Id />
                         <input type="submit" value="立即购买" class="btn btn-success" />

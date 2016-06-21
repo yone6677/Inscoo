@@ -1,60 +1,133 @@
 ﻿@model Models.Order.ConfirmOrderModel
-
 @{
-    ViewBag.Title = "Buy";
+    ViewBag.Title = "方案确认";
 }
-@using (Html.BeginForm()) 
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ConfirmOrderModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.OrderName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OrderName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StaffRange, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StaffRange, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AgeRange, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AgeRange, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AgeRange, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AnnualExpense, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AnnualExpense, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AnnualExpense, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+    <div class="orderConfirm">
+        <ul class="orderConfirmLi">
+            <li class="orderConfirmLiActive">
+                <i class="fa fa-save fa-2x"></i>
+                <span>方案确认</span>
+            </li>
+            <li>
+                <i class="fa fa-edit fa-2x"></i>
+                信息填写
+            </li>
+            <li>
+                <i class="fa fa-cloud-upload fa-2x"></i>
+                上传文件
+            </li>
+            <li>
+                <i class="fa fa-usd fa-2x"></i>
+                确认付款
+            </li>
+        </ul>
     </div>
-}
+    <div class="orderConfirmBody form-inline ">
+        <dl>
+            <dt>产品信息</dt>
+            <dd>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            保险责任
+                        </th>
+                        <th>
+                            保障额度
+                        </th>
+                        <th>
+                            赔付比例
+                        </th>
+                        <th>
+                            保障期限
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.ProdItem.Count > 0)
+                        {
+                            foreach (var item in Model.ProdItem)
+                            {
+                                <tr>
+                                    <td>@item.SafeguardName</td>
+                                    <td>@item.CoverageSum</td>
+                                    <td>@item.PayoutRatio</td>
+                                    <td>一年</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </table>
+            </dd>
+            <dd>
+                <ul class="orderConfirmBodyInfo">
+                    <li>
+                        @Html.LabelFor(model => model.OrderName, htmlAttributes: new { @class = "control-label" }) :
+                    </li>
+                    <li>
+                        @{
+                            if (string.IsNullOrEmpty(Model.OrderName))
+                            {
+                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入方案名称" } })
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.OrderName)
+                                <span>@Model.OrderName</span>
+                            }
+                        }
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
+                    </li>
+                    <li>
+                        @Html.HiddenFor(model => model.StaffRange)
+                        <span>@Model.StaffRange</span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.AgeRange, htmlAttributes: new { @class = "control-label" }) :
+                    </li>
+                    <li>
+                        @Html.HiddenFor(model => model.AgeRange)
+                        <span>@Model.AgeRange</span>
+                    </li>
+                </ul>
+            </dd>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
+        </dl>
+    </div>
+    <div class="orderConfirmBody">
+        <dl>
+            <dt>保费信息</dt>
+            <dd style="padding:.5em 0 1em 0;">
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.AnnualExpense, htmlAttributes: new { @class = "control-label" }) :
+                    </li>
+                    <li>
+                        @Html.HiddenFor(model => model.AnnualExpense)
+                        <span>@Model.AnnualExpense</span>
+                    </li>
+                </ul>
+            </dd>
+            <dd class="orderConfirmBodyNext">
+                <div>
+                    <a href="/">返回</a>
+                </div>
+                <div>
+                    <a href="/">下一步</a>
+                </div>
+            </dd>
+        </dl>
+    </div>
+                            }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

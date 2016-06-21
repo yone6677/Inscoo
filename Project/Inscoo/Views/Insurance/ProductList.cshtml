@@ -62,8 +62,19 @@
                         }
     }
 </table>
-@{  
+@{
+    var totalName = "total_" + Model.FirstOrDefault().InsuredCom;
     <div class="customProduct_purchase">
-        @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+        <ul class="customProduct_purchaseul">
+            <li>
+                总保费：<b id=@totalName>0.00</b>
+            </li>
+            <li>
+                @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+            </li>
+            <li>
+                <a href="#">保险条款</a>
+            </li>
+        </ul>
     </div>
 }

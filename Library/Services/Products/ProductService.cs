@@ -119,7 +119,7 @@ namespace Services.Products
             try
             {
                 var model = new List<ProductListModel>();
-                var query = _productRepository.TableFromBuffer(72);
+                var query = _productRepository.TableFromBuffer(72).OrderBy(q => q.SafeguardName);
                 var slectList = _productRepository.TableFromBuffer(72);
                 var gQuey = from p in query
                             group p by new

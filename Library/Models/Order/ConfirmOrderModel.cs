@@ -25,7 +25,7 @@ namespace Models.Order
         [DisplayName("投保员工平均年龄")]
         public string AgeRange { get; set; }
         [DisplayName("保费（人/年）")]
-        public decimal AnnualExpense { get; set; }
+        public string AnnualExpense { get; set; }
         [DisplayName("产品信息")]
         public List<ProductModel> ProdItem { get; set; }
         public List<UserRoleModel> UserRole { get; set; }

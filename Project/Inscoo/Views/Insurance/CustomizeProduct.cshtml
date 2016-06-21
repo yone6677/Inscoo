@@ -36,12 +36,12 @@
                 var staffsNumName = "StaffsNumber_" + s.Value;
                 var AvarageName = "Avarage_" + s.Value;
                 var isShow = "";
-                var onchangeFun = "getProduct(c='" + s.Value + "',p=0)";
+                var onchangeFun = "setInterval(getProduct(c='" + s.Value + "',p=5),5000)";
                 if (n == 0)
                 {
                     isShow = " in active";
                 }
-                compangName += "getPriceAndIds(e='" + s.Value + "',p=1);";
+                compangName += "getPriceAndIds(e='" + s.Value + "',p=8);";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
                         <label class="checkbox-inline">
@@ -70,6 +70,7 @@
             @section scripts{
                 <script>
                     $(document).ready(function () {
+                        self.setInterval(alert("s"), 5000);
                         @Html.Raw(compangName)
                     });
                     function getProduct(e, p) {
@@ -85,21 +86,21 @@
                             data: { company: e, productType: p, stuffsNum: stuffsNum },
                             success: function (da) {
                                 document.getElementById('Product_' + e).innerHTML = da;
-                                getPriceAndIds(e, 10);
+                                setInterval(getPriceAndIds(e, 10),5000);
                             }
                         });
                     }
                     function getPriceAndIds(c, e) {
                         var ids = new Array();
                         var total = 0;
+                        var StaffsNumber = $("#StaffsNumber_" + c).val();
+                        var AvarageName = $("#Avarage_" + c).val();
                         for (var j = 1; j <= e; j++) {
                             var isChecked = $("#check_" + c + "_" + j).is(':checked');
                             if (isChecked) {
                                 var cove = $("#CoverageSum_" + c + "_" + j).val();
                                 var payrat = $("#PayoutRatio" + c + "_" + j).val();
                                 var price = $("#price" + c + "_" + j);
-                                var StaffsNumber = $("#StaffsNumber_" + c).val();
-                                var AvarageName = $("#Avarage_" + c).val();
                                 var totalLab = $("#total_" + c);
                                 var idsele = $("#productIds_" + c);
                                 var data = "";
@@ -131,6 +132,8 @@
                             else {
                                 $("#price" + c + "_" + j).text("0.00");
                             }
+                            $("#StaffsNum_" + c).val(StaffsNumber);
+                            $("#AvarageCart_" + c).val(AvarageName);
                             totalLab.text(total.toFixed(2));
                             idsele.val(ids);
                         }

@@ -97,11 +97,23 @@ namespace Services.Permissions
                 return null;
             }
         }
-        public bool HasPermissionByRole(int pid, string roleId)
+        public bool HasPermissionByRoleId(int pid, string roleId)
         {
             try
             {
                 var roleName = _appRoleService.FindByIdAsync(roleId).Name;
+                return _permissionRepository.TableFromBuffer().Where(p => p.func == pid && p.roleId == roleName).Any();
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
+                return false;
+            }
+        }
+        public bool HasPermissionByRoleName(int pid, string roleName)
+        {
+            try
+            {
                 return _permissionRepository.TableFromBuffer().Where(p => p.func == pid && p.roleId == roleName).Any();
             }
             catch (Exception e)
@@ -117,7 +129,7 @@ namespace Services.Permissions
                 var roles = _appUserService.FindById(uid).Roles;
                 foreach (var r in roles)
                 {
-                    if (HasPermissionByRole(pid, r.RoleId))
+                    if (HasPermissionByRoleId(pid, r.RoleId))
                     {
                         return true;
                     }
@@ -176,20 +188,20 @@ namespace Services.Permissions
                 for (var i = 0; i < first.Count(); i++)
                 {
                     first[i].SonMenu = new List<NavigationModel>();
-                    first[i].hasPermission = HasPermissionByRole(first[i].Id, roleid);
+                    first[i].hasPermission = HasPermissionByRoleName(first[i].Id, roleid);
                     var second = query.Where(s => s.pId == first[i].Id).ToList();
                     if (second.Any())
                     {
                         for (var x = 0; x < second.Count; x++)
                         {
-                            second[x].hasPermission = HasPermissionByRole(second[x].Id, roleid);
+                            second[x].hasPermission = HasPermissionByRoleName(second[x].Id, roleid);
                             second[x].SonMenu = new List<NavigationModel>();
                             var third = query.Where(s => s.pId == second[x].Id).ToList();
                             if (third.Any())
                             {
                                 for (var n = 0; n < third.Count; n++)
                                 {
-                                    third[n].hasPermission = HasPermissionByRole(second[x].Id, roleid);
+                                    third[n].hasPermission = HasPermissionByRoleName(second[x].Id, roleid);
                                     second[x].SonMenu.Add(third[n]);
                                 }
                             }

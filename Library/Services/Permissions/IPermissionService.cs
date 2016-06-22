@@ -11,7 +11,8 @@ namespace Services.Permissions
         bool Delete(Permission item);
         bool DeleteById(int id);
         Permission GetById(int id);
-        bool HasPermissionByRole(int pid, string roleId);
+        bool HasPermissionByRoleId(int pid, string roleId);
+        bool HasPermissionByRoleName(int pid, string roleName);
         bool HasPermissionByUser(int pid, string uid);
         List<Permission> GetPermissionByRole(string roleId);
         List<Permission> GetPermissionByUser(string uid);

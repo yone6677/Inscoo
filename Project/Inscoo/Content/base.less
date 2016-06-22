@@ -482,12 +482,32 @@ body {
         }
 
         dd {
+            ol {
+                width: 96%;
+                height: 100px;
+                margin: .5em 2%;
+
+                li {
+                    height: 40px;
+                    line-height: 40px;
+                    float: left;
+                }
+
+                li:nth-child(odd) {
+                    width: 20%;
+                    text-align: right;
+                }
+
+                li:nth-child(even) {
+                    width: 30%;
+                    text-align: left;
+                }
+            }
+
             ul {
                 width: 96%;
                 height: 2em;
-                margin-left: 2%;
-                margin-bottom: .2em;
-
+                margin:.5em 2%;
                 li {
                     height: 2em;
                     line-height: 2em;
@@ -546,8 +566,20 @@ body {
     div:nth-child(even) {
         float: right;
 
-        a {
+        input {
             float: left;
         }
     }
+}
+
+.orderConfirmNextSubmit {
+    width: 8em;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px 0;
+    text-align: center;
+    color: #fff;
+    background-color: @iscooBlue;
+    border: none;
+    float: left;
 }

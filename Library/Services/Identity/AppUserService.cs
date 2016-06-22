@@ -259,7 +259,8 @@ namespace Services.Identity
                         var item = new UserRoleModel()
                         {
                             RoleId = s.RoleId,
-                            UserId = s.UserId
+                            UserId = s.UserId,
+                            RoleName = _appRoleManager.FindById(s.RoleId).Name
                         };
                         list.Add(item);
                     }
@@ -271,6 +272,19 @@ namespace Services.Identity
                 _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
             }
             return new List<UserRoleModel>();
+        }
+        public AppUser GetCurrentUser()
+        {
+            try
+            {
+                var name = _authenticationManager.User.Identity.Name;
+                return FindByName(name);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
+            }
+            return null;
         }
     }
 }

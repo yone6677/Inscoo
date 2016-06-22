@@ -30,5 +30,10 @@ namespace Services.Identity
         void SignOut();
         IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null);
         List<UserRoleModel> GetUserRoles();
+        /// <summary>
+        /// 获得当前用户
+        /// </summary>
+        /// <returns></returns>
+        AppUser GetCurrentUser();
     }
 }

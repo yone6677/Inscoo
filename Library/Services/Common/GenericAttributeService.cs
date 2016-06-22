@@ -51,7 +51,26 @@ namespace Services.Common
                 return null;
             }
         }
-
+        public GenericAttribute GetByKey(string key,string keyGroup)
+        {
+            try
+            {
+                var query = _genericAttributeRepository.TableFromBuffer(72);
+                if (query != null)
+                {
+                    query = query.Where(s => s.Key == key.Trim() && s.KeyGroup == keyGroup.Trim());
+                    if (query.Any())
+                    {
+                        return query.FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "GenericAttributeService：GetById");
+            }
+            return null;
+        }
         public bool Insert(GenericAttribute item)
         {
             try

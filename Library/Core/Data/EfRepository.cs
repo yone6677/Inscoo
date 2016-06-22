@@ -109,7 +109,38 @@ namespace Core.Data
                 throw fail;
             }
         }
+        public virtual int InsertGetId(T entity, bool isCached)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("entity");
 
+                Entities.Add(entity);
+
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+                return entity.Id;
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
         /// <summary>
         /// Insert entities
         /// </summary>

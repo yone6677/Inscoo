@@ -70,16 +70,16 @@
                         <th style="color:#83BA21">@item.AgeRange</th>
                     </tr>
                 </table>
-                <div class="programme-price">@item.Price / 年</div>
-                <p class="programme-clause"><a href="/">保险条款</a></p>
+                @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
+                {
+                    <div class="programme-price">@item.Price / 年</div>
+                    <p class="programme-clause"><a href="/">保险条款</a></p>
+                    <p class="programme-clause">
 
-                <p class="programme-clause">
-                    @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
-                    {
                         <input type="hidden" name="CustomizeProductId" value=@item.Id />
                         <input type="submit" value="立即购买" class="btn btn-success" />
-                    }
-                </p>
+                    </p>
+                }
             </div>
         </div>
         i++;

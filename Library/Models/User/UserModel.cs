@@ -17,6 +17,8 @@ namespace Models.User
         public bool? TiYong { set; get; }
         [DisplayName("理赔比率")]
         public bool? FanBao { set; get; }
+        [DisplayName("返点")]
+        public int Rebate { get; set; }
         [DisplayName("邮箱")]
         public string Email { set; get; }
         [DisplayName("电话")]

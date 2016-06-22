@@ -10,6 +10,7 @@ namespace Core.Mapping
         {
             Property(p => p.TiYong).IsRequired();
             Property(p => p.FanBao).IsRequired();
+            Property(p => p.Rebate).IsOptional();
             Property(p => p.CreaterId).IsOptional().HasMaxLength(128);
             Property(p => p.Changer).IsOptional().HasMaxLength(128);
             Property(p => p.Email).IsRequired().HasMaxLength(32);

@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Services.Common;
 using Services.Identity;
 using Services.Navigations;
+using Services.Orders;
 using Services.Permissions;
 using Services.Products;
 using System.Configuration;
@@ -69,8 +70,8 @@ namespace Services
             builder.RegisterType<ProductService>().As<IProductService>().InstancePerDependency();
             builder.RegisterType<MixProductService>().As<IMixProductService>().InstancePerDependency();
             builder.RegisterType<MixProductItemService>().As<IMixProductItemService>().InstancePerDependency();
-            
-
+            builder.RegisterType<OrderService>().As<IOrderService>().InstancePerDependency();
+            builder.RegisterType<OrderItemService>().As<IOrderItemService>().InstancePerDependency();
         }
     }
 }

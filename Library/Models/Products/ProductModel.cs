@@ -1,6 +1,4 @@
-﻿using Models.Role;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Models.Products
 {

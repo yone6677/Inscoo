@@ -3,9 +3,10 @@
     ViewBag.Title = "方案确认";
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Confirm", "Order"))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model=>model.ids)
     <div class="orderConfirm">
         <ul class="orderConfirmLi">
             <li class="orderConfirmLiActive">
@@ -62,7 +63,7 @@
                 </table>
             </dd>
             <dd>
-                <ul class="orderConfirmBodyInfo">
+                <ul>
                     <li>
                         @Html.LabelFor(model => model.OrderName, htmlAttributes: new { @class = "control-label" }) :
                     </li>
@@ -77,6 +78,16 @@
                                 @Html.HiddenFor(model => model.OrderName)
                                 <span>@Model.OrderName</span>
                             }
+                        }
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.Memo, htmlAttributes: new { @class = "control-label" }) :
+                    </li>
+                    <li>
+                        @{
+                            @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control" } })
                         }
                     </li>
                 </ul>
@@ -116,20 +127,52 @@
                         <span>@Model.AnnualExpense</span>
                     </li>
                 </ul>
+                @if (Model.UserRole.Count > 0)
+                {
+                    if (Model.UserRole.FirstOrDefault().RoleName == "Admin" || Model.UserRole.FirstOrDefault().RoleName == "PartnerChannel")
+                    {
+                        <ol>
+                            <li>利润加成（%）:</li>
+                            <li>
+                                @Html.EditorFor(model => model.TiYong, new { htmlAttributes = new { @class = "form-control", max = 100 } })
+                            </li>
+                            <li>理赔比率（%）: </li>
+                            <li>
+                                @Html.EditorFor(model => model.FanBao, new { htmlAttributes = new { @class = "form-control", max = 100 } })
+                            </li>
+                            <li>对外售价（人/年）: </li>
+                            <li>
+                                <input type="number" id="pretiumShow" class = "form-control" disabled="disabled" value="0" />
+                                @Html.HiddenFor(model => model.pretium)
+                            </li>
+                            <li>返点分配（%）: </li>
+                            <li>
+                                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = Model.UserRebate } })
+                            </li>
+                        </ol>
+                    }
+                }
+            </dd>
+            <dd style="line-height:2em;text-align:center;">
+                @Html.ValidationMessageFor(model => model.TiYong, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.FanBao, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.pretium, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.OrderName, "", new { @class = "text-danger" })
             </dd>
             <dd class="orderConfirmBodyNext">
                 <div>
                     @if (string.IsNullOrEmpty(Model.OrderName))
                     {
-                    <a href="/Insurance/CustomizeProduct">返回</a>
+                        <a href="/Insurance/CustomizeProduct">返回</a>
                     }
                     else
                     {
-                        <a href="/Insurance">返回</a>
+                        <a href="/Insurance/index">返回</a>
                     }
                 </div>
                 <div>
-                    <a href="/">下一步</a>
+                    <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
                 </div>
             </dd>
         </dl>
@@ -137,4 +180,20 @@
                             }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var AnnualExpense = $("#AnnualExpense").val();
+            $("#pretium").val(AnnualExpense);
+            $("#pretiumShow").val(AnnualExpense);
+            $("#TiYong").blur(function () {
+                var num = parseFloat($("#TiYong").val());
+                var price = parseFloat(AnnualExpense);
+                if (typeof (price) == "number" && typeof (num) == "number" && !isNaN(price) && !isNaN(num)) {
+                    var pretium = price * (num / 100) + price;
+                    $("#pretium").val(pretium);
+                    $("#pretiumShow").val(pretium);
+                }
+            });
+        })
+    </script>
 }

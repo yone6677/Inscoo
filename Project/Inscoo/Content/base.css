@@ -403,11 +403,28 @@ body {
   background-color: #24A9E4;
   color: #fff;
 }
+.orderConfirmBody dl dd ol {
+  width: 96%;
+  height: 100px;
+  margin: .5em 2%;
+}
+.orderConfirmBody dl dd ol li {
+  height: 40px;
+  line-height: 40px;
+  float: left;
+}
+.orderConfirmBody dl dd ol li:nth-child(odd) {
+  width: 20%;
+  text-align: right;
+}
+.orderConfirmBody dl dd ol li:nth-child(even) {
+  width: 30%;
+  text-align: left;
+}
 .orderConfirmBody dl dd ul {
   width: 96%;
   height: 2em;
-  margin-left: 2%;
-  margin-bottom: .2em;
+  margin: .5em 2%;
 }
 .orderConfirmBody dl dd ul li {
   height: 2em;
@@ -455,6 +472,17 @@ body {
 .orderConfirmBodyNext div:nth-child(even) {
   float: right;
 }
-.orderConfirmBodyNext div:nth-child(even) a {
+.orderConfirmBodyNext div:nth-child(even) input {
+  float: left;
+}
+.orderConfirmNextSubmit {
+  width: 8em;
+  height: 40px;
+  line-height: 40px;
+  margin: 5px 0;
+  text-align: center;
+  color: #fff;
+  background-color: #24A9E4;
+  border: none;
   float: left;
 }

@@ -39,6 +39,9 @@ namespace Inscoo.Models.Account
         public bool TiYong { set; get; }
         [Display(Name = "理赔比率")]
         public bool FanBao { set; get; }
+        [Display(Name = "返点（%）")]
+        public int Rebate { get; set; }
+
         [Display(Name = "是否启用")]
         public bool IsDelete { set; get; }
         public List<SelectListItem> selectList { get; set; }

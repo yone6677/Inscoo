@@ -148,6 +148,10 @@
     <Compile Include="Logger\LoggerService.cs" />
     <Compile Include="Navigations\INavigationService.cs" />
     <Compile Include="Navigations\NavigationService.cs" />
+    <Compile Include="Orders\IOrderItemService.cs" />
+    <Compile Include="Orders\IOrderService.cs" />
+    <Compile Include="Orders\OrderItemService.cs" />
+    <Compile Include="Orders\OrderService.cs" />
     <Compile Include="Permissions\IPermissionService.cs" />
     <Compile Include="Permissions\PermissionService.cs" />
     <Compile Include="Products\IMixProductItemService.cs" />

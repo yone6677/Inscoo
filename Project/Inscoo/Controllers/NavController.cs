@@ -153,6 +153,7 @@ namespace Inscoo.Controllers
                     {
                         item.controller = model.controller.Trim().ToLower();
                     }
+                    item.url = model.controller + "/" + model.action;
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;

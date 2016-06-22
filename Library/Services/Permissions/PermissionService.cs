@@ -101,7 +101,8 @@ namespace Services.Permissions
         {
             try
             {
-                return _permissionRepository.TableFromBuffer().Where(p => p.func == pid && p.roleId == roleId).Any();
+                var roleName = _appRoleService.FindByIdAsync(roleId).Name;
+                return _permissionRepository.TableFromBuffer().Where(p => p.func == pid && p.roleId == roleName).Any();
             }
             catch (Exception e)
             {

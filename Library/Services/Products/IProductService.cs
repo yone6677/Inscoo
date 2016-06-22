@@ -1,6 +1,8 @@
 ﻿using Domain.Products;
 using Models.Insurance;
+using Models.Products;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Services.Products
 {
@@ -26,5 +28,7 @@ namespace Services.Products
         /// <param name="avarage"></param>
         /// <returns></returns>
         List<ProductListModel> GetProductListForInscoo(string company = null, string productType = null, int staffsNum = 0, string InsuredWho = "主被保险人");
+
+        ProductModel GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0);
     }
 }

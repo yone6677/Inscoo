@@ -13,12 +13,7 @@ namespace Inscoo.Controllers
         public NavController(INavigationService navService)
         {
             _navService = navService;
-        }
-        [AllowAnonymous]
-        public ActionResult Menu()
-        {
-            return PartialView();
-        }
+        }       
         // GET: Nav
         public ActionResult Index()
         {
@@ -97,11 +92,11 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 var item = new Navigation();
-                if (!string.IsNullOrEmpty(item.action))
+                if (!string.IsNullOrEmpty(model.action))
                 {
                     item.action = model.action.Trim().ToLower();
                 }
-                if (!string.IsNullOrEmpty(item.controller))
+                if (!string.IsNullOrEmpty(model.controller))
                 {
                     item.controller = model.controller.Trim().ToLower();
                 }
@@ -211,15 +206,6 @@ namespace Inscoo.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             return RedirectToAction("Index");
-        }
-        /// <summary>
-        /// 头像/NAME
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Portrait()
-        {
-            ViewBag.UserName = User.Identity.Name;
-            return PartialView();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Inscoo.Infrastructure
             if (httpException != null && (errorCode == 401))
             {
                 filterContext.HttpContext.Response.StatusCode = 401;
-                filterContext.HttpContext.Response.Redirect("~/Error/Unauthorized");
+                filterContext.HttpContext.Response.Redirect("~/Account/Login");
             }
             else
             {

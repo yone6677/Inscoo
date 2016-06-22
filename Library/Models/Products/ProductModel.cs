@@ -19,6 +19,8 @@ namespace Models.Products
         [DisplayName("赔付比例")]
         public string PayoutRatio { set; get; }
         [DisplayName("售价")]
-        public decimal Price { get; set; }
+        public string Price { get; set; }
+        [DisplayName("原价")]
+        public string OriginalPrice { get; set; }
     }
 }

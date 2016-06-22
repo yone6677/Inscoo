@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web.Mvc;
+using Models.Products;
 
 namespace Services.Products
 {
@@ -78,7 +79,7 @@ namespace Services.Products
                 return false;
             }
         }
-        public List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = null)
+        public List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人")
         {
             try
             {
@@ -114,12 +115,12 @@ namespace Services.Products
             }
             return new List<Product>();
         }
-        public List<ProductListModel> GetProductListForInscoo(string company, string productType, int staffsNum,string InsuredWho)
+        public List<ProductListModel> GetProductListForInscoo(string company, string productType, int staffsNum, string InsuredWho)
         {
             try
             {
                 var model = new List<ProductListModel>();
-                var query = _productRepository.TableFromBuffer(72);
+                var query = _productRepository.TableFromBuffer(72).OrderBy(q => q.SafeguardName);
                 var slectList = _productRepository.TableFromBuffer(72);
                 var gQuey = from p in query
                             group p by new
@@ -153,7 +154,7 @@ namespace Services.Products
                         productItem.InsuredCom = s.InsuredCom;
                         productItem.SafeguardCode = s.SafeguardCode;
                         var CoverageSumList = new List<SelectListItem>();
-                        var selectCove = slectList.Where(c => c.SafeguardName == s.SafeguardName && c.InsuredCom == s.InsuredCom && c.ProdType == s.ProdType && c.InsuredWho == InsuredWho).OrderBy(c => c.Id);
+                        var selectCove = slectList.Where(c => c.SafeguardName == s.SafeguardName && c.InsuredCom == s.InsuredCom && c.ProdType == s.ProdType && c.InsuredWho == InsuredWho);
                         foreach (var a in selectCove)
                         {
                             switch (staffsNum)
@@ -168,7 +169,7 @@ namespace Services.Products
                                     if (a.HeadCount5 == "-")
                                     {
                                         continue;
-                                    }                                   
+                                    }
                                     break;
                                 case 3:
                                     if (a.HeadCount11 == "-")
@@ -224,6 +225,97 @@ namespace Services.Products
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "ProductService：GetProductListForInscoo");
+            }
+            return null;
+        }
+        public ProductModel GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
+        {
+            if (cid == 0)
+            {
+                return null;
+            }
+            try
+            {
+                var model = new ProductModel();
+                var item = new Product();
+                item = GetById(cid);
+                if (item.Id > 0)
+                {
+                    if (string.IsNullOrEmpty(payrat))
+                    {
+                        model.CoverageSum = item.CoverageSum;
+                        model.Id = item.Id;
+                        model.InsuredWho = item.InsuredWho;
+                        model.ProdType = item.ProdType;
+                        model.SafeguardCode = item.SafeguardCode;
+                        model.SafeguardName = item.SafeguardName;
+                        model.PayoutRatio = item.PayoutRatio;
+                    }
+                    else
+                    {
+                        var list = GetList(item.InsuredCom, item.SafeguardCode, item.CoverageSum, payrat);
+                        if (list.Count > 0)
+                        {
+                            item = list.FirstOrDefault();
+                            model.CoverageSum = item.CoverageSum;
+                            model.Id = item.Id;
+                            model.InsuredWho = item.InsuredWho;
+                            model.ProdType = item.ProdType;
+                            model.SafeguardCode = item.SafeguardCode;
+                            model.SafeguardName = item.SafeguardName;
+                            model.PayoutRatio = item.PayoutRatio;
+                        }
+                    }
+                }
+                if (model.Id > 0)
+                {
+                    switch (staffsNumber)
+                    {
+                        case 1:
+                            model.OriginalPrice = item.HeadCount3;
+                            break;
+                        case 2:
+                            model.OriginalPrice = item.HeadCount5;
+                            break;
+                        case 3:
+                            model.OriginalPrice = item.HeadCount11;
+                            break;
+                        case 4:
+                            model.OriginalPrice = item.HeadCount31;
+                            break;
+                        case 5:
+                            model.OriginalPrice = item.HeadCount51;
+                            break;
+                        case 6:
+                            model.OriginalPrice = item.HeadCount100;
+                            break;
+                    }
+                }
+                model.Price = model.OriginalPrice;
+                if (model.OriginalPrice.Trim() != "-")
+                {
+                    if (avarage > 1)
+                    {
+                        double pr = double.Parse(model.OriginalPrice);
+                        switch (avarage)
+                        {
+                            case 2:
+                                model.Price = (pr * 1.1).ToString();
+                                break;
+                            case 3:
+                                model.Price = (pr * 1.2).ToString();
+                                break;
+                            case 4:
+                                model.Price = (pr * 1.3).ToString();
+                                break;
+                        }
+                    }
+                }
+                return model;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetProductPrice");
             }
             return null;
         }

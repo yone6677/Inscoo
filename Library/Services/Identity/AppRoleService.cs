@@ -61,12 +61,11 @@ namespace Services.Identity
                 throw e;
             }
         }
-        public Task<AppRole> FindByIdAsync(string roleid)
+        public AppRole FindByIdAsync(string roleid)
         {
             try
             {
-                var result = _roleManager.FindByIdAsync(roleid);
-                return result;
+                return _roleManager.FindById(roleid);
             }
             catch (DbEntityValidationException e)
             {

@@ -31,17 +31,18 @@
             var compangName = "";
             foreach (var s in Model.CompanyList)
             {
-                var radioName = s.Value + "ProductType";
-                var ProductName = "Product_" + s.Value;
-                var staffsNumName = "StaffsNumber_" + s.Value;
-                var AvarageName = "Avarage_" + s.Value;
+                var radioName = "ProductType_" + s.Value;//产品类型ID
+                var ProductName = "Product_" + s.Value;//产品列表ID
+                var staffsNumName = "StaffsNumber_" + s.Value;//员工数量ID
+                var AvarageName = "Avarage_" + s.Value;//平均年龄ID
                 var isShow = "";
                 var onchangeFun = "getProduct(c='" + s.Value + "',p=0)";
+                var changeCon = "changeCon('" + s.Value + "');";
                 if (n == 0)
                 {
                     isShow = " in active";
                 }
-                compangName += "getPriceAndIds(e='" + s.Value + "',p=1);";
+                compangName += "getPriceAndIds(c='" + s.Value + "',e=1);getPriceAndIds(c='" + s.Value + "',e=2);getPriceAndIds(c='" + s.Value + "',e=3);";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
                         <label class="checkbox-inline">
@@ -54,11 +55,11 @@
                         </label>
                         <label class="checkbox-inline">
                             @Html.DisplayNameFor(m => m.StaffsNumber)
-                            @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(onchangeFun) })
+                            @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(changeCon) })
                         </label>
                         <label class="checkbox-inline">
                             @Html.DisplayNameFor(m => m.Avarage)
-                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(onchangeFun) })
+                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(changeCon) })
                         </label>
                     </div>
                     <div id="@ProductName">
@@ -72,68 +73,101 @@
                     $(document).ready(function () {
                         @Html.Raw(compangName)
                     });
+
+
+                    function changeCon(c) {
+                        for (var i = 1; i < 12; i++) {
+                            getPriceAndIds(c, i);
+                            console.log(c);
+                        }
+                    }
                     function getProduct(e, p) {
                         if (p == "0") {
-                            var radioName = e + "ProductType";
+                            var radioName = "ProductType_" + e;
                             p = $("#" + radioName).val();
                         }
                         var stuffsNum = $("#StaffsNumber_" + e).val();
                         $.ajax({
                             type: 'get',
-                            async: false,
                             url: '/Insurance/ProductList',
                             data: { company: e, productType: p, stuffsNum: stuffsNum },
                             success: function (da) {
                                 document.getElementById('Product_' + e).innerHTML = da;
-                                getPriceAndIds(e, 10);
+                                getPriceAndIds(e, 1);
                             }
                         });
+
                     }
                     function getPriceAndIds(c, e) {
-                        var ids = new Array();
-                        var total = 0;
-                        for (var j = 1; j <= e; j++) {
-                            var isChecked = $("#check_" + c + "_" + j).is(':checked');
-                            if (isChecked) {
-                                var cove = $("#CoverageSum_" + c + "_" + j).val();
-                                var payrat = $("#PayoutRatio" + c + "_" + j).val();
-                                var price = $("#price" + c + "_" + j);
-                                var StaffsNumber = $("#StaffsNumber_" + c).val();
-                                var AvarageName = $("#Avarage_" + c).val();
-                                var totalLab = $("#total_" + c);
-                                var idsele = $("#productIds_" + c);
-                                var data = "";
-                                if (typeof (payrat) == "undefined") {
-                                    data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
-                                }
-                                else {
-                                    data = { cid: cove, payrat: payrat, staffsNumber: StaffsNumber, avarage: AvarageName };
-                                }
-                                $.ajax({
-                                    type: 'post',
-                                    url: '/Insurance/GetProductPrice',
-                                    async: false,
-                                    data: data,
-                                    success: function (da) {
-                                        var pr = parseFloat(da.price);
-                                        var id = parseInt(da.id);
-                                        if (typeof (pr) == "number" && !isNaN(pr) && typeof (id) == "number") {
-                                            total += pr;
-                                            price.text(da.price);
-                                            ids.push(id);
-                                        }
-                                        else {
-                                            price.text("无可选产品");
-                                        }
-                                    }
-                                });
+                        var isChecked = $("#check_" + c + "_" + e).is(':checked');
+                        if (isChecked) {
+                            var cove = $("#CoverageSum_" + c + "_" + e).val();
+                            var payrat = $("#PayoutRatio" + c + "_" + e).val();
+                            var price = $("#price" + c + "_" + e);
+                            var idname = $("#id" + c + "_" + e);
+                            var StaffsNumber = $("#StaffsNumber_" + c).val();
+                            var AvarageName = $("#Avarage_" + c).val();
+                            var data = "";
+                            var StaffsNumCart = "#StaffsNum_" + c;
+                            var AvarageCart = "#AvarageCart_" + c;
+                            if (typeof (payrat) == "undefined") {
+                                data = { cid: cove, staffsNumber: StaffsNumber, avarage: AvarageName };
                             }
                             else {
-                                $("#price" + c + "_" + j).text("0.00");
+                                data = { cid: cove, payrat: payrat, staffsNumber: StaffsNumber, avarage: AvarageName };
                             }
-                            totalLab.text(total.toFixed(2));
-                            idsele.val(ids);
+                            $.ajax({
+                                type: 'post',
+                                url: '/Insurance/GetProductPrice',
+                                data: data,
+                                success: function (da) {
+                                    var pr = parseFloat(da.Price);
+                                    var id = parseInt(da.Id);
+                                    if (typeof (pr) == "number" && !isNaN(pr) && typeof (id) == "number") {
+                                        price.text(pr);
+                                        idname.val(id);
+                                        reckonAmount(c);
+                                        reckonIds(c);
+                                        $(StaffsNumCart).val(StaffsNumber);
+                                        $(AvarageCart).val(AvarageName);
+                                    }
+                                    else {
+                                        price.text("无可选产品");
+                                        idname.val("0");
+                                    }
+                                }
+                            });
                         }
+                        else {
+                            $("#price" + c + "_" + e).text("0.00");
+                        }
+                    }
+                    function reckonIds(e) {
+                        var ids = new Array();
+                        for (var i = 1; i < 20; i++) {
+                            var idname = "#id" + e + "_" + i;
+                            var id = parseInt($(idname).val());
+
+                            if (typeof (id) == "number" && !isNaN(id)) {
+                                if (id > 0) {
+                                    ids.push(id);
+                                }
+                            }
+                        }
+                        $("#productIds_" + e).val(ids);
+                        console.log(ids);
+                    }
+                    function reckonAmount(e) {
+                        var total = 0;
+                        for (var i = 1; i < 20; i++) {
+                            var pname = "#price" + e + "_" + i;
+                            var price = parseFloat($(pname).text());
+                            if (typeof (price) == "number" && !isNaN(price)) {
+                                total += parseFloat(price);
+                            }
+                        }
+                        $("#total_" + e).text(total.toFixed(2));
+                        $("#Price_" + e + "_Model").val(total.toFixed(2));
                     }
                 </script>
             }

@@ -161,8 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Sql\GenericAttribute.sql" />
-    <Content Include="App_Data\Sql\menu.sql" />
+    <Content Include="App_Data\Sql\Menu.sql" />
     <Content Include="App_Data\Sql\MixProduct.sql" />
+    <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
@@ -317,10 +318,10 @@
     <Content Include="Views\Error\InternalError.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
-    <Content Include="Views\Nav\Menu.cshtml" />
+    <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Nav\Portrait.cshtml" />
+    <Content Include="Views\Home\Portrait.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\List.cshtml" />

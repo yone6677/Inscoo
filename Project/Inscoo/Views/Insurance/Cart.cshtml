@@ -1,19 +1,17 @@
 ﻿@model Models.Order.CustomizeBuyModel
 
-@using (Html.BeginForm("Buy", "Order",FormMethod.Post))
+
+@using (Html.BeginForm("Buy", "Order", FormMethod.Post))
 {
-    var totalName = "total_" + Model.companyName;
     var name = "productIds_" + Model.companyName;
-    <ul class="customProduct_purchaseul">
-        <li>
-            总保费：<b id=@totalName>0.00</b>
-            <input type="hidden" name="productIds" id=@name value="" />
-        </li>
-        <li>
-            <input type="submit" class="btn btn-success" value="立即购买" />
-        </li>
-        <li>
-            <a href="#">保险条款</a>
-        </li>
-    </ul>
+    var StaffsNumCart = "StaffsNum_" + Model.companyName;
+    var AvarageCart = "AvarageCart_" + Model.companyName;
+    var price = "Price_" + Model.companyName+"_Model";
+    <input type="hidden" name="companyName" value=@Model.companyName />
+    <input type="hidden" name="productIds" id=@name value="" />
+    <input type="hidden" name=@Model.companyName />
+    <input type="hidden" name="StaffsNum" id=@StaffsNumCart value="" />
+    <input type="hidden" name="Avarage" id=@AvarageCart value="" />
+    <input type="hidden" name="Price" id=@price value="0.00" />
+    <input type="submit" class="btn btn-success" value="立即购买" />
 }

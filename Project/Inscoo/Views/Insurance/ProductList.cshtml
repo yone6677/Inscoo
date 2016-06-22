@@ -30,7 +30,8 @@
                         var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
                         var payratName = "PayoutRatio" + item.InsuredCom + "_" + i;
                         var priceName = "price" + item.InsuredCom + "_" + i;
-                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + pcount + ")";
+                        var idname = "id" + item.InsuredCom + "_" + i;
+                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + i + ")";
 
                         if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
                         {
@@ -56,14 +57,27 @@
                 </td>
                 <td>
                     <b id=@priceName name=@priceName>0.00</b>
+                    <input type="hidden" id=@idname value="0" />
                 </td>
             </tr>
                             i++;
                         }
     }
 </table>
-@{  
+
+@{
+    var totalName = "total_" + Model.FirstOrDefault().InsuredCom;
     <div class="customProduct_purchase">
-        @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+        <ul class="customProduct_purchaseul">
+            <li>
+                总保费：<b id=@totalName>0.00</b>
+            </li>
+            <li>
+                @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+            </li>
+            <li>
+                <a href="#">保险条款</a>
+            </li>
+        </ul>
     </div>
 }

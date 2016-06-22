@@ -89,7 +89,7 @@ namespace Services.Navigations
         {
             try
             {
-                return _navRepository.TableFromBuffer(72).Where(s => s.controller == controller && s.action == action).FirstOrDefault();
+                return _navRepository.TableFromBuffer(72).Where(s => s.controller == controller.ToLower() && s.action == action.ToLower()).FirstOrDefault();
             }
             catch (Exception e)
             {

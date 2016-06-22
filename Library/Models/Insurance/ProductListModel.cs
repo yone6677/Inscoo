@@ -23,7 +23,7 @@ namespace Models.Insurance
         [DisplayName("赔付比例(住院/门诊)")]
         public string PayoutRatio { get; set; }
         [DisplayName("保费")]
-        public decimal Price { get; set; }
+        public string Price { get; set; }
         public List<SelectListItem> CoverageSumList { get; set; }
         public List<SelectListItem> PayoutRatioList { get; set; }
     }

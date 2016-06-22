@@ -30,7 +30,8 @@
                         var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
                         var payratName = "PayoutRatio" + item.InsuredCom + "_" + i;
                         var priceName = "price" + item.InsuredCom + "_" + i;
-                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + pcount + ")";
+                        var idname = "id" + item.InsuredCom + "_" + i;
+                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + i + ")";
 
                         if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
                         {
@@ -56,12 +57,14 @@
                 </td>
                 <td>
                     <b id=@priceName name=@priceName>0.00</b>
+                    <input type="hidden" id=@idname value="0" />
                 </td>
             </tr>
                             i++;
                         }
     }
 </table>
+
 @{
     var totalName = "total_" + Model.FirstOrDefault().InsuredCom;
     <div class="customProduct_purchase">

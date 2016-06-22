@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Inscoo.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         private readonly IMixProductService _mixProductService;
         private readonly IAppUserService _appUserService;
@@ -66,6 +66,7 @@ namespace Inscoo.Controllers
             {
                 var cOrder = new ConfirmOrderModel();
                 cOrder.UserRole = _appUserService.GetUserRoles();
+                cOrder.AnnualExpense = model.Price;
                 var staffsNumber = _genericAttributeService.GetList("StaffRange").Where(g => g.Value == model.StaffsNum);
                 if (staffsNumber.Count() > 0)
                 {
@@ -76,82 +77,26 @@ namespace Inscoo.Controllers
                 {
                     cOrder.AgeRange = AgeRange.FirstOrDefault().Key;
                 }
-                List<string> li = new List<string>();
+                List<int> li = new List<int>();
                 if (model.productIds.Contains(","))
                 {
                     string[] tempStr = model.productIds.Split(',');
                     for (int i = 0; i < tempStr.Length; i++)
                     {
-                        li.Add(tempStr[i].Trim());
+                        li.Add(int.Parse(tempStr[i].Trim()));
                     }
                 }
                 else
                 {
-                    li.Add(model.productIds);
+                    li.Add(int.Parse(model.productIds));
                 }
                 foreach (var s in li)
                 {
-                    var pitem = _productService.GetById(int.Parse(s));
-                    if (pitem != null)
+                    var item = _productService.GetProductPrice(s, null, int.Parse(model.StaffsNum), int.Parse(model.Avarage));
+                    if (item != null)
                     {
-                        var item = new ProductModel()
-                        {
-                            Id = pitem.Id,
-                            CoverageSum = pitem.CoverageSum,
-                            PayoutRatio = pitem.PayoutRatio,
-                            SafeguardName = pitem.SafeguardName,
-                            ProdType = pitem.ProdType,
-                            SafeguardCode = pitem.SafeguardCode,
-                            InsuredWho = pitem.InsuredWho,
-                        };
-                        string price = "";
-                        int stafnum = int.Parse(model.StaffsNum);
-                        int avage = int.Parse(model.Avarage);
-                        if (stafnum > 0 && avage > 0)
-                        {
-                            switch (stafnum)
-                            {
-                                case 1:
-                                    price = pitem.HeadCount3;
-                                    break;
-                                case 2:
-                                    price = pitem.HeadCount5;
-                                    break;
-                                case 3:
-                                    price = pitem.HeadCount11;
-                                    break;
-                                case 4:
-                                    price = pitem.HeadCount31;
-                                    break;
-                                case 5:
-                                    price = pitem.HeadCount51;
-                                    break;
-                                case 6:
-                                    price = pitem.HeadCount100;
-                                    break;
-                            }
-                            item.OriginalPrice = price;//原价
-                            if (price.Trim() != "-")
-                            {
-                                double pr = double.Parse(price);
-                                switch (avage)
-                                {
-                                    case 2:
-                                        price = (pr * 1.1).ToString();
-                                        break;
-                                    case 3:
-                                        price = (pr * 1.2).ToString();
-                                        break;
-                                    case 4:
-                                        price = (pr * 1.3).ToString();
-                                        break;
-                                }
-                                item.Price = price;//实际售价
-                            }
-                        }
                         cOrder.ProdItem.Add(item);
                     }
-                    
                 }
                 return View(cOrder);
             }

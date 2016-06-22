@@ -8,6 +8,7 @@ using Services.Products;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -16,7 +17,7 @@ namespace Inscoo.Controllers
     {
         private readonly IMixProductService _mixProductService;
         private readonly IGenericAttributeService _genericAttributeService;
-        private readonly IProductService _productService;       
+        private readonly IProductService _productService;
 
         public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService)
         {
@@ -87,73 +88,15 @@ namespace Inscoo.Controllers
         [HttpPost]
         public JsonResult GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0)
         {
-
-            var price = "0.00";
-            if (cid == 0)
+            if (cid > 0)
             {
-                return null;
-            }
-            var model = new Product();
-            var item = _productService.GetById(cid);
-            if (item != null)
-            {
-                if (string.IsNullOrEmpty(payrat))
+                var model = _productService.GetProductPrice(cid, payrat, staffsNumber, avarage);
+                if (model != null)
                 {
-                    model = item;
-                }
-                else
-                {
-                    var list = _productService.GetList(item.InsuredCom, item.SafeguardCode, item.CoverageSum, payrat);
-                    if (list.Count > 0)
-                    {
-                        model = list.FirstOrDefault();
-                    }
+                    return Json(model);
                 }
             }
-            if (model.Id > 0)
-            {
-                switch (staffsNumber)
-                {
-                    case 1:
-                        price = model.HeadCount3;
-                        break;
-                    case 2:
-                        price = model.HeadCount5;
-                        break;
-                    case 3:
-                        price = model.HeadCount11;
-                        break;
-                    case 4:
-                        price = model.HeadCount31;
-                        break;
-                    case 5:
-                        price = model.HeadCount51;
-                        break;
-                    case 6:
-                        price = model.HeadCount100;
-                        break;
-                }
-            }
-            if (price.Trim() != "-")
-            {
-                double pr = double.Parse(price);
-                if (avarage > 1)
-                {
-                    switch (avarage)
-                    {
-                        case 2:
-                            price = (pr * 1.1).ToString();
-                            break;
-                        case 3:
-                            price = (pr * 1.2).ToString();
-                            break;
-                        case 4:
-                            price = (pr * 1.3).ToString();
-                            break;
-                    }
-                }
-            }
-            return new JsonResult { Data = new { id = model.Id, price = price } };
+            return null;
         }
     }
 }

@@ -119,7 +119,14 @@
             </dd>
             <dd class="orderConfirmBodyNext">
                 <div>
-                    <a href="/">返回</a>
+                    @if (string.IsNullOrEmpty(Model.OrderName))
+                    {
+                    <a href="/Insurance/CustomizeProduct">返回</a>
+                    }
+                    else
+                    {
+                        <a href="/Insurance">返回</a>
+                    }
                 </div>
                 <div>
                     <a href="/">下一步</a>

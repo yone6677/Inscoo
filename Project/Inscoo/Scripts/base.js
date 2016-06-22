@@ -24,3 +24,4 @@ function selectAll(e, subCheck) {
         checks[i].checked = e.checked;
     }
 }
+

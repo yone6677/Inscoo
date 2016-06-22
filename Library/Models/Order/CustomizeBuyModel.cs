@@ -7,6 +7,7 @@ namespace Models.Order
         public string productIds { get; set; }
         public string StaffsNum { get; set; }
         public string Avarage { get; set; }
+        public string Price { get; set; }
         public int CustomizeProductId { get; set; }
     }
 }

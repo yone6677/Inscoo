@@ -16,6 +16,10 @@ namespace Inscoo.Controllers
             _fileService = fileService;
             _resource = resource;
         }
+        public ActionResult Menu()
+        {
+            return PartialView();
+        }
         // GET: Home
         public ActionResult Index()
         {           
@@ -84,6 +88,15 @@ namespace Inscoo.Controllers
                 throw new Exception("警告：上传的文件过大");
                 // Response.Write();
             }
+        }
+        /// <summary>
+        /// 头像/NAME
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Portrait()
+        {
+            ViewBag.UserName = User.Identity.Name;
+            return PartialView();
         }
     }
 }

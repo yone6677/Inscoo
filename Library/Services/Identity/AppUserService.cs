@@ -200,6 +200,20 @@ namespace Services.Identity
                 return null;
             }
         }
+        public string GetRoleByUserId(string uId)
+        {
+            try
+            {
+                var role = _userManager.GetRoles(uId).FirstOrDefault();
+                if (role == null) throw new Exception("尚未给该用户分配角色");
+                return role;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
         public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)
         {
             try

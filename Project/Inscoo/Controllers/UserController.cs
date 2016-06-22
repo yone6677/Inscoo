@@ -6,6 +6,9 @@ using Services.Identity;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Innscoo.Infrastructure;
+using System;
+using System.Web.UI;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inscoo.Controllers
 {
@@ -46,7 +49,36 @@ namespace Inscoo.Controllers
         public ActionResult Create()
         {
             var roles = _appRoleManager.GetSelectList();
+            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
+            if (role.Equals("Admin", StringComparison.CurrentCultureIgnoreCase))
+            {
+            }
+            else
+            {
+                roles.RemoveAll(r => r.Text.Equals("Admin", StringComparison.CurrentCultureIgnoreCase));
+                roles.RemoveAll(r => r.Text.Equals("Finance", StringComparison.CurrentCultureIgnoreCase));
+                roles.RemoveAll(r => r.Text.Equals("InsuranceCompany", StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            if (role.Equals("BD", StringComparison.CurrentCultureIgnoreCase))
+            {
+            }
+            else if (role.Equals("Channel", StringComparison.CurrentCultureIgnoreCase))
+            {
+                roles.RemoveAll(r => r.Text.Equals("BD", StringComparison.CurrentCultureIgnoreCase));
+            }
+            else if (role.Equals("Company", StringComparison.CurrentCultureIgnoreCase))
+            {
+                roles.RemoveAll(r => r.Text.Equals("BD", StringComparison.CurrentCultureIgnoreCase));
+                roles.RemoveAll(r => r.Text.Equals("Channel", StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            var user = _appUserService.FindById(User.Identity.GetUserId());
+
+            ViewBag.maxRebate = user.Rebate;
+            //typeof(RegisterModel).GetProperty("Rebate").GetCustomAttributes(false).SetValue(new RangeAttribute(0, user.Rebate) { ErrorMessage = string.Format("不能大于{0}", user.Rebate) }, 1);
             var model = new RegisterModel() { selectList = roles };
+            
             return View(model);
         }
 

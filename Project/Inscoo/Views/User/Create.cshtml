@@ -36,6 +36,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
@@ -71,6 +72,14 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">输入值不能大于 @ViewBag.maxRebate</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate } })
+                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">

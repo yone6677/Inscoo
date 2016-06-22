@@ -23,5 +23,7 @@ namespace Core
         public bool TiYong { set; get; }
         public bool FanBao { set; get; }
         public int Ident { get; set; }
+        //返点分配
+        public int Rebate { get; set; }
     }
 }

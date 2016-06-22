@@ -7,7 +7,7 @@ namespace Inscoo.Models.Account
     public class RegisterModel
     {
         [Display(Name = "角色")]
-        public string  Roles { get; set; }
+        public string Roles { get; set; }
 
         [Required]
         [Display(Name = "用户名")]
@@ -35,6 +35,11 @@ namespace Inscoo.Models.Account
         [Display(Name = "确认密码")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "返点分配")]
+        [Range(0,0)]
+        public int Rebate { set; get; }
+
         [Display(Name = "利润加成")]
         public bool TiYong { set; get; }
         [Display(Name = "理赔比率")]

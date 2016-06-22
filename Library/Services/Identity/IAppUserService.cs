@@ -26,6 +26,7 @@ namespace Services.Identity
         AppUser FindById(string id);
         AppUser Find(string userName, string password);
         AppUser Find(UserLoginInfo info);
+        string GetRoleByUserId(string uId);
         Task<IdentityResult> AddToRoleAsync(string uid, string roleid);
         void SignIn(AppUser user, bool isPersistent);
         void SignOut();

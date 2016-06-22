@@ -71,6 +71,23 @@ namespace Services.Identity
                 return null;
             }
         }
+        public bool ChangePassword(string id, string oldPassword, string password)
+        {
+            try
+            {
+                var result = _userManager.ChangePassword(id, oldPassword, password);
+                if (result.Succeeded) return true;
+                else
+                {
+                    throw new Exception(result.Errors.First());
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
         public Task<IdentityResult> DeleteAsync(AppUser user)
         {
             try
@@ -181,6 +198,20 @@ namespace Services.Identity
             {
                 _loggerService.insert(e, LogLevel.Information, "AppUserService:Find");
                 return null;
+            }
+        }
+        public string GetRoleByUserId(string uId)
+        {
+            try
+            {
+                var role = _userManager.GetRoles(uId).FirstOrDefault();
+                if (role == null) throw new Exception("尚未给该用户分配角色");
+                return role;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
             }
         }
         public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)

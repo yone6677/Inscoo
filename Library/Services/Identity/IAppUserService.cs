@@ -14,6 +14,7 @@ namespace Services.Identity
 {
     public interface IAppUserService
     {
+        bool ChangePassword(string id, string oldPassword, string password);
         Task<IdentityResult> CreateAsync(AppUser user, string name, string password);
         Task<ClaimsIdentity> CreateIdentityAsync(AppUser user, string appCookie);
         ClaimsIdentity CreateIdentity(AppUser user, string appCookie);
@@ -25,6 +26,7 @@ namespace Services.Identity
         AppUser FindById(string id);
         AppUser Find(string userName, string password);
         AppUser Find(UserLoginInfo info);
+        string GetRoleByUserId(string uId);
         Task<IdentityResult> AddToRoleAsync(string uid, string roleid);
         void SignIn(AppUser user, bool isPersistent);
         void SignOut();

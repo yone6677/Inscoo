@@ -132,20 +132,27 @@
                     if (Model.UserRole.FirstOrDefault().RoleName == "Admin" || Model.UserRole.FirstOrDefault().RoleName == "PartnerChannel")
                     {
                         <ol>
-                            <li>利润加成（%）:</li>
-                            <li>
-                                @Html.EditorFor(model => model.TiYong, new { htmlAttributes = new { @class = "form-control", max = 100 } })
-                            </li>
-                            <li>理赔比率（%）: </li>
-                            <li>
-                                @Html.EditorFor(model => model.FanBao, new { htmlAttributes = new { @class = "form-control", max = 100 } })
-                            </li>
-                            <li>对外售价（人/年）: </li>
-                            <li>
-                                <input type="number" id="pretiumShow" class="form-control" disabled="disabled" value="0" />
-                                @Html.HiddenFor(model => model.pretium)
+                            @if (Model.HasTiYong)
+                            {
+                                <li>利润加成（%）:</li>
+                                <li>
+                                    @Html.EditorFor(model => model.TiYong, new { htmlAttributes = new { @class = "form-control", max = 100 } })
+                                </li>
 
-                            </li>
+                                <li>对外售价（人/年）: </li>
+                                <li>
+                                    <input type="number" id="pretiumShow" class="form-control" disabled="disabled" value="0" />
+                                    @Html.HiddenFor(model => model.pretium)
+
+                                </li>
+                            }
+                            @if (Model.HasFanBao)
+                            {
+                                <li>理赔比率（%）: </li>
+                                <li>
+                                    @Html.EditorFor(model => model.FanBao, new { htmlAttributes = new { @class = "form-control", max = 100 } })
+                                </li>
+                            }
                         </ol>
                     }
                 }

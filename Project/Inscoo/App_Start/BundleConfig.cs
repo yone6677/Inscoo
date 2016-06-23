@@ -31,8 +31,8 @@ namespace Inscoo
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/base").Include(
-                      "~/Scripts/base.js",
-                      "~/Scripts/jquery.unobtrusive-ajax.js"));
+                 "~/Scripts/jquery.unobtrusive*",
+                      "~/Scripts/base.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/base.css"));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(

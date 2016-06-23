@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "上传文件";
+}
+
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li>
+            <i class="fa fa-save fa-2x"></i>
+            <span>方案确认</span>
+        </li>
+        <li>
+            <i class="fa fa-edit fa-2x"></i>
+            信息填写
+        </li>
+        <li class="orderConfirmLiActive">
+            <i class="fa fa-cloud-upload fa-2x"></i>
+            上传文件
+        </li>
+        <li>
+            <i class="fa fa-usd fa-2x"></i>
+            确认付款
+        </li>
+    </ul>
+</div>
+<div style="height:5em;width:100%">
+</div>
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+    <ul>
+        <li>
+            <label>
+                营业执照(加盖公章)
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value="" name="Id" />
+            <input type="file" id="empinfo" name="empinfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            请将文件压缩后上传
+        </li>
+    </ul>
+}
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+    <ul>
+        <li>
+            <label>
+                员工名单(加盖公章)
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value="" name="Id" />
+            <input type="file" id="empinfo" name="empinfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            请将文件压缩后上传
+        </li>
+    </ul>
+}
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+    <ul>
+        <li>
+            <label>
+                投保单(加盖公章)
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value="" name="Id" />
+            <input type="file" id="empinfo" name="empinfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            请将文件压缩后上传
+        </li>
+    </ul>
+}
+<div style="height:3em;width:100%">
+</div>
+<div class="orderConfirmBodyNext">
+    <div>
+        <a href="/">返回</a>
+    </div>
+    <div>
+        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+    </div>
+</div>

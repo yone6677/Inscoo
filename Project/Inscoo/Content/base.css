@@ -492,7 +492,7 @@ body {
 .orderEntryInfoBody ul {
   width: 100%;
   height: 40px;
-  margin: .5em auto;
+  margin: 1em auto;
 }
 .orderEntryInfoBody ul li {
   height: 40px;
@@ -504,7 +504,7 @@ body {
   text-align: right;
 }
 .orderEntryInfoBody ul li:nth-child(even) {
-  width: 50%;
+  width: 40%;
 }
 .orderEntryInfoBody ul li:nth-child(even) input {
   width: 90%;
@@ -512,7 +512,7 @@ body {
 }
 .orderEntryInfoBody ul li:last-child {
   text-align: left;
-  width: 30%;
+  width: 40%;
 }
 .orderEntryInfoBodyUpload {
   height: 34px;
@@ -522,7 +522,12 @@ body {
 }
 .employeeInfo {
   width: 100%;
+  height: auto;
+  border: none;
   margin: 1em auto;
   line-height: 1.5em;
   text-align: center;
+}
+.hide {
+  display: none;
 }

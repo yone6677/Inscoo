@@ -356,6 +356,8 @@
     <Content Include="Views\Insurance\Cart.cshtml" />
     <Content Include="Views\Order\Buy.cshtml" />
     <Content Include="Views\Order\EntryInfo.cshtml" />
+    <Content Include="Views\Order\UploadEmp.cshtml" />
+    <Content Include="Views\Order\UploadFile.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

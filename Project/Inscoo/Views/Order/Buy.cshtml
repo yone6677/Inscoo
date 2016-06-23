@@ -6,7 +6,7 @@
 @using (Html.BeginForm("Confirm", "Order"))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model=>model.ids)
+    @Html.HiddenFor(model => model.ids)
     <div class="orderConfirm">
         <ul class="orderConfirmLi">
             <li class="orderConfirmLiActive">
@@ -142,12 +142,9 @@
                             </li>
                             <li>对外售价（人/年）: </li>
                             <li>
-                                <input type="number" id="pretiumShow" class = "form-control" disabled="disabled" value="0" />
+                                <input type="number" id="pretiumShow" class="form-control" disabled="disabled" value="0" />
                                 @Html.HiddenFor(model => model.pretium)
-                            </li>
-                            <li>返点分配（%）: </li>
-                            <li>
-                                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = Model.UserRebate } })
+
                             </li>
                         </ol>
                     }

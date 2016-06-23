@@ -72,6 +72,7 @@ namespace Services
             builder.RegisterType<MixProductItemService>().As<IMixProductItemService>().InstancePerDependency();
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerDependency();
             builder.RegisterType<OrderItemService>().As<IOrderItemService>().InstancePerDependency();
+            builder.RegisterType<OrderEmpService>().As<IOrderEmpService>().InstancePerDependency();
         }
     }
 }

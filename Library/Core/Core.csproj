@@ -103,6 +103,7 @@
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
+    <Compile Include="Mapping\OrderEmployeeMap.cs" />
     <Compile Include="Mapping\OrderItemMap.cs" />
     <Compile Include="Mapping\OrderMap.cs" />
     <Compile Include="Mapping\PermissionMap.cs" />

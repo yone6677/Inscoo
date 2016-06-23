@@ -1,0 +1,141 @@
+﻿@model Models.Order.EntryInfoModel
+
+@{
+    ViewBag.Title = "信息录入";
+}
+@using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IsUploadInfo)
+    <div class="orderConfirm">
+        <ul class="orderConfirmLi">
+            <li>
+                <i class="fa fa-save fa-2x"></i>
+                <span>方案确认</span>
+            </li>
+            <li class="orderConfirmLiActive">
+                <i class="fa fa-edit fa-2x"></i>
+                信息填写
+            </li>
+            <li>
+                <i class="fa fa-cloud-upload fa-2x"></i>
+                上传文件
+            </li>
+            <li>
+                <i class="fa fa-usd fa-2x"></i>
+                确认付款
+            </li>
+        </ul>
+    </div>
+    <div class="orderEntryInfoBody">
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                @Html.EditorFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control" } })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.InsuranceNumber, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                @Html.EditorFor(model => model.InsuranceNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.InsuranceNumber, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+            </li>
+            <li>
+                <input type="datetime" class="form-control" name="StartDate" value=@Model.StartDate />
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </li>
+        </ul>
+    </div>
+    <div style="line-height:2em;width:100%;text-align:center;">
+        @if (!string.IsNullOrEmpty(ViewBag.error))
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    </div>
+}
+@using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "employeeInfo" }, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+    <ul>
+        <li>上传员工名单</li>
+        <li>
+            @Html.HiddenFor(model => model.Id)
+            <input type="file" name="empInfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="orderEntryInfoBodyUpload" />
+            <a href="/Order/DownloadEmpInfo" target="_blank">下载模板</a>
+        </li>
+    </ul>
+}
+<div class="employeeInfo" id="employeeInfo">
+
+</div>
+<div class="orderConfirmBodyNext">
+    <div>
+        <a href="/">返回</a>
+    </div>
+    <div>
+        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function subInfo() {
+            $("#EntryInfoForm").submit();
+        }
+    </script>
+}

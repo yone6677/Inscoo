@@ -26,7 +26,7 @@ namespace Core.Data
         /// <param name="entities">Entities</param>
         void Insert(IEnumerable<T> entities, bool isCached = false);
 
-        int InsertGetId(T entity, bool isCached);
+        int InsertGetId(T entity, bool isCached = false);
 
         /// <summary>
         /// Update entity

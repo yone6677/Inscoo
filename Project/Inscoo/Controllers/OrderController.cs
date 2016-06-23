@@ -1,6 +1,8 @@
 ﻿using Domain.Orders;
 using Models.Order;
 using Models.Products;
+using OfficeOpenXml;
+using Services;
 using Services.Common;
 using Services.Identity;
 using Services.Orders;
@@ -8,6 +10,8 @@ using Services.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -20,8 +24,10 @@ namespace Inscoo.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
+        private readonly IFileService _fileService;
+        private readonly IOrderEmpService _orderEmpService;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService,
-            IProductService productService, IOrderService orderService, IOrderItemService orderItemService)
+            IProductService productService, IOrderService orderService, IOrderItemService orderItemService, IFileService fileService, IOrderEmpService orderEmpService)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -29,6 +35,8 @@ namespace Inscoo.Controllers
             _productService = productService;
             _orderItemService = orderItemService;
             _orderService = orderService;
+            _fileService = fileService;
+            _orderEmpService = orderEmpService;
         }
         // GET: Oder
         public ActionResult Index()
@@ -168,7 +176,7 @@ namespace Inscoo.Controllers
                 order.Memo = model.Memo;
                 order.Name = model.OrderName;
                 order.Pretium = model.pretium;
-                order.Rebate = model.Rebate;
+                order.Rebate = _appUserService.GetCurrentUser().Rebate;//Rebate
                 order.StaffRange = model.StaffRange;
                 order.TiYong = model.TiYong;
                 int result = _orderService.Insert(order);
@@ -220,9 +228,120 @@ namespace Inscoo.Controllers
                             _orderItemService.Insert(orderItem);
                         }
                     }
+                    return RedirectToAction("EntryInfo", new { id = result });//redirect entry infomation
                 }
             }
             return null;
+        }
+        public ActionResult EntryInfo(int id)
+        {
+            if (id > 0)
+            {
+                var order = _orderService.GetById(id);
+                if (order.State > 0)
+                {
+                    var model = new EntryInfoModel()
+                    {
+                        Id = id,
+                        StartDate = DateTime.Now.AddDays(4)
+                    };
+                    return View(model);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EntryInfo(EntryInfoModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var entity = _orderService.GetById(model.Id);
+                if (entity != null)
+                {
+                    if (model.StartDate < entity.CreateTime.AddDays(3))
+                    {
+                        ViewBag.Error = "生效日期需在下单日期三天以后";
+                        return View(model);
+                    }
+                    entity.CompanyName = model.CompanyName;
+                    entity.Linkman = model.Linkman;
+                    entity.PhoneNumber = model.PhoneNumber;
+                    entity.Address = model.Address;
+                    entity.InsuranceNumber = model.InsuranceNumber;
+                    entity.StartDate = model.StartDate;
+                    entity.State = 2;
+                    if (_orderService.Update(entity))
+                    {
+                        return RedirectToAction("UploadFile", new { id = model.Id });
+                    }
+                    else
+                    {
+                        ViewBag.Error = "遇到错误，请检查输入";
+                    }
+                }
+            }
+            return View(model);
+        }
+        public ActionResult UploadFile(int id)
+        {
+            if (id > 0)
+            {
+                var order = _orderService.GetById(id);
+                if (order.State > 1)
+                {
+                    return Content("上传资料");
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        public void DownloadEmpInfo()
+        {
+            var url = "/Archive/Template/上传人员信息.xlsx";
+            _fileService.DownloadFile(url, "人员信息.xlsx");
+        }
+        [HttpPost]
+        public string UploadEmp(HttpPostedFileBase empInfo, int Id)
+        {
+            var result = "上传成功";
+            if (empInfo != null && Id > 0)
+            {
+                _fileService.SaveFile(empInfo);
+                /***暂时写这里*/
+                var ep = new ExcelPackage(empInfo.InputStream);
+                var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null)
+                    result = "上传的文件内容不能为空";
+                var rowNumber = worksheet.Dimension.Rows;
+                var Cells = worksheet.Cells;
+                if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
+                    result = "上传的文件不正确";
+                var eList = new List<OrderEmployee>();
+                for (var i = 2; i <= rowNumber; i++)
+                {
+                    if (Cells["A" + i].Value == null) break;
+                    var item = new OrderEmployee();
+                    item.OId = Id;
+                    item.Name = Cells["A" + i].Value.ToString().Trim();
+                    item.IDType = Cells["B" + i].Value.ToString().Trim();
+                    item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                    item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                    item.Sex = Cells["E" + i].Value.ToString().Trim();
+                    item.BankCard = Cells["F" + i].Value.ToString().Trim();
+                    item.BankName = Cells["G" + i].Value.ToString().Trim();
+                    item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
+                    item.Email = Cells["I" + i].Value.ToString().Trim();
+                    item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                    if (!_orderEmpService.Insert(item))
+                    {
+                        result = "上传失败";
+                    }
+                    eList.Add(item);
+                }
+                /****/
+            }
+            return result;
         }
     }
 }

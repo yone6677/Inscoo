@@ -60,8 +60,56 @@ namespace Domain.Orders
         public string Changer { get; set; }
         public DateTime ChangeDate { get; set; }
         /// <summary>
+        /// 生效日期
+        /// </summary>
+        public DateTime StartDate { get; set; }
+        /// <summary>
+        /// 公司名称
+        /// </summary>
+        public string CompanyName { get; set; }
+        /// <summary>
+        /// 联系人
+        /// </summary>
+        public string Linkman { get; set; }
+        /// <summary>
+        /// 联系电话
+        /// </summary>
+        public string PhoneNumber { get; set; }
+        /// <summary>
+        /// 联系地址
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
+        /// 营业执照
+        /// </summary>
+        public string BusinessLicense { get; set; }
+        /// <summary>
+        /// 意见书编号
+        /// </summary>
+        public string ProposalNo { get; set; }
+        /// <summary>
+        /// 保险公司
+        /// </summary>
+        public string Insurer { get; set; }
+        /// <summary>
+        /// 保险公司保单号
+        /// </summary>
+        public string PolicyNumber { get; set; }
+        /// <summary>
+        /// 保险公司确认日期
+        /// </summary>
+        public DateTime ConfirmedDate { get; set; }
+        /// <summary>
+        /// 投保人数
+        /// </summary>
+        public int InsuranceNumber { get; set; }
+        /// <summary>
         /// 产品详细
         /// </summary>
         public virtual ICollection<OrderItem> orderItem { get; set; }
+        /// <summary>
+        /// 人员详细
+        /// </summary>
+        public virtual ICollection<OrderEmployee> orderEmp { get; set; }
     }
 }

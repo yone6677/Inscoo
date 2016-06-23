@@ -78,6 +78,7 @@
     <Compile Include="Insurance\RecommendationModel.cs" />
     <Compile Include="Navigation\NavigationModel.cs" />
     <Compile Include="Order\ConfirmOrderModel.cs" />
+    <Compile Include="Order\EntryInfoModel.cs" />
     <Compile Include="Permission\PermissionModel.cs" />
     <Compile Include="Order\CustomizeBuyModel.cs" />
     <Compile Include="Products\MixProductItemModel.cs" />

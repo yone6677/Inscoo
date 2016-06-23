@@ -187,7 +187,8 @@ namespace Services
         {
             try
             {
-                FileStream fs = new FileStream(url, FileMode.Open);
+                var pUrl = _httpContext.Request.MapPath("~"+url);
+                FileStream fs = new FileStream(pUrl, FileMode.Open);
                 byte[] bytes = new byte[(int)fs.Length];
                 fs.Read(bytes, 0, bytes.Length);
                 fs.Close();
@@ -195,7 +196,6 @@ namespace Services
                 HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, Encoding.UTF8));
                 HttpContext.Current.Response.BinaryWrite(bytes);
                 HttpContext.Current.Response.Flush();
-
             }
             catch (Exception e)
             {
@@ -208,7 +208,6 @@ namespace Services
                     HttpContext.Current.Response.End();
                     HttpContext.Current.Response.Clear();
                     HttpContext.Current.Response.Close();
-                    File.Delete(url);
                 }
                 catch (Exception e)
                 {
@@ -250,5 +249,58 @@ namespace Services
 
             return ret;
         }
+        private static string GetCellValue(ICell cell)
+        {
+            if (cell == null)
+                return string.Empty;
+            try
+            {
+                HSSFFormulaEvaluator e = new HSSFFormulaEvaluator(cell.Sheet.Workbook);
+                e.EvaluateInCell(cell);
+                return cell.ToString();
+            }
+            catch
+            {
+                return cell.NumericCellValue.ToString();
+            }
+        }
+        public DataTable RenderFromExcel(Stream excelFileStream)
+        {
+            using (excelFileStream)
+            {
+                IWorkbook workbook = new HSSFWorkbook(excelFileStream);
+                ISheet sheet = workbook.GetSheetAt(0);//取第一个表
+                DataTable table = new DataTable();
+                IRow headerRow = sheet.GetRow(0);//第一行为标题行
+                int cellCount = headerRow.LastCellNum;//LastCellNum = PhysicalNumberOfCells
+                int rowCount = sheet.LastRowNum;//LastRowNum = PhysicalNumberOfRows - 1
+
+                //handling header.
+                for (int i = headerRow.FirstCellNum; i < cellCount; i++)
+                {
+                    DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
+                    table.Columns.Add(column);
+                }
+
+                for (int i = (sheet.FirstRowNum + 1); i <= rowCount; i++)
+                {
+                    IRow row = sheet.GetRow(i);
+                    DataRow dataRow = table.NewRow();
+
+                    if (row != null)
+                    {
+                        for (int j = row.FirstCellNum; j < cellCount; j++)
+                        {
+                            if (row.GetCell(j) != null)
+                                dataRow[j] = GetCellValue(row.GetCell(j));
+                        }
+                    }
+
+                    table.Rows.Add(dataRow);
+                }
+                return table;
+            }
+        }
+
     }
 }

@@ -39,7 +39,7 @@ namespace Services.Orders
                 item.Changer = item.Author;
                 item.ChangeDate = DateTime.Now;
                 item.State = 1;
-                return _orderRepository.InsertGetId(item, true);
+                return _orderRepository.InsertGetId(item);
             }
             catch (Exception e)
             {
@@ -51,12 +51,32 @@ namespace Services.Orders
 
         public bool Update(Order item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                item.Author = _authenticationManager.User.Identity.Name;
+                item.Changer = item.Author;
+                item.ChangeDate = DateTime.Now;
+                _orderRepository.Update(item);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Update");
+            }
+            return false;
         }
 
         public Order GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _orderRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+            }
+            return null;
         }
     }
 }

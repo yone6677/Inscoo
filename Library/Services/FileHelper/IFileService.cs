@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Web;
 
 namespace Services
@@ -33,5 +34,7 @@ namespace Services
         /// <param name="t"></param>
         /// <returns></returns>
         Dictionary<string, string> GetProperties<T>(T t);
+
+        DataTable RenderFromExcel(Stream excelFileStream);
     }
 }

@@ -26,18 +26,17 @@ namespace Inscoo.Models.Account
         [DataType(DataType.EmailAddress)]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
-        [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "密码")]
-        public string Password { get; set; }
-        [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
-        public string ConfirmPassword { get; set; }
+
+        [MaxLength(50)]
+        [Display(Name = "开户行")]
+        public string BankName { get; set; }
+
+        [MaxLength(50)]
+        [DataType(DataType.CreditCard)]
+        [Display(Name = "开户账号")]
+        public string BankNumber { get; set; }
 
         [Display(Name = "返点分配")]
-        [Range(0,0)]
         public int Rebate { set; get; }
 
         [Display(Name = "利润加成")]

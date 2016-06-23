@@ -17,6 +17,9 @@ namespace Core.Mapping
             Property(p => p.CompanyName).IsRequired().HasMaxLength(128);
             Property(p => p.LinkMan).IsOptional().HasMaxLength(32);
             Property(p => p.Ident).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(p => p.Rebate).IsRequired();
+            Property(p => p.BankName).IsOptional().HasMaxLength(50);
+            Property(p => p.BankNumber).IsOptional().HasMaxLength(50);
         }
     }
 }

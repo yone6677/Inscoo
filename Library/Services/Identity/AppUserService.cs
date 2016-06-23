@@ -32,11 +32,11 @@ namespace Services.Identity
             _loggerService = loggerService;
             _authenticationManager = authenticationManager;
         }
-        public Task<IdentityResult> CreateAsync(AppUser user, string name, string password)
+        public async Task<IdentityResult> CreateAsync(AppUser user, string name, string password)
         {
             try
             {
-                var result = _userManager.CreateAsync(user, password);
+                var result = await _userManager.CreateAsync(user, password);
                 return result;
             }
             catch (DbEntityValidationException e)

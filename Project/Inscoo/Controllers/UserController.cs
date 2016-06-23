@@ -78,19 +78,21 @@ namespace Inscoo.Controllers
             ViewBag.maxRebate = user.Rebate;
             //typeof(RegisterModel).GetProperty("Rebate").GetCustomAttributes(false).SetValue(new RangeAttribute(0, user.Rebate) { ErrorMessage = string.Format("不能大于{0}", user.Rebate) }, 1);
             var model = new RegisterModel() { selectList = roles };
-            
+
             return View(model);
         }
 
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RegisterModel model)
+        public async Task<ActionResult> Create(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new AppUser()
                 {
+                    BankName=model.BankName,
+                    BankNumber=model.BankNumber,
                     UserName = model.UserName,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
@@ -101,10 +103,10 @@ namespace Inscoo.Controllers
                     IsDelete = model.IsDelete,
                     CreaterId = User.Identity.GetUserId()
                 };
-                var result = _appUserService.CreateAsync(user, model.UserName, model.Password);
-                if (result.Result.Succeeded)
+                var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
+                if (result.Succeeded)
                 {
-                    result = ForRole(user, model.Roles);
+                    result = await ForRole(user, model.Roles);
                     return View("Details", model);
                 }
             }

@@ -18,7 +18,7 @@ namespace Inscoo
             bundles.Add(new StyleBundle("~/Content/index").Include(
                     "~/Content/index.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(             
                        "~/Scripts/jquery.validate*"));
 
             // 使用要用于开发和学习的 Modernizr 的开发版本。然后，当你做好
@@ -30,8 +30,8 @@ namespace Inscoo
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/base").Include(
-                      "~/Scripts/base.js",
-                      "~/Scripts/jquery.unobtrusive-ajax.js"));
+                 "~/Scripts/jquery.unobtrusive*",
+                      "~/Scripts/base.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/base.css"));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(

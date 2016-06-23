@@ -18,10 +18,10 @@ namespace Models.Order
         [Required(ErrorMessage ="保单及发票寄送需要联系地址")]
         [Display(Name = "联系地址")]
         public string Address { get; set; }
-        [Required]
-        [Display(Name = "投保人数")]
-        [Range(1,9999)]
-        public int InsuranceNumber { get; set; }
+        //[Required]
+        //[Display(Name = "投保人数")]
+        //[Range(1,9999)]
+        //public int InsuranceNumber { get; set; }
         [Required]
         [Display(Name = "生效日期")]
         public DateTime StartDate { get; set; }

@@ -43,5 +43,8 @@ namespace Models.Order
         [DisplayName("产品信息")]
         public List<ProductModel> ProdItem { get; set; }
         public List<UserRoleModel> UserRole { get; set; }
+
+        public bool HasTiYong { get; set; }
+        public bool HasFanBao { get; set; }
     }
 }

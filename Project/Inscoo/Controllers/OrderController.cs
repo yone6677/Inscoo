@@ -1,4 +1,5 @@
 ﻿using Domain.Orders;
+using Innscoo.Infrastructure;
 using Models.Order;
 using Models.Products;
 using OfficeOpenXml;
@@ -51,7 +52,10 @@ namespace Inscoo.Controllers
                 var mixProdt = _mixProductService.GetById(model.CustomizeProductId);
                 if (mixProdt != null)
                 {
+                    var cuser = _appUserService.GetCurrentUser();
                     var cOrder = new ConfirmOrderModel();
+                    cOrder.HasFanBao = cuser.FanBao;
+                    cOrder.HasTiYong = cuser.TiYong;
                     cOrder.UserRole = _appUserService.GetUserRoles();
                     if (cOrder.UserRole.Count > 0)//获取用户返点
                     {
@@ -102,7 +106,10 @@ namespace Inscoo.Controllers
             //自选产品
             if (!string.IsNullOrEmpty(model.productIds) && !string.IsNullOrEmpty(model.companyName) && !string.IsNullOrEmpty(model.StaffsNum) && !string.IsNullOrEmpty(model.Avarage))
             {
+                var cuser = _appUserService.GetCurrentUser();
                 var cOrder = new ConfirmOrderModel();
+                cOrder.HasFanBao = cuser.FanBao;
+                cOrder.HasTiYong = cuser.TiYong;
                 cOrder.UserRole = _appUserService.GetUserRoles();
                 if (cOrder.UserRole.Count > 0)//获取用户返点
                 {
@@ -242,9 +249,16 @@ namespace Inscoo.Controllers
                 {
                     var model = new EntryInfoModel()
                     {
-                        Id = id,
-                        StartDate = DateTime.Now.AddDays(4)
+                        Id = id,                       
+                        Linkman = order.Linkman,
+                        CompanyName = order.CompanyName,
+                        PhoneNumber = order.PhoneNumber,
+                        Address = order.Address
                     };
+                    if(order.StartDate==DateTime.MinValue)
+                    {
+                        model.StartDate = order.CreateTime.AddDays(4);
+                    }
                     return View(model);
                 }
             }
@@ -260,16 +274,10 @@ namespace Inscoo.Controllers
                 var entity = _orderService.GetById(model.Id);
                 if (entity != null)
                 {
-                    if (model.StartDate < entity.CreateTime.AddDays(3))
-                    {
-                        ViewBag.Error = "生效日期需在下单日期三天以后";
-                        return View(model);
-                    }
                     entity.CompanyName = model.CompanyName;
                     entity.Linkman = model.Linkman;
                     entity.PhoneNumber = model.PhoneNumber;
                     entity.Address = model.Address;
-                    entity.InsuranceNumber = model.InsuranceNumber;
                     entity.StartDate = model.StartDate;
                     entity.State = 2;
                     if (_orderService.Update(entity))
@@ -291,7 +299,7 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(id);
                 if (order.State > 1)
                 {
-                    return Content("上传资料");
+                    return View();
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -301,15 +309,42 @@ namespace Inscoo.Controllers
             var url = "/Archive/Template/上传人员信息.xlsx";
             _fileService.DownloadFile(url, "人员信息.xlsx");
         }
-        [HttpPost]
-        public string UploadEmp(HttpPostedFileBase empInfo, int Id)
+        public ActionResult UploadEmp(int Id, int PageIndex = 1, int PageSize = 15)
         {
-            var result = "上传成功";
-            if (empInfo != null && Id > 0)
+            if (Id > 0)
             {
-                _fileService.SaveFile(empInfo);
+                var model = _orderEmpService.GetListOfPager(PageIndex, PageSize, Id);
+                var command = new PageCommand()
+                {
+                    PageIndex = model.PageIndex,
+                    PageSize = model.PageSize,
+                    TotalCount = model.TotalCount,
+                    TotalPages = model.TotalPages
+                };
+                ViewBag.pageCommand = command;
+                return PartialView(model);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult UploadEmp(HttpPostedFileBase empinfo, int Id)
+        {
+            var result = "";
+            if (empinfo != null && Id > 0)
+            {
+                //若有旧数据先删除
+                var oldInfo = _orderEmpService.GetList(Id);
+                if (oldInfo != null && oldInfo.Any())
+                {
+                    foreach (var s in oldInfo)
+                    {
+                        _orderEmpService.DeleteById(s.Id);
+                    }
+                }
+                _fileService.SaveFile(empinfo);
                 /***暂时写这里*/
-                var ep = new ExcelPackage(empInfo.InputStream);
+                var ep = new ExcelPackage(empinfo.InputStream);
                 var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet == null)
                     result = "上传的文件内容不能为空";
@@ -317,10 +352,11 @@ namespace Inscoo.Controllers
                 var Cells = worksheet.Cells;
                 if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
                     result = "上传的文件不正确";
-                var eList = new List<OrderEmployee>();
+                var eList = new List<OrderEmployeeModel>();
                 for (var i = 2; i <= rowNumber; i++)
                 {
-                    if (Cells["A" + i].Value == null) break;
+                    if (Cells["A" + i].Value == null)
+                        break;
                     var item = new OrderEmployee();
                     item.OId = Id;
                     item.Name = Cells["A" + i].Value.ToString().Trim();
@@ -337,11 +373,15 @@ namespace Inscoo.Controllers
                     {
                         result = "上传失败";
                     }
-                    eList.Add(item);
                 }
+                return RedirectToAction("EntryInfo", new { id = Id });
                 /****/
             }
-            return result;
+            else
+            {
+                result = "上传失败";
+            }
+            return Content(result);
         }
     }
 }

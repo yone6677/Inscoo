@@ -25,5 +25,9 @@ namespace Core
         public int Ident { get; set; }
         //返点分配
         public int Rebate { get; set; }
+        //开户行
+        public string BankName { get; set; }
+        //开户行账号
+        public string BankNumber { get; set; }
     }
 }

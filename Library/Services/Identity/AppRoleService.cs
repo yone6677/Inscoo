@@ -2,7 +2,7 @@
 using Core.Identity;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Services.Infrastructure;
+using Models.Infrastructure;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;

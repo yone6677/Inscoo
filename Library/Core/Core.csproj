@@ -101,8 +101,10 @@
     <Compile Include="Identity\AppUserRole.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
+    <Compile Include="Mapping\OrderBatchMap.cs" />
     <Compile Include="Mapping\OrderEmployeeMap.cs" />
     <Compile Include="Mapping\OrderItemMap.cs" />
     <Compile Include="Mapping\OrderMap.cs" />

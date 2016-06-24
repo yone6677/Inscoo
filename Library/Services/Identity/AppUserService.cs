@@ -1,20 +1,17 @@
 ﻿using Core;
-using Core.Data;
 using Core.Identity;
 using Core.Pager;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Models.Infrastructure;
 using Models.Role;
 using Models.User;
-using Services.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Services.Identity
 {

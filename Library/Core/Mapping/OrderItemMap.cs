@@ -11,8 +11,7 @@ namespace Core.Mapping
             Property(o => o.Author).IsRequired().HasMaxLength(256);
             Property(o => o.CommissionRate).IsOptional().HasMaxLength(32);
             Property(o => o.CoverageSum).IsRequired().HasMaxLength(32);
-            Property(o => o.InsuredWho).IsRequired().HasMaxLength(32);
-            Property(o => o.OId).IsOptional();
+            Property(o => o.InsuredWho).IsRequired().HasMaxLength(32);          
             Property(o => o.OriginalPrice).IsRequired();
             Property(o => o.PayoutRatio).IsRequired().HasMaxLength(32);
             Property(o => o.Price).IsRequired();

@@ -629,12 +629,61 @@ body {
 
 .employeeInfo {
     width: 100%;
-    height:auto;
-    border:none;
+    height: auto;
+    border: none;
     margin: 1em auto;
     line-height: 1.5em;
     text-align: center;
 }
-.hide{
-    display:none;
+
+.hide {
+    display: none;
+}
+
+.uploadInfo {
+    width: 100%;
+    height: auto;
+    margin: .5em auto;
+
+    dl {
+        width: 100%;
+        margin: 0 auto;
+
+        dt {
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            background-color: @iscooBlue;
+            color: #fff;
+        }
+        dd{
+             ul {
+                width: 96%;
+                height: 2em;
+                margin: .5em 2%;
+
+                li {
+                    height: 2em;
+                    line-height: 2em;
+                }
+
+                li:nth-child(odd) {
+                    width: 40%;
+                    text-align: right;
+                    float: left;
+                }
+
+                li:nth-child(even) {
+                    width: 58%;
+                    text-align: left;
+                    float: right;
+
+                    span {
+                        color: @inscooGreen;
+                    }
+                }
+            }
+        }
+    }
 }

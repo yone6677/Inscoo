@@ -11,5 +11,6 @@ namespace Services.Orders
         bool DeleteById(int id);
         List<OrderEmployee> GetList(int oid = 0);
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);
+        List<string> GetPdf(int oid);
     }
 }

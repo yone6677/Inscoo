@@ -4,10 +4,6 @@ namespace Domain.Orders
    public class OrderItem: BaseEntity
     {
         /// <summary>
-        /// 订单号
-        /// </summary>
-        public int OId { get; set; }
-        /// <summary>
         /// 产品类别
         /// </summary>
         public string ProdType { get; set; }
@@ -45,5 +41,6 @@ namespace Domain.Orders
         public string CommissionRate { get; set; }
 
         public virtual Order order { get; set; }
+        public int order_Id { get; set; }
     }
 }

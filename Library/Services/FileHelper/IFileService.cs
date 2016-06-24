@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Models.Infrastructure;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Web;
@@ -7,11 +8,12 @@ namespace Services
 {
     public interface IFileService
     {
+        List<string> GenerateFilePathBySuffix(string postfix);
         /// <summary>
         /// 上传文件
         /// </summary>
         /// <returns>成功时返回路径加文件名,失败返回null</returns>
-        string SaveFile(HttpPostedFileBase postedFileBase);
+        SaveResultModel SaveFile(HttpPostedFileBase postedFileBase);
 
         // string MakeHtmlFile(string TempName, ArticleModel model);
         /// <summary>
@@ -34,7 +36,5 @@ namespace Services
         /// <param name="t"></param>
         /// <returns></returns>
         Dictionary<string, string> GetProperties<T>(T t);
-
-        DataTable RenderFromExcel(Stream excelFileStream);
     }
 }

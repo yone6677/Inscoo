@@ -2,7 +2,7 @@
 using Domain.Products;
 using Core.Data;
 using Microsoft.Owin.Security;
-using Services.Infrastructure;
+using Models.Infrastructure;
 
 namespace Services.Products
 {

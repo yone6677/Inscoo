@@ -3,8 +3,11 @@
 namespace Domain.Orders
 {
    public class OrderEmployee:BaseEntity
-    {
-        public int OId { get; set; }
+    {        
+        /// <summary>
+        /// 投保批次号
+        /// </summary>
+        public string BNum { get; set; }
         /// <summary>
         /// 保全代码
         /// </summary>
@@ -60,5 +63,6 @@ namespace Domain.Orders
         public DateTime EndDate { get; set; }
 
         public virtual Order order { get; set; }
+        public int order_Id { get; set; }
     }
 }

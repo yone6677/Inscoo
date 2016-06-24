@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Models.Infrastructure;
+using Newtonsoft.Json;
 using Services;
-using Services.Infrastructure;
 using System;
 using System.Net;
 using System.Text;

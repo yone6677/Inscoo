@@ -82,7 +82,7 @@ namespace Domain.Orders
         /// <summary>
         /// 营业执照
         /// </summary>
-        public string BusinessLicense { get; set; }
+        public int BusinessLicense { get; set; }
         /// <summary>
         /// 意见书编号
         /// </summary>
@@ -111,5 +111,9 @@ namespace Domain.Orders
         /// 人员详细
         /// </summary>
         public virtual ICollection<OrderEmployee> orderEmp { get; set; }
+        /// <summary>
+        /// 投保批次
+        /// </summary>
+        public virtual OrderBatch orderBatch { get; set; }
     }
 }

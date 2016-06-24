@@ -1,7 +1,7 @@
 ﻿using Core.Data;
 using Domain.Products;
 using Microsoft.Owin.Security;
-using Services.Infrastructure;
+using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

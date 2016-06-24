@@ -1,12 +1,8 @@
 ﻿using Core.Data;
 using Domain.Orders;
 using Microsoft.Owin.Security;
-using Services.Infrastructure;
+using Models.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Orders
 {
@@ -41,7 +37,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderItem：Insert");
                 return false;
             }
 

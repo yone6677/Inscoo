@@ -29,5 +29,15 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         bool LogEnable();
+        /// <summary>
+        /// 上传人员信息模板文件
+        /// </summary>
+        /// <returns></returns>
+        string GetEmployeeInfoTemp();
+        /// <summary>
+        /// 投保单文件
+        /// </summary>
+        /// <returns></returns>
+        string GetInsurancePolicyTemp();
     }
 }

@@ -30,18 +30,6 @@ namespace Inscoo.Controllers
             var ex = new Exception("内部错误哦");
             throw new HttpException(404, "页面找不到了", ex);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index(HttpPostedFileBase fileUrl)
-        {
-            string name = null;
-            //var fileLimit=
-            if (fileUrl != null)
-            {
-                name = _fileService.SaveFile(fileUrl);
-            }
-            return Content(name);
-        }
         public ActionResult Test()
         {
             return View();

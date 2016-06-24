@@ -1,9 +1,9 @@
 ﻿using Core.Data;
 using Domain.Permission;
 using Microsoft.Owin.Security;
+using Models.Infrastructure;
 using Models.Navigation;
 using Services.Identity;
-using Services.Infrastructure;
 using Services.Navigations;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,6 @@
-﻿using NPOI.HSSF.UserModel;
+﻿using Models.Infrastructure;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using Services;
-using Services.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +25,54 @@ namespace Services
             _resource = resource;
             _loggerService = loggerService;
         }
-        public virtual string SaveFile(HttpPostedFileBase postedFileBase)
+        public List<string> GenerateFilePathBySuffix(string postfix)
+        {
+            var result = new List<string>();
+            var filePath = _resource.GetFileCatalog();
+            //虚拟路径
+            var savePath = "/" + filePath + "/";
+            var date = DateTime.Now;
+            switch (postfix)
+            {
+                case ".jpge":
+                    savePath += "img/";
+                    break;
+                case ".jpg":
+                    savePath += "img/";
+                    break;
+                case ".bmp":
+                    savePath += "img/";
+                    break;
+                case ".gif":
+                    savePath += "img/";
+                    break;
+                case ".png":
+                    savePath += "img/";
+                    break;
+                default:
+                    savePath = savePath += "doc/";
+                    break;
+            }
+            savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+            //保存路径
+            string phyPath = _httpContext.Request.MapPath("~" + savePath);
+            //新文件名
+            var ts = _webHelper.GetTimeStamp();
+            var saveName = ts + postfix;
+            //如果不存在,创建文件夹    
+            if (!Directory.Exists(phyPath))
+            {
+                Directory.CreateDirectory(phyPath);
+            }
+            result.Add(phyPath + saveName);//物理路径
+            result.Add(savePath + saveName);//虚拟路径
+            result.Add(savePath);//保存路径
+            result.Add(saveName);//文件名
+            result.Add(postfix);//后缀
+            return result;
+
+        }
+        public virtual SaveResultModel SaveFile(HttpPostedFileBase postedFileBase)
         {
             try
             {
@@ -60,24 +106,24 @@ namespace Services
                         break;
                 }
                 savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
-
                 //保存路径
                 string phyPath = _httpContext.Request.MapPath("~" + savePath);
                 //新文件名
-                var saveName = _webHelper.GetTimeStamp() + postfix;
+                var ts = _webHelper.GetTimeStamp();
+                var saveName = ts + postfix;
                 //如果不存在,创建文件夹    
                 if (!Directory.Exists(phyPath))
                 {
                     Directory.CreateDirectory(phyPath);
                 }
                 postedFileBase.SaveAs(phyPath + saveName);
-                return savePath + saveName;
+                return new SaveResultModel() { Name = ts, Postfix = postfix, Path = savePath };
             }
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
-                return null;
             }
+            return null;
         }
         public virtual string MakeHtmlFile(string TempName)
         {
@@ -187,7 +233,7 @@ namespace Services
         {
             try
             {
-                var pUrl = _httpContext.Request.MapPath("~"+url);
+                var pUrl = _httpContext.Request.MapPath("~" + url);
                 FileStream fs = new FileStream(pUrl, FileMode.Open);
                 byte[] bytes = new byte[(int)fs.Length];
                 fs.Read(bytes, 0, bytes.Length);
@@ -249,58 +295,5 @@ namespace Services
 
             return ret;
         }
-        private static string GetCellValue(ICell cell)
-        {
-            if (cell == null)
-                return string.Empty;
-            try
-            {
-                HSSFFormulaEvaluator e = new HSSFFormulaEvaluator(cell.Sheet.Workbook);
-                e.EvaluateInCell(cell);
-                return cell.ToString();
-            }
-            catch
-            {
-                return cell.NumericCellValue.ToString();
-            }
-        }
-        public DataTable RenderFromExcel(Stream excelFileStream)
-        {
-            using (excelFileStream)
-            {
-                IWorkbook workbook = new HSSFWorkbook(excelFileStream);
-                ISheet sheet = workbook.GetSheetAt(0);//取第一个表
-                DataTable table = new DataTable();
-                IRow headerRow = sheet.GetRow(0);//第一行为标题行
-                int cellCount = headerRow.LastCellNum;//LastCellNum = PhysicalNumberOfCells
-                int rowCount = sheet.LastRowNum;//LastRowNum = PhysicalNumberOfRows - 1
-
-                //handling header.
-                for (int i = headerRow.FirstCellNum; i < cellCount; i++)
-                {
-                    DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
-                    table.Columns.Add(column);
-                }
-
-                for (int i = (sheet.FirstRowNum + 1); i <= rowCount; i++)
-                {
-                    IRow row = sheet.GetRow(i);
-                    DataRow dataRow = table.NewRow();
-
-                    if (row != null)
-                    {
-                        for (int j = row.FirstCellNum; j < cellCount; j++)
-                        {
-                            if (row.GetCell(j) != null)
-                                dataRow[j] = GetCellValue(row.GetCell(j));
-                        }
-                    }
-
-                    table.Rows.Add(dataRow);
-                }
-                return table;
-            }
-        }
-
     }
 }

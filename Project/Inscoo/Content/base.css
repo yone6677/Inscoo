@@ -570,3 +570,111 @@ body {
 .uploadInfo dl dd ul li:nth-child(even) span {
   color: #83BA21;
 }
+.confirmPayment {
+  width: 100%;
+}
+.confirmPayment ul {
+  width: 100%;
+  height: auto;
+  border-bottom: .1em solid #ccc;
+}
+.confirmPayment ul li {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.confirmPayment ul li:last-child {
+  text-indent: 5%;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #24A9E4;
+}
+.confirmPayment dl {
+  width: 96%;
+  height: 9em;
+  margin: 0 auto;
+}
+.confirmPayment dl dt {
+  width: 20%;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: right;
+  float: left;
+}
+.confirmPayment dl dd {
+  float: right;
+  width: 78%;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: left;
+}
+.confirmPayment p {
+  display: block;
+  width: 100%;
+}
+.confirmPayment p a {
+  margin-left: 23%;
+  display: block;
+  text-align: center;
+  width: 12em;
+  height: 40px;
+  line-height: 40px;
+  color: #9a0c0c;
+  font-weight: bold;
+  font-size: 1.1em;
+  background-color: #ccc;
+}
+.Search {
+  padding: .3em 0;
+  margin-bottom: .3em;
+  box-shadow: 0 0 2px #999;
+}
+.Search dl {
+  width: 85%;
+}
+.Search dl dt {
+  width: 15%;
+  height: 35px;
+  line-height: 35px;
+  font-weight: bold;
+  color: #555;
+  text-align: right;
+  float: left;
+}
+.Search dl dd {
+  width: 35%;
+  height: 35px;
+  float: left;
+  text-align: left;
+}
+.Search dl dd input {
+  border-radius: 3px;
+  margin-left: .5em;
+  width: 90%;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #ccc;
+  margin-top: 2.5px;
+}
+.Search dl dd select {
+  border-radius: 3px;
+  margin-left: .5em;
+  width: 90%;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #ccc;
+  margin-top: 2.5px;
+}
+.Search dl dd p input {
+  border-radius: 4px;
+  margin-left: .5em;
+  width: 90%;
+  height: 34px;
+  line-height: 34px;
+  color: #fff;
+  border: 1px solid #ccc;
+  background-color: #5DB75F;
+}
+.Search dl dd p input:hover {
+  background-color: #469B46;
+}

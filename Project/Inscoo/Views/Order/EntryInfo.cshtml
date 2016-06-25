@@ -101,7 +101,8 @@
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
             </li>
             <li>
-                <input type="datetime" class="form-control" name="StartDate" value=@Model.StartDate disabled />
+                <input type="hidden" name="StartDate" id="StartDate" value=@Model.StartDate.ToShortDateString() />
+                <input type="date" class="form-control" value=@Model.StartDate.ToShortDateString() disabled />
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })

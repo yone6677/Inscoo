@@ -49,8 +49,39 @@ namespace Inscoo.Controllers
         // GET: Oder
         public ActionResult Index()
         {
+            var select = _genericAttributeService.GetSelectList("orderState", true);
+            ViewBag.orderState = select;
             return View();
         }
+        public ActionResult List()
+        {
+            var model = _orderService.GetListOfPager(1, 15);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult List(int PageIndex = 1, int PageSize = 15, string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
+        {
+            var model = _orderService.GetListOfPager(PageIndex, PageSize, name, state, companyName, beginDate, endDate);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+
         [HttpPost]
         public ActionResult Buy(CustomizeBuyModel model)
         {
@@ -268,7 +299,7 @@ namespace Inscoo.Controllers
                     };
                     if (order.StartDate == DateTime.MinValue)
                     {
-                        model.StartDate = order.CreateTime.AddDays(4);
+                        model.StartDate = order.CreateTime.AddDays(3);
                     }
                     return View(model);
                 }
@@ -290,6 +321,7 @@ namespace Inscoo.Controllers
                     entity.PhoneNumber = model.PhoneNumber;
                     entity.Address = model.Address;
                     entity.StartDate = model.StartDate;
+                    entity.EndDate = model.StartDate.AddYears(1);
                     entity.State = 2;//已完成人员上传
                     if (_orderService.Update(entity))
                     {
@@ -397,6 +429,7 @@ namespace Inscoo.Controllers
             var result = "";
             if (empinfo != null && Id > 0)
             {
+                var order = _orderService.GetById(Id);
                 //若有旧数据先删除
                 var oldInfo = _orderEmpService.GetList(Id);
                 if (oldInfo != null && oldInfo.Any())
@@ -423,6 +456,7 @@ namespace Inscoo.Controllers
                         break;
                     var item = new OrderEmployee();
                     item.order_Id = Id;
+                    item.Premium = order.AnnualExpense;
                     item.Name = Cells["A" + i].Value.ToString().Trim();
                     item.IDType = Cells["B" + i].Value.ToString().Trim();
                     item.IDNumber = Cells["C" + i].Value.ToString().Trim();
@@ -438,13 +472,9 @@ namespace Inscoo.Controllers
                         result = "上传失败";
                     }
                 }
-                var order = _orderService.GetById(Id);//更新订单主表投保人数
-                if (order != null)
-                {
-                    order.InsuranceNumber = rowNumber - 1;
-                    order.Amount = (rowNumber - 1) * order.AnnualExpense;
-                    _orderService.Update(order);
-                }
+                order.InsuranceNumber = rowNumber - 1; //更新订单主表投保人数
+                order.Amount = (rowNumber - 1) * order.AnnualExpense;
+                _orderService.Update(order);
                 //定单批次
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
                 if (orderBatch == null)
@@ -533,6 +563,11 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+        /// <summary>
+        /// 第四步,确认付款页面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ConfirmPayment(int id)
         {
             if (id > 0)
@@ -547,9 +582,11 @@ namespace Inscoo.Controllers
                         var ls = _orderEmpService.GetPaymentNoticePdf(id);
                         var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");
                         orderBatch.PaymentNoticePDF = fid;
-                        if(_orderBatchService.Update(orderBatch))
+                        if (_orderBatchService.Update(orderBatch))
                         {
                             model.PaymentNoticeUrl = ls[1];
+                            order.State = 4;//付款通知书已下载
+                            _orderService.Update(order);
                         }
                     }
                     else
@@ -559,6 +596,7 @@ namespace Inscoo.Controllers
                     model.YearPrice = order.AnnualExpense;
                     model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
                     model.Quantity = order.InsuranceNumber;
+                    model.Amount = order.Amount;
                     return View(model);
                 }
             }

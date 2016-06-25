@@ -86,6 +86,7 @@
     <Compile Include="Order\ConfirmPaymentModel.cs" />
     <Compile Include="Order\EntryInfoModel.cs" />
     <Compile Include="Order\OrderEmployeeModel.cs" />
+    <Compile Include="Order\OrderListModel.cs" />
     <Compile Include="Order\UploadInfoModel.cs" />
     <Compile Include="Permission\PermissionModel.cs" />
     <Compile Include="Order\CustomizeBuyModel.cs" />

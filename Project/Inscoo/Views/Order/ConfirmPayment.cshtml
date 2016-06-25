@@ -1,54 +1,80 @@
 ﻿@model Models.Order.ConfirmPaymentModel
 
 @{
-    ViewBag.Title = "ConfirmPayment";
+    ViewBag.Title = "确认付款";
 }
-
-<h2>ConfirmPayment</h2>
-
-<div>
-    <h4>ConfirmPaymentModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li>
+            <i class="fa fa-save fa-2x"></i>
+            <span>方案确认</span>
+        </li>
+        <li>
+            <i class="fa fa-edit fa-2x"></i>
+            信息填写
+        </li>
+        <li>
+            <i class="fa fa-cloud-upload fa-2x"></i>
+            上传文件
+        </li>
+        <li class="orderConfirmLiActive">
+            <i class="fa fa-usd fa-2x"></i>
+            确认付款
+        </li>
+    </ul>
+</div>
+<div class="confirmPayment">
+    <ul>
+        <li></li>
+        <li>保费信息</li>
+    </ul>
+    <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.YearPrice)
+            @Html.DisplayNameFor(model => model.YearPrice) :
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.YearPrice)
+            @Html.DisplayFor(model => model.YearPrice) 元/年  ,&nbsp;@Model.MonthPrice.ToString("0.00") 元/月
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.MonthPrice)
+            @Html.DisplayNameFor(model => model.Quantity) :
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.MonthPrice)
+            @Html.DisplayFor(model => model.Quantity) 人
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
+            @Html.DisplayNameFor(model => model.Amount) :
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.Quantity)
+            @Html.DisplayFor(model => model.Amount) 元
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentNoticeUrl)
-        </dt>
-
-        <dd>
-            <a href=@Model.PaymentNoticeUrl>付款通知书</a>
-        </dd>
-
     </dl>
+</div>
+<div class="confirmPayment">
+    <ul>
+        <li></li>
+        <li>支付信息</li>
+    </ul>
+    <dl>
+        <dt>
+           账户名 :
+        </dt>
+        <dd>
+            上海皓为商务咨询有限公司
+        </dd>
+        <dt>
+           银行账号 :
+        </dt>
+        <dd>
+          1234567891023456789
+        </dd>
+        <dt>
+           开户行 :
+        </dt>
+        <dd>
+          工行上海支行
+        </dd>
+    </dl>
+    <p>
+        <a href=@Model.PaymentNoticeUrl target="_blank">下载付款通知书</a>
+    </p>
 </div>

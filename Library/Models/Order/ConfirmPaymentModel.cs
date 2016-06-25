@@ -7,7 +7,7 @@ namespace Models.Order
         [DisplayName("保费单价")]
         public decimal YearPrice { get; set; }
         public double MonthPrice { get; set; }
-        [DisplayName("购买数量")]
+        [DisplayName("投保人数")]
         public int Quantity { get; set; }
         [DisplayName("合计费用")]
         public decimal Amount { get; set; }

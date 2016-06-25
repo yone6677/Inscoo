@@ -4,6 +4,9 @@ using Core.Data;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System.Collections.Generic;
+using Core.Pager;
+using Models.Order;
+using System.Linq;
 
 namespace Services.Orders
 {
@@ -74,6 +77,69 @@ namespace Services.Orders
                 _loggerService.insert(e, LogLevel.Warning, "OrderService：GetById");
             }
             return null;
+        }
+        public List<Order> GetList(string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
+        {
+            try
+            {
+                var query = _orderRepository.Table;
+                if (!string.IsNullOrEmpty(name))
+                {
+                    query = query.Where(q => q.Name.Contains(name));
+                }
+                if (state > 0)
+                {
+                    query = query.Where(q => q.State == state);
+                }
+                if (!string.IsNullOrEmpty(companyName))
+                {
+                    query = query.Where(q => q.CompanyName.Contains(companyName));
+                }
+                if (beginDate.HasValue)
+                {
+                    query = query.Where(q => q.CreateTime >= beginDate.Value);
+                }
+                if (endDate.HasValue)
+                {
+                    query = query.Where(q => q.CreateTime <= endDate.Value);
+                }
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetList");
+            }
+            return new List<Order>();
+        }
+        public IPagedList<OrderListModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
+        {
+            try
+            {
+                var query = GetList(name, state, companyName, beginDate, endDate);
+                if (query.Count > 0)
+                {
+                    return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
+                    {
+                        Amount = s.Amount,
+                        AnnualExpense = s.AnnualExpense,
+                        CompanyName = s.CompanyName,
+                        CreateDate = s.CreateTime,
+                        Id = s.Id,
+                        InsuranceNumber = s.InsuranceNumber,
+                        Name = s.Name,
+                        StartDate = s.StartDate,
+                        State = s.State
+                    }).ToList(), pageIndex, pageSize);
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetList");
+            }
+            return new PagedList<OrderListModel>(new List<OrderListModel>(), pageIndex, pageSize); ;
         }
     }
 }

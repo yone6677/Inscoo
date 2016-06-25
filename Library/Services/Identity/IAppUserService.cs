@@ -35,6 +35,7 @@ namespace Services.Identity
         /// </summary>
         /// <returns></returns>
         AppUser GetCurrentUser();
+        UserModel Get_UserModel_ById(string id);
         string GetRoleByUserId(string uId);
         List<string> GetRolesByUserId(string uId);
 

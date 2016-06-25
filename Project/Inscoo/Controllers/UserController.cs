@@ -112,7 +112,8 @@ namespace Inscoo.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(string id)
         {
-            var model = _appUserService.FindById(id);
+            var model = _appUserService.Get_UserModel_ById(id);
+            ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }
 
@@ -126,8 +127,12 @@ namespace Inscoo.Controllers
                 {
                     var user = _appUserService.FindById(model.Id);
                     user.CompanyName = model.CompanyName;
+                    user.LinkMan = model.LinkMan;
                     user.PhoneNumber = model.Phone;
                     user.Email = model.Email;
+                    user.TiYong = model.TiYong.HasValue ? model.TiYong.Value : false;
+                    user.FanBao = model.FanBao.HasValue ? model.FanBao.Value : false;
+                    user.Rebate = model.Rebate;
                     var result = await _appUserService.UpdateAsync(user);
                     if (result.Succeeded)
                         return RedirectToAction("Index");

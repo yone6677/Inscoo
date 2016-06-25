@@ -199,6 +199,40 @@ namespace Services.Identity
                 return null;
             }
         }
+
+        public UserModel Get_UserModel_ById(string id)
+        {
+
+            try
+            {
+                var result = _userManager.FindById(id);
+                if(result!=null)
+                {
+                    return new UserModel
+                    {
+                        CompanyName = result.CompanyName,
+                        Name=result.UserName,
+                        Phone=result.PhoneNumber,
+                        LinkMan=result.LinkMan,
+                        Email=result.Email,
+                        TiYong=result.TiYong,
+                        FanBao=result.FanBao,
+                        BankName=result.BankName,
+                        BankNumber=result.BankNumber,
+                        Rebate=result.Rebate
+                    };
+                }
+              else
+                {
+                    throw new Exception("未找到");
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
         public string GetRoleByUserId(string uId)
         {
             try

@@ -44,6 +44,7 @@
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Common\GenericAttribute.cs" />
+    <Compile Include="CompanyInfo.cs" />
     <Compile Include="Navigation\Navigation.cs" />
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderBatch.cs" />

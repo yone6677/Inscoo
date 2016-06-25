@@ -1,11 +1,36 @@
-﻿
+﻿@model Models.User.UserListModel
 @{
     ViewBag.Title = "账户管理";
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
-</p>
-<div id="dadaGrid">
-    @Html.Action("List")
+<div class="row">
+
+    @using (Html.BeginForm("Index", "User", FormMethod.Post, new { @id = "formUserList" }))
+    {
+
+        <div class="form-group">
+            <label class="control-label col-md-1">角色</label>
+            <div class="col-md-2">
+                @Html.DropDownListFor(m => m.RoleId, Model.RoleList, "全部", new { @class = "form-control" })
+            </div>
+            <label class="control-label col-md-1">用户名</label>
+            <div class="col-md-2">
+                @Html.Editor("UserName", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-1">
+                <input type="submit" value="查找" class="btn btn-success" />
+            </div>
+            <div class="col-md-1">
+                @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
+            </div>
+        </div>
+    }
 </div>
+<div id="dadaGrid" class="row">
+    @Html.Action("List", new { userName = Model.UserName, roleId = Model.RoleId })
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+    </script>
+}

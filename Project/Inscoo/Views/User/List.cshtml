@@ -25,36 +25,43 @@
         <th>
             @Html.DisplayNameFor(model => model.RoleName)
         </th>
+        <th>
+            操作
+        </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompanyName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LinkMan)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TiYong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FanBao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoleName)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinkMan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TiYong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FanBao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            <td>
+                @Html.ActionLink("编辑", "Edit", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
 @{

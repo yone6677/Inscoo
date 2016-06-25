@@ -31,5 +31,9 @@ namespace Models.User
         public DateTime CreateTime { set; get; }
         [DisplayName("注册人")]
         public string CreaterId { set; get; }
+        [DisplayName("开户银行")]
+        public string BankName { set; get; }
+        [DisplayName("开户账号")]
+        public string BankNumber { set; get; }
     }
 }

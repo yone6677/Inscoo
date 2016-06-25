@@ -371,6 +371,7 @@
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\Shared\Extension.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

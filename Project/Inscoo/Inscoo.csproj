@@ -255,6 +255,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\上传人员信息.xlsx" />
+    <Content Include="Archive\Template\投保单.doc" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -268,6 +269,7 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
+    <Content Include="fonts\STSONG.TTF" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\index.js" />
@@ -296,6 +298,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
@@ -358,6 +361,7 @@
     <Content Include="Views\Order\EntryInfo.cshtml" />
     <Content Include="Views\Order\UploadEmp.cshtml" />
     <Content Include="Views\Order\UploadFile.cshtml" />
+    <Content Include="Views\Order\ConfirmPayment.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

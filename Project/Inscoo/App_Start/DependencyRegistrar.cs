@@ -7,6 +7,7 @@ using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Services.Archives;
 using Services.Common;
 using Services.Identity;
 using Services.Navigations;
@@ -65,6 +66,7 @@ namespace Services
             builder.RegisterType<LoggerService>().As<ILoggerService>().InstancePerDependency();
             //services
             builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerDependency();
+            builder.RegisterType<ArchiveService>().As<IArchiveService>().InstancePerDependency();
             builder.RegisterType<NavigationService>().As<INavigationService>().InstancePerDependency();
             builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerDependency();
             builder.RegisterType<ProductService>().As<IProductService>().InstancePerDependency();
@@ -73,6 +75,8 @@ namespace Services
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerDependency();
             builder.RegisterType<OrderItemService>().As<IOrderItemService>().InstancePerDependency();
             builder.RegisterType<OrderEmpService>().As<IOrderEmpService>().InstancePerDependency();
+            builder.RegisterType<OrderBatchService>().As<IOrderBatchService>().InstancePerDependency();
+            
         }
     }
 }

@@ -1,0 +1,54 @@
+﻿@model Models.Order.ConfirmPaymentModel
+
+@{
+    ViewBag.Title = "ConfirmPayment";
+}
+
+<h2>ConfirmPayment</h2>
+
+<div>
+    <h4>ConfirmPaymentModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.YearPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YearPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MonthPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MonthPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentNoticeUrl)
+        </dt>
+
+        <dd>
+            <a href=@Model.PaymentNoticeUrl>付款通知书</a>
+        </dd>
+
+    </dl>
+</div>

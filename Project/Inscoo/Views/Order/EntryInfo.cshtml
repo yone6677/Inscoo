@@ -37,7 +37,7 @@
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
         </li>
     </ul>
 }
@@ -96,17 +96,6 @@
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </li>
         </ul>
-        @*<ul>
-            <li>
-                @Html.LabelFor(model => model.InsuranceNumber, htmlAttributes: new { @class = "control-label" })
-            </li>
-            <li>
-                @Html.EditorFor(model => model.InsuranceNumber, new { htmlAttributes = new { @class = "form-control" } })
-            </li>
-            <li>
-                @Html.ValidationMessageFor(model => model.InsuranceNumber, "", new { @class = "text-danger" })
-            </li>
-        </ul>*@
         <ul>
             <li>
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
@@ -124,6 +113,7 @@
         {
             <span class="text-danger">@ViewBag.error</span>
         }
+        <span class="text-danger" id="error"></span>
     </div>
 }
 <div class="orderConfirmBodyNext">
@@ -145,8 +135,14 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        var count =@Model.IsUploadInfo
         function subInfo() {
-            $("#EntryInfoForm").submit();
+            if (count > 0) {
+                $("#EntryInfoForm").submit();
+            }
+            else {
+                $("#error").text("还未上传人员资料");
+            }
         }
     </script>
 }

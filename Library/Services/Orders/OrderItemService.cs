@@ -1,12 +1,10 @@
 ﻿using Core.Data;
 using Domain.Orders;
 using Microsoft.Owin.Security;
-using Services.Infrastructure;
+using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Orders
 {
@@ -41,12 +39,28 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderItem：Insert");
                 return false;
             }
 
         }
-
+        public List<OrderItem> GetList(int oid)
+        {
+            try
+            {
+                var query = _orderItemRepository.Table;
+                query = query.Where(s => s.order_Id == oid);
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderItem：Insert");
+            }
+            return new List<OrderItem>();
+        }
         public bool Update(OrderItem item)
         {
             throw new NotImplementedException();

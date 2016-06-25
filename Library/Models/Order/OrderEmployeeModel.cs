@@ -25,7 +25,7 @@ namespace Models.Order
         public string PhoneNumber { get; set; }
         [DisplayName("邮箱")]
         public string Email { get; set; }
-        [DisplayName("是否有社保")]
+        [DisplayName("有无社保")]
         public string HasSocialSecurity { get; set; }
         [DisplayName("生效日期")]
         public DateTime StartDate { get; set; }

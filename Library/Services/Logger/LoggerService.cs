@@ -1,6 +1,6 @@
 ﻿using Microsoft.Owin.Security;
+using Models.Infrastructure;
 using Newtonsoft.Json;
-using Services.Infrastructure;
 using System;
 using System.Web;
 

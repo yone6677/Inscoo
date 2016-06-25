@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Models.Order.UploadInfoModel
+@{
     ViewBag.Title = "上传文件";
 }
 
@@ -24,7 +25,7 @@
 </div>
 <div style="height:5em;width:100%">
 </div>
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
     <ul>
         <li>
@@ -33,17 +34,17 @@
             </label>
         </li>
         <li>
-            <input type="hidden" value="" name="Id" />
-            <input type="file" id="empinfo" name="empinfo" />
+            <input type="hidden" value=@Model.Id name="Id" />
+            <input type="file" id="BusinessLicensePdfSeal" name="BusinessLicensePdfSeal" />
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
             请将文件压缩后上传
         </li>
     </ul>
 }
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
 {
     <ul>
         <li>
@@ -52,17 +53,17 @@
             </label>
         </li>
         <li>
-            <input type="hidden" value="" name="Id" />
-            <input type="file" id="empinfo" name="empinfo" />
+            <input type="hidden" value=@Model.Id name="Id" />
+            <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
             请将文件压缩后上传
         </li>
     </ul>
 }
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
 {
     <ul>
         <li>
@@ -71,23 +72,137 @@
             </label>
         </li>
         <li>
-            <input type="hidden" value="" name="Id" />
-            <input type="file" id="empinfo" name="empinfo" />
+            <input type="hidden" value=@Model.Id name="Id" />
+            <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href="/Order/DownloadEmpInfo" target="_blank" class="btn btn-default">下载模板</a>
+            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">下载模板</a>
             请将文件压缩后上传
         </li>
     </ul>
 }
-<div style="height:3em;width:100%">
+<div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
+    <span style="color:#333">注意：重新上传会覆盖之前的文件。</span><br />
+    <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF//Doc或者压缩文件</span><br />
+    <span style="color:gray">2.员工名单/投保单只能上传ZIP/RAR格式压缩文件</span><br />
+    <span class="text-danger" id="errorInfo"></span>
 </div>
-<div class="orderConfirmBodyNext">
+@if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+{
+    <div class="uploadInfo">
+        <dl>
+            <dt>已上传资料</dt>
+            @if (Model.HasBusinessLicense)
+            {
+                <dd>
+                    <ul>
+                        <li>营业执照(加盖公章)</li>
+                        <li>
+                            <span>已上传</span>
+                            <a href=@Model.BusinessLicenseSealUrl>查看</a>
+                        </li>
+                    </ul>
+                </dd>
+            }
+            @if (Model.HasEmpInfoFilePDFSeal)
+            {
+                <dd>
+                    <ul>
+                        <li>员工名单(加盖公章)</li>
+                        <li>
+                            <span>已上传</span>
+                            <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                        </li>
+                    </ul>
+                </dd>
+            }
+            @if (Model.HasInsurancePolicy)
+            {
+                <dd>
+                    <ul>
+                        <li>投保单(加盖公章)</li>
+                        <li>
+                            <span>已上传</span>
+                            <a href=@Model.InsurancePolicySealUrl>查看</a>
+                        </li>
+                    </ul>
+                </dd>
+            }
+        </dl>
+    </div>
+}
+@using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
     <div>
         <a href="/">返回</a>
     </div>
     <div>
-        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
+        {
+            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
+        }
+        else
+        {
+            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
+        }
     </div>
-</div>
+}
+
+<form onsubmit=""></form>
+@section Scripts {
+    <script>
+        function msg() {
+            $("#errorInfo").text("请先上传所有资料！");
+        }
+        function checkFile(e) {
+            var errorInfo = $("#errorInfo");
+            var empFile = $("#EmpInfoPdfSeal").val();
+            var blFile = $("#BusinessLicensePdfSeal").val();
+            var ppFile = $("#PolicyPdfSeal").val();
+            var s = parseInt(e);
+            var pf = '';
+            switch (s) {
+                case 1:
+                    if (empFile == '') {
+                        errorInfo.text("未选择任何文件！");
+                        return false;
+                    }
+                    pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
+                    if (pf == 'zip' || pf == 'rar') {
+                        return true;
+                    } else {
+                        errorInfo.text("员工名单只能上传压缩文件，请压缩后再重新上传！");
+                    }
+                    break;
+                case 2:
+                    if (blFile == '') {
+                        errorInfo.text("未选择任何文件！");
+                        return false;
+                    }
+                    pf = (blFile.substring(blFile.lastIndexOf(".") + 1, blFile.length)).toLowerCase();
+                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
+                        return true;
+                    } else {
+                        errorInfo.text("营业执照只能上传PDF/WORLD，或者压缩文件，请重新上传！");
+                    }
+                    break;
+                case 3:
+                    if (ppFile == '') {
+                        errorInfo.text("未选择任何文件！");
+                        return false;
+                    }
+                    pf = (ppFile.substring(ppFile.lastIndexOf(".") + 1, ppFile.length)).toLowerCase();
+                    if (pf == 'zip' || pf == 'rar') {
+                        return true;
+                    } else {
+                        errorInfo.text("投保单只能上传压缩文件，请压缩后再重新上传！");
+                    }
+                    break;
+            }
+            return false;
+        }
+    </script>
+}

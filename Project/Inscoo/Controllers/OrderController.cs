@@ -1,9 +1,11 @@
 ﻿using Domain.Orders;
 using Innscoo.Infrastructure;
+using Models.Infrastructure;
 using Models.Order;
 using Models.Products;
 using OfficeOpenXml;
 using Services;
+using Services.Archives;
 using Services.Common;
 using Services.Identity;
 using Services.Orders;
@@ -25,10 +27,13 @@ namespace Inscoo.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
-        private readonly IFileService _fileService;
+        private readonly IArchiveService _archiveService;
         private readonly IOrderEmpService _orderEmpService;
-        public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService,
-            IProductService productService, IOrderService orderService, IOrderItemService orderItemService, IFileService fileService, IOrderEmpService orderEmpService)
+        private readonly IOrderBatchService _orderBatchService;
+        private readonly IResourceService _resourceService;
+        public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
+            IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
+            IResourceService resourceService)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -36,8 +41,10 @@ namespace Inscoo.Controllers
             _productService = productService;
             _orderItemService = orderItemService;
             _orderService = orderService;
-            _fileService = fileService;
+            _archiveService = archiveService;
             _orderEmpService = orderEmpService;
+            _orderBatchService = orderBatchService;
+            _resourceService = resourceService;
         }
         // GET: Oder
         public ActionResult Index()
@@ -174,6 +181,19 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<int> li = new List<int>();
+                if (model.ids.Contains(","))
+                {
+                    string[] tempStr = model.ids.Split(',');
+                    for (int i = 0; i < tempStr.Length; i++)
+                    {
+                        li.Add(int.Parse(tempStr[i].Trim()));
+                    }
+                }
+                else
+                {
+                    li.Add(int.Parse(model.ids));
+                }
                 var order = new Order();
                 order.AgeRange = model.AgeRange;
                 order.Amount = 0;
@@ -186,22 +206,10 @@ namespace Inscoo.Controllers
                 order.Rebate = _appUserService.GetCurrentUser().Rebate;//Rebate
                 order.StaffRange = model.StaffRange;
                 order.TiYong = model.TiYong;
+                order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
                 int result = _orderService.Insert(order);
                 if (result > 0)//写产品
                 {
-                    List<int> li = new List<int>();
-                    if (model.ids.Contains(","))
-                    {
-                        string[] tempStr = model.ids.Split(',');
-                        for (int i = 0; i < tempStr.Length; i++)
-                        {
-                            li.Add(int.Parse(tempStr[i].Trim()));
-                        }
-                    }
-                    else
-                    {
-                        li.Add(int.Parse(model.ids));
-                    }
                     int staffnum = 0;
                     int avarag = 0;
                     var staff = _genericAttributeService.GetByKey(model.StaffRange, "StaffRange");
@@ -224,7 +232,7 @@ namespace Inscoo.Controllers
                                 CommissionRate = null,
                                 CoverageSum = item.CoverageSum,
                                 InsuredWho = item.InsuredWho,
-                                OId = result,
+                                order_Id = result,
                                 OriginalPrice = decimal.Parse(item.OriginalPrice),
                                 PayoutRatio = item.PayoutRatio,
                                 Price = decimal.Parse(item.Price),
@@ -247,15 +255,18 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(id);
                 if (order.State > 0)
                 {
+                    var empCount = _orderEmpService.GetList(id);
                     var model = new EntryInfoModel()
                     {
-                        Id = id,                       
+                        Id = id,
                         Linkman = order.Linkman,
                         CompanyName = order.CompanyName,
                         PhoneNumber = order.PhoneNumber,
-                        Address = order.Address
+                        Address = order.Address,
+                        IsUploadInfo = empCount.Count,//已上传人员数
+                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp()
                     };
-                    if(order.StartDate==DateTime.MinValue)
+                    if (order.StartDate == DateTime.MinValue)
                     {
                         model.StartDate = order.CreateTime.AddDays(4);
                     }
@@ -279,7 +290,7 @@ namespace Inscoo.Controllers
                     entity.PhoneNumber = model.PhoneNumber;
                     entity.Address = model.Address;
                     entity.StartDate = model.StartDate;
-                    entity.State = 2;
+                    entity.State = 2;//已完成人员上传
                     if (_orderService.Update(entity))
                     {
                         return RedirectToAction("UploadFile", new { id = model.Id });
@@ -292,22 +303,75 @@ namespace Inscoo.Controllers
             }
             return View(model);
         }
-        public ActionResult UploadFile(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadFile(UploadInfoModel model)
         {
-            if (id > 0)
+            if (model.Id > 0)
             {
-                var order = _orderService.GetById(id);
-                if (order.State > 1)
+                var order = _orderService.GetById(model.Id);
+                if (order != null)
                 {
-                    return View();
+                    order.State = 3;
+                    if (_orderService.Update(order))
+                    {
+                        return RedirectToAction("ConfirmPayment", new { id = model.Id });
+                    }
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-        public void DownloadEmpInfo()
+        public ActionResult UploadFile(int id)
         {
-            var url = "/Archive/Template/上传人员信息.xlsx";
-            _fileService.DownloadFile(url, "人员信息.xlsx");
+            if (id > 0)
+            {
+                var model = new UploadInfoModel();
+                model.Id = id;
+                model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                var order = _orderService.GetById(id);
+                if (order.State > 1)
+                {
+                    var orderBatch = _orderBatchService.GetByOrderId(id);
+                    if (orderBatch != null)
+                    {
+                        if (orderBatch.EmpInfoFilePDF == 0)//还未生成PDF
+                        {
+                            var virpath = _orderEmpService.GetPdf(id);//产生PDF文件
+                            if (virpath.Count > 0)
+                            {
+                                var fid = _archiveService.InsertByUrl(virpath, FileType.EmployeeInfoSeal.ToString(), id, "人员信息PDF");
+                                orderBatch.EmpInfoFilePDF = fid;
+                                if (_orderBatchService.Update(orderBatch))
+                                {
+                                    model.EmpInfoFilePDFUrl = virpath[1];
+                                }
+                            }
+                        }
+                        else//已生成PDF
+                        {
+                            var archive = _archiveService.GetById(orderBatch.EmpInfoFilePDF);
+                            model.EmpInfoFilePDFUrl = archive.Url;
+                            if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
+                            {
+                                model.HasEmpInfoFilePDFSeal = true;
+                                model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
+                            }
+                            if (order.BusinessLicense > 0)//已上传营业执照
+                            {
+                                model.HasBusinessLicense = true;
+                                model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
+                            }
+                            if (orderBatch.PolicySeal > 0)//已上传投保单
+                            {
+                                model.HasInsurancePolicy = true;
+                                model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
+                            }
+                        }
+                        return View(model);
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
         public ActionResult UploadEmp(int Id, int PageIndex = 1, int PageSize = 15)
         {
@@ -342,7 +406,7 @@ namespace Inscoo.Controllers
                         _orderEmpService.DeleteById(s.Id);
                     }
                 }
-                _fileService.SaveFile(empinfo);
+                var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
                 /***暂时写这里*/
                 var ep = new ExcelPackage(empinfo.InputStream);
                 var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
@@ -358,7 +422,7 @@ namespace Inscoo.Controllers
                     if (Cells["A" + i].Value == null)
                         break;
                     var item = new OrderEmployee();
-                    item.OId = Id;
+                    item.order_Id = Id;
                     item.Name = Cells["A" + i].Value.ToString().Trim();
                     item.IDType = Cells["B" + i].Value.ToString().Trim();
                     item.IDNumber = Cells["C" + i].Value.ToString().Trim();
@@ -374,6 +438,29 @@ namespace Inscoo.Controllers
                         result = "上传失败";
                     }
                 }
+                var order = _orderService.GetById(Id);//更新订单主表投保人数
+                if (order != null)
+                {
+                    order.InsuranceNumber = rowNumber - 1;
+                    order.Amount = (rowNumber - 1) * order.AnnualExpense;
+                    _orderService.Update(order);
+                }
+                //定单批次
+                var orderBatch = _orderBatchService.GetByOrderId(Id);
+                if (orderBatch == null)
+                {
+                    var ob = new OrderBatch()
+                    {
+                        order_Id = Id,
+                        EmpInfoFile = fileModel
+                    };
+                    _orderBatchService.Insert(ob);
+                }
+                else
+                {
+                    orderBatch.EmpInfoFile = fileModel;
+                    _orderBatchService.Update(orderBatch);
+                }
                 return RedirectToAction("EntryInfo", new { id = Id });
                 /****/
             }
@@ -382,6 +469,100 @@ namespace Inscoo.Controllers
                 result = "上传失败";
             }
             return Content(result);
+        }
+        [HttpPost]
+        public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id)
+        {
+            if (EmpInfoPdfSeal != null && Id > 0)
+            {
+                var orderBatch = _orderBatchService.GetByOrderId(Id);
+                if (orderBatch != null)
+                {
+                    var fileId = _archiveService.Insert(EmpInfoPdfSeal, FileType.EmployeeInfoSeal.ToString(), Id);
+                    if (fileId > 0)
+                    {
+                        orderBatch.EmpInfoFileSeal = fileId;
+                        if (_orderBatchService.Update(orderBatch))
+                        {
+                            return RedirectToAction("UploadFile", new { id = Id });
+                        }
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        [HttpPost]
+        public ActionResult UploadPolicyPdfSeal(HttpPostedFileBase PolicyPdfSeal, int Id)
+        {
+            if (PolicyPdfSeal != null && Id > 0)
+            {
+                var orderBatch = _orderBatchService.GetByOrderId(Id);
+                if (orderBatch != null)
+                {
+                    var fileId = _archiveService.Insert(PolicyPdfSeal, FileType.PolicySeal.ToString(), Id);
+                    if (fileId > 0)
+                    {
+                        orderBatch.PolicySeal = fileId;
+                        if (_orderBatchService.Update(orderBatch))
+                        {
+                            return RedirectToAction("UploadFile", new { id = Id });
+                        }
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        [HttpPost]
+        public ActionResult UploadBusinessLicensePdf(HttpPostedFileBase BusinessLicensePdfSeal, int Id)
+        {
+            if (BusinessLicensePdfSeal != null && Id > 0)
+            {
+                var order = _orderService.GetById(Id);
+                if (order != null)
+                {
+                    var fileId = _archiveService.Insert(BusinessLicensePdfSeal, FileType.BusinessLicenseSeal.ToString(), Id);
+                    if (fileId > 0)
+                    {
+                        order.BusinessLicense = fileId;
+                        if (_orderService.Update(order))
+                        {
+                            return RedirectToAction("UploadFile", new { id = Id });
+                        }
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        public ActionResult ConfirmPayment(int id)
+        {
+            if (id > 0)
+            {
+                var model = new ConfirmPaymentModel();
+                var order = _orderService.GetById(id);
+                var orderBatch = _orderBatchService.GetByOrderId(id);
+                if (order != null && orderBatch != null)
+                {
+                    if (orderBatch.PaymentNoticePDF == 0)//还未产生付款通知书
+                    {
+                        var ls = _orderEmpService.GetPaymentNoticePdf(id);
+                        var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");
+                        orderBatch.PaymentNoticePDF = fid;
+                        if(_orderBatchService.Update(orderBatch))
+                        {
+                            model.PaymentNoticeUrl = ls[1];
+                        }
+                    }
+                    else
+                    {
+                        model.PaymentNoticeUrl = _archiveService.GetById(orderBatch.PaymentNoticePDF).Url;
+                    }
+                    model.YearPrice = order.AnnualExpense;
+                    model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
+                    model.Quantity = order.InsuranceNumber;
+                    return View(model);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
     }
 }

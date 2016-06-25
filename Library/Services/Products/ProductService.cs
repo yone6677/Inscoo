@@ -1,14 +1,13 @@
 ﻿using System;
 using Core.Data;
-using Services.Infrastructure;
 using Domain.Products;
 using Microsoft.Owin.Security;
 using Models.Insurance;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Web.Mvc;
 using Models.Products;
+using Models.Infrastructure;
 
 namespace Services.Products
 {

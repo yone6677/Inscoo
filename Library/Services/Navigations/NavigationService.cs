@@ -2,8 +2,8 @@
 using Core.Pager;
 using Domain.Navigation;
 using Microsoft.Owin.Security;
+using Models.Infrastructure;
 using Models.Navigation;
-using Services.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

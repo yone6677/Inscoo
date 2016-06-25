@@ -531,3 +531,42 @@ body {
 .hide {
   display: none;
 }
+.uploadInfo {
+  width: 100%;
+  height: auto;
+  margin: .5em auto;
+}
+.uploadInfo dl {
+  width: 100%;
+  margin: 0 auto;
+}
+.uploadInfo dl dt {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  background-color: #24A9E4;
+  color: #fff;
+}
+.uploadInfo dl dd ul {
+  width: 96%;
+  height: 2em;
+  margin: .5em 2%;
+}
+.uploadInfo dl dd ul li {
+  height: 2em;
+  line-height: 2em;
+}
+.uploadInfo dl dd ul li:nth-child(odd) {
+  width: 40%;
+  text-align: right;
+  float: left;
+}
+.uploadInfo dl dd ul li:nth-child(even) {
+  width: 58%;
+  text-align: left;
+  float: right;
+}
+.uploadInfo dl dd ul li:nth-child(even) span {
+  color: #83BA21;
+}

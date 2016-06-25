@@ -44,6 +44,10 @@
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -133,8 +137,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archives\ArchiveService.cs" />
+    <Compile Include="Archives\IArchiveService.cs" />
     <Compile Include="Common\GenericAttributeService.cs" />
     <Compile Include="Common\IGenericAttributeService.cs" />
+    <Compile Include="FileHelper\OperationPDF.cs" />
     <Compile Include="Identity\AppRoleService.cs" />
     <Compile Include="Identity\AppUserService.cs" />
     <Compile Include="Identity\IAppRoleService.cs" />
@@ -145,16 +152,15 @@
     <Compile Include="Common\WebHelper.cs" />
     <Compile Include="FileHelper\FileService.cs" />
     <Compile Include="FileHelper\IFileService.cs" />
-    <Compile Include="Infrastructure\ExcelModel.cs" />
-    <Compile Include="Infrastructure\LogLevel.cs" />
-    <Compile Include="Infrastructure\LogsModel.cs" />
     <Compile Include="Logger\ILoggerService.cs" />
     <Compile Include="Logger\LoggerService.cs" />
     <Compile Include="Navigations\INavigationService.cs" />
     <Compile Include="Navigations\NavigationService.cs" />
+    <Compile Include="Orders\IOrderBatchService.cs" />
     <Compile Include="Orders\IOrderEmpService.cs" />
     <Compile Include="Orders\IOrderItemService.cs" />
     <Compile Include="Orders\IOrderService.cs" />
+    <Compile Include="Orders\OrderBatchService.cs" />
     <Compile Include="Orders\OrderEmpService.cs" />
     <Compile Include="Orders\OrderItemService.cs" />
     <Compile Include="Orders\OrderService.cs" />

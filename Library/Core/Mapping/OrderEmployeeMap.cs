@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
 {
-   public class OrderEmployeeMap: EntityTypeConfiguration<OrderEmployee>
+    public class OrderEmployeeMap : EntityTypeConfiguration<OrderEmployee>
     {
         public OrderEmployeeMap()
         {

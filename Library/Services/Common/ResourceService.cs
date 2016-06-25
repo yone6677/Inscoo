@@ -32,5 +32,13 @@ namespace Services
             }
             return false;
         }
+        public string GetEmployeeInfoTemp()
+        {
+            return "/Archive/Template/上传人员信息.xlsx";
+        }
+        public string GetInsurancePolicyTemp()
+        {
+            return "/Archive/Template/投保单.doc";
+        }
     }
 }

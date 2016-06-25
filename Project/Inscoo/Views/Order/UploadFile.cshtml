@@ -132,18 +132,31 @@
         </dl>
     </div>
 }
-<div class="orderConfirmBodyNext">
+@using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
     <div>
         <a href="/">返回</a>
     </div>
     <div>
-        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
+        {
+            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
+        }
+        else
+        {
+            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
+        }
     </div>
-</div>
+}
 
 <form onsubmit=""></form>
 @section Scripts {
     <script>
+        function msg() {
+            $("#errorInfo").text("请先上传所有资料！");
+        }
         function checkFile(e) {
             var errorInfo = $("#errorInfo");
             var empFile = $("#EmpInfoPdfSeal").val();
@@ -170,10 +183,9 @@
                         return false;
                     }
                     pf = (blFile.substring(blFile.lastIndexOf(".") + 1, blFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf') {
+                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
-                        console.log(pf);
                         errorInfo.text("营业执照只能上传PDF/WORLD，或者压缩文件，请重新上传！");
                     }
                     break;

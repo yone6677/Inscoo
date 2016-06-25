@@ -28,6 +28,7 @@ namespace Core.Mapping
             Property(o => o.Changer).IsOptional().HasMaxLength(256);
             Property(o => o.ChangeDate).IsOptional();
             Property(o => o.StartDate).IsOptional().HasColumnType("datetime2");
+            Property(o => o.EndDate).IsOptional().HasColumnType("datetime2");
             Property(o => o.CompanyName).IsOptional().HasMaxLength(128);
             Property(o => o.Linkman).IsOptional().HasMaxLength(32);
             Property(o => o.PhoneNumber).IsOptional().HasMaxLength(64);

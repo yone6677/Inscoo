@@ -13,6 +13,8 @@ namespace Models.Infrastructure
         [Description("投保单(加盖公章)")]
         PolicySeal,
         [Description("营业执照(加盖公章)")]
-        BusinessLicenseSeal
+        BusinessLicenseSeal,
+        [Description("付款通知书")]
+        PaymentNotice
     }
 }

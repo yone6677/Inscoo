@@ -56,7 +56,7 @@ namespace Services.Archives
                         pId = pid,
                         Memo = memo,
                         Type = type,
-                        Name = model.Name + model.Path,
+                        Name = model.Name + model.Postfix,
                         Path = model.Path,
                         Url = model.Path + model.Name + model.Postfix
                     };

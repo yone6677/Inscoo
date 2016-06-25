@@ -3,6 +3,8 @@ using Domain.Orders;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Services.Orders
 {
@@ -42,7 +44,23 @@ namespace Services.Orders
             }
 
         }
-
+        public List<OrderItem> GetList(int oid)
+        {
+            try
+            {
+                var query = _orderItemRepository.Table;
+                query = query.Where(s => s.order_Id == oid);
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderItem：Insert");
+            }
+            return new List<OrderItem>();
+        }
         public bool Update(OrderItem item)
         {
             throw new NotImplementedException();

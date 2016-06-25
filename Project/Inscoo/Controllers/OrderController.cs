@@ -181,6 +181,19 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<int> li = new List<int>();
+                if (model.ids.Contains(","))
+                {
+                    string[] tempStr = model.ids.Split(',');
+                    for (int i = 0; i < tempStr.Length; i++)
+                    {
+                        li.Add(int.Parse(tempStr[i].Trim()));
+                    }
+                }
+                else
+                {
+                    li.Add(int.Parse(model.ids));
+                }
                 var order = new Order();
                 order.AgeRange = model.AgeRange;
                 order.Amount = 0;
@@ -193,22 +206,10 @@ namespace Inscoo.Controllers
                 order.Rebate = _appUserService.GetCurrentUser().Rebate;//Rebate
                 order.StaffRange = model.StaffRange;
                 order.TiYong = model.TiYong;
+                order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
                 int result = _orderService.Insert(order);
                 if (result > 0)//写产品
                 {
-                    List<int> li = new List<int>();
-                    if (model.ids.Contains(","))
-                    {
-                        string[] tempStr = model.ids.Split(',');
-                        for (int i = 0; i < tempStr.Length; i++)
-                        {
-                            li.Add(int.Parse(tempStr[i].Trim()));
-                        }
-                    }
-                    else
-                    {
-                        li.Add(int.Parse(model.ids));
-                    }
                     int staffnum = 0;
                     int avarag = 0;
                     var staff = _genericAttributeService.GetByKey(model.StaffRange, "StaffRange");
@@ -262,7 +263,8 @@ namespace Inscoo.Controllers
                         CompanyName = order.CompanyName,
                         PhoneNumber = order.PhoneNumber,
                         Address = order.Address,
-                        IsUploadInfo = empCount.Count//已上传人员数
+                        IsUploadInfo = empCount.Count,//已上传人员数
+                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp()
                     };
                     if (order.StartDate == DateTime.MinValue)
                     {
@@ -301,7 +303,24 @@ namespace Inscoo.Controllers
             }
             return View(model);
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadFile(UploadInfoModel model)
+        {
+            if (model.Id > 0)
+            {
+                var order = _orderService.GetById(model.Id);
+                if (order != null)
+                {
+                    order.State = 3;
+                    if (_orderService.Update(order))
+                    {
+                        return RedirectToAction("ConfirmPayment", new { id = model.Id });
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
         public ActionResult UploadFile(int id)
         {
             if (id > 0)
@@ -419,6 +438,13 @@ namespace Inscoo.Controllers
                         result = "上传失败";
                     }
                 }
+                var order = _orderService.GetById(Id);//更新订单主表投保人数
+                if (order != null)
+                {
+                    order.InsuranceNumber = rowNumber - 1;
+                    order.Amount = (rowNumber - 1) * order.AnnualExpense;
+                    _orderService.Update(order);
+                }
                 //定单批次
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
                 if (orderBatch == null)
@@ -503,6 +529,37 @@ namespace Inscoo.Controllers
                             return RedirectToAction("UploadFile", new { id = Id });
                         }
                     }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        public ActionResult ConfirmPayment(int id)
+        {
+            if (id > 0)
+            {
+                var model = new ConfirmPaymentModel();
+                var order = _orderService.GetById(id);
+                var orderBatch = _orderBatchService.GetByOrderId(id);
+                if (order != null && orderBatch != null)
+                {
+                    if (orderBatch.PaymentNoticePDF == 0)//还未产生付款通知书
+                    {
+                        var ls = _orderEmpService.GetPaymentNoticePdf(id);
+                        var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");
+                        orderBatch.PaymentNoticePDF = fid;
+                        if(_orderBatchService.Update(orderBatch))
+                        {
+                            model.PaymentNoticeUrl = ls[1];
+                        }
+                    }
+                    else
+                    {
+                        model.PaymentNoticeUrl = _archiveService.GetById(orderBatch.PaymentNoticePDF).Url;
+                    }
+                    model.YearPrice = order.AnnualExpense;
+                    model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
+                    model.Quantity = order.InsuranceNumber;
+                    return View(model);
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

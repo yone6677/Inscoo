@@ -3,6 +3,7 @@ using Domain.Orders;
 using Core.Data;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
+using System.Collections.Generic;
 
 namespace Services.Orders
 {
@@ -39,7 +40,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：Insert");
 
             }
             return 0;
@@ -57,7 +58,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Update");
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：Update");
             }
             return false;
         }
@@ -70,7 +71,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetById");
             }
             return null;
         }

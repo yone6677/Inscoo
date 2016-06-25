@@ -29,6 +29,10 @@ namespace Domain.Orders
         /// </summary>
         public int PolicySeal { get; set; }
         /// <summary>
+        /// 付款通知书
+        /// </summary>
+        public int PaymentNoticePDF { get; set; }
+        /// <summary>
         /// 投保操作人
         /// </summary>
         public string PolicyHolder { get; set; }

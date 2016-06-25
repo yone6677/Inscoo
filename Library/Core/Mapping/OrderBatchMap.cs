@@ -18,6 +18,7 @@ namespace Core.Mapping
             Property(b => b.EmpInfoFile).IsOptional();
             Property(b => b.EmpInfoFilePDF).IsOptional();
             Property(b => b.EmpInfoFileSeal).IsOptional();
+            Property(b => b.PaymentNoticePDF).IsOptional();
             Property(b => b.Finance).IsOptional().HasMaxLength(64);
             Property(b => b.FinanceDate).IsOptional().HasColumnType("datetime2");
             Property(b => b.FinanceMemo).IsOptional().HasMaxLength(512);

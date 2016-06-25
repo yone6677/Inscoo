@@ -64,6 +64,10 @@ namespace Domain.Orders
         /// </summary>
         public DateTime StartDate { get; set; }
         /// <summary>
+        /// 失效日期
+        /// </summary>
+        public DateTime EndDate { get; set; }
+        /// <summary>
         /// 公司名称
         /// </summary>
         public string CompanyName { get; set; }

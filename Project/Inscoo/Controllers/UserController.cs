@@ -24,11 +24,27 @@ namespace Inscoo.Controllers
         // GET: User
         public ActionResult Index()
         {
-            return View();
+            var model = new UserListModel();
+            model.RoleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+
+            return View(model);
         }
-        public ActionResult List()
+        [HttpPost]
+        public ActionResult Index(UserListModel model)
         {
-            var list = _appUserService.GetUserList();
+            var roleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+            if (!string.IsNullOrEmpty(model.RoleId))
+                roleList.Find(r => r.Value == model.RoleId).Selected = true;
+
+            model.RoleList = roleList;
+
+            return View(model);
+        }
+        public ActionResult List(string roleId, string userName)
+        {
+            //var roleId = Request.QueryString["roleId"];
+            //var userName = Request.QueryString["userName"];
+            var list = _appUserService.GetUserList(userName: userName, roleId: roleId);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -48,31 +64,7 @@ namespace Inscoo.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            var roles = _appRoleManager.GetSelectList();
-            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
-            if (role.Equals("Admin", StringComparison.CurrentCultureIgnoreCase))
-            {
-            }
-            else
-            {
-                roles.RemoveAll(r => r.Text.Equals("Admin", StringComparison.CurrentCultureIgnoreCase));
-                roles.RemoveAll(r => r.Text.Equals("Finance", StringComparison.CurrentCultureIgnoreCase));
-                roles.RemoveAll(r => r.Text.Equals("InsuranceCompany", StringComparison.CurrentCultureIgnoreCase));
-            }
-
-            if (role.Equals("BD", StringComparison.CurrentCultureIgnoreCase))
-            {
-            }
-            else if (role.Equals("Channel", StringComparison.CurrentCultureIgnoreCase))
-            {
-                roles.RemoveAll(r => r.Text.Equals("BD", StringComparison.CurrentCultureIgnoreCase));
-            }
-            else if (role.Equals("Company", StringComparison.CurrentCultureIgnoreCase))
-            {
-                roles.RemoveAll(r => r.Text.Equals("BD", StringComparison.CurrentCultureIgnoreCase));
-                roles.RemoveAll(r => r.Text.Equals("Channel", StringComparison.CurrentCultureIgnoreCase));
-            }
-
+            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId());
             var user = _appUserService.FindById(User.Identity.GetUserId());
 
             ViewBag.maxRebate = user.Rebate;
@@ -91,8 +83,8 @@ namespace Inscoo.Controllers
             {
                 var user = new AppUser()
                 {
-                    BankName=model.BankName,
-                    BankNumber=model.BankNumber,
+                    BankName = model.BankName,
+                    BankNumber = model.BankNumber,
                     UserName = model.UserName,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
@@ -118,24 +110,40 @@ namespace Inscoo.Controllers
             return _appUserService.AddToRoleAsync(user.Id, roleName);
         }
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            var model = _appUserService.FindById(id);
+            return View(model);
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(UserModel model)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    var user = _appUserService.FindById(model.Id);
+                    user.CompanyName = model.CompanyName;
+                    user.PhoneNumber = model.Phone;
+                    user.Email = model.Email;
+                    var result = await _appUserService.UpdateAsync(user);
+                    if (result.Succeeded)
+                        return RedirectToAction("Index");
+                    else
+                    {
+                        throw new Exception("修改失败");
+                    }
+                }
+                else
+                {
+                    throw new Exception("输入有误");
+                }
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
         public ActionResult ChangePassword()

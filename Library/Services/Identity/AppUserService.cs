@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Services.Identity
 {
@@ -214,6 +215,79 @@ namespace Services.Identity
                 throw e;
             }
         }
+        public List<string> GetRolesByUserId(string uId)
+        {
+            try
+            {
+                var roles = _userManager.GetRoles(uId);
+                if (!roles.Any()) throw new Exception("尚未给该用户分配角色");
+                return roles.ToList();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        public List<SelectListItem> GetRolesManagerPermissionByUserId(string uId, string valueField)
+        {
+            try
+            {
+                var allRoles = _appRoleManager.Roles.ToList();
+                var userRoles = GetRolesByUserId(uId);
+                if (!userRoles.Any())
+                {
+                    throw new Exception("尚未给该用户分配角色");
+                }
+                if (userRoles.Contains("Admin"))
+                {
+                }
+                else
+                {
+                    allRoles.RemoveAll(r => r.Name.Equals("Admin"));
+                    allRoles.RemoveAll(r => r.Name.Equals("InscooFinance"));
+                    allRoles.RemoveAll(r => r.Name.Equals("InsuranceCompany"));
+                }
+
+                if (userRoles.Contains("BusinessDeveloper"))
+                {
+                }
+
+                if (userRoles.Contains("PartnerChannel"))
+                {
+                    allRoles.RemoveAll(r => r.Name.Equals("BusinessDeveloper"));
+                }
+
+                if (userRoles.Contains("CompanyHR"))
+                {
+                    allRoles.RemoveAll(r => r.Name.Equals("BusinessDeveloper"));
+                    allRoles.RemoveAll(r => r.Name.Equals("PartnerChannel"));
+                }
+
+                if (!allRoles.Any())
+                {
+                    throw new Exception("尚未给该用户分配角色");
+                }
+                var result = new List<SelectListItem>();
+                if (valueField.Equals("Name", StringComparison.CurrentCultureIgnoreCase))
+                    result = allRoles.Select(r => new SelectListItem { Value = r.Name, Text = r.Description }).ToList();
+                else if (valueField.Equals("Id", StringComparison.CurrentCultureIgnoreCase))
+                    result = allRoles.Select(r => new SelectListItem { Value = r.Id, Text = r.Description }).ToList();
+                else
+                {
+                    throw new Exception("valueField 只能是Name或Id");
+                }
+                if (!result.Any())
+                {
+                    throw new Exception("尚未给该用户分配角色");
+                }
+                return result.ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)
         {
             try
@@ -237,7 +311,7 @@ namespace Services.Identity
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
-        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email)
+        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email, string role, string roleId)
         {
             try
             {
@@ -245,7 +319,16 @@ namespace Services.Identity
                 var user = _userManager.Users.ToList();
                 if (!string.IsNullOrEmpty(userName))
                 {
-                    user = user.Where(s => s.UserName == userName).ToList();
+                    user = user.Where(s => s.UserName.Contains(userName)).ToList();
+                }
+                if (!string.IsNullOrEmpty(role))
+                {
+                    var rId = _appRoleManager.FindByName(role).Id;
+                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
+                }
+                if (!string.IsNullOrEmpty(roleId))
+                {
+                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
                 }
                 if (!string.IsNullOrEmpty(email))
                 {

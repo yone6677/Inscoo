@@ -1,4 +1,4 @@
-﻿using Domain.Archives;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping

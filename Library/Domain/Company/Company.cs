@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace Domain
 {
-    public class CompanyInfo : BaseEntity
+    public class Company : BaseEntity
     {
 
         public string Name { set; get; }
         public string Code { set; get; }
         public string BusinessLicenseFilePath { set; get; }
+        /// <summary>
+        /// archive  id
+        /// </summary>
         public int? BusinessLicenseFileId { set; get; }
         public string Address { set; get; }
         public string LinkMan { set; get; }
@@ -20,7 +23,7 @@ namespace Domain
 
         public string UserId { set; get; }
 
-        //public virtual AppUser User { set; get; }
-        //public virtual FileUpLoad BusinessLicenseFile { set; get; }
+        public virtual AppUser User { set; get; }
+        public virtual Archive BusinessLicenseFile { set; get; }
     }
 }

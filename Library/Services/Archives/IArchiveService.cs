@@ -1,9 +1,9 @@
-﻿using Domain.Archives;
+﻿using Domain;
 using System;
 using System.Collections.Generic;
 using System.Web;
 
-namespace Services.Archives
+namespace Services
 {
     public interface IArchiveService
     {

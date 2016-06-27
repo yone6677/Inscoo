@@ -1,12 +1,12 @@
 ﻿using Core.Data;
-using Domain.Archives;
+using Domain;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Web;
 
-namespace Services.Archives
+namespace Services
 {
     public class ArchiveService : IArchiveService
     {

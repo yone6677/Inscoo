@@ -38,6 +38,13 @@ namespace Core.Data
         #endregion
 
         #region Methods
+        public AppDbContext DatabaseContext
+        {
+            get
+            {
+                return this._context as AppDbContext;
+            }
+        }
 
         /// <summary>
         /// Get entity by identifier
@@ -272,7 +279,6 @@ namespace Core.Data
                 else
                 {
                     entity.IsDeleted = true;
-                    DbContext.ChangeTracker.DetectChanges();
                     _context.SaveChanges();
                 }
                 if (isCached)
@@ -331,6 +337,22 @@ namespace Core.Data
 
                 var fail = new Exception(msg, dbEx);
                 throw fail;
+            }
+        }
+
+        public int InsertRange(IEnumerable<T> list)
+        {
+            try
+            {
+                foreach (T item in list)
+                {
+                    Entities.Add(item);
+                }
+                return _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 

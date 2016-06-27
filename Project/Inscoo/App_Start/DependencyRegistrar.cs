@@ -6,7 +6,7 @@ using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Services.Archives;
+using Services;
 using Services.Common;
 using Services.Identity;
 using Services.Navigations;

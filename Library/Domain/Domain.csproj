@@ -53,10 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archives\Archive.cs" />
+    <Compile Include="File\BusinessLicense.cs" />
+    <Compile Include="File\Archive.cs" />
+    <Compile Include="File\BaseFile.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Common\GenericAttribute.cs" />
-    <Compile Include="CompanyInfo.cs" />
+    <Compile Include="Company\Company.cs" />
     <Compile Include="Identity\AppRole.cs" />
     <Compile Include="Identity\AppRoleManager.cs" />
     <Compile Include="Identity\AppUser.cs" />

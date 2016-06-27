@@ -97,6 +97,7 @@
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
+    <Compile Include="Mapping\CompanyMapping.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\OrderBatchMap.cs" />

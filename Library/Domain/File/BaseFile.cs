@@ -1,24 +1,18 @@
 ﻿
-namespace Domain.Archives
+namespace Domain
 {
-    public class Archive : BaseEntity
+    public class BaseFile : BaseEntity
     {
         /// <summary>
         /// 文件名
         /// </summary>
         public string Name { get; set; }
-        /// <summary>
-        /// 类型
-        /// </summary>
-        public string Type { get; set; }
+       
         /// <summary>
         /// 路径
         /// </summary>
         public string Path { get; set; }
-        /// <summary>
-        /// 所属单号
-        /// </summary>
-        public int pId { get; set; }
+       
         /// <summary>
         /// 备注
         /// </summary>

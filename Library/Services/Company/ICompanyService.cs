@@ -32,7 +32,7 @@ namespace Services
         /// <param name="id"></param>
         /// <returns></returns>
         void DeletetById(int id);
-        PagedList<Company> GetCompanys(int pageIndex, int pageSize, vCompanySearch company);
+        PagedList<vCompanyList> GetCompanys(int pageIndex, int pageSize, vCompanySearch company);
         vCompanyEdit GetCompanyById(int id);
         /// <summary>
         /// 初始化企业名称下拉菜单

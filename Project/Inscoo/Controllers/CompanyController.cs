@@ -19,13 +19,13 @@ namespace Inscoo.Controllers
             _companyService = companyService;
         }
         // GET: User
-        public ActionResult ListSearch()
+        public ActionResult ListIndex()
         {
-            var model = new Company();
+            var model = new vCompanySearch();
             return View(model);
         }
 
-        public ActionResult List()
+        public ActionResult ListData()
         {
             //var roleId = Request.QueryString["roleId"];
             var companySearch = new vCompanySearch() { UserId = User.Identity.GetUserId() };
@@ -43,8 +43,9 @@ namespace Inscoo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult List(vCompanySearch companySearch)
+        public ActionResult ListData(vCompanySearch companySearch)
         {
+            companySearch.UserId = User.Identity.GetUserId();
             var pageIndex = Request.QueryString["roleId"];
             var pageCount = Request.QueryString["userName"];
             var list = _companyService.GetCompanys(1, 20, companySearch);

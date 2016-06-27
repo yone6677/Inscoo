@@ -18,7 +18,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Services
+namespace Inscoo
 {
     public class DependencyRegistrar
     {

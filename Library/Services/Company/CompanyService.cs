@@ -17,6 +17,7 @@ using Core.Data;
 using Domain;
 using Models;
 using Core.Pager;
+using System.Data.Entity;
 
 namespace Services
 {
@@ -138,11 +139,22 @@ namespace Services
             }
 
         }
-       
-        public PagedList<Company> GetCompanys(int pageIndex, int pageSize, vCompanySearch company)
+
+        public PagedList<vCompanyList> GetCompanys(int pageIndex, int pageSize, vCompanySearch company)
         {
-            var list = _repCompany.Table.Where(c => c.UserId == company.UserId);
-            return new PagedList<Company>(list, pageIndex, pageSize);
+            var list = _repCompany.Table.Where(c => c.UserId == company.UserId).Select(c => new vCompanyList
+            {
+                Id = c.Id,
+                Name = c.Name,
+                LinkMan = c.LinkMan,
+                Address = c.Address,
+                Phone = c.Phone,
+                Email = c.Email,
+                Code = c.Code,
+                BusinessLicenseFilePath = c.BusinessLicenseFilePath
+
+            }).AsNoTracking();
+            return new PagedList<vCompanyList>(list, pageIndex, pageSize);
         }
         public vCompanyEdit GetCompanyById(int id)
         {

@@ -5,8 +5,13 @@ using System.ComponentModel;
 
 namespace Models.Order
 {
-   public class OrderDatailsModel:BaseViewModel
+    public class OrderDatailsModel : BaseViewModel
     {
+        public OrderDatailsModel()
+        {
+            orderBatch = new List<OrderBatchModel>();
+            orderItem = new List<ProductModel>();
+        }
         [DisplayName("方案名称")]
         public string Name { get; set; }
         [DisplayName("产品备注")]
@@ -29,14 +34,16 @@ namespace Models.Order
         public string BusinessLicense { get; set; }
         [DisplayName("保险公司")]
         public string Insurer { get; set; }
-        [DisplayName("保单号吗")]
+        [DisplayName("保单号码")]
         public string PolicyNumber { get; set; }
         [DisplayName("生效日期")]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
         [DisplayName("失效日期")]
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
         [DisplayName("投保人数")]
         public int InsuranceNumber { get; set; }
+        [DisplayName("订单状态")]
+        public string State { get; set; }
 
         public List<OrderBatchModel> orderBatch { get; set; }
 

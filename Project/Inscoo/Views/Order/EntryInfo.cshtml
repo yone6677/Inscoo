@@ -102,7 +102,7 @@
             </li>
             <li>
                 <input type="hidden" name="StartDate" id="StartDate" value=@Model.StartDate.ToShortDateString() />
-                <input type="date" class="form-control" value=@Model.StartDate.ToShortDateString() disabled />
+                <input type="text" class="form-control" value=@Model.StartDate.ToShortDateString() disabled />
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })

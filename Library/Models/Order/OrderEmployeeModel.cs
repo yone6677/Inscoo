@@ -12,7 +12,7 @@ namespace Models.Order
         [DisplayName("证件号码")]
         public string IDNumber { get; set; }
         [DisplayName("生日")]
-        public DateTime BirBirthday { get; set; }
+        public DateTime Birthday { get; set; }
         [DisplayName("性别")]
         public string Sex { get; set; }
         [DisplayName("费用")]

@@ -43,7 +43,7 @@
         }
         <tr class=@cssClass>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompanyName)

@@ -17,7 +17,7 @@
                             @Html.DisplayNameFor(model => model.IDNumber)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.BirBirthday)
+                            @Html.DisplayNameFor(model => model.Birthday)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Sex)
@@ -55,7 +55,7 @@
                                 @Html.DisplayFor(modelItem => item.IDNumber)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BirBirthday)
+                                @item.Birthday.ToShortDateString()
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Sex)

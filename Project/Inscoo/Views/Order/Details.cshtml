@@ -3,13 +3,9 @@
 @{
     ViewBag.Title = "订单详细";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>OrderDatailsModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
+<div class="orderDetails">
+    <h4 class="text-primary">基本信息</h4>
+    <dl>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -87,7 +83,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.BusinessLicense)
+            <a href=@Model.BusinessLicense target="_blank">查看</a>
         </dd>
 
         <dt>
@@ -129,6 +125,116 @@
         <dd>
             @Html.DisplayFor(model => model.InsuranceNumber)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
     </dl>
+    <div class="clearfix"></div>
+    <h4 class="text-primary">投保批次</h4>
+    <div class="table-responsive">
+        <table class="table-bordered orderDetailsTable">
+            <tr>
+                <th>投保批次</th>
+                <th>状态</th>
+                <th>人员资料Excel</th>
+                <th>人员资料PDF</th>
+                <th>投保单PDF</th>
+                <th>付款通知书</th>
+                <th>下单时间</th>
+                <th>Inscoo确认时间</th>
+                <th>收款金额</th>
+                <th>收款时间</th>
+                <th>保险公司确认时间</th>
+                <th>快递单号</th>
+            </tr>
+            @{
+                if (Model.orderBatch.Count > 0)
+                {
+                    foreach (var item in Model.orderBatch)
+                    {
+                        <tr>
+                            <td>
+                                @item.BId
+                            </td>
+                            <td>
+                                @item.BState
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.EmpInfoFile))
+                                {
+                                    <a href=@item.EmpInfoFile target="_blank">查看</a>
+                                }
+                                else
+                                {
+                                    <span>暂无</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.EmpInfoFileSeal))
+                                {
+                                    <a href=@item.EmpInfoFileSeal target="_blank">查看</a>
+                                }
+                                else
+                                {
+                                    <span>暂无</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.PolicySeal))
+                                {
+                                    <a href=@item.PolicySeal target="_blank">查看</a>
+                                }
+                                else
+                                {
+                                    <span>暂无</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.PaymentNoticePDF))
+                                {
+                                    <a href=@item.PaymentNoticePDF target="_blank">查看</a>
+                                }
+                                else
+                                {
+                                    <span>暂无</span>
+                                }
+                            </td>
+                            <td>
+                                @item.PolicyHolderDate
+                            </td>
+                            <td>
+                                @item.InscooConfirmDate
+                            </td>
+                            <td>
+                                @item.AmountCollected
+                            </td>
+                            <td>
+                                @item.FinanceDate
+                            </td>
+                            <td>
+                                @item.InsurerConfirmDate
+                            </td>
+                            <td>
+                                @item.CourierNumber
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+    <div class="clearfix"></div>
+    <h4 class="text-primary">人员信息</h4>
+    @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
+    {
+        <input type="hidden" name="Id" value=@Model.Id />
+        <div id="dadaGrid">
+            @Html.Action("DetailsEmp", new { id = Model.Id })
+        </div>
+    }
+    <div class="clearfix"></div>
 </div>

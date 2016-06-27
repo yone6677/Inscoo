@@ -9,6 +9,8 @@ namespace Services.Orders
     {
         bool Insert(OrderEmployee item);
         bool DeleteById(int id);
+        bool Update(OrderEmployee item);
+        OrderEmployee GetById(int id);
         List<OrderEmployee> GetListByBid(int bid);
         List<OrderEmployee> GetListByOid(int oid);
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);

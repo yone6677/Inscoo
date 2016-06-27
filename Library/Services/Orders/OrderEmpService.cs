@@ -45,6 +45,31 @@ namespace Services.Orders
                 return false;
             }
         }
+        public OrderEmployee GetById(int id)
+        {
+            try
+            {
+                return _orderEmpRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                return null;
+            }
+        }
+        public bool Update(OrderEmployee item)
+        {
+            try
+            {
+                _orderEmpRepository.Update(item);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                return false;
+            }
+        }
         public bool Insert(OrderEmployee item)
         {
             try
@@ -115,8 +140,9 @@ namespace Services.Orders
                         Id = s.Id,
                         BankCard = s.BankCard,
                         BankName = s.BankName,
-                        BirBirthday = s.BirBirthday,
+                        Birthday = s.BirBirthday,
                         Email = s.Email,
+                        EndDate = s.EndDate,
                         IDNumber = s.IDNumber,
                         IDType = s.IDType,
                         Name = s.Name,

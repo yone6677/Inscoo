@@ -59,19 +59,47 @@ namespace Services.Orders
                 return false;
             }
         }
-        public List<OrderEmployee> GetList(int oid)
+        public List<OrderEmployee> GetListByBid(int bid)
         {
             try
             {
                 var query = _orderEmpRepository.Table;
-                if (oid > 0)
+                if (bid > 0)
                 {
-                    return query.Where(c => c.order_Id == oid).ToList();
+                    return query.Where(c => c.batch_Id == bid).ToList();
                 }
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetList");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetListByBid");
+            }
+            return new List<OrderEmployee>();
+        }
+        public List<OrderEmployee> GetListByOid(int oid)
+        {
+            try
+            {
+                var list = new List<OrderEmployee>();
+                var orderBatch = _orderService.GetById(oid).orderBatch;
+                if (orderBatch.Any())
+                {
+                    foreach (var b in orderBatch)
+                    {
+                        var query = GetListByBid(b.Id);
+                        if (query.Any())
+                        {
+                            foreach (var item in query)
+                            {
+                                list.Add(item);
+                            }
+                        }
+                    }
+                    return list;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetListByOid");
             }
             return new List<OrderEmployee>();
         }
@@ -79,8 +107,8 @@ namespace Services.Orders
         {
             try
             {
-                var query = GetList(oid);
-                if (query.Any())
+                var query = GetListByOid(oid);
+                if (query.Count > 0)
                 {
                     return new PagedList<OrderEmployeeModel>(query.Select(s => new OrderEmployeeModel
                     {
@@ -98,7 +126,6 @@ namespace Services.Orders
                         StartDate = s.StartDate,
                         HasSocialSecurity = s.HasSocialSecurity
                     }).ToList(), pageIndex, pageSize);
-
                 }
             }
             catch (Exception e)
@@ -111,7 +138,7 @@ namespace Services.Orders
         {
             try
             {
-                var list = GetList(oid);
+                var list = GetListByOid(oid);
                 if (list.Count > 0)
                 {
                     var order = _orderService.GetById(oid);
@@ -204,7 +231,7 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(order.InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("金额合计", font));
-                    table.AddCell(new PdfPCell() { Phrase = new Phrase(order.Amount + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { Phrase = new Phrase((order.InsuranceNumber * order.Pretium) + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("保险期间", font));
                     var yearRange = string.Format("一年（{0}-{1}）", order.StartDate.ToShortDateString(), order.EndDate.ToShortDateString());

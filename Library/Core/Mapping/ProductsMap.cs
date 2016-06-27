@@ -23,6 +23,7 @@ namespace Core.Mapping
             Property(p => p.HeadCount100).IsOptional().HasMaxLength(20);
             Property(p => p.InsuredCom).IsOptional().HasMaxLength(20);
             Property(p => p.ClaimCode).IsOptional().HasMaxLength(5);
+            Property(p => p.CommissionRate).IsOptional();              
         }
     }
 }

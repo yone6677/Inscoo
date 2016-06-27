@@ -31,9 +31,10 @@ namespace Inscoo.Controllers
         private readonly IOrderEmpService _orderEmpService;
         private readonly IOrderBatchService _orderBatchService;
         private readonly IResourceService _resourceService;
+        private readonly IAppRoleService _appRoleService;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService)
+            IResourceService resourceService, IAppRoleService appRoleService)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -45,6 +46,7 @@ namespace Inscoo.Controllers
             _orderEmpService = orderEmpService;
             _orderBatchService = orderBatchService;
             _resourceService = resourceService;
+            _appRoleService = appRoleService;
         }
         // GET: Oder
         public ActionResult Index()
@@ -53,6 +55,7 @@ namespace Inscoo.Controllers
             ViewBag.orderState = select;
             return View();
         }
+
         public ActionResult List()
         {
             var model = _orderService.GetListOfPager(1, 15);
@@ -227,7 +230,6 @@ namespace Inscoo.Controllers
                 }
                 var order = new Order();
                 order.AgeRange = model.AgeRange;
-                order.Amount = 0;
                 order.AnnualExpense = model.AnnualExpense;
                 order.CommissionType = null;//_appUserService.GetCurrentUser().;佣金计算方法，稍后在用户表增加
                 order.FanBao = model.FanBao;
@@ -239,8 +241,16 @@ namespace Inscoo.Controllers
                 order.TiYong = model.TiYong;
                 order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
                 int result = _orderService.Insert(order);
-                if (result > 0)//写产品
+                if (result > 0)//写产品&批次
                 {
+                    var ob = new OrderBatch()
+                    {
+                        order_Id = result,
+                        BState = 0,
+                        PolicyHolder = _appUserService.GetCurrentUser().Id,
+                        PolicyHolderDate = DateTime.Now
+                    };
+                    _orderBatchService.Insert(ob);
                     int staffnum = 0;
                     int avarag = 0;
                     var staff = _genericAttributeService.GetByKey(model.StaffRange, "StaffRange");
@@ -260,7 +270,7 @@ namespace Inscoo.Controllers
                         {
                             var orderItem = new OrderItem()
                             {
-                                CommissionRate = null,
+                                CommissionRate = _productService.GetById(item.Id).CommissionRate,//佣金比率
                                 CoverageSum = item.CoverageSum,
                                 InsuredWho = item.InsuredWho,
                                 order_Id = result,
@@ -279,6 +289,7 @@ namespace Inscoo.Controllers
             }
             return null;
         }
+
         public ActionResult EntryInfo(int id)
         {
             if (id > 0)
@@ -286,7 +297,7 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(id);
                 if (order.State > 0)
                 {
-                    var empCount = _orderEmpService.GetList(id);
+                    var empCount = _orderEmpService.GetListByOid(id);
                     var model = new EntryInfoModel()
                     {
                         Id = id,
@@ -321,7 +332,7 @@ namespace Inscoo.Controllers
                     entity.PhoneNumber = model.PhoneNumber;
                     entity.Address = model.Address;
                     entity.StartDate = model.StartDate;
-                    entity.EndDate = model.StartDate.AddYears(1);
+                    entity.EndDate = model.StartDate.AddYears(1).AddDays(-1);
                     entity.State = 2;//已完成人员上传
                     if (_orderService.Update(entity))
                     {
@@ -335,6 +346,11 @@ namespace Inscoo.Controllers
             }
             return View(model);
         }
+        /// <summary>
+        /// 完成第三步
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UploadFile(UploadInfoModel model)
@@ -430,8 +446,9 @@ namespace Inscoo.Controllers
             if (empinfo != null && Id > 0)
             {
                 var order = _orderService.GetById(Id);
+                var batch = _orderBatchService.GetByOrderId(Id);
                 //若有旧数据先删除
-                var oldInfo = _orderEmpService.GetList(Id);
+                var oldInfo = _orderEmpService.GetListByOid(Id);
                 if (oldInfo != null && oldInfo.Any())
                 {
                     foreach (var s in oldInfo)
@@ -455,8 +472,9 @@ namespace Inscoo.Controllers
                     if (Cells["A" + i].Value == null)
                         break;
                     var item = new OrderEmployee();
-                    item.order_Id = Id;
+                    item.batch_Id = batch.Id;//批次号
                     item.Premium = order.AnnualExpense;
+                    item.PMCode = PMType.PM00.ToString();
                     item.Name = Cells["A" + i].Value.ToString().Trim();
                     item.IDType = Cells["B" + i].Value.ToString().Trim();
                     item.IDNumber = Cells["C" + i].Value.ToString().Trim();
@@ -467,26 +485,18 @@ namespace Inscoo.Controllers
                     item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
                     item.Email = Cells["I" + i].Value.ToString().Trim();
                     item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                    item.StartDate = order.StartDate;
+                    item.EndDate = order.EndDate;
                     if (!_orderEmpService.Insert(item))
                     {
                         result = "上传失败";
                     }
                 }
                 order.InsuranceNumber = rowNumber - 1; //更新订单主表投保人数
-                order.Amount = (rowNumber - 1) * order.AnnualExpense;
                 _orderService.Update(order);
                 //定单批次
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
-                if (orderBatch == null)
-                {
-                    var ob = new OrderBatch()
-                    {
-                        order_Id = Id,
-                        EmpInfoFile = fileModel
-                    };
-                    _orderBatchService.Insert(ob);
-                }
-                else
+                if (orderBatch != null)
                 {
                     orderBatch.EmpInfoFile = fileModel;
                     _orderBatchService.Update(orderBatch);
@@ -596,11 +606,95 @@ namespace Inscoo.Controllers
                     model.YearPrice = order.AnnualExpense;
                     model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
                     model.Quantity = order.InsuranceNumber;
-                    model.Amount = order.Amount;
+                    model.Amount = order.Pretium * order.InsuranceNumber;
                     return View(model);
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        public ActionResult Details(int id)
+        {
+            try
+            {
+                var model = new OrderDatailsModel();
+                var user = _appUserService.GetCurrentUser();
+                var roles = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
+                var order = _orderService.GetById(id);
+                if (roles == "PartnerChannel" || roles == "CompanyHR")
+                {
+                    if (order.Author != user.UserName)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//安全起见，role为hr或者channel只能看自己的
+                    }
+                }
+                model.Address = order.Address;
+                model.AgeRange = order.AgeRange;
+                model.AnnualExpense = order.AnnualExpense;
+                model.BusinessLicense = _archiveService.GetById(order.BusinessLicense).Url;
+                model.CompanyName = order.CompanyName;
+                model.EndDate = order.EndDate;
+                model.Id = order.Id;
+                model.InsuranceNumber = order.InsuranceNumber;
+                model.Insurer = order.Insurer;
+                model.Linkman = order.Linkman;
+                model.Memo = order.Memo;
+                model.Name = order.Name;
+                model.PhoneNumber = order.PhoneNumber;
+                model.PolicyNumber = order.PolicyNumber;
+                model.StaffRange = order.StaffRange;
+                model.StartDate = order.StartDate;
+                model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
+                {
+                    CoverageSum = p.CoverageSum,
+                    Id = p.Id,
+                    InsuredWho = p.InsuredWho,
+                    OriginalPrice = p.OriginalPrice.ToString(),
+                    PayoutRatio = p.PayoutRatio,
+                    Price = p.Price.ToString(),
+                    ProdType = p.ProdType,
+                    SafeguardCode = p.SafeguardCode,
+                    SafeguardName = p.SafeguardName
+                }).ToList();
+                var orderBatch = _orderBatchService.GetList(id);
+                if (orderBatch.Count > 0)
+                {
+                    foreach(var b in orderBatch)
+                    {
+                        var batchItem = new OrderBatchModel();
+                        batchItem.AmountCollected = b.AmountCollected;
+                        batchItem.BId = b.Id;
+                        if (b.InscooConfirmDate != DateTime.MinValue)
+                        {
+                            batchItem.InscooConfirmDate = b.InscooConfirmDate.ToShortDateString();
+                        }
+                        if (b.InsurerConfirmDate != DateTime.MinValue)
+                        {
+                            batchItem.InsurerConfirmDate = b.InsurerConfirmDate.ToShortDateString();
+                        }
+                        var PaymentNoticePDF = _archiveService.GetById(b.PaymentNoticePDF);
+                        if (PaymentNoticePDF != null)
+                        {
+                            batchItem.PaymentNoticePDF = PaymentNoticePDF.Url;
+                        }
+                       
+                        if (b.PolicyHolderDate != DateTime.MinValue)
+                        {
+                            batchItem.PolicyHolderDate = b.PolicyHolderDate.ToShortDateString();
+                        }
+                        var PolicySeal = _archiveService.GetById(b.PolicySeal);
+                        if (PolicySeal != null)
+                        {
+                            batchItem.PolicySeal = PolicySeal.Url;
+                        }
+                        model.orderBatch.Add(batchItem);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
+            }
+            return View();
         }
     }
 }

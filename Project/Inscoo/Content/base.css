@@ -678,3 +678,8 @@ body {
 .Search dl dd p input:hover {
   background-color: #469B46;
 }
+.orderDetails {
+  width: 100%;
+  margin: .5em auto;
+  box-shadow: 0 0 3px #ccc;
+}

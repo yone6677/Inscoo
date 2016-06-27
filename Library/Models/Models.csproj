@@ -78,6 +78,7 @@
     <Compile Include="Infrastructure\FileType.cs" />
     <Compile Include="Infrastructure\LogLevel.cs" />
     <Compile Include="Infrastructure\LogsModel.cs" />
+    <Compile Include="Infrastructure\PMTypecs.cs" />
     <Compile Include="Infrastructure\SaveResultModel.cs" />
     <Compile Include="Insurance\CustomProductModel.cs" />
     <Compile Include="Insurance\ProductListModel.cs" />
@@ -85,7 +86,9 @@
     <Compile Include="Navigation\NavigationModel.cs" />
     <Compile Include="Order\ConfirmOrderModel.cs" />
     <Compile Include="Order\ConfirmPaymentModel.cs" />
+    <Compile Include="Order\OrderDatailsModel.cs" />
     <Compile Include="Order\EntryInfoModel.cs" />
+    <Compile Include="Order\OrderBatchModel.cs" />
     <Compile Include="Order\OrderEmployeeModel.cs" />
     <Compile Include="Order\OrderListModel.cs" />
     <Compile Include="Order\UploadInfoModel.cs" />

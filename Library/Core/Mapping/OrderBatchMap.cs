@@ -8,11 +8,13 @@ namespace Core.Mapping
         public OrderBatchMap()
         {
             ToTable("OrderBatch");
+            HasKey(b => b.Id);
+            HasMany(o => o.orderEmp).WithRequired(ee => ee.order).HasForeignKey(ee => ee.batch_Id);
             Property(b => b.order_Id).IsRequired();
             Property(b => b.AmountCollected).IsOptional();
             Property(b => b.Author).IsOptional().HasMaxLength(64);
             Property(b => b.BNum).IsOptional().HasMaxLength(32);
-            Property(b => b.BStatus).IsOptional().HasMaxLength(16);
+            Property(b => b.BState).IsOptional();
             Property(b => b.CollectionDate).IsOptional().HasColumnType("datetime2");
             Property(b => b.CourierNumber).IsOptional().HasMaxLength(32);
             Property(b => b.EmpInfoFile).IsOptional();

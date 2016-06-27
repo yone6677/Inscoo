@@ -9,7 +9,7 @@ namespace Core.Mapping
         {
             ToTable("OrderItem");
             Property(o => o.Author).IsRequired().HasMaxLength(256);
-            Property(o => o.CommissionRate).IsOptional().HasMaxLength(32);
+            Property(o => o.CommissionRate).IsOptional();
             Property(o => o.CoverageSum).IsRequired().HasMaxLength(32);
             Property(o => o.InsuredWho).IsRequired().HasMaxLength(32);          
             Property(o => o.OriginalPrice).IsRequired();

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Domain.Orders
 {
-   public class OrderBatch:BaseEntity
+    public class OrderBatch : BaseEntity
     {
         public int order_Id { get; set; }
         /// <summary>
@@ -11,7 +13,7 @@ namespace Domain.Orders
         /// <summary>
         /// 投保批次状态
         /// </summary>
-        public string BStatus { get; set; }
+        public int BState { get; set; }
         /// <summary>
         /// 人员资料文件
         /// </summary>
@@ -87,6 +89,11 @@ namespace Domain.Orders
         /// <summary>
         /// 保险公司备注
         /// </summary>
-        public string InsurerMemo { get; set; }     
+        public string InsurerMemo { get; set; }
+        /// <summary>
+        /// 人员详细
+        /// </summary>
+        public virtual ICollection<OrderEmployee> orderEmp { get; set; }
+        public virtual Order order { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Domain;
 using Inscoo.Models.Account;
 using Models.User;
 using Microsoft.AspNet.Identity;

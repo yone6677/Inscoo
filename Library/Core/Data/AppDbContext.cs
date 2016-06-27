@@ -1,4 +1,4 @@
-﻿using Core.Identity;
+﻿using Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data;

@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Identity;
+﻿using Domain;
 using Core.Pager;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;

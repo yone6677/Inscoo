@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
-using Core;
 using Core.Data;
-using Core.Identity;
+using Domain;
 using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;

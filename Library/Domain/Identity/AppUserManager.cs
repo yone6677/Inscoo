@@ -1,9 +1,8 @@
-﻿using Core.Data;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 
-namespace Core.Identity
+namespace Domain
 {
     public class AppUserManager : UserManager<AppUser>
     {

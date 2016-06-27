@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 
-namespace Core
+namespace Domain
+
 {
     public partial class AppUser : IdentityUser
     {

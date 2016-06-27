@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
-
+using Domain;
 namespace Core.Mapping
 {
     public class AppRoleMap : EntityTypeConfiguration<AppRole>

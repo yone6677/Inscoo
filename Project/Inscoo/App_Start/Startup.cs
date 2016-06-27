@@ -1,5 +1,5 @@
 ﻿using Core.Data;
-using Core.Identity;
+using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;

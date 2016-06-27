@@ -9,7 +9,8 @@ namespace Services.Orders
     {
         bool Insert(OrderEmployee item);
         bool DeleteById(int id);
-        List<OrderEmployee> GetList(int oid = 0);
+        List<OrderEmployee> GetListByBid(int bid);
+        List<OrderEmployee> GetListByOid(int oid);
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);
         List<string> GetPdf(int oid);
         List<string> GetPaymentNoticePdf(int oid);

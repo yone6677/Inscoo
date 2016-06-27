@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Domain.Orders
@@ -26,10 +25,6 @@ namespace Domain.Orders
         /// 产品价格
         /// </summary>
         public decimal AnnualExpense { get; set; }
-        /// <summary>
-        /// 订单总额
-        /// </summary>
-        public decimal Amount { get; set; }
         /// <summary>
         /// 对外售价
         /// </summary>
@@ -111,13 +106,10 @@ namespace Domain.Orders
         /// 产品详细
         /// </summary>
         public virtual ICollection<OrderItem> orderItem { get; set; }
-        /// <summary>
-        /// 人员详细
-        /// </summary>
-        public virtual ICollection<OrderEmployee> orderEmp { get; set; }
+
         /// <summary>
         /// 投保批次
         /// </summary>
-        public virtual OrderBatch orderBatch { get; set; }
+        public virtual ICollection<OrderBatch> orderBatch { get; set; }
     }
 }

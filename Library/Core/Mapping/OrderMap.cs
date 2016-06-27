@@ -8,12 +8,10 @@ namespace Core.Mapping
         public OrderMap()
         {
             ToTable("Orders");
-            HasKey(p => p.Id);
-            HasMany(p => p.orderItem).WithRequired(pp => pp.order).HasForeignKey(pp => pp.order_Id);
-            HasMany(p => p.orderEmp).WithRequired(ee => ee.order).HasForeignKey(ee => ee.order_Id);
-            Ignore(p => p.orderBatch);         
+            HasKey(o => o.Id);
+            HasMany(o => o.orderItem).WithRequired(pp => pp.order).HasForeignKey(pp => pp.order_Id);         
+            HasMany(o => o.orderBatch).WithRequired(b => b.order).HasForeignKey(b => b.order_Id);
             Property(o => o.AgeRange).IsRequired().HasMaxLength(64);
-            Property(o => o.Amount).IsRequired();
             Property(o => o.AnnualExpense).IsRequired();
             Property(o => o.Author).IsRequired().HasMaxLength(256);
             Property(o => o.CommissionType).IsOptional().HasMaxLength(64);

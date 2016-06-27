@@ -22,6 +22,9 @@ namespace Models.Order
         public string StaffRange { get; set; }
         [DisplayName("投保员工平均年龄")]
         public string AgeRange { get; set; }
+        /// <summary>
+        /// 保费
+        /// </summary>
         [DisplayName("保费（人/年）")]
         public decimal AnnualExpense { get; set; }
         [DisplayName("利润加成")]
@@ -38,6 +41,9 @@ namespace Models.Order
         /// 用户设置的返点
         /// </summary>
         public int UserRebate { get; set; }
+        /// <summary>
+        /// 对外售价，渠道有用
+        /// </summary>
         [DisplayName("对外售价")]
         public decimal pretium { get; set; }
         [DisplayName("产品信息")]

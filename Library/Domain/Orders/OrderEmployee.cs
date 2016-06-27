@@ -62,7 +62,7 @@ namespace Domain.Orders
         /// </summary>
         public DateTime EndDate { get; set; }
 
-        public virtual Order order { get; set; }
-        public int order_Id { get; set; }
+        public virtual OrderBatch order { get; set; }
+        public int batch_Id { get; set; }
     }
 }

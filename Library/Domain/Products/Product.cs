@@ -68,6 +68,10 @@ namespace Domain.Products
         /// 理赔代码
         /// </summary>
         public string ClaimCode { get; set; }
+        /// <summary>
+        /// 佣金比例
+        /// </summary>
+        public float CommissionRate { get; set; }
 
         public string changer { get; set; }
     }

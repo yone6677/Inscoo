@@ -38,7 +38,7 @@ namespace Domain.Orders
         /// <summary>
         /// 佣金比率
         /// </summary>
-        public string CommissionRate { get; set; }
+        public float CommissionRate { get; set; }
 
         public virtual Order order { get; set; }
         public int order_Id { get; set; }

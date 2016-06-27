@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Core.Pager;
 using Models.Order;
 using System.Linq;
+using Services.Identity;
 
 namespace Services.Orders
 {
@@ -15,11 +16,13 @@ namespace Services.Orders
         private readonly ILoggerService _loggerService;
         private readonly IRepository<Order> _orderRepository;
         private readonly IAuthenticationManager _authenticationManager;
-        public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager)
+        private readonly IAppUserService _appUserService;
+        public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager, IAppUserService appUserService)
         {
             _loggerService = loggerService;
             _orderRepository = orderRepository;
             _authenticationManager = authenticationManager;
+            _appUserService = appUserService;
         }
         public bool Delete(Order item)
         {
@@ -83,6 +86,9 @@ namespace Services.Orders
             try
             {
                 var query = _orderRepository.Table;
+                //根据角色获得列表
+                //var role = _appUserService.GetCurrentUser().Roles.FirstOrDefault();
+
                 if (!string.IsNullOrEmpty(name))
                 {
                     query = query.Where(q => q.Name.Contains(name));
@@ -123,7 +129,7 @@ namespace Services.Orders
                 {
                     return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
                     {
-                        Amount = s.Amount,
+                        Amount = s.Pretium * s.InsuranceNumber,
                         AnnualExpense = s.AnnualExpense,
                         CompanyName = s.CompanyName,
                         CreateDate = s.CreateTime,

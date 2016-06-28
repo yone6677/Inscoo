@@ -1,104 +1,224 @@
 ﻿@model Models.Order.AuditOrderModel
-
-
-@using (Html.BeginForm())
+<h4 class="text-primary">审核意见</h4>
+@using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.OId)
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    if (Model.Role == "InscooOperator" || Model.Role == "Admin")
+    if (Model.State == 0)
     {
-        <div class="orderDetailsExamine">
-            <ul>
-                <li>
-                    @Html.LabelFor(model => model.InscooAudit)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.InscooAudit)
-                </li>
-                <li>
-                    审核
-                </li>
-                <li>
-                    <input type="submit" value="确定" />
-                </li>
-            </ul>
-        </div>
-    }
-    if (Model.Role == "InscooFinance" || Model.Role == "Admin")
-    {
-        <div class="orderDetailsExamine">
-            <ul>
-                <li>
-                    @Html.LabelFor(model => model.FinanceAudit)
-                </li>
-                <li>
-                    @Html.CheckBoxFor(model => model.FinanceAudit)
-                </li>
-                <li>
-                    @Html.LabelFor(model => model.AmountCollected)
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.AmountCollected, new { htmlAttributes = new { @type = "number" } })
-                </li>
-                <li>
-                    @Html.LabelFor(model => model.CollectionDate)
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.CollectionDate, new { htmlAttributes = new { @type = "datetime" } })
-                </li>
-                <li>
-                    @Html.LabelFor(model => model.TransferVoucher)
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.TransferVoucher)
-                </li>
-                <li>
-                    审核
-                </li>
-                <li>
-                    <input type="submit" value="确定" />
-                </li>
-            </ul>
-        </div>
-    }
-    if (Model.Role == "InsuranceCompany" || Model.Role == "Admin")
-    {
-        if (Model.Insurer == Model.UserCompany)
+        if (Model.Role == "InscooOperator" || Model.Role == "Admin")
         {
+            <input type="hidden" name="rid" value="1" />
             <div class="orderDetailsExamine">
                 <ul>
                     <li>
-                        @Html.LabelFor(model => model.InsurerAudit)
+                        @Html.LabelFor(model => model.InscooAudit)
                     </li>
                     <li>
-                        @Html.CheckBoxFor(model => model.InsurerAudit)
+                        <label class="checkbox-inline">
+                            <input type="radio" name="InscooAudit" value="true" checked="checked" /> 同意
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="InscooAudit" value="false" /> 拒绝
+                        </label>
                     </li>
                     <li>
-                        @Html.LabelFor(model => model.CourierNumber)
-                    </li>
-                    <li>
-                        @Html.EditorFor(model => model.CourierNumber)
-                    </li>
-                    <li>
-                        @Html.LabelFor(model => model.InsurerMemo)
-                    </li>
-                    <li>
-                        @Html.EditorFor(model => model.InsurerMemo)
-                    </li>
-                    <li>
-                        审核
-                    </li>
-                    <li>
-                        <input type="submit" value="确定" />
+                        @Html.ValidationMessageFor(model => model.InscooAudit, "", new { @class = "text-danger" })
                     </li>
                 </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div style="text-align:center;padding-bottom:.5em;">
+                <input type="submit" value="送出审核" class="btn btn-default" />
             </div>
         }
     }
-}
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    if (Model.State == 1)//inscoo通过审核
+    {
+        if (Model.Role == "InscooFinance" || Model.Role == "Admin")
+        {
+            <input type="hidden" name="rid" value="2" />
+            <div class="orderDetailsExamine">
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.FinanceAudit)
+                    </li>
+                    <li>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="FinanceAudit" value="true" checked="checked" /> 同意
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="FinanceAudit" value="false" /> 拒绝
+                        </label>
+                    </li>
+                    <li>
+                        @Html.ValidationMessageFor(model => model.FinanceAudit, "", new { @class = "text-danger" })
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.AmountCollected)
+                    </li>
+                    <li>
+                        @Html.EditorFor(model => model.AmountCollected, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                    </li>
+                    <li>
+                        @Html.ValidationMessageFor(model => model.AmountCollected, "", new { @class = "text-danger" })
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.CollectionDate)
+                    </li>
+                    <li>
+                        <input type="date" name="CollectionDate" id="CollectionDate" value="" class="form-control" />
+                    </li>
+                    <li>
+
+                        @Html.ValidationMessageFor(model => model.CollectionDate, "", new { @class = "text-danger" })
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.TransferVoucher)
+                    </li>
+                    <li>
+                        @Html.EditorFor(model => model.TransferVoucher, new { htmlAttributes = new { @class = "form-control" } })
+                    </li>
+                    <li>
+                        @Html.ValidationMessageFor(model => model.TransferVoucher, "", new { @class = "text-danger" })
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.FinanceMemo)
+                    </li>
+                    <li>
+                        @Html.EditorFor(model => model.FinanceMemo, new { htmlAttributes = new { @class = "form-control" } })
+                    </li>
+                    <li>
+                        @Html.ValidationMessageFor(model => model.FinanceMemo, "", new { @class = "text-danger" })
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div style="text-align:center;padding-bottom:.5em;">
+                <input type="button" value="送出审核" class="btn btn-default" onclick="auditCheck(1)" />
+            </div>
+        }
+    }
+    if (Model.State == 3)//财务通过审核
+    {
+        if (Model.Role == "InsuranceCompany" || Model.Role == "Admin")
+        {
+            if (Model.Insurer != Model.UserCompany)
+            {
+                <input type="hidden" name="rid" value="3" />
+                <div class="orderDetailsExamine">
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.InsurerAudit)
+                        </li>
+                        <li>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="InsurerAudit" value="true" checked="checked" /> 同意
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="InsurerAudit" value="false" /> 拒绝
+                            </label>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.CourierNumber)
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.CourierNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.CourierNumber, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.PolicyNumber)
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.PolicyNumber, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.InsurerMemo)
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.InsurerMemo, new { htmlAttributes = new { @class = "form-control" } })
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div style="text-align:center;padding-bottom:.5em;">
+                    <input type="button" value="送出审核" class="btn btn-default" onclick="auditCheck(2)" />
+                </div>
+            }
+        }
+    }
+    <div style="line-height:2em;width:100%;text-align:center;">
+        <span class="text-danger" id="auditError"></span>
+    </div>
+    <script>
+        function auditCheck(e) {
+            var from = $("#AuditOrderForm");
+            var error = $("#auditError");
+            if (e == 1) {
+                var AmountCollected = $("#AmountCollected");
+                if (AmountCollected.val() < 1) {
+                    error.text("金额有误，请重新输入");
+                }
+                else{
+                    var collectionDate = $("#CollectionDate").val();
+                    if (!dateCompare(collectionDate)) {
+                        error.text("收款时间有误，请重新输入，注意不能大于当前时间。");
+                    }
+                    else{
+                        var TransferVoucher=$("#TransferVoucher").val();
+                        if(TransferVoucher.length<2){
+                            error.text("转账流水号为必须填写");
+                        }
+                        else{
+                            from.submit();
+                        }
+                    }
+                }
+            }
+            if(e == 2){
+                var PolicyNumber=$("#PolicyNumber").val();
+                if(PolicyNumber.length<3){
+                    error.text("请填写保单号码");
+                    return;
+                }
+                from.submit();
+            }
+        }
+        function dateCompare(startdate) {
+            @{
+                 var ts = DateTime.Now.ToUniversalTime() - DateTime.Parse("1970-1-1");
+             }
+            var nowDate=@ts.TotalMilliseconds.ToString("0");
+            var arr = startdate.split("-");
+            var starttime = new Date(arr[0], arr[1]-1, arr[2]);
+            var starttimes = starttime.getTime();
+            if(nowDate >= starttimes && !isNaN(starttimes)){
+                return true;
+            }
+            else
+                return false;
+        }
+    </script>
+    }

@@ -8,6 +8,7 @@ using Core.Pager;
 using Models.Order;
 using System.Linq;
 using Services.Identity;
+using Services.Common;
 
 namespace Services.Orders
 {
@@ -17,12 +18,15 @@ namespace Services.Orders
         private readonly IRepository<Order> _orderRepository;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IAppUserService _appUserService;
-        public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager, IAppUserService appUserService)
+        private readonly IGenericAttributeService _genericAttributeService;
+        public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager, IAppUserService appUserService,
+            IGenericAttributeService genericAttributeService)
         {
             _loggerService = loggerService;
             _orderRepository = orderRepository;
             _authenticationManager = authenticationManager;
             _appUserService = appUserService;
+            _genericAttributeService = genericAttributeService;
         }
         public bool Delete(Order item)
         {
@@ -137,8 +141,8 @@ namespace Services.Orders
                         InsuranceNumber = s.InsuranceNumber,
                         Name = s.Name,
                         StartDate = s.StartDate,
-                        State = s.State
-                    }).ToList(), pageIndex, pageSize);
+                        State = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key
+                    }).OrderByDescending(s=>s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }
             catch (Exception e)

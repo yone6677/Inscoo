@@ -309,11 +309,11 @@ namespace Inscoo.Controllers
                     };
                     if (order.StartDate == DateTime.MinValue)
                     {
-                        model.StartDate = order.CreateTime.AddDays(3);
+                        model.StartDate = order.CreateTime.AddDays(3).ToShortDateString();
                     }
                     else
                     {
-                        model.StartDate = order.StartDate;
+                        model.StartDate = order.StartDate.ToShortDateString();
                     }
                     model.State = order.State;
                     return View(model);
@@ -335,8 +335,8 @@ namespace Inscoo.Controllers
                     order.Linkman = model.Linkman;
                     order.PhoneNumber = model.PhoneNumber;
                     order.Address = model.Address;
-                    order.StartDate = model.StartDate;
-                    order.EndDate = model.StartDate.AddYears(1).AddDays(-1);
+                    order.StartDate = DateTime.Parse(model.StartDate);
+                    order.EndDate = DateTime.Parse(model.StartDate).AddYears(1).AddSeconds(-1);
                     order.State = 2;//已完成人员上传
                     if (_orderService.Update(order))
                     {
@@ -673,7 +673,7 @@ namespace Inscoo.Controllers
                 model.EndDate = order.EndDate.ToShortDateString();
                 model.Id = order.Id;
                 model.InsuranceNumber = order.InsuranceNumber;
-                model.Insurer = _genericAttributeService.GetByKey(null, "InsuranceCompany", order.Insurer).Key; 
+                model.Insurer = _genericAttributeService.GetByKey(null, "InsuranceCompany", order.Insurer).Key;
                 model.Linkman = order.Linkman;
                 model.Memo = order.Memo;
                 model.Name = order.Name;
@@ -681,18 +681,7 @@ namespace Inscoo.Controllers
                 model.PolicyNumber = order.PolicyNumber;
                 model.StaffRange = order.StaffRange;
                 model.StartDate = order.StartDate.ToShortDateString();
-                if (order.State == 5)
-                {
-                    model.State = "已完成";
-                }
-                if (order.State == 6)
-                {
-                    model.State = "未通过审核";
-                }
-                if (order.State < 5)
-                {
-                    model.State = "未完成";
-                }
+                model.State = _genericAttributeService.GetByKey(null, "orderState", order.State.ToString()).Key;
                 model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
                 {
                     CoverageSum = p.CoverageSum,
@@ -715,6 +704,13 @@ namespace Inscoo.Controllers
                         batchItem.BId = b.Id;
                         batchItem.InscooConfirmDate = b.InscooConfirmDate;
                         batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
+                        batchItem.FinanceDate = b.FinanceDate;
+                        batchItem.CollectionDate = b.CollectionDate;
+                        batchItem.FinanceMemo = b.FinanceMemo;
+                        batchItem.TransferVoucher = b.TransferVoucher;
+                        batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
+                        batchItem.CourierNumber = b.CourierNumber;
+                        batchItem.InsurerMemo = b.InsurerMemo;
                         var PaymentNoticePDF = _archiveService.GetById(b.PaymentNoticePDF);
                         if (PaymentNoticePDF != null)
                         {
@@ -782,6 +778,7 @@ namespace Inscoo.Controllers
             {
                 var batch = _orderBatchService.GetById(model.Id);
                 var userName = User.Identity.Name;
+                var order = _orderService.GetById(model.OId);
                 if (model.rid == 1)//inscoo
                 {
                     batch.InscooConfirm = userName;
@@ -789,10 +786,12 @@ namespace Inscoo.Controllers
                     if (model.InscooAudit)
                     {
                         batch.BState = 1;//通过
+                        order.State = 5;//待支付
                     }
                     else
                     {
                         batch.BState = 2;//拒绝
+                        order.State = 7;
                     }
                 }
                 if (model.rid == 2)//finance
@@ -810,26 +809,31 @@ namespace Inscoo.Controllers
                     else
                     {
                         batch.BState = 4;//拒绝
-                    } 
+                        order.State = 7;
+                    }
                 }
-                if (model.Id == 3)//nsurer
+                if (model.rid == 3)//nsurer
                 {
                     batch.Insurer = userName;
                     batch.InsurerConfirmDate = DateTime.Now;
                     batch.InsurerMemo = model.InsurerMemo;
                     batch.CourierNumber = model.CourierNumber;
-                    if(model.InsurerAudit)
+                    if (model.InsurerAudit)
                     {
-                        batch.BState = 5;
+                        batch.BState = 5;//订单完结
+                        order.State = 6;
+                        order.PolicyNumber = model.PolicyNumber;
+                        order.ConfirmedDate = DateTime.Now;
                     }
                     else
                     {
                         batch.BState = 6;
+                        order.State = 7;
                     }
                 }
-                if (_orderBatchService.Update(batch))
+                if (_orderBatchService.Update(batch) && _orderService.Update(order))
                 {
-                    return RedirectToAction("Details", new { id = model.OId });
+                    return Redirect("/Order/Details/" + model.Id);
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

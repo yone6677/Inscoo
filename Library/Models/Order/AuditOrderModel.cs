@@ -29,14 +29,21 @@ namespace Models.Order
         [Required]
         public decimal AmountCollected { get; set; }
         [DisplayName("收款日期")]
+        [Required]
         public DateTime CollectionDate { get; set; }
         [DisplayName("转账流水号")]
+        [Required]
         public string TransferVoucher { get; set; }
         [DisplayName("审核意见/备注")]
+        [Required]
         public string FinanceMemo { get; set; }
         [DisplayName("是否同意")]
         public bool InsurerAudit { get; set; }
+        [DisplayName("保单号码")]
+        [Required]
+        public string PolicyNumber { get; set; }
         [DisplayName("快递单号")]
+        [Required]
         public string CourierNumber { get; set; }
         [DisplayName("审核意见/备注")]
         public string InsurerMemo { get; set; }

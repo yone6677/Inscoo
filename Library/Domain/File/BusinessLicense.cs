@@ -3,8 +3,7 @@ namespace Domain
 {
     public class BusinessLicense : BaseFile
     {
-        public string UserId { set; get; }
-
-        public virtual AppUser AppUser { set; get; }
+        public int CompanyId { set; get; }
+        public virtual Company Company { set; get; }
     }
 }

@@ -46,8 +46,6 @@ namespace Models
         public string Code { set; get; }
 
         [DisplayName("营业执照")]
-        [Editable(false)]
         public string BusinessLicenseFilePath { set; get; }
-        public int BusinessLicenseFileId { set; get; }
     }
 }

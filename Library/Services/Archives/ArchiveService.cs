@@ -11,15 +11,17 @@ namespace Services
     public class ArchiveService : IArchiveService
     {
         private readonly IRepository<Archive> _archiveRepository;
+        private readonly IRepository<BusinessLicense> _rpBusinessLicense;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
         private readonly IFileService _fileService;
-        public ArchiveService(IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService)
+        public ArchiveService(IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense)
         {
             _archiveRepository = archiveRepository;
             _authenticationManager = authenticationManager;
             _loggerService = loggerService;
             _fileService = fileService;
+            _rpBusinessLicense = rpBusinessLicense;
         }
         public int InsertByUrl(List<string> fileInfo, string type, int pid, string memo)
         {
@@ -66,6 +68,30 @@ namespace Services
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "Archive：Insert");
+            }
+            return 0;
+        }
+        public int InsertBusinessLicense(HttpPostedFileBase file, string userName, int companyId)
+        {
+            try
+            {
+                var model = _fileService.SaveFile(file);
+                if (model != null)
+                {
+                    var item = new BusinessLicense()
+                    {
+                        CompanyId = companyId,
+                        Author = userName,
+                        Name = model.Name + model.Postfix,
+                        Path = model.Path,
+                        Url = model.Path + model.Name + model.Postfix
+                    };
+                    return _rpBusinessLicense.InsertGetId(item);
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
             }
             return 0;
         }

@@ -367,7 +367,7 @@ namespace Core.Data
         {
             get
             {
-                return Entities;
+                return Entities.Where(s => !s.IsDeleted);
             }
         }
         public virtual IQueryable<T> TableFromBuffer(int expire)
@@ -396,7 +396,7 @@ namespace Core.Data
         {
             get
             {
-                return Entities.AsNoTracking();
+                return Entities.Where(s => !s.IsDeleted).AsNoTracking();
             }
         }
 

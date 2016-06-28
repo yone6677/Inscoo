@@ -22,7 +22,6 @@ namespace Core.Mapping
             Property(c => c.LinkMan).HasMaxLength(100).IsRequired();
 
             HasRequired(c => c.User).WithMany().HasForeignKey(c => c.UserId);
-            HasOptional(c => c.BusinessLicenseFile).WithMany().HasForeignKey(c => c.BusinessLicenseFileId);
         }
     }
 }

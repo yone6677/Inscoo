@@ -30,7 +30,7 @@ namespace Services
         }
 
 
-        public int AddNewCompany(vCompanyAdd model, string userId, int businessLicenseFileId, string businessLicenseFilePath)
+        public int AddNewCompany(vCompanyAdd model, string userId)
         {
             try
             {
@@ -42,20 +42,14 @@ namespace Services
                     Phone = model.Phone,
                     LinkMan = model.LinkMan,
                     Email = model.Email,
-                    BusinessLicenseFileId = businessLicenseFileId,
-                    BusinessLicenseFilePath = businessLicenseFilePath,
                     Code = GenerateNewCode()
                 };
-                _repCompany.Insert(item);
-                return item.Id;
+
+                return _repCompany.InsertGetId(item);
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
-                throw new Exception(e.Message);
-            }
-            catch (Exception)
-            {
-                throw new Exception("操作失败");
+                throw e;
             }
         }
         public bool AddNewInfoList(List<vCompanyAdd> list, string userId)
@@ -142,7 +136,12 @@ namespace Services
 
         public PagedList<vCompanyList> GetCompanys(int pageIndex, int pageSize, vCompanySearch company)
         {
-            var list = _repCompany.Table.Where(c => c.UserId == company.UserId).Select(c => new vCompanyList
+
+            var list = _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c =>
+            c.UserId == company.UserId
+            && (string.IsNullOrEmpty(company.Name) || c.Name.Contains(company.Name))
+              && (string.IsNullOrEmpty(company.Address) || c.Address.Contains(company.Address))
+            ).Select(c => new vCompanyList
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -151,23 +150,23 @@ namespace Services
                 Phone = c.Phone,
                 Email = c.Email,
                 Code = c.Code,
-                BusinessLicenseFilePath = c.BusinessLicenseFilePath
+                BusinessLicenseFilePath = c.BusinessLicenses.OrderByDescending(b => b.Id).FirstOrDefault().Url
 
-            }).AsNoTracking();
+            }).OrderBy(c => c.Id).AsNoTracking();
             return new PagedList<vCompanyList>(list, pageIndex, pageSize);
         }
         public vCompanyEdit GetCompanyById(int id)
         {
             try
             {
-                return _repCompany.Table.Where(c => c.Id == id).Select(c => new vCompanyEdit
+                return _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c => c.Id == id).Select(c => new vCompanyEdit
                 {
                     Id = c.Id,
                     Name = c.Name,
                     Address = c.Address,
                     Phone = c.Phone,
                     Code = c.Code,
-                    BusinessLicenseFilePath = c.BusinessLicenseFilePath,
+                    BusinessLicenseFilePath = c.BusinessLicenses.OrderByDescending(b => b.Id).FirstOrDefault().Url,
                     Email = c.Email,
                     LinkMan = c.LinkMan,
                 }).FirstOrDefault();
@@ -205,12 +204,6 @@ namespace Services
                 item.Phone = model.Phone;
                 item.LinkMan = model.LinkMan;
                 item.Email = model.Email;
-                //item.BusinessLicense = model.BusinessLicense;
-                item.Code = model.Code;
-                item.BusinessLicenseFileId = model.BusinessLicenseFileId;
-                item.BusinessLicenseFilePath = model.BusinessLicenseFilePath;
-
-
                 _repCompany.Update(item);
                 return true;
             }

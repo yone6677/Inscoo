@@ -18,7 +18,7 @@ namespace Services
         /// <param name="businessLicenseFileId"></param>
         /// <param name="businessLicenseFilePath"></param>
         /// <returns></returns>
-        int AddNewCompany(vCompanyAdd model, string userId, int businessLicenseFileId, string businessLicenseFilePath);
+        int AddNewCompany(vCompanyAdd model, string userId);
         bool AddNewInfoList(List<vCompanyAdd> list, string userId);
         /// <summary>
         /// 通过上传文件新增企业信息

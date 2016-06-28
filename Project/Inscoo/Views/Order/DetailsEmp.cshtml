@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Models.Order.OrderEmployeeModel>
+
+<div class="table-responsive">
+    <table class="orderDetailsTable table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Premium)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankCard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasSocialSecurity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDNumber)
+                </td>
+                <td>
+                    @item.Birthday.ToShortDateString()                 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Premium)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasSocialSecurity)
+                </td>
+                <td>
+                    @item.StartDate.ToShortDateString()
+                </td>
+                <td>
+                    @item.EndDate.ToShortDateString()
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command, null, "employeeInfo")
+}

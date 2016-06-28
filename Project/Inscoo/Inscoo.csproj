@@ -370,6 +370,7 @@
     <Content Include="Views\Company\ListIndex.cshtml" />
     <Content Include="Views\Company\Create.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
+    <Content Include="Views\Order\DetailsEmp.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

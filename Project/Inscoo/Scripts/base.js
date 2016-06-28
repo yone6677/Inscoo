@@ -1,8 +1,8 @@
 ﻿function restPagerIndex() {
     $('#PageIndex').val('1');
 }
-function AjaxPager(pageIndex, pageSize) {
-    $('#PageSize').val(pageSize); $('#PageIndex').val(pageIndex); $('#searchForm').submit();
+function AjaxPager(pageIndex, pageSize, formId) {
+    $('#PageSize').val(pageSize); $('#PageIndex').val(pageIndex); $('#' + formId).submit();
 }
 function RestSumbit(e) {
     $(e).submit();

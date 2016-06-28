@@ -683,3 +683,42 @@ body {
   margin: .5em auto;
   box-shadow: 0 0 3px #ccc;
 }
+.orderDetails h4 {
+  display: block;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-indent: 2em;
+  width: 100%;
+  box-shadow: 0 1px 0 #ddd;
+}
+.orderDetails dl {
+  width: 96%;
+  margin: 0 auto;
+}
+.orderDetails dl dt {
+  width: 20%;
+  height: 2em;
+  line-height: 2em;
+  text-align: right;
+  float: left;
+  box-shadow: 0 1px 0 #eee;
+  color: #666;
+}
+.orderDetails dl dd {
+  width: 30%;
+  height: 2em;
+  line-height: 2em;
+  text-align: left;
+  float: left;
+  text-indent: 1em;
+  box-shadow: 0 1px 0 #eee;
+}
+.orderDetailsTable {
+  min-width: 1200px;
+  margin-bottom: .5em;
+}
+.orderDetailsTable tr th {
+  line-height: 2em;
+  background-color: #24A9E4;
+  color: #fff;
+}

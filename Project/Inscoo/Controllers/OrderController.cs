@@ -323,18 +323,33 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
 
-                var entity = _orderService.GetById(model.Id);
-                if (entity != null)
+                var order = _orderService.GetById(model.Id);
+                if (order != null)
                 {
-                    entity.CompanyName = model.CompanyName;
-                    entity.Linkman = model.Linkman;
-                    entity.PhoneNumber = model.PhoneNumber;
-                    entity.Address = model.Address;
-                    entity.StartDate = model.StartDate;
-                    entity.EndDate = model.StartDate.AddYears(1).AddDays(-1);
-                    entity.State = 2;//已完成人员上传
-                    if (_orderService.Update(entity))
+                    order.CompanyName = model.CompanyName;
+                    order.Linkman = model.Linkman;
+                    order.PhoneNumber = model.PhoneNumber;
+                    order.Address = model.Address;
+                    order.StartDate = model.StartDate;
+                    order.EndDate = model.StartDate.AddYears(1).AddDays(-1);
+                    order.State = 2;//已完成人员上传
+                    if (_orderService.Update(order))
                     {
+                        var emplist = _orderEmpService.GetListByOid(model.Id);
+                        if (emplist.Count > 0)
+                        {
+                            foreach (var e in emplist)
+                            {
+                                var emp = _orderEmpService.GetById(e.Id);
+                                if (emp != null)
+                                {
+                                    emp.StartDate = order.StartDate;
+                                    emp.EndDate = order.EndDate;
+                                    _orderEmpService.Update(emp);
+                                }
+                            }
+
+                        }
                         return RedirectToAction("UploadFile", new { id = model.Id });
                     }
                     else
@@ -611,6 +626,23 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+        public ActionResult DetailsEmp(int Id, int PageIndex = 1, int PageSize = 15)
+        {
+            if (Id > 0)
+            {
+                var model = _orderEmpService.GetListOfPager(PageIndex, PageSize, Id);
+                var command = new PageCommand()
+                {
+                    PageIndex = model.PageIndex,
+                    PageSize = model.PageSize,
+                    TotalCount = model.TotalCount,
+                    TotalPages = model.TotalPages
+                };
+                ViewBag.pageCommand = command;
+                return PartialView(model);
+            }
+            return null;
+        }
         public ActionResult Details(int id)
         {
             try
@@ -631,7 +663,7 @@ namespace Inscoo.Controllers
                 model.AnnualExpense = order.AnnualExpense;
                 model.BusinessLicense = _archiveService.GetById(order.BusinessLicense).Url;
                 model.CompanyName = order.CompanyName;
-                model.EndDate = order.EndDate;
+                model.EndDate = order.EndDate.ToShortDateString();
                 model.Id = order.Id;
                 model.InsuranceNumber = order.InsuranceNumber;
                 model.Insurer = order.Insurer;
@@ -641,7 +673,19 @@ namespace Inscoo.Controllers
                 model.PhoneNumber = order.PhoneNumber;
                 model.PolicyNumber = order.PolicyNumber;
                 model.StaffRange = order.StaffRange;
-                model.StartDate = order.StartDate;
+                model.StartDate = order.StartDate.ToShortDateString();
+                if (order.State == 5)
+                {
+                    model.State = "已完成";
+                }
+                if (order.State == 6)
+                {
+                    model.State = "未通过审核";
+                }
+                if (order.State < 5)
+                {
+                    model.State = "未完成";
+                }
                 model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
                 {
                     CoverageSum = p.CoverageSum,
@@ -657,7 +701,7 @@ namespace Inscoo.Controllers
                 var orderBatch = _orderBatchService.GetList(id);
                 if (orderBatch.Count > 0)
                 {
-                    foreach(var b in orderBatch)
+                    foreach (var b in orderBatch)
                     {
                         var batchItem = new OrderBatchModel();
                         batchItem.AmountCollected = b.AmountCollected;
@@ -675,7 +719,7 @@ namespace Inscoo.Controllers
                         {
                             batchItem.PaymentNoticePDF = PaymentNoticePDF.Url;
                         }
-                       
+
                         if (b.PolicyHolderDate != DateTime.MinValue)
                         {
                             batchItem.PolicyHolderDate = b.PolicyHolderDate.ToShortDateString();
@@ -685,15 +729,25 @@ namespace Inscoo.Controllers
                         {
                             batchItem.PolicySeal = PolicySeal.Url;
                         }
+                        var EmpInfoFile = _archiveService.GetById(b.EmpInfoFile);
+                        if (EmpInfoFile != null)
+                        {
+                            batchItem.EmpInfoFile = EmpInfoFile.Url;
+                        }
+                        var EmpInfoFileSeal = _archiveService.GetById(b.EmpInfoFileSeal);
+                        if (EmpInfoFileSeal != null)
+                        {
+                            batchItem.EmpInfoFileSeal = EmpInfoFileSeal.Url;
+                        }
                         model.orderBatch.Add(batchItem);
                     }
                 }
+                return View(model);
             }
             catch (Exception e)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
             }
-            return View();
         }
     }
 }

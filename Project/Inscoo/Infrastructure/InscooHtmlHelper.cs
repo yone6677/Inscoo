@@ -69,7 +69,7 @@ namespace Innscoo.Infrastructure
             return MvcHtmlString.Create(checkbox.ToString());
         }
 
-        public static MvcHtmlString Pager(this HtmlHelper html, PageCommand pageCommand, string cssClass = "")
+        public static MvcHtmlString Pager(this HtmlHelper html, PageCommand pageCommand, string cssClass = null, string formId = null)
         {
             int lastPage = pageCommand.PageIndex - 1;
             int nextPage = pageCommand.PageIndex + 1;
@@ -81,6 +81,10 @@ namespace Innscoo.Infrastructure
             else
             {
                 Pagination.AddCssClass(cssClass);
+            }
+            if (string.IsNullOrEmpty(formId))
+            {
+                formId = "searchForm";
             }
             //计数
             TagBuilder span = new TagBuilder("span");
@@ -103,14 +107,14 @@ namespace Innscoo.Infrastructure
                 }
             }
             CurrentPage.InnerHtml = currentPageOption;
-            CurrentPage.MergeAttribute("onchange", PageerSubmit("this.value", pageCommand.PageSize.ToString()));
+            CurrentPage.MergeAttribute("onchange", PageerSubmit("this.value", pageCommand.PageSize.ToString(), formId));
             //上一页控件
             string tLastPage = "";
             if (lastPage >= 1)
             {
                 TagBuilder PreviousPage = new TagBuilder("a");
                 PreviousPage.SetInnerText("Previous");
-                PreviousPage.MergeAttribute("onclick", PageerSubmit(lastPage.ToString(), pageCommand.PageSize.ToString()));
+                PreviousPage.MergeAttribute("onclick", PageerSubmit(lastPage.ToString(), pageCommand.PageSize.ToString(), formId));
                 tLastPage = PreviousPage.ToString();
             }
             else
@@ -125,7 +129,7 @@ namespace Innscoo.Infrastructure
             {
                 TagBuilder PreviousPage = new TagBuilder("a");
                 PreviousPage.SetInnerText("Next");
-                PreviousPage.MergeAttribute("onclick", PageerSubmit(nextPage.ToString(), pageCommand.PageSize.ToString()));
+                PreviousPage.MergeAttribute("onclick", PageerSubmit(nextPage.ToString(), pageCommand.PageSize.ToString(), formId));
                 tNextPage = PreviousPage.ToString();
             }
             else
@@ -166,15 +170,15 @@ namespace Innscoo.Infrastructure
             DislayCount.InnerHtml = option;
             DislayCount.GenerateId("pagerSize");
             //DislayCount.AddCssClass( "form-control");
-            DislayCount.MergeAttribute("onchange", PageerSubmit(VpageIndex.ToString(), "this.value"));
+            DislayCount.MergeAttribute("onchange", PageerSubmit(VpageIndex.ToString(), "this.value", formId));
 
             Pagination.InnerHtml = "<p>" + span + "每页显示" + DislayCount + "条" + tLastPage + "第" + CurrentPage + "页" + tNextPage + "</p><input type='hidden' name='PageSize' id='PageSize' value='' /><input type = 'hidden' name = 'PageIndex' id = 'PageIndex' value = '' /> ";
             return new MvcHtmlString(Pagination.ToString());
         }
         //事件
-        private static string PageerSubmit(string pageIndex, string pageSize)
+        private static string PageerSubmit(string pageIndex, string pageSize, string formId)
         {
-            return string.Format("AjaxPager(pageIndex={0},pageSize={1})", pageIndex, pageSize);
+            return string.Format("AjaxPager(pageIndex={0},pageSize={1},formId='{2}')", pageIndex, pageSize, formId);
         }
     }
     public partial class PageCommand

@@ -7,6 +7,7 @@ namespace Core.Data
 {
     public partial interface IRepository<T> where T : BaseEntity
     {
+        AppDbContext DatabaseContext { get; }
         /// <summary>
         /// Get entity by identifier
         /// </summary>
@@ -40,16 +41,33 @@ namespace Core.Data
         /// <param name="entities">Entities</param>
         void Update(IEnumerable<T> entities, bool isCached = false);
 
-        void DeleteById(object id, bool isCached = false, bool disable = true);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="isCached">是否删除缓存，默认true</param>
+        /// <param name="disable">是否remove，默认false</param>
+        void DeleteById(object id, bool isCached = true, bool disable = false);
 
-        void Delete(T entity, bool isCached = false, bool disable = true);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="isCached">是否删除缓存，默认true</param>
+        /// <param name="disable">是否remove，默认false</param>
+        void Delete(T entity, bool isCached = true, bool disable = false);
 
         /// <summary>
         /// Delete entities
         /// </summary>
         /// <param name="entities">Entities</param>
-        void Delete(IEnumerable<T> entities, bool isCached = false);
-
+        void Delete(IEnumerable<T> entities, bool isCached = true);
+        /// <summary>
+        /// 多条记录一起插入
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        int InsertRange(IEnumerable<T> list);
         /// <summary>
         /// Gets a table
         /// </summary>

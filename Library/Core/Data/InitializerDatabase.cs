@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Web.Hosting;
+using Domain;
 
 namespace Core.Data
 {

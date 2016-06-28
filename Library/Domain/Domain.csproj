@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -41,10 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archives\Archive.cs" />
+    <Compile Include="File\BusinessLicense.cs" />
+    <Compile Include="File\Archive.cs" />
+    <Compile Include="File\BaseFile.cs" />
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Common\GenericAttribute.cs" />
-    <Compile Include="CompanyInfo.cs" />
+    <Compile Include="Company\Company.cs" />
+    <Compile Include="Identity\AppRole.cs" />
+    <Compile Include="Identity\AppRoleManager.cs" />
+    <Compile Include="Identity\AppUser.cs" />
+    <Compile Include="Identity\AppUserManager.cs" />
+    <Compile Include="Identity\AppUserRole.cs" />
     <Compile Include="Navigation\Navigation.cs" />
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderBatch.cs" />

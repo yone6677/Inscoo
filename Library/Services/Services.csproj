@@ -141,6 +141,8 @@
     <Compile Include="Archives\IArchiveService.cs" />
     <Compile Include="Common\GenericAttributeService.cs" />
     <Compile Include="Common\IGenericAttributeService.cs" />
+    <Compile Include="Company\CompanyService.cs" />
+    <Compile Include="Company\ICompanyService.cs" />
     <Compile Include="FileHelper\OperationPDF.cs" />
     <Compile Include="Identity\AppRoleService.cs" />
     <Compile Include="Identity\AppUserService.cs" />

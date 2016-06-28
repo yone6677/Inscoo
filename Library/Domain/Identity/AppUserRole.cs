@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Identity
+namespace Domain
 {
    public partial class AppUserRole : IdentityUserRole
     {

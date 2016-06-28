@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace Domain
 {
-    public class CompanyInfo : BaseEntity
+    public class Company : BaseEntity
     {
+        public Company()
+        {
+            EditTime = DateTime.Now;
+        }
 
         public string Name { set; get; }
         public string Code { set; get; }
-        public string BusinessLicenseFilePath { set; get; }
-        public int? BusinessLicenseFileId { set; get; }
         public string Address { set; get; }
         public string LinkMan { set; get; }
         public string Phone { set; get; }
@@ -20,7 +22,9 @@ namespace Domain
 
         public string UserId { set; get; }
 
-        //public virtual AppUser User { set; get; }
-        //public virtual FileUpLoad BusinessLicenseFile { set; get; }
+        public DateTime EditTime { set; get; }
+
+        public virtual AppUser User { set; get; }
+        public virtual IList<BusinessLicense> BusinessLicenses { set; get; }
     }
 }

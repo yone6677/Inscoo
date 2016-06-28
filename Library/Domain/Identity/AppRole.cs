@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Core
+namespace Domain
 {
     public partial class AppRole : IdentityRole
     {

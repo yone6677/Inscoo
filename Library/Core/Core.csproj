@@ -89,19 +89,15 @@
   <ItemGroup>
     <Compile Include="Data\AppDbInitializer .cs" />
     <Compile Include="Data\InitializerDatabase.cs" />
-    <Compile Include="Identity\AppRole.cs" />
-    <Compile Include="Identity\AppRoleManager.cs" />
-    <Compile Include="Identity\AppUser.cs" />
-    <Compile Include="Identity\AppUserManager.cs" />
     <Compile Include="Data\CachingManagercs.cs" />
     <Compile Include="Data\EfRepository.cs" />
     <Compile Include="Data\ICachingManager.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\AppDbContext.cs" />
-    <Compile Include="Identity\AppUserRole.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
+    <Compile Include="Mapping\CompanyMapping.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\OrderBatchMap.cs" />

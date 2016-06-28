@@ -1,8 +1,8 @@
-﻿using Core.Data;
+﻿
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
-namespace Core.Identity
+namespace Core.Data
 {
     public class AppDbInitializer : DropCreateDatabaseIfModelChanges<AppDbContext>
     {

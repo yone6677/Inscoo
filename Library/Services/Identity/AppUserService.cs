@@ -1,5 +1,4 @@
-﻿using Core;
-using Core.Identity;
+﻿using Domain;
 using Core.Pager;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -206,23 +205,23 @@ namespace Services.Identity
             try
             {
                 var result = _userManager.FindById(id);
-                if(result!=null)
+                if (result != null)
                 {
                     return new UserModel
                     {
                         CompanyName = result.CompanyName,
-                        Name=result.UserName,
-                        Phone=result.PhoneNumber,
-                        LinkMan=result.LinkMan,
-                        Email=result.Email,
-                        TiYong=result.TiYong,
-                        FanBao=result.FanBao,
-                        BankName=result.BankName,
-                        BankNumber=result.BankNumber,
-                        Rebate=result.Rebate
+                        Name = result.UserName,
+                        Phone = result.PhoneNumber,
+                        LinkMan = result.LinkMan,
+                        Email = result.Email,
+                        TiYong = result.TiYong,
+                        FanBao = result.FanBao,
+                        BankName = result.BankName,
+                        BankNumber = result.BankNumber,
+                        Rebate = result.Rebate
                     };
                 }
-              else
+                else
                 {
                     throw new Exception("未找到");
                 }

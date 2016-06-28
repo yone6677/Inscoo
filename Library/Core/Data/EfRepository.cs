@@ -38,6 +38,13 @@ namespace Core.Data
         #endregion
 
         #region Methods
+        public AppDbContext DatabaseContext
+        {
+            get
+            {
+                return this._context as AppDbContext;
+            }
+        }
 
         /// <summary>
         /// Get entity by identifier
@@ -272,7 +279,6 @@ namespace Core.Data
                 else
                 {
                     entity.IsDeleted = true;
-                    DbContext.ChangeTracker.DetectChanges();
                     _context.SaveChanges();
                 }
                 if (isCached)
@@ -334,6 +340,22 @@ namespace Core.Data
             }
         }
 
+        public int InsertRange(IEnumerable<T> list)
+        {
+            try
+            {
+                foreach (T item in list)
+                {
+                    Entities.Add(item);
+                }
+                return _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -345,7 +367,7 @@ namespace Core.Data
         {
             get
             {
-                return Entities;
+                return Entities.Where(s => !s.IsDeleted);
             }
         }
         public virtual IQueryable<T> TableFromBuffer(int expire)
@@ -374,7 +396,7 @@ namespace Core.Data
         {
             get
             {
-                return Entities.AsNoTracking();
+                return Entities.Where(s => !s.IsDeleted).AsNoTracking();
             }
         }
 

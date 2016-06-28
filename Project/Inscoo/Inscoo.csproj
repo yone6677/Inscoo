@@ -307,6 +307,7 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -365,6 +366,10 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Order\List.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Company\ListData.cshtml" />
+    <Content Include="Views\Company\ListIndex.cshtml" />
+    <Content Include="Views\Company\Create.cshtml" />
+    <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Order\DetailsEmp.cshtml" />
     <Content Include="Views\Order\AuditOrder.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />

@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Domain;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;

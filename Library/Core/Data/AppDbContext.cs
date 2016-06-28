@@ -1,9 +1,10 @@
-﻿using Core.Identity;
+﻿using Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Reflection;
 namespace Core.Data
@@ -18,6 +19,7 @@ namespace Core.Data
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<AppDbContext>());
             //此段作用是遍历所有继承 EntityTypeConfiguration 的映射类
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()

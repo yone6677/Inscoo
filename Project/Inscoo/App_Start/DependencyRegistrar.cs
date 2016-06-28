@@ -1,13 +1,12 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
-using Core;
 using Core.Data;
-using Core.Identity;
+using Domain;
 using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Services.Archives;
+using Services;
 using Services.Common;
 using Services.Identity;
 using Services.Navigations;
@@ -19,7 +18,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Services
+namespace Inscoo
 {
     public class DependencyRegistrar
     {
@@ -76,7 +75,8 @@ namespace Services
             builder.RegisterType<OrderItemService>().As<IOrderItemService>().InstancePerDependency();
             builder.RegisterType<OrderEmpService>().As<IOrderEmpService>().InstancePerDependency();
             builder.RegisterType<OrderBatchService>().As<IOrderBatchService>().InstancePerDependency();
-            
+            builder.RegisterType<CompanyService>().As<ICompanyService>().InstancePerDependency();
+
         }
     }
 }

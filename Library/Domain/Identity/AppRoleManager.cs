@@ -1,8 +1,8 @@
-﻿using Core.Data;
+﻿
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Core.Identity
+namespace Domain
 {
     public class AppRoleManager : RoleManager<AppRole>
     {

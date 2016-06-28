@@ -722,3 +722,25 @@ body {
   background-color: #24A9E4;
   color: #fff;
 }
+.orderDetailsExamine {
+  width: 100%;
+}
+.orderDetailsExamine ul {
+  width: 100%;
+}
+.orderDetailsExamine ul li {
+  line-height: 2em;
+  box-shadow: 0 1px 0 #ccc;
+  float: left;
+}
+.orderDetailsExamine ul li:nth-child(odd) {
+  width: 25%;
+  text-align: right;
+  font-weight: bold;
+  color: #555;
+}
+.orderDetailsExamine ul li:nth-child(even) {
+  width: 75%;
+  text-align: left;
+  text-indent: 1em;
+}

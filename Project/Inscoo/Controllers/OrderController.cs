@@ -312,6 +312,11 @@ namespace Inscoo.Controllers
                     {
                         model.StartDate = order.CreateTime.AddDays(3);
                     }
+                    else
+                    {
+                        model.StartDate = order.StartDate;
+                    }
+                    model.State = order.State;
                     return View(model);
                 }
             }
@@ -490,6 +495,7 @@ namespace Inscoo.Controllers
                     item.batch_Id = batch.Id;//批次号
                     item.Premium = order.AnnualExpense;
                     item.PMCode = PMType.PM00.ToString();
+                    item.Relationship = "本人";
                     item.Name = Cells["A" + i].Value.ToString().Trim();
                     item.IDType = Cells["B" + i].Value.ToString().Trim();
                     item.IDNumber = Cells["C" + i].Value.ToString().Trim();
@@ -507,7 +513,7 @@ namespace Inscoo.Controllers
                         result = "上传失败";
                     }
                 }
-                order.InsuranceNumber = rowNumber - 1; //更新订单主表投保人数
+                order.InsuranceNumber = _orderEmpService.GetListByOid(Id).Count; //更新订单主表投保人数
                 _orderService.Update(order);
                 //定单批次
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
@@ -621,7 +627,7 @@ namespace Inscoo.Controllers
                     model.YearPrice = order.AnnualExpense;
                     model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
                     model.Quantity = order.InsuranceNumber;
-                    model.Amount = order.Pretium * order.InsuranceNumber;
+                    model.Amount = order.AnnualExpense * order.InsuranceNumber;
                     return View(model);
                 }
             }
@@ -644,6 +650,7 @@ namespace Inscoo.Controllers
             }
             return null;
         }
+        #region 订单详细
         public ActionResult Details(int id)
         {
             try
@@ -667,7 +674,7 @@ namespace Inscoo.Controllers
                 model.EndDate = order.EndDate.ToShortDateString();
                 model.Id = order.Id;
                 model.InsuranceNumber = order.InsuranceNumber;
-                model.Insurer = order.Insurer;
+                model.Insurer = _genericAttributeService.GetByKey(null, "InsuranceCompany", order.Insurer).Key; 
                 model.Linkman = order.Linkman;
                 model.Memo = order.Memo;
                 model.Name = order.Name;
@@ -707,24 +714,14 @@ namespace Inscoo.Controllers
                         var batchItem = new OrderBatchModel();
                         batchItem.AmountCollected = b.AmountCollected;
                         batchItem.BId = b.Id;
-                        if (b.InscooConfirmDate != DateTime.MinValue)
-                        {
-                            batchItem.InscooConfirmDate = b.InscooConfirmDate.ToShortDateString();
-                        }
-                        if (b.InsurerConfirmDate != DateTime.MinValue)
-                        {
-                            batchItem.InsurerConfirmDate = b.InsurerConfirmDate.ToShortDateString();
-                        }
+                        batchItem.InscooConfirmDate = b.InscooConfirmDate;
+                        batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
                         var PaymentNoticePDF = _archiveService.GetById(b.PaymentNoticePDF);
                         if (PaymentNoticePDF != null)
                         {
                             batchItem.PaymentNoticePDF = PaymentNoticePDF.Url;
                         }
-
-                        if (b.PolicyHolderDate != DateTime.MinValue)
-                        {
-                            batchItem.PolicyHolderDate = b.PolicyHolderDate.ToShortDateString();
-                        }
+                        batchItem.PolicyHolderDate = b.PolicyHolderDate;
                         var PolicySeal = _archiveService.GetById(b.PolicySeal);
                         if (PolicySeal != null)
                         {
@@ -750,5 +747,94 @@ namespace Inscoo.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
             }
         }
+        #endregion
+
+        #region 订单审核
+        public ActionResult AuditOrder(int id)
+        {
+            var order = _orderService.GetById(id);
+            if (order != null)
+            {
+                if (order.orderBatch.Count > 0)
+                {
+                    var batch = order.orderBatch.Where(b => b.BState < 5);
+                    if (batch.Any())
+                    {
+                        var user = _appUserService.GetCurrentUser();
+                        var item = batch.FirstOrDefault();
+                        var model = new AuditOrderModel();
+                        model.State = item.BState;
+                        model.Id = item.Id;
+                        model.OId = id;
+                        model.Insurer = order.Insurer;
+                        model.Role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
+                        model.UserCompany = user.CompanyName;
+                        return PartialView(model);
+                    }
+                }
+            }
+            return null;
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuditOrder(AuditOrderModel model)
+        {
+            if (model.rid > 0)
+            {
+                var batch = _orderBatchService.GetById(model.Id);
+                var userName = User.Identity.Name;
+                if (model.rid == 1)//inscoo
+                {
+                    batch.InscooConfirm = userName;
+                    batch.InscooConfirmDate = DateTime.Now;
+                    if (model.InscooAudit)
+                    {
+                        batch.BState = 1;//通过
+                    }
+                    else
+                    {
+                        batch.BState = 2;//拒绝
+                    }
+                }
+                if (model.rid == 2)//finance
+                {
+                    batch.Finance = userName;
+                    batch.FinanceDate = DateTime.Now;
+                    batch.FinanceMemo = model.FinanceMemo;
+                    batch.CollectionDate = model.CollectionDate;
+                    batch.TransferVoucher = model.TransferVoucher;
+                    batch.AmountCollected = model.AmountCollected;
+                    if (model.FinanceAudit)
+                    {
+                        batch.BState = 3;//通过
+                    }
+                    else
+                    {
+                        batch.BState = 4;//拒绝
+                    } 
+                }
+                if (model.Id == 3)//nsurer
+                {
+                    batch.Insurer = userName;
+                    batch.InsurerConfirmDate = DateTime.Now;
+                    batch.InsurerMemo = model.InsurerMemo;
+                    batch.CourierNumber = model.CourierNumber;
+                    if(model.InsurerAudit)
+                    {
+                        batch.BState = 5;
+                    }
+                    else
+                    {
+                        batch.BState = 6;
+                    }
+                }
+                if (_orderBatchService.Update(batch))
+                {
+                    return RedirectToAction("Details", new { id = model.OId });
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        #endregion
     }
 }

@@ -1,0 +1,104 @@
+﻿@model Models.Order.AuditOrderModel
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.OId)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    if (Model.Role == "InscooOperator" || Model.Role == "Admin")
+    {
+        <div class="orderDetailsExamine">
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.InscooAudit)
+                </li>
+                <li>
+                    @Html.CheckBoxFor(model => model.InscooAudit)
+                </li>
+                <li>
+                    审核
+                </li>
+                <li>
+                    <input type="submit" value="确定" />
+                </li>
+            </ul>
+        </div>
+    }
+    if (Model.Role == "InscooFinance" || Model.Role == "Admin")
+    {
+        <div class="orderDetailsExamine">
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.FinanceAudit)
+                </li>
+                <li>
+                    @Html.CheckBoxFor(model => model.FinanceAudit)
+                </li>
+                <li>
+                    @Html.LabelFor(model => model.AmountCollected)
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.AmountCollected, new { htmlAttributes = new { @type = "number" } })
+                </li>
+                <li>
+                    @Html.LabelFor(model => model.CollectionDate)
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.CollectionDate, new { htmlAttributes = new { @type = "datetime" } })
+                </li>
+                <li>
+                    @Html.LabelFor(model => model.TransferVoucher)
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.TransferVoucher)
+                </li>
+                <li>
+                    审核
+                </li>
+                <li>
+                    <input type="submit" value="确定" />
+                </li>
+            </ul>
+        </div>
+    }
+    if (Model.Role == "InsuranceCompany" || Model.Role == "Admin")
+    {
+        if (Model.Insurer == Model.UserCompany)
+        {
+            <div class="orderDetailsExamine">
+                <ul>
+                    <li>
+                        @Html.LabelFor(model => model.InsurerAudit)
+                    </li>
+                    <li>
+                        @Html.CheckBoxFor(model => model.InsurerAudit)
+                    </li>
+                    <li>
+                        @Html.LabelFor(model => model.CourierNumber)
+                    </li>
+                    <li>
+                        @Html.EditorFor(model => model.CourierNumber)
+                    </li>
+                    <li>
+                        @Html.LabelFor(model => model.InsurerMemo)
+                    </li>
+                    <li>
+                        @Html.EditorFor(model => model.InsurerMemo)
+                    </li>
+                    <li>
+                        审核
+                    </li>
+                    <li>
+                        <input type="submit" value="确定" />
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -257,7 +257,7 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(order.InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("金额合计", font));
-                    table.AddCell(new PdfPCell() { Phrase = new Phrase((order.InsuranceNumber * order.Pretium) + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { Phrase = new Phrase((order.InsuranceNumber * order.AnnualExpense) + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("保险期间", font));
                     var yearRange = string.Format("一年（{0}-{1}）", order.StartDate.ToShortDateString(), order.EndDate.ToShortDateString());

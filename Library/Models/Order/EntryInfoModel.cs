@@ -32,5 +32,7 @@ namespace Models.Order
         /// 下载excel模板
         /// </summary>
         public string EmpInfoFileUrl { get; set; }
+
+        public int State { get; set; }
     }
 }

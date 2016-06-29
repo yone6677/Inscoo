@@ -96,6 +96,7 @@
     <Compile Include="Order\OrderEmployeeModel.cs" />
     <Compile Include="Order\OrderListModel.cs" />
     <Compile Include="Order\UploadInfoModel.cs" />
+    <Compile Include="Permission\vPermissionNav.cs" />
     <Compile Include="Permission\PermissionModel.cs" />
     <Compile Include="Order\CustomizeBuyModel.cs" />
     <Compile Include="Products\MixProductItemModel.cs" />

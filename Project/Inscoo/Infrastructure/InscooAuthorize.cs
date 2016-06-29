@@ -1,6 +1,4 @@
-﻿using Services.Identity;
-using Services.Navigations;
-using Services.Permissions;
+﻿using Services;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -33,7 +31,7 @@ namespace Inscoo.Infrastructure
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";
             string actionName = filterContext.ActionDescriptor.ActionName;
             var httpcontext = filterContext.HttpContext;
             try
@@ -62,7 +60,7 @@ namespace Inscoo.Infrastructure
                     throw new HttpException(401, "抱歉，您未被授权查看此页面");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new HttpException(401, "没有权限", e);
             }

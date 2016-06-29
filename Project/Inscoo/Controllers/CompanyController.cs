@@ -78,7 +78,7 @@ namespace Inscoo.Controllers
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(vCompanyAdd model, HttpPostedFileBase BusinessLicense)
+        public ActionResult Create(vCompanyAdd model, HttpPostedFileBase BusinessLicense)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace Inscoo.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(vCompanyEdit model, HttpPostedFileBase file)
+        public ActionResult Edit(vCompanyEdit model, HttpPostedFileBase file)
         {
             try
             {

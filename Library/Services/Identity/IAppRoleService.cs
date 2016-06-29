@@ -5,12 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Services.Identity
+namespace Services
 {
     public interface IAppRoleService
     {
         Task<IdentityResult> CreateAsync(AppRole role);
         Task<IdentityResult> DeleteAsync(AppRole role);
+        SelectList GetRoleSelectList();
         Task<IdentityResult> UpdateAsync(AppRole role);
         AppRole FindByIdAsync(string roleid);
         Task<AppRole> FindByNameAsync(string name);

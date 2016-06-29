@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Services.Identity
+namespace Services
 {
     public class AppRoleService : IAppRoleService
     {
@@ -111,6 +111,16 @@ namespace Services.Identity
                 throw e;
             }
         }
+        public SelectList GetRoleSelectList()
+        {
+            var table = Roles();
+            if (table.Any())
+            {
+                return new SelectList(table.ToList(), "Id", "Name");
+            }
+            return null;
+        }
+
         public List<SelectListItem> GetSelectList()
         {
             var table = Roles();

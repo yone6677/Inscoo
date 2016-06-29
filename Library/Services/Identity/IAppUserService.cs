@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Services.Identity
+namespace Services
 {
     public interface IAppUserService
     {

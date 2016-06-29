@@ -1,25 +1,30 @@
 ﻿using Core.Data;
 using Core.Pager;
-using Domain.Navigation;
+using Domain;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Models.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 
-namespace Services.Navigations
+namespace Services
 {
     public class NavigationService : INavigationService
     {
         private readonly IRepository<Navigation> _navRepository;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
-        public NavigationService(IRepository<Navigation> navRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService)
+        private readonly IAppUserService _svAppUser;
+        private readonly IAppRoleService _svAppRole;
+        public NavigationService(IRepository<Navigation> navRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IAppUserService svAppUser, IAppRoleService svAppRole)
         {
             _navRepository = navRepository;
             _authenticationManager = authenticationManager;
             _loggerService = loggerService;
+            _svAppUser = svAppUser;
+            _svAppRole = svAppRole;
         }
         public bool Insert(Navigation item)
         {
@@ -84,12 +89,55 @@ namespace Services.Navigations
                 return null;
             }
         }
+        public List<Navigation> GetNotControllerNav()
+        {
+            try
+            {
+                return _navRepository.TableFromBuffer().ToList().Where(n => string.IsNullOrEmpty(n.controller)).ToList();
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetById");
+                return null;
+            }
+        }
+        public List<Navigation> GetLeftNavigations(string uId)
+        {
+            try
+            {
+                var roles = _svAppUser.GetRolesByUserId(uId);
+                if (roles.Any(r => r.Equals("admin", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    var navs = _navRepository.TableFromBuffer().ToList().Where(p => p.isShow);
 
+                    return navs.OrderBy(n => n.sequence).ToList();
+                }
+                else
+                {
+                    var roleIds = _svAppRole.Roles().Where(r => roles.Contains(r.Name)).Select(r => r.Id).AsNoTracking().ToList();
+                    var navs = from p in _navRepository.DatabaseContext.Set<Permission>().Include(n => n.Navigation).AsNoTracking()
+                               let n = p.Navigation
+                               where (roleIds.Contains(p.roleId) && p.Navigation.isShow)
+                               select (n);
+
+                    return navs.OrderBy(n => n.sequence).ToList();
+                }
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetById");
+                return new List<Navigation>();
+            }
+        }
         public Navigation GetByUrl(string controller, string action)
         {
             try
             {
-                return _navRepository.TableFromBuffer(72).Where(s => s.controller == controller.ToLower() && s.action == action.ToLower()).FirstOrDefault();
+                var ss = _navRepository.TableFromBuffer(72).Where(s => controller.Equals(s.controller, StringComparison.CurrentCultureIgnoreCase) && action.Equals(s.action, StringComparison.CurrentCultureIgnoreCase));
+
+                var sss = _navRepository.TableFromBuffer(72);
+                return _navRepository.TableFromBuffer(72).Where(s => controller.Equals(s.controller, StringComparison.CurrentCultureIgnoreCase) && action.Equals(s.action, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             }
             catch (Exception e)
             {

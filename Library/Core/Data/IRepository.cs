@@ -1,5 +1,6 @@
 ﻿using Domain;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 
@@ -8,6 +9,7 @@ namespace Core.Data
     public partial interface IRepository<T> where T : BaseEntity
     {
         AppDbContext DatabaseContext { get; }
+        IDbSet<T> Entities { get; }
         /// <summary>
         /// Get entity by identifier
         /// </summary>
@@ -19,27 +21,27 @@ namespace Core.Data
         /// Insert entity
         /// </summary>
         /// <param name="entity">Entity</param>
-        void Insert(T entity, bool isCached = false);
+        void Insert(T entity, bool isCached = true);
 
         /// <summary>
         /// Insert entities
         /// </summary>
         /// <param name="entities">Entities</param>
-        void Insert(IEnumerable<T> entities, bool isCached = false);
+        void Insert(IEnumerable<T> entities, bool isCached = true);
 
-        int InsertGetId(T entity, bool isCached = false);
+        int InsertGetId(T entity, bool isCached = true);
 
         /// <summary>
         /// Update entity
         /// </summary>
         /// <param name="entity">Entity</param>
-        void Update(T entity, bool isCached = false);
+        void Update(T entity, bool isCached = true);
 
         /// <summary>
         /// Update entities
         /// </summary>
         /// <param name="entities">Entities</param>
-        void Update(IEnumerable<T> entities, bool isCached = false);
+        void Update(IEnumerable<T> entities, bool isCached = true);
 
         /// <summary>
         /// 

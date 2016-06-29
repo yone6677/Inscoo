@@ -403,7 +403,7 @@ namespace Core.Data
         /// <summary>
         /// Entities
         /// </summary>
-        protected virtual IDbSet<T> Entities
+        public virtual IDbSet<T> Entities
         {
             get
             {

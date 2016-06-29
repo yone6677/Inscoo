@@ -1,5 +1,5 @@
 ﻿using Inscoo.Models.Account;
-using Services.Identity;
+using Services;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers

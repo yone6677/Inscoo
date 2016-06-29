@@ -1,4 +1,4 @@
-﻿using Domain.Permission;
+﻿using Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
@@ -9,7 +9,6 @@ namespace Core.Mapping
         {
             ToTable("Permissions");
             Property(p => p.roleId).IsRequired().HasMaxLength(256);
-            Property(p => p.func).IsRequired();
         }
     }
 }

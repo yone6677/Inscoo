@@ -2,7 +2,7 @@
 using Inscoo.Models.Account;
 using Models.User;
 using Microsoft.AspNet.Identity;
-using Services.Identity;
+using Services;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Innscoo.Infrastructure;

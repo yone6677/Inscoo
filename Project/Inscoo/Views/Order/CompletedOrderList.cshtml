@@ -21,9 +21,6 @@
             @Html.DisplayNameFor(model => model.StateDesc)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.StartDate)
         </th>
         <th>
@@ -36,7 +33,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompanyName)
@@ -54,9 +51,6 @@
                 @Html.DisplayFor(modelItem => item.StateDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.State)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
@@ -66,13 +60,13 @@
                 @{
                     if (item.State == 7)
                     {
-                        Html.ActionLink("删除订单", "Delete", new { id = item.Id });
+                        @Html.ActionLink("删除订单", "Delete", new { id = item.Id });
                     }
                     if (item.State == 6)
                     {
-                        Html.ActionLink("加保", "Edit", new { id = item.Id });
+                        @Html.ActionLink("加保", "Edit", new { id = item.Id });
                         <span>|</span>
-                        Html.ActionLink("减保", "Details", new { id = item.Id });
+                        @Html.ActionLink("减保", "Details", new { id = item.Id });
                     }
                 }
             </td>

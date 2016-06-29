@@ -110,7 +110,7 @@ namespace Services.Orders
                 }
                 else if (state == 10)
                 {
-                    query = query.Where(q => q.State < 4);//信息缺失的订单
+                    query = query.Where(q => q.State <= 5);//信息缺失的订单
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace Services.Orders
                 {
                     return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
                     {
-                        Amount = s.Pretium * s.InsuranceNumber,
+                        Amount = s.AnnualExpense * s.InsuranceNumber,
                         AnnualExpense = s.AnnualExpense,
                         CompanyName = s.CompanyName,
                         CreateDate = s.CreateTime,

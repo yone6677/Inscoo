@@ -15,6 +15,7 @@ namespace Services
         Task<IdentityResult> UpdateAsync(AppRole role);
         AppRole FindByIdAsync(string roleid);
         Task<AppRole> FindByNameAsync(string name);
+        AppRole FindByName(string name);
         Task<bool> RoleExistsAsync(string name);
         IQueryable<AppRole> Roles();
         List<SelectListItem> GetSelectList();

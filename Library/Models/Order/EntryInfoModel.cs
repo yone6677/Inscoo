@@ -24,7 +24,7 @@ namespace Models.Order
         //public int InsuranceNumber { get; set; }
         [Required]
         [Display(Name = "生效日期")]
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
         [Required]
         [Range(0,9999 ,ErrorMessage ="还未上传人员资料")]
         public int IsUploadInfo { get; set; }
@@ -32,5 +32,7 @@ namespace Models.Order
         /// 下载excel模板
         /// </summary>
         public string EmpInfoFileUrl { get; set; }
+
+        public int State { get; set; }
     }
 }

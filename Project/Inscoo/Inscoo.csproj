@@ -374,6 +374,7 @@
     <Content Include="Views\Permission\ManagerSearch.cshtml" />
     <Content Include="Views\Permission\ManagerList.cshtml" />
     <Content Include="Views\Home\Menu - 复制.cshtml" />
+    <Content Include="Views\Order\AuditOrder.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

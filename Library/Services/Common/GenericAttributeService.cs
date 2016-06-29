@@ -49,14 +49,25 @@ namespace Services.Common
                 return null;
             }
         }
-        public GenericAttribute GetByKey(string key,string keyGroup)
+        public GenericAttribute GetByKey(string key, string keyGroup, string value)
         {
             try
             {
                 var query = _genericAttributeRepository.TableFromBuffer(72);
                 if (query != null)
                 {
-                    query = query.Where(s => s.Key == key.Trim() && s.KeyGroup == keyGroup.Trim());
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        query = query.Where(s => s.Key == key.Trim());
+                    }
+                    if (!string.IsNullOrEmpty(keyGroup))
+                    {
+                        query = query.Where(s => s.KeyGroup == keyGroup.Trim());
+                    }
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        query = query.Where(s => s.Value == value.Trim());
+                    }
                     if (query.Any())
                     {
                         return query.FirstOrDefault();

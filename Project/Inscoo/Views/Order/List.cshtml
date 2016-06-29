@@ -32,16 +32,17 @@
     @foreach (var item in Model)
     {
 
-        var cssClass = "";
-        if (item.State < 3)
-        {
-            cssClass = "active";
-        }
-        else
-        {
-            cssClass = "success";
-        }
-        <tr class=@cssClass>
+        //var cssClass = "";
+        //if (item.State < 3)
+        //{
+        //    cssClass = "active";
+        //}
+        //else
+        //{
+        //    cssClass = "success";
+        //}
+        //<tr class=@cssClass>
+            <tr>
             <td>
                 <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>
@@ -58,25 +59,7 @@
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @switch (item.State)
-                {
-                    case 1:
-                        <span>方案已确认</span>;
-                        break;
-                    case 2:
-                        <span>人员已上传</span>;
-                        break;
-                    case 3:
-                        <span>信息已上传</span>;
-                        break;
-                    case 4:
-                        <span>付款通知书已下载</span>;
-                        break;
-                    case 5:
-                        <span></span>;
-                        break;
-
-                }
+                @Html.DisplayFor(modelItem => item.State)
             </td>
             <td>
                 @if (item.StartDate == DateTime.MinValue)
@@ -92,8 +75,7 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Cancel", "Delete", new { id = item.Id })
+                @Html.ActionLink("删除", "Delete", new { id = item.Id })
             </td>
         </tr>
     }

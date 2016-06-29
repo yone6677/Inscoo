@@ -88,6 +88,7 @@
     <Compile Include="Insurance\ProductListModel.cs" />
     <Compile Include="Insurance\RecommendationModel.cs" />
     <Compile Include="Navigation\NavigationModel.cs" />
+    <Compile Include="Order\AuditOrderModel.cs" />
     <Compile Include="Order\ConfirmOrderModel.cs" />
     <Compile Include="Order\ConfirmPaymentModel.cs" />
     <Compile Include="Order\OrderDatailsModel.cs" />

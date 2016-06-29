@@ -101,8 +101,7 @@
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
             </li>
             <li>
-                <input type="hidden" name="StartDate" id="StartDate" value=@Model.StartDate.ToShortDateString() />
-                <input type="text" class="form-control" value=@Model.StartDate.ToShortDateString() disabled />
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control",type="date" } })             
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
@@ -122,7 +121,14 @@
         <a href="/">返回</a>
     </div>
     <div>
+        @if (Model.State<4)
+        {
         <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+        }
+        else
+        {
+          <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
+        }
     </div>
 </div>
 @using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
@@ -138,12 +144,34 @@
     <script>
         var count =@Model.IsUploadInfo
         function subInfo() {
+            var startDate = $("#StartDate").val();
             if (count > 0) {
-                $("#EntryInfoForm").submit();
+                if(dateCompare(startDate)){
+                    $("#EntryInfoForm").submit();
+                }else{
+                    $("#error").text("生效时间最早为三日之后，请重新选择");
+                }
             }
             else {
                 $("#error").text("还未上传人员资料");
             }
+        }
+        function errorInfo() {
+            $("#error").text("订单已送出审核，无法修改信息");
+        }
+        function dateCompare(startdate) {
+           @{
+               var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
+           }
+            var nowDate=@ts.TotalMilliseconds.ToString("0");
+            var arr = startdate.split("-");
+            var starttime = new Date(arr[0], arr[1]-1, arr[2]);
+            var starttimes = starttime.getTime();
+            if(nowDate <= starttimes && !isNaN(starttimes)){
+                return true;
+            }
+            else
+                return false;
         }
     </script>
 }

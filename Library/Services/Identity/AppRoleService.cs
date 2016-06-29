@@ -85,6 +85,19 @@ namespace Services
                 throw e;
             }
         }
+        public AppRole FindByName(string name)
+        {
+            try
+            {
+                var result = _roleManager.FindByName(name);
+                return result;
+            }
+            catch (DbEntityValidationException e)
+            {
+                _loggerService.insert(e, LogLevel.Error, "AppRoleService:FindByName");
+                throw e;
+            }
+        }
         public Task<bool> RoleExistsAsync(string name)
         {
             try

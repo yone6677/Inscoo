@@ -13,7 +13,7 @@ namespace Inscoo.Controllers
         public NavController(INavigationService navService)
         {
             _navService = navService;
-        }       
+        }
         // GET: Nav
         public ActionResult Index()
         {
@@ -147,12 +147,14 @@ namespace Inscoo.Controllers
                 {
                     if (!string.IsNullOrEmpty(model.action))
                     {
-                        item.action = model.action.Trim().ToLower();
+                        model.action = model.action.Trim().ToLower();
                     }
                     if (!string.IsNullOrEmpty(model.controller))
                     {
-                        item.controller = model.controller.Trim().ToLower();
+                        model.controller = model.controller.Trim().ToLower();
                     }
+                    item.action = model.action;
+                    item.controller = model.controller;
                     item.url = model.controller + "/" + model.action;
                     item.isShow = model.isShow;
                     item.memo = model.memo;

@@ -42,9 +42,9 @@ namespace Core.Data
             var customCommands = new List<string>();
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Products.sql"), false));//产品
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/MixProduct.sql"), false));//推荐产品
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Permission.sql"), false));//权限
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性         
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/menu.sql"), false));//菜单
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Permission.sql"), false));//权限
             if (customCommands != null && customCommands.Count > 0)
             {
                 foreach (var command in customCommands)

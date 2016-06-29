@@ -50,13 +50,13 @@
                 @switch (item.State)
                 {
                     case 2:
-                        Html.ActionLink(item.StateDesc, "EntryInfo", new { id = item.Id });
+                       @Html.ActionLink(item.StateDesc, "EntryInfo", new { id = item.Id })
                         break;
                     case 3:
-                        Html.ActionLink(item.StateDesc, "UploadFile", new { id = item.Id });
+                        @Html.ActionLink(item.StateDesc, "UploadFile", new { id = item.Id })
                         break;
                     case 4:
-                        Html.ActionLink(item.StateDesc, "ConfirmPayment", new { id = item.Id });
+                        @Html.ActionLink(item.StateDesc, "ConfirmPayment", new { id = item.Id })
                         break;
                     default:
                         @Html.DisplayFor(modelItem => item.StateDesc)
@@ -73,15 +73,15 @@
                 @{
                     if (item.State == 1)
                     {
-                        Html.ActionLink("继续", "EntryInfo", new { id = item.Id });
+                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id });
                     }
                     if (item.State == 2)
                     {
-                        Html.ActionLink("继续", "UploadFile", new { id = item.Id });
+                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id });
                     }
                     if (item.State == 3)
                     {
-                        Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id });
+                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id });
                     }
                 }
                 |

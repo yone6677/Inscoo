@@ -1,5 +1,5 @@
 ﻿using Inscoo.Models.Account;
-using Services.Identity;
+using Services;
 using System.Web.Mvc;
 
 namespace Inscoo.Controllers
@@ -60,7 +60,7 @@ namespace Inscoo.Controllers
         public ActionResult SignOut()
         {
             _appUserService.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
     }
 }

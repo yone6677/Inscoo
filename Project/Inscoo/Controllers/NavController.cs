@@ -1,7 +1,7 @@
-﻿using Domain.Navigation;
+﻿using Domain;
 using Innscoo.Infrastructure;
 using Models.Navigation;
-using Services.Navigations;
+using Services;
 using System.Net;
 using System.Web.Mvc;
 

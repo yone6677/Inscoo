@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Services.Identity
+namespace Services
 {
     public class AppUserService : IAppUserService
     {
@@ -30,6 +30,23 @@ namespace Services.Identity
             _loggerService = loggerService;
             _authenticationManager = authenticationManager;
         }
+
+
+        public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)
+        {
+            try
+            {
+                var user = _userManager.AddToRoleAsync(uid, roleid);
+                return user;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:AddToRoleAsync");
+                return null;
+            }
+        }
+
+
         public async Task<IdentityResult> CreateAsync(AppUser user, string name, string password)
         {
             try
@@ -99,36 +116,7 @@ namespace Services.Identity
                 return null;
             }
         }
-        public Task<IdentityResult> UpdateAsync(AppUser user)
-        {
-            try
-            {
-                user.Changer = _authenticationManager.User.Identity.Name;
-                user.ModifyTime = DateTime.Now;
-                var result = _userManager.UpdateAsync(user);
-                return result;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync");
-                return null;
-            }
-        }
-        public Task<IdentityResult> UpdateSecurityStampAsync(AppUser user)
-        {
-            try
-            {
-                user.Changer = _authenticationManager.User.Identity.Name;
-                user.ModifyTime = DateTime.Now;
-                var result = _userManager.UpdateSecurityStampAsync(user.Id);
-                return result;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync");
-                return null;
-            }
-        }
+     
         public AppUser FindByEmail(string email)
         {
 
@@ -199,6 +187,95 @@ namespace Services.Identity
             }
         }
 
+        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email, string role, string roleId)
+        {
+            try
+            {
+                var model = new List<UserModel>();
+                var user = _userManager.Users.ToList();
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    user = user.Where(s => s.UserName.Contains(userName)).ToList();
+                }
+                if (!string.IsNullOrEmpty(role))
+                {
+                    var rId = _appRoleManager.FindByName(role).Id;
+                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
+                }
+                if (!string.IsNullOrEmpty(roleId))
+                {
+                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
+                }
+                if (!string.IsNullOrEmpty(email))
+                {
+                    user = user.Where(s => s.Email == email).ToList();
+                }
+                if (user.Count > 0)
+                {
+                    model = user.Select(u => new UserModel
+                    {
+                        CompanyName = u.CompanyName,
+                        Id = u.Id,
+                        Name = u.UserName,
+                        Email = u.Email,
+                        Phone = u.PhoneNumber,
+                        LinkMan = u.LinkMan,
+                        FanBao = u.FanBao,
+                        TiYong = u.TiYong,
+                        RoleIds = u.Roles.Any() ? u.Roles.Select(r => r.RoleId).ToList() : null,
+                        RoleName = u.Roles.Any() ? _appRoleManager.FindById(u.Roles.First().RoleId).Name : "",
+                        CreateTime = u.CreateTime,
+                        CreaterId = u.CreaterId
+                    }).ToList();
+                }
+                return new PagedList<UserModel>(model, pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserList");
+            }
+            return null;
+        }
+        public List<UserRoleModel> GetUserRoles()
+        {
+            try
+            {
+                var roles = FindByName(_authenticationManager.User.Identity.Name).Roles;
+                if (roles.Any())
+                {
+                    var list = new List<UserRoleModel>();
+                    foreach (var s in roles)
+                    {
+                        var item = new UserRoleModel()
+                        {
+                            RoleId = s.RoleId,
+                            UserId = s.UserId,
+                            RoleName = _appRoleManager.FindById(s.RoleId).Name
+                        };
+                        list.Add(item);
+                    }
+                    return list;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
+            }
+            return new List<UserRoleModel>();
+        }
+        public AppUser GetCurrentUser()
+        {
+            try
+            {
+                var name = _authenticationManager.User.Identity.Name;
+                return FindByName(name);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
+            }
+            return null;
+        }
         public UserModel Get_UserModel_ById(string id)
         {
 
@@ -319,19 +396,9 @@ namespace Services.Identity
                 throw e;
             }
         }
-        public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)
-        {
-            try
-            {
-                var user = _userManager.AddToRoleAsync(uid, roleid);
-                return user;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:AddToRoleAsync");
-                return null;
-            }
-        }
+     
+
+
         public void SignIn(AppUser user, bool isPersistent)
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
@@ -342,94 +409,37 @@ namespace Services.Identity
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
-        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email, string role, string roleId)
+  
+
+        public Task<IdentityResult> UpdateAsync(AppUser user)
         {
             try
             {
-                var model = new List<UserModel>();
-                var user = _userManager.Users.ToList();
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    user = user.Where(s => s.UserName.Contains(userName)).ToList();
-                }
-                if (!string.IsNullOrEmpty(role))
-                {
-                    var rId = _appRoleManager.FindByName(role).Id;
-                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
-                }
-                if (!string.IsNullOrEmpty(roleId))
-                {
-                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
-                }
-                if (!string.IsNullOrEmpty(email))
-                {
-                    user = user.Where(s => s.Email == email).ToList();
-                }
-                if (user.Count > 0)
-                {
-                    model = user.Select(u => new UserModel
-                    {
-                        CompanyName = u.CompanyName,
-                        Id = u.Id,
-                        Name = u.UserName,
-                        Email = u.Email,
-                        Phone = u.PhoneNumber,
-                        LinkMan = u.LinkMan,
-                        FanBao = u.FanBao,
-                        TiYong = u.TiYong,
-                        RoleIds = u.Roles.Any() ? u.Roles.Select(r => r.RoleId).ToList() : null,
-                        RoleName = u.Roles.Any() ? _appRoleManager.FindById(u.Roles.First().RoleId).Name : "",
-                        CreateTime = u.CreateTime,
-                        CreaterId = u.CreaterId
-                    }).ToList();
-                }
-                return new PagedList<UserModel>(model, pageIndex, pageSize);
+                user.Changer = _authenticationManager.User.Identity.Name;
+                user.ModifyTime = DateTime.Now;
+                var result = _userManager.UpdateAsync(user);
+                return result;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserList");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync");
+                return null;
             }
-            return null;
         }
-        public List<UserRoleModel> GetUserRoles()
+        public Task<IdentityResult> UpdateSecurityStampAsync(AppUser user)
         {
             try
             {
-                var roles = FindByName(_authenticationManager.User.Identity.Name).Roles;
-                if (roles.Any())
-                {
-                    var list = new List<UserRoleModel>();
-                    foreach (var s in roles)
-                    {
-                        var item = new UserRoleModel()
-                        {
-                            RoleId = s.RoleId,
-                            UserId = s.UserId,
-                            RoleName = _appRoleManager.FindById(s.RoleId).Name
-                        };
-                        list.Add(item);
-                    }
-                    return list;
-                }
+                user.Changer = _authenticationManager.User.Identity.Name;
+                user.ModifyTime = DateTime.Now;
+                var result = _userManager.UpdateSecurityStampAsync(user.Id);
+                return result;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateSecurityStampAsync");
+                return null;
             }
-            return new List<UserRoleModel>();
-        }
-        public AppUser GetCurrentUser()
-        {
-            try
-            {
-                var name = _authenticationManager.User.Identity.Name;
-                return FindByName(name);
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetUserRoles");
-            }
-            return null;
         }
     }
 }

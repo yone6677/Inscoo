@@ -1,6 +1,8 @@
-﻿using Services;
+﻿using Microsoft.AspNet.Identity;
+using Services;
 using System;
 using System.Data;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,19 +12,32 @@ namespace Inscoo.Controllers
     {
         private readonly IFileService _fileService;
         private readonly IResourceService _resource;
-
-        public HomeController(IFileService fileService, IResourceService resource)
+        private readonly INavigationService _navService;
+        public HomeController(IFileService fileService, IResourceService resource, INavigationService navService)
         {
             _fileService = fileService;
             _resource = resource;
+            _navService = navService;
         }
-        public ActionResult Menu()
+        public PartialViewResult Menu()
         {
+            var navs = _navService.GetLeftNavigations(User.Identity.GetUserId());
+            if (!navs.Any(n => n.name.Equals("退出")))
+            {
+                navs.Add(_navService.GetByUrl("accountController", "signout"));
+            }
+            var bottomNav = navs.Where(n => n.name == "设置" || n.name == "退出").ToList();
+            navs.RemoveAll(n => n.name == "设置" || n.name == "退出");
+
+            ViewBag.allNavs = navs;
+            ViewBag.navPart1 = navs.Where(n => n.level == 0).ToList();
+            ViewBag.navPart2 = bottomNav;
+
             return PartialView();
         }
         // GET: Home
         public ActionResult Index()
-        {           
+        {
             return View();
         }
         public ActionResult About()

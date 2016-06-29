@@ -371,6 +371,9 @@
     <Content Include="Views\Company\Create.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Order\DetailsEmp.cshtml" />
+    <Content Include="Views\Permission\ManagerSearch.cshtml" />
+    <Content Include="Views\Permission\ManagerList.cshtml" />
+    <Content Include="Views\Home\Menu - 复制.cshtml" />
     <Content Include="Views\Order\AuditOrder.cshtml" />
     <Content Include="Views\Order\OrderToPay.cshtml" />
     <Content Include="Views\Order\OrderToPayList.cshtml" />

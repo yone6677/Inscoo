@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Innscoo.Infrastructure;
 using Inscoo.Models.Role;
-using Services.Identity;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,0 +1,47 @@
+﻿
+
+@{
+    ViewBag.Title = "分配权限";
+}
+@using (Ajax.BeginForm("ManagerList", new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid",
+    OnSuccess = "EnableSubmit();"
+}))
+{
+    <div class="Search">
+        <dl>
+            <dt>角色:</dt>
+            <dd>
+                @Html.DropDownList("roleId", ViewBag.roleId as List<SelectListItem>)
+            </dd>
+            <dt>控制器:</dt>
+            <dd>
+                @Html.DropDownList("control", ViewBag.control as List<SelectListItem>)
+            </dd>
+            <dt></dt>
+            <dd><p><input type="submit" value="查询" id="iptSubmit" /></p></dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+    <div id="dataGrid">
+        @Html.Action("ManagerList", new { })
+
+    </div>
+}
+@section scripts{
+    <script>
+        jQuery("#iptSubmit").click(function () {
+            jQuery("#dataGrid").html("");
+            jQuery("#iptSubmit").attr("disabled", "disabled");
+        })
+
+        function EnableSubmit() {
+            console.log("#iptSubmit");
+            jQuery("#iptSubmit").removeAttr("disabled");
+        }
+    </script>
+}
+
+

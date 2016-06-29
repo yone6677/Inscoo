@@ -33,6 +33,21 @@ namespace Inscoo.Infrastructure
         {
             string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";
             string actionName = filterContext.ActionDescriptor.ActionName;
+            switch (controllerName)
+            {
+                case "AccountController":
+                    if (
+  actionName.Equals("Login")
+  || actionName.Equals("SignOut")) { return; }
+                    break;
+                case "HomeController":
+                    if (
+  actionName.Equals("Index")
+  || actionName.Equals("Menu")
+  || actionName.Equals("Portrait")
+ ) { return; }
+                    break;
+            }
             var httpcontext = filterContext.HttpContext;
             try
             {

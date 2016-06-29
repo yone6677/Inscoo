@@ -60,7 +60,7 @@ namespace Inscoo.Controllers
         public ActionResult SignOut()
         {
             _appUserService.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
     }
 }

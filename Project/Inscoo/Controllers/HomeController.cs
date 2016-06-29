@@ -22,7 +22,10 @@ namespace Inscoo.Controllers
         public PartialViewResult Menu()
         {
             var navs = _navService.GetLeftNavigations(User.Identity.GetUserId());
-
+            if (!navs.Any(n => n.name.Equals("退出")))
+            {
+                navs.Add(_navService.GetByUrl("accountController", "signout"));
+            }
             var bottomNav = navs.Where(n => n.name == "设置" || n.name == "退出").ToList();
             navs.RemoveAll(n => n.name == "设置" || n.name == "退出");
 

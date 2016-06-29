@@ -18,15 +18,17 @@ namespace Services.Orders
         private readonly IRepository<Order> _orderRepository;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IAppUserService _appUserService;
+        private readonly IAppRoleService _appRoleService;
         private readonly IGenericAttributeService _genericAttributeService;
         public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager, IAppUserService appUserService,
-            IGenericAttributeService genericAttributeService)
+            IGenericAttributeService genericAttributeService, IAppRoleService appRoleService)
         {
             _loggerService = loggerService;
             _orderRepository = orderRepository;
             _authenticationManager = authenticationManager;
             _appUserService = appUserService;
             _genericAttributeService = genericAttributeService;
+            _appRoleService = appRoleService;
         }
         public bool Delete(Order item)
         {
@@ -91,13 +93,26 @@ namespace Services.Orders
             {
                 var query = _orderRepository.Table;
                 //根据角色获得列表
-                //var role = _appUserService.GetCurrentUser().Roles.FirstOrDefault();
-
+                var user = _appUserService.GetCurrentUser();
+                var role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
+                if (role == "PartnerChannel" || role == "CompanyHR")
+                {
+                    query = query.Where(q => q.Author == user.UserName);//这两种角色只能查看自己的订单
+                }
+                query = query.Where(q => q.IsDeleted == false);
                 if (!string.IsNullOrEmpty(name))
                 {
                     query = query.Where(q => q.Name.Contains(name));
                 }
-                if (state > 0)
+                if (state == 0)
+                {
+                    query = query.Where(q => q.State > 3);//默认返回已输完信息的所有订单
+                }
+                else if (state == 10)
+                {
+                    query = query.Where(q => q.State < 4);//信息缺失的订单
+                }
+                else
                 {
                     query = query.Where(q => q.State == state);
                 }
@@ -141,8 +156,9 @@ namespace Services.Orders
                         InsuranceNumber = s.InsuranceNumber,
                         Name = s.Name,
                         StartDate = s.StartDate,
-                        State = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key
-                    }).OrderByDescending(s=>s.CreateDate).ToList(), pageIndex, pageSize);
+                        StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
+                        State = s.State
+                    }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }
             catch (Exception e)

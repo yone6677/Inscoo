@@ -114,7 +114,7 @@
     {
         if (Model.Role == "InsuranceCompany" || Model.Role == "Admin")
         {
-            if (Model.Insurer != Model.UserCompany)
+            if (Model.Insurer == Model.UserCompany)
             {
                 <input type="hidden" name="rid" value="3" />
                 <div class="orderDetailsExamine">

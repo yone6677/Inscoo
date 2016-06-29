@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "未付订单";
+}
+
+
+@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="Search">
+        <dl>
+            <dt>方案名称:</dt>
+            <dd><input type="text" name="name" value="" placeholder="请输入方案名称" /></dd>
+            <dt>时间起:</dt>
+            <dd><input type="date" name="beginDate" value="" /></dd>
+            <dt>时间止:</dt>
+            <dd><input type="date" name="endDate" value="" /></dd>
+            <dt></dt>
+            <dd><p><input type="submit" value="查找" /></p></dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+    <div id="dadaGrid">
+        @Html.Action("OrderToPayList")
+    </div>
+}
+
+

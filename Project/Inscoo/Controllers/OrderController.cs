@@ -20,6 +20,7 @@ namespace Inscoo.Controllers
 {
     public class OrderController : BaseController
     {
+        #region Fields & Ctor
         private readonly IMixProductService _mixProductService;
         private readonly IAppUserService _appUserService;
         private readonly IGenericAttributeService _genericAttributeService;
@@ -47,10 +48,40 @@ namespace Inscoo.Controllers
             _resourceService = resourceService;
             _appRoleService = appRoleService;
         }
+        #endregion
+        #region 订单管理
         // GET: Oder
         public ActionResult Index()
         {
-            var select = _genericAttributeService.GetSelectList("orderState", true);
+            //var select = _genericAttributeService.GetSelectList("orderState", true);
+            var select = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text="请选择",
+                    Value="0"
+                },
+                  new SelectListItem()
+                {
+                    Text="待审核",
+                    Value="4"
+                },
+                new SelectListItem()
+                {
+                    Text="待支付",
+                    Value="5"
+                },
+                new SelectListItem()
+                {
+                    Text="已完成",
+                    Value="6"
+                },
+                new SelectListItem()
+                {
+                    Text="审核未通过",
+                    Value="7"
+                }
+            };
             ViewBag.orderState = select;
             return View();
         }
@@ -68,6 +99,7 @@ namespace Inscoo.Controllers
             ViewBag.pageCommand = command;
             return PartialView(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult List(int PageIndex = 1, int PageSize = 15, string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
@@ -83,7 +115,92 @@ namespace Inscoo.Controllers
             ViewBag.pageCommand = command;
             return PartialView(model);
         }
+        #endregion
+        #region 未付订单
+        public ActionResult OrderToPay()
+        {
+            return View();
+        }
+        public ActionResult OrderToPayList()
+        {
+            var model = _orderService.GetListOfPager(1, 15, null, 10);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OrderToPayList(int PageIndex = 1, int PageSize = 15, string name = null, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
+        {
+            var model = _orderService.GetListOfPager(PageIndex, PageSize, name, 10, companyName, beginDate, endDate);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        #endregion
 
+        #region 已完成订单
+        public ActionResult CompletedOrder()
+        {
+            var select = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text="已完成",
+                    Value="6",
+                    Selected=true
+                },
+                new SelectListItem()
+                {
+                    Text="审核未通过",
+                    Value="7"
+                }
+            };
+            ViewBag.orderState = select;
+            return View();
+        }
+        public ActionResult CompletedOrderList()
+        {
+            var model = _orderService.GetListOfPager(1, 15, null, 6);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CompletedOrderList(int PageIndex = 1, int PageSize = 15, string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null)
+        {
+            var model = _orderService.GetListOfPager(PageIndex, PageSize, name, state, companyName, beginDate, endDate);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        #endregion
+        #region 方案确认
         [HttpPost]
         public ActionResult Buy(CustomizeBuyModel model)
         {
@@ -208,6 +325,7 @@ namespace Inscoo.Controllers
             var model = new ConfirmOrderModel();
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Confirm(ConfirmOrderModel model)
@@ -288,7 +406,8 @@ namespace Inscoo.Controllers
             }
             return null;
         }
-
+        #endregion
+        #region 第二步录入信息
         public ActionResult EntryInfo(int id)
         {
             if (id > 0)
@@ -364,81 +483,6 @@ namespace Inscoo.Controllers
                 }
             }
             return View(model);
-        }
-        /// <summary>
-        /// 完成第三步
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UploadFile(UploadInfoModel model)
-        {
-            if (model.Id > 0)
-            {
-                var order = _orderService.GetById(model.Id);
-                if (order != null)
-                {
-                    order.State = 3;
-                    if (_orderService.Update(order))
-                    {
-                        return RedirectToAction("ConfirmPayment", new { id = model.Id });
-                    }
-                }
-            }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-        public ActionResult UploadFile(int id)
-        {
-            if (id > 0)
-            {
-                var model = new UploadInfoModel();
-                model.Id = id;
-                model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
-                var order = _orderService.GetById(id);
-                if (order.State > 1)
-                {
-                    var orderBatch = _orderBatchService.GetByOrderId(id);
-                    if (orderBatch != null)
-                    {
-                        if (orderBatch.EmpInfoFilePDF == 0)//还未生成PDF
-                        {
-                            var virpath = _orderEmpService.GetPdf(id);//产生PDF文件
-                            if (virpath.Count > 0)
-                            {
-                                var fid = _archiveService.InsertByUrl(virpath, FileType.EmployeeInfoSeal.ToString(), id, "人员信息PDF");
-                                orderBatch.EmpInfoFilePDF = fid;
-                                if (_orderBatchService.Update(orderBatch))
-                                {
-                                    model.EmpInfoFilePDFUrl = virpath[1];
-                                }
-                            }
-                        }
-                        else//已生成PDF
-                        {
-                            var archive = _archiveService.GetById(orderBatch.EmpInfoFilePDF);
-                            model.EmpInfoFilePDFUrl = archive.Url;
-                            if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
-                            {
-                                model.HasEmpInfoFilePDFSeal = true;
-                                model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
-                            }
-                            if (order.BusinessLicense > 0)//已上传营业执照
-                            {
-                                model.HasBusinessLicense = true;
-                                model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
-                            }
-                            if (orderBatch.PolicySeal > 0)//已上传投保单
-                            {
-                                model.HasInsurancePolicy = true;
-                                model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
-                            }
-                        }
-                        return View(model);
-                    }
-                }
-            }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
         public ActionResult UploadEmp(int Id, int PageIndex = 1, int PageSize = 15)
         {
@@ -530,6 +574,84 @@ namespace Inscoo.Controllers
             }
             return Content(result);
         }
+        #endregion
+
+        #region 第三步上传资料
+        /// <summary>
+        /// 完成第三步
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadFile(UploadInfoModel model)
+        {
+            if (model.Id > 0)
+            {
+                var order = _orderService.GetById(model.Id);
+                if (order != null)
+                {
+                    order.State = 3;
+                    if (_orderService.Update(order))
+                    {
+                        return RedirectToAction("ConfirmPayment", new { id = model.Id });
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+        public ActionResult UploadFile(int id)
+        {
+            if (id > 0)
+            {
+                var model = new UploadInfoModel();
+                model.Id = id;
+                model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                var order = _orderService.GetById(id);
+                if (order.State > 1)
+                {
+                    var orderBatch = _orderBatchService.GetByOrderId(id);
+                    if (orderBatch != null)
+                    {
+                        if (orderBatch.EmpInfoFilePDF == 0)//还未生成PDF
+                        {
+                            var virpath = _orderEmpService.GetPdf(id);//产生PDF文件
+                            if (virpath.Count > 0)
+                            {
+                                var fid = _archiveService.InsertByUrl(virpath, FileType.EmployeeInfoSeal.ToString(), id, "人员信息PDF");
+                                orderBatch.EmpInfoFilePDF = fid;
+                                if (_orderBatchService.Update(orderBatch))
+                                {
+                                    model.EmpInfoFilePDFUrl = virpath[1];
+                                }
+                            }
+                        }
+                        else//已生成PDF
+                        {
+                            var archive = _archiveService.GetById(orderBatch.EmpInfoFilePDF);
+                            model.EmpInfoFilePDFUrl = archive.Url;
+                            if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
+                            {
+                                model.HasEmpInfoFilePDFSeal = true;
+                                model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
+                            }
+                            if (order.BusinessLicense > 0)//已上传营业执照
+                            {
+                                model.HasBusinessLicense = true;
+                                model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
+                            }
+                            if (orderBatch.PolicySeal > 0)//已上传投保单
+                            {
+                                model.HasInsurancePolicy = true;
+                                model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
+                            }
+                        }
+                        return View(model);
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
         [HttpPost]
         public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id)
         {
@@ -593,11 +715,9 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-        /// <summary>
-        /// 第四步,确认付款页面
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        #endregion
+
+        #region  第四步,确认付款页面
         public ActionResult ConfirmPayment(int id)
         {
             if (id > 0)
@@ -632,23 +752,8 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-        public ActionResult DetailsEmp(int Id, int PageIndex = 1, int PageSize = 15)
-        {
-            if (Id > 0)
-            {
-                var model = _orderEmpService.GetListOfPager(PageIndex, PageSize, Id);
-                var command = new PageCommand()
-                {
-                    PageIndex = model.PageIndex,
-                    PageSize = model.PageSize,
-                    TotalCount = model.TotalCount,
-                    TotalPages = model.TotalPages
-                };
-                ViewBag.pageCommand = command;
-                return PartialView(model);
-            }
-            return null;
-        }
+        #endregion
+
         #region 订单详细
         public ActionResult Details(int id)
         {
@@ -741,6 +846,23 @@ namespace Inscoo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, e.Message);
             }
+        }
+        public ActionResult DetailsEmp(int Id, int PageIndex = 1, int PageSize = 15)
+        {
+            if (Id > 0)
+            {
+                var model = _orderEmpService.GetListOfPager(PageIndex, PageSize, Id);
+                var command = new PageCommand()
+                {
+                    PageIndex = model.PageIndex,
+                    PageSize = model.PageSize,
+                    TotalCount = model.TotalCount,
+                    TotalPages = model.TotalPages
+                };
+                ViewBag.pageCommand = command;
+                return PartialView(model);
+            }
+            return null;
         }
         #endregion
 

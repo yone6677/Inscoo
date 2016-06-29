@@ -372,6 +372,10 @@
     <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Order\DetailsEmp.cshtml" />
     <Content Include="Views\Order\AuditOrder.cshtml" />
+    <Content Include="Views\Order\OrderToPay.cshtml" />
+    <Content Include="Views\Order\OrderToPayList.cshtml" />
+    <Content Include="Views\Order\CompletedOrder.cshtml" />
+    <Content Include="Views\Order\CompletedOrderList.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

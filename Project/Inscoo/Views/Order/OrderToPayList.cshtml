@@ -28,21 +28,9 @@
         </th>
         <th></th>
     </tr>
-
     @foreach (var item in Model)
     {
-
-        //var cssClass = "";
-        //if (item.State < 3)
-        //{
-        //    cssClass = "active";
-        //}
-        //else
-        //{
-        //    cssClass = "success";
-        //}
-        //<tr class=@cssClass>
-            <tr>
+        <tr>
             <td>
                 <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>
@@ -59,26 +47,48 @@
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StateDesc)
+                @switch (item.State)
+                {
+                    case 2:
+                       @Html.ActionLink(item.StateDesc, "EntryInfo", new { id = item.Id })
+                        break;
+                    case 3:
+                        @Html.ActionLink(item.StateDesc, "UploadFile", new { id = item.Id })
+                        break;
+                    case 4:
+                        @Html.ActionLink(item.StateDesc, "ConfirmPayment", new { id = item.Id })
+                        break;
+                    default:
+                        @Html.DisplayFor(modelItem => item.StateDesc)
+                        break;
+                }
             </td>
             <td>
-                @if (item.StartDate == DateTime.MinValue)
-                {
-                    <span style="color:#ff6a00">未确认</span>
-                }
-                else
-                {
-                    <span>@item.StartDate.ToShortDateString()</span>
-                }
+                @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
+                @{
+                    if (item.State == 1)
+                    {
+                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id });
+                    }
+                    if (item.State == 2)
+                    {
+                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id });
+                    }
+                    if (item.State == 3)
+                    {
+                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id });
+                    }
+                }
+                |
                 @Html.ActionLink("删除", "Delete", new { id = item.Id })
             </td>
         </tr>
-    }
+                    }
 </table>
 @{
     PageCommand command = ViewBag.pageCommand;

@@ -169,6 +169,7 @@
     <Content Include="App_Data\Sql\MixProduct.sql" />
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
+    <Content Include="App_Data\Sql\Role.sql" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
@@ -375,6 +376,11 @@
     <Content Include="Views\Permission\ManagerList.cshtml" />
     <Content Include="Views\Home\Menu - 复制.cshtml" />
     <Content Include="Views\Order\AuditOrder.cshtml" />
+    <Content Include="Views\Order\OrderToPay.cshtml" />
+    <Content Include="Views\Order\OrderToPayList.cshtml" />
+    <Content Include="Views\Order\CompletedOrder.cshtml" />
+    <Content Include="Views\Order\CompletedOrderList.cshtml" />
+    <Content Include="Views\Order\ProvisionList.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

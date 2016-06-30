@@ -16,7 +16,8 @@ namespace Models.Order
         [DisplayName("订单金额")]
         public decimal Amount { get; set; }
         [DisplayName("订单状态")]
-        public string State { get; set; }
+        public string StateDesc { get; set; }
+        public int State { get; set; }
         [DisplayName("生效日期")]
         public DateTime StartDate { get; set; }
         [DisplayName("创建日期")]

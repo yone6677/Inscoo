@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Services.Common
+namespace Services
 {
     public class GenericAttributeService : IGenericAttributeService
     {
@@ -79,6 +79,30 @@ namespace Services.Common
                 _loggerService.insert(e, LogLevel.Warning, "GenericAttributeService：GetById");
             }
             return null;
+        }
+
+        public List<GenericAttribute> GetByGroup(string keyGroup)
+        {
+            try
+            {
+                return _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
+            }
+            catch (Exception e)
+            {
+                return new List<GenericAttribute>();
+            }
+        }
+        public SelectList GetSelectListByGroup(string keyGroup, string selectedValue)
+        {
+            try
+            {
+                var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
+                return new SelectList(list, "Value", "Key", selectedValue);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
         public bool Insert(GenericAttribute item)
         {

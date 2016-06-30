@@ -24,7 +24,15 @@ namespace Inscoo.Controllers
             var navs = _navService.GetLeftNavigations(User.Identity.GetUserId());
             if (!navs.Any(n => n.name.Equals("退出")))
             {
-                navs.Add(_navService.GetByUrl("accountController", "signout"));
+                navs.Add(_navService.GetByUrl("AccountController", "signout"));
+            }
+            if (!navs.Any(n => n.name.Equals("设置")))
+            {
+                navs.Add(_navService.GetById(16));//设置菜单
+            }
+            if (!navs.Any(n => n.name.Equals("修改密码")))
+            {
+                navs.Add(_navService.GetByUrl("UserController", "ChangePassword"));
             }
             var bottomNav = navs.Where(n => n.name == "设置" || n.name == "退出").ToList();
             navs.RemoveAll(n => n.name == "设置" || n.name == "退出");

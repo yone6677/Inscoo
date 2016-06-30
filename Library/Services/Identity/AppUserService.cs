@@ -116,7 +116,7 @@ namespace Services
                 return null;
             }
         }
-     
+
         public AppUser FindByEmail(string email)
         {
 
@@ -295,7 +295,9 @@ namespace Services
                         FanBao = result.FanBao,
                         BankName = result.BankName,
                         BankNumber = result.BankNumber,
-                        Rebate = result.Rebate
+                        Rebate = result.Rebate,
+                        CommissionMethod = result.CommissionMethod,
+                        AccountName = result.AccountName
                     };
                 }
                 else
@@ -396,7 +398,7 @@ namespace Services
                 throw e;
             }
         }
-     
+
 
 
         public void SignIn(AppUser user, bool isPersistent)
@@ -409,7 +411,7 @@ namespace Services
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
-  
+
 
         public Task<IdentityResult> UpdateAsync(AppUser user)
         {

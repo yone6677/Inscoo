@@ -33,7 +33,7 @@ namespace Inscoo.Controllers
         {
             //var roleId = Request.QueryString["roleId"];
             var companySearch = new vCompanySearch() { UserId = User.Identity.GetUserId() };
-            var list = _companyService.GetCompanys(1, 20, companySearch);
+            var list = _companyService.GetCompanys(companySearch);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -48,10 +48,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult ListData(vCompanySearch companySearch)
         {
-
-            var pageIndex = Request.QueryString["roleId"];
-            var pageCount = Request.QueryString["userName"];
-            var list = _companyService.GetCompanys(1, 20, companySearch);
+            var list = _companyService.GetCompanys(companySearch);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -86,7 +83,7 @@ namespace Inscoo.Controllers
                 var comId = _companyService.AddNewCompany(model, User.Identity.GetUserId());
                 _archiveService.InsertBusinessLicense(BusinessLicense, User.Identity.Name, comId);
             }
-            return View();
+            return RedirectToAction("ListIndex");
         }
 
         // GET: User/Edit/5
@@ -104,7 +101,7 @@ namespace Inscoo.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (!string.IsNullOrEmpty(file.FileName))
+                    if (file != null)
                         _archiveService.InsertBusinessLicense(file, User.Identity.Name, model.Id);
                     var result = _companyService.UpdateCompany(model);
                     if (result)
@@ -119,7 +116,7 @@ namespace Inscoo.Controllers
                     throw new Exception("输入有误");
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return View(model);
             }

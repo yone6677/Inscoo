@@ -1,6 +1,6 @@
 ﻿using Domain.Products;
 using Models.Insurance;
-using Models.Products;
+using Models;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -19,6 +19,9 @@ namespace Services.Products
         bool Delete(int id, bool disable = true);
         Product GetById(int id);
         List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人");
+        SelectList GetInsuredComs();
+        List<vProvisionPDF> GetProvisionPdfByInsuredCom(string insuredCom);
+        SelectList GetSafeguardNameByInsuredCom(string insuredCom);
         /// <summary>
         /// 保险酷自定义产品展示
         /// </summary>

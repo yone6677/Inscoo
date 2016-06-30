@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Models.Products
+namespace Models
 {
     public class MixProductModel : BaseViewModel
     {

@@ -6,7 +6,7 @@ using Models.Insurance;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Models.Products;
+using Models;
 using Models.Infrastructure;
 
 namespace Services.Products
@@ -49,7 +49,42 @@ namespace Services.Products
                 return null;
             }
         }
-
+        public SelectList GetInsuredComs()
+        {
+            try
+            {
+                var list = _productRepository.TableNoTracking.Select(p => p.InsuredCom).ToList();
+                return new SelectList(list, "InsuredCom", "InsuredCom");
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public List<vProvisionPDF> GetProvisionPdfByInsuredCom(string insuredCom)
+        {
+            try
+            {
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).ToList();
+                return list;
+            }
+            catch (Exception e)
+            {
+                return new List<vProvisionPDF>();
+            }
+        }
+        public SelectList GetSafeguardNameByInsuredCom(string insuredCom)
+        {
+            try
+            {
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => p.SafeguardName).ToList();
+                return new SelectList(list, "SafeguardName", "SafeguardName"); ;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
         public bool Insert(Product item)
         {
             try

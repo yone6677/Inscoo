@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Services;
-using Services.Common;
 using Services.Orders;
 using Services.Permissions;
 using Services.Products;

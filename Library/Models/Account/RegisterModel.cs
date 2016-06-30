@@ -23,7 +23,7 @@ namespace Inscoo.Models.Account
         [Display(Name = "电话")]
         public string PhoneNumber { get; set; }
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "请输入正确的邮箱地址")]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
 
@@ -31,6 +31,9 @@ namespace Inscoo.Models.Account
         [Display(Name = "开户行")]
         public string BankName { get; set; }
 
+        [Display(Name = "户名")]
+        public string AccountName { get; set; }
+        
         [MaxLength(50)]
         [DataType(DataType.CreditCard)]
         [Display(Name = "开户账号")]
@@ -47,5 +50,8 @@ namespace Inscoo.Models.Account
         [Display(Name = "是否启用")]
         public bool IsDelete { set; get; }
         public List<SelectListItem> selectList { get; set; }
+        public SelectList CommissionMethods { get; set; }
+        [Display(Name = "佣金计算方法")]
+        public string CommissionMethod { get; set; }
     }
 }

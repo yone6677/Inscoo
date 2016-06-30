@@ -1,8 +1,7 @@
 ﻿using Domain.Products;
 using Models.Insurance;
 using Models.Order;
-using Models.Products;
-using Services.Common;
+using Models;
 using Services;
 using Services.Products;
 using System.Collections.Generic;

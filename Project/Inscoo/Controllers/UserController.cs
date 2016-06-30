@@ -16,34 +16,23 @@ namespace Inscoo.Controllers
     {
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleManager;
-        public UserController(IAppUserService appUserService, IAppRoleService appRoleManager)
+        private readonly IGenericAttributeService _svGenericAttribute;
+        public UserController(IAppUserService appUserService, IAppRoleService appRoleManager, IGenericAttributeService svGenericAttribute)
         {
             _appRoleManager = appRoleManager;
             _appUserService = appUserService;
+            _svGenericAttribute = svGenericAttribute;
         }
         // GET: User
         public ActionResult Index()
         {
-            var model = new UserListModel();
-            model.RoleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+            ViewBag.RoleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
 
-            return View(model);
+            return View();
         }
-        [HttpPost]
-        public ActionResult Index(UserListModel model)
-        {
-            var roleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
-            if (!string.IsNullOrEmpty(model.RoleId))
-                roleList.Find(r => r.Value == model.RoleId).Selected = true;
-
-            model.RoleList = roleList;
-
-            return View(model);
-        }
+        
         public ActionResult List(string roleId, string userName)
         {
-            //var roleId = Request.QueryString["roleId"];
-            //var userName = Request.QueryString["userName"];
             var list = _appUserService.GetUserList(userName: userName, roleId: roleId);
             var command = new PageCommand()
             {
@@ -66,10 +55,9 @@ namespace Inscoo.Controllers
         {
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId());
             var user = _appUserService.FindById(User.Identity.GetUserId());
-
             ViewBag.maxRebate = user.Rebate;
             //typeof(RegisterModel).GetProperty("Rebate").GetCustomAttributes(false).SetValue(new RangeAttribute(0, user.Rebate) { ErrorMessage = string.Format("不能大于{0}", user.Rebate) }, 1);
-            var model = new RegisterModel() { selectList = roles };
+            var model = new RegisterModel() { selectList = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
 
             return View(model);
         }
@@ -93,13 +81,16 @@ namespace Inscoo.Controllers
                     TiYong = model.TiYong,
                     FanBao = model.FanBao,
                     IsDelete = model.IsDelete,
-                    CreaterId = User.Identity.GetUserId()
+                    CreaterId = User.Identity.GetUserId(),
+                    CommissionMethod = model.CommissionMethod,
+                    AccountName = model.AccountName
                 };
                 var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
                 if (result.Succeeded)
                 {
                     result = await ForRole(user, model.Roles);
-                    return View("Details", model);
+                    //return View("Details", model);
+                    return RedirectToAction("Index");
                 }
             }
             return View();
@@ -113,6 +104,7 @@ namespace Inscoo.Controllers
         public ActionResult Edit(string id)
         {
             var model = _appUserService.Get_UserModel_ById(id);
+            model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", model.CommissionMethod);
             ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }
@@ -133,6 +125,10 @@ namespace Inscoo.Controllers
                     user.TiYong = model.TiYong.HasValue ? model.TiYong.Value : false;
                     user.FanBao = model.FanBao.HasValue ? model.FanBao.Value : false;
                     user.Rebate = model.Rebate;
+                    user.BankName = model.BankName;
+                    user.BankNumber = model.BankNumber;
+                    user.CommissionMethod = model.CommissionMethod;
+                    user.AccountName = model.AccountName;
                     var result = await _appUserService.UpdateAsync(user);
                     if (result.Succeeded)
                         return RedirectToAction("Index");

@@ -1,4 +1,4 @@
-﻿using Models.Products;
+﻿using Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

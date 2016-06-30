@@ -26,9 +26,15 @@ namespace Domain
         public int Ident { get; set; }
         //返点分配
         public int Rebate { get; set; }
+
+        //户名
+        public string AccountName { get; set; }
         //开户行
         public string BankName { get; set; }
         //开户行账号
         public string BankNumber { get; set; }
+
+        //佣金计算方法
+        public string CommissionMethod { get; set; }
     }
 }

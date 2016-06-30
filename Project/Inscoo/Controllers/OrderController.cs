@@ -991,16 +991,31 @@ namespace Inscoo.Controllers
         public ActionResult ProvisionCreate(string insuredCom, string safeguardName, HttpPostedFileBase provisionPdf)
         {
             var result = _fileService.SaveFile(provisionPdf);
-            var InsuredComs = _productService.GetInsuredComs();
-            ViewBag.InsuredCom = InsuredComs;
-
-            var com = InsuredComs.First().Value;
-
-            ViewBag.SafeguardName = _productService.GetSafeguardNameByInsuredCom(com);
-            return View();
+            var updateCount = _productService.UpdateProvisionPath(insuredCom, safeguardName, result.Path);
+            if (updateCount > 0)
+                return RedirectToAction("ProvisionList", new { InsuredCom = insuredCom });
+            else
+                return View();
         }
 
+        public ActionResult ProvisionEdit(string insuredCom, string safeguardName)
+        {
+            var model = _productService.GetProvisionPdfByInsuredComAndSafeguardName(insuredCom, safeguardName);
 
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProvisionEdit(vProvisionPDF model, HttpPostedFileBase provisionPdf)
+        {
+            var result = _fileService.SaveFile(provisionPdf);
+            var updateCount = _productService.UpdateProvisionPath(model.InsuredCom, model.SafeguardName, result.Path);
+            if (updateCount > 0)
+                return RedirectToAction("ProvisionList", new { InsuredCom = model.InsuredCom });
+            else
+                return View();
+        }
         #endregion
     }
 }

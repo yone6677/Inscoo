@@ -31,7 +31,10 @@ namespace Services.Products
         /// <param name="avarage"></param>
         /// <returns></returns>
         List<ProductListModel> GetProductListForInscoo(string company = null, string productType = null, int staffsNum = 0, string InsuredWho = "主被保险人");
+        vProvisionPDF GetProvisionPdfByInsuredComAndSafeguardName(string insuredCom, string safeguardName);
 
         ProductModel GetProductPrice(int cid = 0, string payrat = null, int staffsNumber = 0, int avarage = 0);
+
+        int UpdateProvisionPath(string insuredCom, string safeguardName, string path);
     }
 }

@@ -837,6 +837,31 @@ namespace Inscoo.Controllers
                         {
                             batchItem.EmpInfoFileSeal = EmpInfoFileSeal.Url;
                         }
+                        switch(b.BState)
+                        {
+                            case 0:
+                                batchItem.BState = "待审核";
+                                break;
+                            case 1:
+                                batchItem.BState = "Inscoo已同意";
+                                break;
+                            case 2:
+                                batchItem.BState = "Inscoo已拒绝";
+                                break;
+                            case 3:
+                                batchItem.BState = "财务已同意";
+                                break;
+                            case 4:
+                                batchItem.BState = "财务已拒绝";
+                                break;
+                            case 5:
+                                batchItem.BState = "保险公司已同意";
+                                break;
+                            case 6:
+                                batchItem.BState = "保险公司已拒绝";
+                                break;
+                        }
+
                         model.orderBatch.Add(batchItem);
                     }
                 }

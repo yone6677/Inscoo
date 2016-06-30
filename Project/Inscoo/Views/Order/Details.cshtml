@@ -140,17 +140,17 @@
         {
             foreach (var item in Model.orderBatch)
             {
-                <dl>
-                    <dt>
+                <dl style="margin-top:1em;">
+                    <dt style="border-top:1px solid #0094ff;">
                         批次编号
                     </dt>
-                    <dd>
+                    <dd  style="border-top:1px solid #0094ff;">
                         @item.BId
                     </dd>
-                    <dt>
+                    <dt style="border-top:1px solid #0094ff;">
                         批次状态
                     </dt>
-                    <dd>
+                    <dd  style="border-top:1px solid #0094ff;">
                         @item.BState
                     </dd>
                     <dt>
@@ -281,7 +281,6 @@
                         @item.InsurerMemo
                     </dd>
                 </dl>
-                <hr />
             }
         }
     }

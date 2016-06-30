@@ -157,7 +157,8 @@ namespace Services.Orders
                         Name = s.Name,
                         StartDate = s.StartDate,
                         StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
-                        State = s.State
+                        State = s.State,
+                        BatchState=s.orderBatch.Where(b=>b.InsurerConfirmDate==DateTime.MinValue).Any()
                     }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }

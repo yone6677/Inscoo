@@ -3,8 +3,11 @@
 @using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.OId)
+    @*@Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.OId)*@
+    <input type="hidden" name="Id" id="Id" value=@Model.Id />
+    <input type="hidden" name="OId" id="OId" value=@Model.OId />
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     if (Model.State == 0)

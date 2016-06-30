@@ -29,6 +29,8 @@ namespace Core.Data
             _context.Roles.Add(new AppRole { Name = "CompanyHR", Description = "CompanyHR" });
             _context.Roles.Add(new AppRole { Name = "InscooFinance", Description = "InscooFinance" });
             _context.Roles.Add(new AppRole { Name = "InsuranceCompany", Description = "保险公司" });
+            _context.Roles.Add(new AppRole { Name = "InscooOperator", Description = "InscooOperator" });
+            _context.Roles.Add(new AppRole { Name = "HealthCheck", Description = "HealthCheck" });
             _context.SaveChanges();
             user.CreaterId = user.Id;
             user.Changer = user.Id;

@@ -79,7 +79,20 @@ namespace Services.Orders
             }
             return false;
         }
-
+        public int InsertGetId(OrderBatch item)
+        {
+            try
+            {
+                item.Author = _authenticationManager.User.Identity.Name;
+               return _orderBatchRepository.InsertGetId(item);
+                
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderBatch：Insert");
+            }
+            return 0;
+        }
         public bool Update(OrderBatch item)
         {
             try

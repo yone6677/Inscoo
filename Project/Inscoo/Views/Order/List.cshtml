@@ -42,7 +42,7 @@
         //    cssClass = "success";
         //}
         //<tr class=@cssClass>
-            <tr>
+        <tr>
             <td>
                 <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>
@@ -75,10 +75,15 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
-                @Html.ActionLink("删除", "Delete", new { id = item.Id })
+                @{ if (item.State < 6)
+                    {
+                        @Html.ActionLink("删除", "Delete", new { id = item.Id })
+                    }
+                }
+
             </td>
         </tr>
-    }
+                    }
 </table>
 @{
     PageCommand command = ViewBag.pageCommand;

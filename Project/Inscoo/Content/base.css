@@ -750,3 +750,29 @@ body {
   text-align: left;
   width: 40%;
 }
+.buyMore {
+  width: 100%;
+  margin: 2em 0;
+}
+.buyMore ul {
+  width: 100%;
+}
+.buyMore ul li {
+  height: 40px;
+  line-height: 40px;
+  float: left;
+}
+.buyMore ul li:first-child {
+  width: 20%;
+  text-align: right;
+}
+.buyMore ul li:nth-child(even) {
+  width: 40%;
+}
+.buyMore ul li:nth-child(even) input {
+  margin-left: 1em;
+}
+.buyMore ul li:last-child {
+  text-align: left;
+  width: 40%;
+}

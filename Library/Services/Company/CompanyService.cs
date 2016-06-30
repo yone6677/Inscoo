@@ -134,7 +134,7 @@ namespace Services
 
         }
 
-        public PagedList<vCompanyList> GetCompanys(int pageIndex, int pageSize, vCompanySearch company)
+        public IPagedList<vCompanyList> GetCompanys(vCompanySearch company, int pageIndex, int pageSize)
         {
 
             var list = _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c =>
@@ -152,7 +152,7 @@ namespace Services
                 Code = c.Code,
                 BusinessLicenseFilePath = c.BusinessLicenses.OrderByDescending(b => b.Id).FirstOrDefault().Url
 
-            }).OrderBy(c => c.Id).AsNoTracking();
+            }).OrderBy(c => c.Id).ToList();
             return new PagedList<vCompanyList>(list, pageIndex, pageSize);
         }
         public vCompanyEdit GetCompanyById(int id)

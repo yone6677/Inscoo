@@ -1,7 +1,7 @@
 ﻿using Domain.Common;
 using Innscoo.Infrastructure;
 using Models.Common;
-using Services.Common;
+using Services;
 using System.Net;
 using System.Web.Mvc;
 

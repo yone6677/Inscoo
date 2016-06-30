@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Products
 {
-   public class Product:BaseEntity
+    public class Product : BaseEntity
     {
         /// <summary>
         /// 产品编号
@@ -74,5 +74,7 @@ namespace Domain.Products
         public float CommissionRate { get; set; }
 
         public string changer { get; set; }
+
+        public string ProvisionPath { get; set; }
     }
 }

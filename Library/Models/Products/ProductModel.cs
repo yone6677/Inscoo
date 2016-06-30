@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Models.Products
+namespace Models
 {
     public class ProductModel : BaseViewModel
     {

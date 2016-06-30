@@ -14,25 +14,27 @@ namespace Core.Data
         public InitializerDatabase(IdentityDbContext<AppUser> context)
         {
             _context = context;
-            InitUserAndRoles();
             InitBaseData();
+            InitUserAndRoles();
+
         }
         private void InitUserAndRoles()
         {
             //添加admin用户，密码123456
             var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo" };
-            _context.Users.Add(user);          
-            var admin = new AppRole { Name = "Admin", Description = "Admin" };
-            _context.Roles.Add(admin);
-            _context.Roles.Add(new AppRole { Name = "BusinessDeveloper", Description = "BusinessDeveloper" });
-            _context.Roles.Add(new AppRole { Name = "PartnerChannel", Description = "PartnerChannel" });
-            _context.Roles.Add(new AppRole { Name = "CompanyHR", Description = "CompanyHR" });
-            _context.Roles.Add(new AppRole { Name = "InscooFinance", Description = "InscooFinance" });
-            _context.Roles.Add(new AppRole { Name = "InsuranceCompany", Description = "保险公司" });
+            _context.Users.Add(user);
+            //var admin = new AppRole { Name = "Admin", Description = "Admin" };
+            //_context.Roles.Add(admin);
+            //_context.Roles.Add(new AppRole { Name = "BusinessDeveloper", Description = "BusinessDeveloper" });
+            //_context.Roles.Add(new AppRole { Name = "PartnerChannel", Description = "PartnerChannel" });
+            //_context.Roles.Add(new AppRole { Name = "CompanyHR", Description = "CompanyHR" });
+            //_context.Roles.Add(new AppRole { Name = "InscooFinance", Description = "InscooFinance" });
+            //_context.Roles.Add(new AppRole { Name = "InsuranceCompany", Description = "保险公司" });
             _context.SaveChanges();
             user.CreaterId = user.Id;
             user.Changer = user.Id;
-            var sqlAddAdminRoleForAdmin = string.Format("insert into [AspNetUserRoles] values('{0}','{1}','{2}')", user.Id, admin.Id, "IdentityUserRole");
+
+            var sqlAddAdminRoleForAdmin = string.Format("insert into [AspNetUserRoles] values('{0}','{1}','{2}')", user.Id, "70e917dc-a514-45ea-93a5-4f56343e9e10", "IdentityUserRole");
             _context.Database.ExecuteSqlCommand(sqlAddAdminRoleForAdmin);
             _context.SaveChanges();
         }
@@ -40,6 +42,7 @@ namespace Core.Data
         {
 
             var customCommands = new List<string>();
+            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Role.sql"), false));//产品
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Products.sql"), false));//产品
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/MixProduct.sql"), false));//推荐产品
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性         

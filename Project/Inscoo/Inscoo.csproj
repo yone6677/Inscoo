@@ -169,6 +169,7 @@
     <Content Include="App_Data\Sql\MixProduct.sql" />
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
+    <Content Include="App_Data\Sql\Role.sql" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>

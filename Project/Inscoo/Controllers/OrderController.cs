@@ -2,10 +2,9 @@
 using Innscoo.Infrastructure;
 using Models.Infrastructure;
 using Models.Order;
-using Models.Products;
+using Models;
 using OfficeOpenXml;
 using Services;
-using Services.Common;
 using Services.Orders;
 using Services.Products;
 using System;
@@ -31,9 +30,10 @@ namespace Inscoo.Controllers
         private readonly IOrderBatchService _orderBatchService;
         private readonly IResourceService _resourceService;
         private readonly IAppRoleService _appRoleService;
+        private readonly IFileService _fileService;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -46,6 +46,7 @@ namespace Inscoo.Controllers
             _orderBatchService = orderBatchService;
             _resourceService = resourceService;
             _appRoleService = appRoleService;
+            _fileService = fileService;
         }
         #endregion
         #region 订单管理
@@ -959,6 +960,47 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+        #endregion
+
+        #region  保险条款管理
+        public ActionResult ProvisionList(string InsuredCom)
+        {
+            var InsuredComs = _productService.GetInsuredComs();
+            ViewBag.InsuredCom = InsuredComs;
+
+            var com = InsuredCom == null ? InsuredComs.First().Value : InsuredCom;
+
+            var model = _productService.GetProvisionPdfByInsuredCom(com);
+            return View(model);
+
+        }
+
+        public ActionResult ProvisionCreate()
+        {
+            var InsuredComs = _productService.GetInsuredComs();
+            ViewBag.InsuredCom = InsuredComs;
+
+            var com = InsuredComs.First().Value;
+
+            ViewBag.SafeguardName = _productService.GetSafeguardNameByInsuredCom(com);
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProvisionCreate(string insuredCom, string safeguardName, HttpPostedFileBase provisionPdf)
+        {
+            var result = _fileService.SaveFile(provisionPdf);
+            var InsuredComs = _productService.GetInsuredComs();
+            ViewBag.InsuredCom = InsuredComs;
+
+            var com = InsuredComs.First().Value;
+
+            ViewBag.SafeguardName = _productService.GetSafeguardNameByInsuredCom(com);
+            return View();
+        }
+
+
         #endregion
     }
 }

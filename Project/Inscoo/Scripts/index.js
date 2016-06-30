@@ -153,7 +153,7 @@ $(function () {
             } else if (delta < 0) {
                 // 向下滚
                 if (cur == 5) {
-                    
+
                     return;
                 }
                 cur++;
@@ -206,4 +206,11 @@ $(function () {
         }
     }();
 
+
 });
+//返回顶部
+function GoTop() {
+    //console.log(1);
+    //jQuery(".slider").css("top", "0%");
+    location.reload();
+};

@@ -29,7 +29,8 @@ namespace Inscoo.Controllers
         public ActionResult Index()
         {
             ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
-
+            var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            ViewBag.CanCreate = !(roles.Contains("InsuranceCompany") && roles.Count == 1);
             return View();
         }
 

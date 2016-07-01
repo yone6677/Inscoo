@@ -45,6 +45,39 @@ namespace Services.Orders
                 return false;
             }
         }
+        public OrderEmployee GetByInfo(string idNumber, string name, int oid)
+        {
+            try
+            {
+                var list = new List<OrderEmployee>();
+                var orderBatch = _orderService.GetById(oid).orderBatch;
+                if (orderBatch.Any())
+                {
+                    foreach (var b in orderBatch)
+                    {
+                        var query = GetListByBid(b.Id);
+                        if (query.Any())
+                        {
+                            foreach (var item in query)
+                            {
+                                list.Add(item);
+                            }
+                        }
+                    }
+                    list = list.Where(e => e.IDNumber == idNumber && e.Name == name).ToList();
+                    if (list.Count > 0)
+                    {
+                        return list.FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetByInfo");
+
+            }
+            return null;
+        }
         public OrderEmployee GetById(int id)
         {
             try

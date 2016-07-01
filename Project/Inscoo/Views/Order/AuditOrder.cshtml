@@ -181,7 +181,8 @@
             var error = $("#auditError");
             if (e == 1) {
                 var AmountCollected = $("#AmountCollected");
-                if (AmountCollected.val() < 1) {
+                var amount=parseFloat(AmountCollected.val());
+                if (typeof(amount)!="number") {
                     error.text("金额有误，请重新输入");
                 }
                 else{

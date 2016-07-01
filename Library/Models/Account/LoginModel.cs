@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Inscoo.Models.Account
+namespace Models
 {
     public class LoginModel
     {

@@ -13,11 +13,9 @@ namespace Models.User
         [DisplayName("名称")]
         public string Name { set; get; }
 
-        [Required]
         [DisplayName("公司名称")]
         public string CompanyName { set; get; }
 
-        [Required]
         [DisplayName("联系人")]
         public string LinkMan { set; get; }
 
@@ -33,12 +31,10 @@ namespace Models.User
         [DisplayName("返点")]
         public int Rebate { get; set; }
 
-        [Required]
         [DisplayName("邮箱")]
         [DataType(DataType.EmailAddress, ErrorMessage = "请输入正确的邮箱地址")]
         public string Email { set; get; }
 
-        [Required]
         [DisplayName("电话")]
         public string Phone { set; get; }
 
@@ -55,12 +51,10 @@ namespace Models.User
 
         [Display(Name = "户名")]
         public string AccountName { get; set; }
-        [MaxLength(50)]
         [DisplayName("开户银行")]
         public string BankName { set; get; }
 
 
-        [MaxLength(50)]
         [DisplayName("开户账号")]
         public string BankNumber { set; get; }
 

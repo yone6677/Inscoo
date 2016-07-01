@@ -5,6 +5,7 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Models.Role;
 using Models.User;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -32,11 +33,11 @@ namespace Services
         }
 
 
-        public Task<IdentityResult> AddToRoleAsync(string uid, string roleid)
+        public Task<IdentityResult> AddToRoleAsync(string uid, string roleName)
         {
             try
             {
-                var user = _userManager.AddToRoleAsync(uid, roleid);
+                var user = _userManager.AddToRoleAsync(uid, roleName);
                 return user;
             }
             catch (Exception e)
@@ -45,7 +46,20 @@ namespace Services
                 return null;
             }
         }
-
+        public bool DeleteBeforeRoleAndNew(string uid, string roleName)
+        {
+            try
+            {
+                _userManager.RemoveFromRole(uid, roleName);
+                var result = _userManager.AddToRole(uid, roleName);
+                if (result.Succeeded) return true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
 
         public async Task<IdentityResult> CreateAsync(AppUser user, string name, string password)
         {
@@ -276,7 +290,7 @@ namespace Services
             }
             return null;
         }
-        public UserModel Get_UserModel_ById(string id)
+        public RegisterModel Get_RegisterModel_ById(string id)
         {
 
             try
@@ -284,12 +298,13 @@ namespace Services
                 var result = _userManager.FindById(id);
                 if (result != null)
                 {
-                    return new UserModel
+                    return new RegisterModel
                     {
+                        Id = result.Id,
                         CompanyName = result.CompanyName,
-                        Name = result.UserName,
-                        Phone = result.PhoneNumber,
-                        LinkMan = result.LinkMan,
+                        UserName = result.UserName,
+                        PhoneNumber = result.PhoneNumber,
+                        Linkman = result.LinkMan,
                         Email = result.Email,
                         TiYong = result.TiYong,
                         FanBao = result.FanBao,
@@ -297,7 +312,9 @@ namespace Services
                         BankNumber = result.BankNumber,
                         Rebate = result.Rebate,
                         CommissionMethod = result.CommissionMethod,
-                        AccountName = result.AccountName
+                        AccountName = result.AccountName,
+                        IsDelete = result.IsDelete,
+                        Roles = _appRoleManager.FindById(result.Roles.First().RoleId).Name
                     };
                 }
                 else
@@ -339,7 +356,7 @@ namespace Services
                 throw e;
             }
         }
-        public List<SelectListItem> GetRolesManagerPermissionByUserId(string uId, string valueField)
+        public SelectList GetRolesManagerPermissionByUserId(string uId, string valueField, string sellectedValue)
         {
             try
             {
@@ -378,11 +395,14 @@ namespace Services
                 {
                     throw new Exception("尚未给该用户分配角色");
                 }
-                var result = new List<SelectListItem>();
+
+                SelectList result;
                 if (valueField.Equals("Name", StringComparison.CurrentCultureIgnoreCase))
-                    result = allRoles.Select(r => new SelectListItem { Value = r.Name, Text = r.Description }).ToList();
+                {
+                    result = new SelectList(allRoles, "Name", "Description", sellectedValue);
+                }
                 else if (valueField.Equals("Id", StringComparison.CurrentCultureIgnoreCase))
-                    result = allRoles.Select(r => new SelectListItem { Value = r.Id, Text = r.Description }).ToList();
+                    result = new SelectList(allRoles, "Id", "Description", sellectedValue);
                 else
                 {
                     throw new Exception("valueField 只能是Name或Id");
@@ -391,7 +411,7 @@ namespace Services
                 {
                     throw new Exception("尚未给该用户分配角色");
                 }
-                return result.ToList();
+                return result;
             }
             catch (Exception e)
             {

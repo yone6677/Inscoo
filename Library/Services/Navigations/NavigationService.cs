@@ -112,6 +112,19 @@ namespace Services
 
                     return navs.OrderBy(n => n.sequence).ToList();
                 }
+                else if (roles.Count == 1 && roles.Contains("InscooOperator"))
+                {
+                    var navs = _navRepository.TableFromBuffer().Where(p => p.isShow).ToList();
+                    var removeItems = navs.Where(n => n.controller != null).Where(n => n.controller.Equals("RoleController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("NavController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("PermissionController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("GenericattributeController", StringComparison.CurrentCultureIgnoreCase));
+                    if (removeItems.Any())
+                    {
+                        foreach (var item in removeItems.ToList())
+                        {
+                            navs.Remove(item);
+                        }
+                    }
+                    return navs.OrderBy(n => n.sequence).ToList();
+                }
                 else
                 {
                     var roleIds = _svAppRole.Roles().Where(r => roles.Contains(r.Name)).Select(r => r.Id).AsNoTracking().ToList();

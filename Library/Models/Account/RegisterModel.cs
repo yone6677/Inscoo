@@ -11,7 +11,7 @@ namespace Models
         public string Roles { get; set; }
 
         [Required]
-        [Display(Name = "用户名")]
+        [Display(Name = "登陆用户名")]
         public string UserName { get; set; }
         [Required]
         [Display(Name = "企业名称")]

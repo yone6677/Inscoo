@@ -48,7 +48,7 @@ namespace Services
         /// <param name="valueField">该参数值只能是Name或Id</param>
         /// <returns></returns>
         SelectList GetRolesManagerPermissionByUserId(string uId, string valueField, string selectedValue = "");
-        IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "", string roleId = "");
+        IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "", string roleId = "", string createUserId = "-1");
         List<UserRoleModel> GetUserRoles();
 
 

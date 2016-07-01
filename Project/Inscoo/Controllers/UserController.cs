@@ -9,6 +9,8 @@ using Innscoo.Infrastructure;
 using System;
 using System.Web.UI;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Core.Pager;
 
 namespace Inscoo.Controllers
 {
@@ -33,7 +35,16 @@ namespace Inscoo.Controllers
 
         public ActionResult List(string roleId, string userName)
         {
-            var list = _appUserService.GetUserList(userName: userName, roleId: roleId);
+            var uId = User.Identity.GetUserId();
+
+            //出admin外，其他用户只能看到自己创建的用户
+            IPagedList<UserModel> list;
+            if (_appUserService.GetRolesByUserId(uId).Contains("Admin"))
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId);
+            else
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId, createUserId: uId);
+
+
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -68,6 +79,7 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                var uId = User.Identity.GetUserId();
                 var user = new AppUser()
                 {
                     BankName = model.BankName,
@@ -80,7 +92,8 @@ namespace Inscoo.Controllers
                     TiYong = model.TiYong,
                     FanBao = model.FanBao,
                     IsDelete = model.IsDelete,
-                    CreaterId = User.Identity.GetUserId(),
+                    CreaterId = uId,
+                    Changer = uId,
                     CommissionMethod = model.CommissionMethod,
                     AccountName = model.AccountName
                 };
@@ -137,6 +150,7 @@ namespace Inscoo.Controllers
                     user.CommissionMethod = model.CommissionMethod;
                     user.AccountName = model.AccountName;
                     user.IsDelete = model.IsDelete;
+                    user.Changer = User.Identity.GetUserId();
 
                     var result = await _appUserService.UpdateAsync(user);
                     if (result.Succeeded)

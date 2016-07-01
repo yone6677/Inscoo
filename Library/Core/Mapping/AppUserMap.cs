@@ -1,5 +1,6 @@
 ﻿using Domain;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Core.Mapping
@@ -20,6 +21,8 @@ namespace Core.Mapping
             Property(p => p.Rebate).IsRequired();
             Property(p => p.BankName).IsOptional().HasMaxLength(50);
             Property(p => p.BankNumber).IsOptional().HasMaxLength(50);
+
+            Property(p => p.UserName).IsRequired().HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute() { IsUnique = true }));
         }
     }
 }

@@ -201,12 +201,15 @@ namespace Services
             }
         }
 
-        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email, string role, string roleId)
+        public IPagedList<UserModel> GetUserList(int pageIndex, int pageSize, string userName, string email, string role, string roleId, string createUserId)
         {
             try
             {
                 var model = new List<UserModel>();
-                var user = _userManager.Users.ToList();
+                var user = _userManager.Users.Where(u =>
+                (createUserId == "-1" || u.CreaterId == createUserId)
+
+                ).ToList();
                 if (!string.IsNullOrEmpty(userName))
                 {
                     user = user.Where(s => s.UserName.Contains(userName)).ToList();

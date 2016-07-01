@@ -39,5 +39,10 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         string GetInsurancePolicyTemp();
+        /// <summary>
+        /// 保全操作人员信息模板
+        /// </summary>
+        /// <returns></returns>
+        string GetEmpInfoBuyMoreTemp();
     }
 }

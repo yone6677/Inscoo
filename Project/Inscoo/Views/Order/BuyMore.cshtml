@@ -1,6 +1,6 @@
 ﻿@model Models.Order.BuyMoreModel
 @{
-    ViewBag.Title = "追加投保人员";
+    ViewBag.Title = "保全操作";
 }
 @using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "buyMore", enctype = "multipart/form-data", onsubmit = "return checkDate()" }))
 {
@@ -9,24 +9,14 @@
     <ul>
         <li>
             <label>
-                上传新增员工名单
+                上传员工名单
             </label>
         </li>
         <li>
             <input type="file" id="empinfo" name="empinfo" />
         </li>
         <li>
-            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
-        </li>
-        <li>
-            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date", value = DateTime.Now.ToShortDateString() } })
-        </li>
-        <li>
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载投保变更模板</a>
         </li>
     </ul>
     <p style="text-align:center;margin-top:2em">

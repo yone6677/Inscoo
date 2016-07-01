@@ -25,7 +25,7 @@ namespace Services.Orders
         {
             try
             {
-                 _orderBatchRepository.DeleteById(id);
+                _orderBatchRepository.DeleteById(id, false, true);
                 return true;
             }
             catch (Exception e)

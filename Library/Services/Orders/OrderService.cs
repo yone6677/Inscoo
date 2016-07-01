@@ -172,9 +172,10 @@ namespace Services.Orders
             try
             {
                 decimal total = 0;
-                if (item.orderBatch.Any())
+                var batch = item.orderBatch.Where(b => b.IsDeleted == false);
+                if (batch.Any())
                 {
-                   foreach(var b in item.orderBatch)
+                   foreach(var b in batch)
                     {
                         if (b.orderEmp.Any())
                         {

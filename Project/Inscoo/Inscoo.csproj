@@ -257,6 +257,7 @@
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\上传人员信息.xlsx" />
     <Content Include="Archive\Template\投保单.doc" />
+    <Content Include="Archive\Template\人员信息变更模板.xlsx" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

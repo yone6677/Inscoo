@@ -64,9 +64,7 @@
                     }
                     if (item.State == 6 && !item.BatchState)
                     {
-                        @Html.ActionLink("加保", "BuyMore", new { id = item.Id });
-                        <span>|</span>
-                        @Html.ActionLink("减保", "Chargeback", new { id = item.Id });
+                        @Html.ActionLink("加减保", "BuyMore", new { id = item.Id });
                     }
                 }
             </td>

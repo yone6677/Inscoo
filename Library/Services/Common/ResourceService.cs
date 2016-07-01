@@ -40,5 +40,9 @@ namespace Services
         {
             return "/Archive/Template/投保单.doc";
         }
+        public string GetEmpInfoBuyMoreTemp()
+        {
+            return "/Archive/Template/人员信息变更模板.xlsx";
+        }
     }
 }

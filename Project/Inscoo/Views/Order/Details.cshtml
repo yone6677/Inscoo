@@ -206,13 +206,14 @@
                         }
                     </dd>
                     <dt>
-                        投保操作时间
+                        批次总额
                     </dt>
-                    <dd>                     
-                        @if (item.PolicyHolderDate != DateTime.MinValue)
+                    <dd>         
+                        <span> @item.OrderAmount</span>            
+                        @*@if (item.PolicyHolderDate != DateTime.MinValue)
                         {
                             <span>@item.PolicyHolderDate</span>
-                        }
+                        }*@
                     </dd>
                     <dt>
                         Inscoo确认时间

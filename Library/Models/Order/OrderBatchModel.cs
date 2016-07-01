@@ -37,5 +37,7 @@ namespace Models.Order
         public string CourierNumber { get; set; }
         [DisplayName("保险公司审核意见")]
         public string InsurerMemo { get; set; }
+        [DisplayName("批次总额")]
+        public decimal OrderAmount { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Services.Products
         bool Delete(int id, bool disable = true);
         Product GetById(int id);
         List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人");
-        SelectList GetInsuredComs();
+        SelectList GetInsuredComs(string selectedValue);
         List<vProvisionPDF> GetProvisionPdfByInsuredCom(string insuredCom);
         SelectList GetSafeguardNameByInsuredCom(string insuredCom);
         /// <summary>

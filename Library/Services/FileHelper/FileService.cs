@@ -125,6 +125,44 @@ namespace Services
             }
             return null;
         }
+        public virtual string SaveProvision(HttpPostedFileBase postedFileBase)
+        {
+            try
+            {
+                //源文件名
+                var fileName = Path.GetFileNameWithoutExtension(postedFileBase.FileName);
+                //后缀
+                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
+
+                //if (!postfix.Contains("")) throw new Exception("不正确的文件格式");
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+
+                savePath = savePath += "provisionPdf/";
+
+                savePath += date.Year + "/" + date.Month + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = fileName + _webHelper.GetTimeStamp();
+                var saveName = ts + postfix;
+
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                postedFileBase.SaveAs(phyPath + saveName);
+                return savePath + saveName;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+            }
+            return null;
+        }
         public virtual string MakeHtmlFile(string TempName)
         {
             return null;

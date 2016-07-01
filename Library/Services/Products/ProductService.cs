@@ -49,12 +49,12 @@ namespace Services.Products
                 return null;
             }
         }
-        public SelectList GetInsuredComs()
+        public SelectList GetInsuredComs(string selectedValue)
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Select(p => p.InsuredCom).ToList();
-                return new SelectList(list, "InsuredCom", "InsuredCom");
+                var list = _productRepository.TableNoTracking.Select(p => new { p.InsuredCom }).Distinct().ToList();
+                return new SelectList(list, "InsuredCom", "InsuredCom", selectedValue);
             }
             catch (Exception e)
             {
@@ -65,7 +65,7 @@ namespace Services.Products
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).ToList();
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
                 return list;
             }
             catch (Exception e)
@@ -130,7 +130,7 @@ namespace Services.Products
         {
             try
             {
-                var sql = string.Format("update Products set ProvisionPath = '{0}' where SafeguardName= '{1}' and InsuredCom = '{2}' ", path, safeguardName, insuredCom);
+                var sql = string.Format("update Products set ProvisionPath = N'{0}' where SafeguardName= N'{1}' and InsuredCom = N'{2}' ", path, safeguardName, insuredCom);
                 return _productRepository.DatabaseContext.Database.ExecuteSqlCommand(sql);
             }
             catch (Exception e)

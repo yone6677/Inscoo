@@ -837,7 +837,7 @@ namespace Inscoo.Controllers
                         {
                             batchItem.EmpInfoFileSeal = EmpInfoFileSeal.Url;
                         }
-                        switch(b.BState)
+                        switch (b.BState)
                         {
                             case 0:
                                 batchItem.BState = "待审核";
@@ -1091,7 +1091,7 @@ namespace Inscoo.Controllers
         #region  保险条款管理
         public ActionResult ProvisionList(string InsuredCom)
         {
-            var InsuredComs = _productService.GetInsuredComs();
+            var InsuredComs = _productService.GetInsuredComs(InsuredCom);
             ViewBag.InsuredCom = InsuredComs;
 
             var com = InsuredCom == null ? InsuredComs.First().Value : InsuredCom;
@@ -1101,14 +1101,12 @@ namespace Inscoo.Controllers
 
         }
 
-        public ActionResult ProvisionCreate()
+        public ActionResult ProvisionCreate(string insuredCom, string safeguardName)
         {
-            var InsuredComs = _productService.GetInsuredComs();
-            ViewBag.InsuredCom = InsuredComs;
 
-            var com = InsuredComs.First().Value;
+            ViewBag.InsuredCom = insuredCom;
 
-            ViewBag.SafeguardName = _productService.GetSafeguardNameByInsuredCom(com);
+            ViewBag.SafeguardName = safeguardName;
             return View();
         }
 
@@ -1116,32 +1114,33 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ProvisionCreate(string insuredCom, string safeguardName, HttpPostedFileBase provisionPdf)
         {
-            var result = _fileService.SaveFile(provisionPdf);
-            var updateCount = _productService.UpdateProvisionPath(insuredCom, safeguardName, result.Path);
+            if (provisionPdf == null) return View();
+            var path = _fileService.SaveProvision(provisionPdf);
+            var updateCount = _productService.UpdateProvisionPath(insuredCom, safeguardName, path);
             if (updateCount > 0)
                 return RedirectToAction("ProvisionList", new { InsuredCom = insuredCom });
             else
                 return View();
         }
 
-        public ActionResult ProvisionEdit(string insuredCom, string safeguardName)
-        {
-            var model = _productService.GetProvisionPdfByInsuredComAndSafeguardName(insuredCom, safeguardName);
+        //public ActionResult ProvisionEdit(string insuredCom, string safeguardName)
+        //{
+        //    var model = _productService.GetProvisionPdfByInsuredComAndSafeguardName(insuredCom, safeguardName);
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ProvisionEdit(vProvisionPDF model, HttpPostedFileBase provisionPdf)
-        {
-            var result = _fileService.SaveFile(provisionPdf);
-            var updateCount = _productService.UpdateProvisionPath(model.InsuredCom, model.SafeguardName, result.Path);
-            if (updateCount > 0)
-                return RedirectToAction("ProvisionList", new { InsuredCom = model.InsuredCom });
-            else
-                return View();
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ProvisionEdit(vProvisionPDF model, HttpPostedFileBase provisionPdf)
+        //{
+        //    var result = _fileService.SaveFile(provisionPdf);
+        //    var updateCount = _productService.UpdateProvisionPath(model.InsuredCom, model.SafeguardName, result.Path);
+        //    if (updateCount > 0)
+        //        return RedirectToAction("ProvisionList", new { InsuredCom = model.InsuredCom });
+        //    else
+        //        return View();
+        //}
         #endregion
     }
 }

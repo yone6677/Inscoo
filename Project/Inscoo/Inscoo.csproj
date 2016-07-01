@@ -381,6 +381,7 @@
     <Content Include="Views\Order\CompletedOrder.cshtml" />
     <Content Include="Views\Order\CompletedOrderList.cshtml" />
     <Content Include="Views\Order\ProvisionList.cshtml" />
+    <Content Include="Views\Order\BuyMore.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

@@ -147,7 +147,7 @@ namespace Services.Orders
                 {
                     return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
                     {
-                        Amount = s.AnnualExpense * s.InsuranceNumber,
+                        Amount = GetPrice(s),//s.AnnualExpense * s.InsuranceNumber,
                         AnnualExpense = s.AnnualExpense,
                         CompanyName = s.CompanyName,
                         CreateDate = s.CreateTime,
@@ -156,7 +156,8 @@ namespace Services.Orders
                         Name = s.Name,
                         StartDate = s.StartDate,
                         StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
-                        State = s.State
+                        State = s.State,
+                        BatchState=s.orderBatch.Where(b=>b.InsurerConfirmDate==DateTime.MinValue).Any()
                     }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }
@@ -165,6 +166,29 @@ namespace Services.Orders
                 _loggerService.insert(e, LogLevel.Warning, "OrderService：GetList");
             }
             return new PagedList<OrderListModel>(new List<OrderListModel>(), pageIndex, pageSize); ;
+        }
+        public decimal GetPrice(Order item)
+        {
+            try
+            {
+                decimal total = 0;
+                if (item.orderBatch.Any())
+                {
+                   foreach(var b in item.orderBatch)
+                    {
+                        if (b.orderEmp.Any())
+                        {
+                            total += b.orderEmp.Sum(e => e.Premium);
+                        }
+                    }
+                }
+                return total;
+            }
+            catch(Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetPrice");
+            }
+            return 0;
         }
     }
 }

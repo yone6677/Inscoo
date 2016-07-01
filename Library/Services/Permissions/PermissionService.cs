@@ -65,7 +65,13 @@ namespace Services.Permissions
                 {
                     var navs = _navService.GetNotControllerNav();
                     var nav = navs.Single(s => s.name.Equals(action) && string.IsNullOrEmpty(s.controller));
-                    return _navService.DeleteById(nav.Id);
+                    var per = _permissionRepository.Table.SingleOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
+                    if (per != null)
+                    {
+                        _permissionRepository.Delete(per, disable: true);
+                        return true;
+                    }
+                    return false;
                 }
                 else
                 {

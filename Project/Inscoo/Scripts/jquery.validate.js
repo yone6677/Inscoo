@@ -287,12 +287,12 @@
             digits: "Please enter only digits.",
             creditcard: "Please enter a valid credit card number.",
             equalTo: "Please enter the same value again.",
-            maxlength: $.validator.format("字数不能超过 {0}. "),
-            minlength: $.validator.format("请输入至少 {0} 个字符."),
+            maxlength: $.validator.format("字数不能超过 {0} "),
+            minlength: $.validator.format("请输入至少 {0} 个字符"),
             rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
-            range: $.validator.format("不能超出范围： {0} 到 {1}."),
-            max: $.validator.format("不能大于 {0}."),
-            min: $.validator.format("不能小于于 {0}.")
+            range: $.validator.format("不能超出范围： {0} 到 {1}"),
+            max: $.validator.format("不能大于 {0}"),
+            min: $.validator.format("不能小于于 {0}")
         },
 
         autoCreateRanges: false,

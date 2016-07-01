@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "保险条款";
+}
+@using (Html.BeginForm("ProvisionCreate", "Order", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal formCreate">
+        <br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-4">保险公司</label>
+            <div class="col-md-8">
+                <label class="control-label ">@ViewBag.InsuredCom</label>
+                <input type="hidden" id="InsuredCom" name="InsuredCom" value="@ViewBag.InsuredCom" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">保险项目</label>
+            <div class="col-md-8">
+                <label class="control-label">@ViewBag.SafeguardName</label>
+                <input type="hidden" id="SafeguardName" name="SafeguardName" value="@ViewBag.SafeguardName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4">上传条款PDF</label>
+            <div class="col-md-8">
+                <input type="file" id="provisionPdf" name="provisionPdf" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-6">
+                <input type="submit" value="新建" class="btn btn-info" />
+
+                @Html.ActionLink("返回列表", "ProvisionList", null, htmlAttributes: new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

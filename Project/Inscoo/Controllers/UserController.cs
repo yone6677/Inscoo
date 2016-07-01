@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Inscoo.Models.Account;
+using Models;
 using Models.User;
 using Microsoft.AspNet.Identity;
 using Services;
@@ -9,6 +9,8 @@ using Innscoo.Infrastructure;
 using System;
 using System.Web.UI;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Core.Pager;
 
 namespace Inscoo.Controllers
 {
@@ -26,14 +28,24 @@ namespace Inscoo.Controllers
         // GET: User
         public ActionResult Index()
         {
-            ViewBag.RoleList = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
-
+            ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+            var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            ViewBag.CanCreate = !(roles.Contains("InsuranceCompany") && roles.Count == 1);
             return View();
         }
-        
+
         public ActionResult List(string roleId, string userName)
         {
-            var list = _appUserService.GetUserList(userName: userName, roleId: roleId);
+            var uId = User.Identity.GetUserId();
+
+            //出admin外，其他用户只能看到自己创建的用户
+            IPagedList<UserModel> list;
+            if (_appUserService.GetRolesByUserId(uId).Contains("Admin"))
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId);
+            else
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId, createUserId: uId);
+
+
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -53,11 +65,10 @@ namespace Inscoo.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId());
+            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name");
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
-            //typeof(RegisterModel).GetProperty("Rebate").GetCustomAttributes(false).SetValue(new RangeAttribute(0, user.Rebate) { ErrorMessage = string.Format("不能大于{0}", user.Rebate) }, 1);
-            var model = new RegisterModel() { selectList = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
+            var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
 
             return View(model);
         }
@@ -69,6 +80,7 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                var uId = User.Identity.GetUserId();
                 var user = new AppUser()
                 {
                     BankName = model.BankName,
@@ -81,57 +93,77 @@ namespace Inscoo.Controllers
                     TiYong = model.TiYong,
                     FanBao = model.FanBao,
                     IsDelete = model.IsDelete,
-                    CreaterId = User.Identity.GetUserId(),
+                    CreaterId = uId,
+                    Changer = uId,
                     CommissionMethod = model.CommissionMethod,
                     AccountName = model.AccountName
                 };
                 var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
                 if (result.Succeeded)
                 {
-                    result = await ForRole(user, model.Roles);
-                    //return View("Details", model);
-                    return RedirectToAction("Index");
+                    if (ForRole(user, model.Roles))
+                        return RedirectToAction("Index");
+                    else
+                    {
+                        return View();
+                    }
                 }
             }
             return View();
         }
 
-        public Task<IdentityResult> ForRole(AppUser user, string roleName)
+        public bool ForRole(AppUser user, string roleName)
         {
-            return _appUserService.AddToRoleAsync(user.Id, roleName);
+            return _appUserService.DeleteBeforeRoleAndNew(user.Id, roleName);
         }
         // GET: User/Edit/5
         public ActionResult Edit(string id)
         {
-            var model = _appUserService.Get_UserModel_ById(id);
+            var model = _appUserService.Get_RegisterModel_ById(id);
             model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", model.CommissionMethod);
+
+            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name", model.Roles);
+
+            model.RoleSelects = roles;
             ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(UserModel model)
+        public async Task<ActionResult> Edit(RegisterModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var user = _appUserService.FindById(model.Id);
+                    user.UserName = model.UserName;
                     user.CompanyName = model.CompanyName;
-                    user.LinkMan = model.LinkMan;
-                    user.PhoneNumber = model.Phone;
+                    user.LinkMan = model.Linkman;
+                    user.PhoneNumber = model.PhoneNumber;
                     user.Email = model.Email;
-                    user.TiYong = model.TiYong.HasValue ? model.TiYong.Value : false;
-                    user.FanBao = model.FanBao.HasValue ? model.FanBao.Value : false;
+                    user.TiYong = model.TiYong;
+                    user.FanBao = model.FanBao;
                     user.Rebate = model.Rebate;
                     user.BankName = model.BankName;
                     user.BankNumber = model.BankNumber;
                     user.CommissionMethod = model.CommissionMethod;
                     user.AccountName = model.AccountName;
+                    user.IsDelete = model.IsDelete;
+                    user.Changer = User.Identity.GetUserId();
+
                     var result = await _appUserService.UpdateAsync(user);
                     if (result.Succeeded)
-                        return RedirectToAction("Index");
+                    {
+                        if (ForRole(user, model.Roles))
+                            return RedirectToAction("Index");
+                        else
+                        {
+                            return View();
+                        }
+                        //return View("Details", model);
+                    }
                     else
                     {
                         throw new Exception("修改失败");

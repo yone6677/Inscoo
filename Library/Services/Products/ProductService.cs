@@ -49,12 +49,12 @@ namespace Services.Products
                 return null;
             }
         }
-        public SelectList GetInsuredComs()
+        public SelectList GetInsuredComs(string selectedValue)
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Select(p => p.InsuredCom).ToList();
-                return new SelectList(list, "InsuredCom", "InsuredCom");
+                var list = _productRepository.TableNoTracking.Select(p => new { p.InsuredCom }).Distinct().ToList();
+                return new SelectList(list, "InsuredCom", "InsuredCom", selectedValue);
             }
             catch (Exception e)
             {
@@ -65,12 +65,24 @@ namespace Services.Products
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).ToList();
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
                 return list;
             }
             catch (Exception e)
             {
                 return new List<vProvisionPDF>();
+            }
+        }
+        public vProvisionPDF GetProvisionPdfByInsuredComAndSafeguardName(string insuredCom, string safeguardName)
+        {
+            try
+            {
+                var item = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom && p.SafeguardName == safeguardName).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).First();
+                return item;
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
         public SelectList GetSafeguardNameByInsuredCom(string insuredCom)
@@ -111,6 +123,20 @@ namespace Services.Products
             {
                 _loggerService.insert(e, LogLevel.Warning, "ProductService：Update");
                 return false;
+            }
+        }
+
+        public int UpdateProvisionPath(string insuredCom, string safeguardName, string path)
+        {
+            try
+            {
+                var sql = string.Format("update Products set ProvisionPath = N'{0}' where SafeguardName= N'{1}' and InsuredCom = N'{2}' ", path, safeguardName, insuredCom);
+                return _productRepository.DatabaseContext.Database.ExecuteSqlCommand(sql);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：Update");
+                return -1;
             }
         }
         public List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人")

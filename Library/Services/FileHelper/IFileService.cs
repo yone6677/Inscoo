@@ -9,11 +9,7 @@ namespace Services
     public interface IFileService
     {
         List<string> GenerateFilePathBySuffix(string postfix);
-        /// <summary>
-        /// 上传文件
-        /// </summary>
-        /// <returns>成功时返回路径加文件名,失败返回null</returns>
-        SaveResultModel SaveFile(HttpPostedFileBase postedFileBase);
+        
 
         // string MakeHtmlFile(string TempName, ArticleModel model);
         /// <summary>
@@ -36,5 +32,17 @@ namespace Services
         /// <param name="t"></param>
         /// <returns></returns>
         Dictionary<string, string> GetProperties<T>(T t);
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <returns>成功时返回路径加文件名,失败返回null</returns>
+        SaveResultModel SaveFile(HttpPostedFileBase postedFileBase);
+        /// <summary>
+        /// 上传保险条款
+        /// </summary>
+        /// <param name="postedFileBase"></param>
+        /// <returns></returns>
+        string SaveProvision(HttpPostedFileBase postedFileBase);
     }
 }

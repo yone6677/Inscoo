@@ -1,4 +1,4 @@
-﻿@model Inscoo.Models.Account.RegisterModel
+﻿@model Models.RegisterModel
 
 @{
     ViewBag.Title = "创建账户";
@@ -10,18 +10,11 @@
     <div class="form-horizontal formCreate">
         <br />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
-            </div>
-        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.DropDownList("Roles", Model.selectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+                @Html.DropDownList("Roles", Model.RoleSelects, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
@@ -88,7 +81,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-8">
-                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate } })
+                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate, min = 0 } })
                 @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-1">
@@ -99,14 +92,14 @@
         </div>
         <div class="form-group" id="roleChange">
             @Html.LabelFor(model => model.FanBao, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-3">
+            <div class="col-md-offset-1 col-md-2">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.FanBao)
                     @Html.ValidationMessageFor(model => model.FanBao, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @Html.LabelFor(model => model.TiYong, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-3">
+            @Html.LabelFor(model => model.TiYong, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-offset-1 col-md-2">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.TiYong)
                     @Html.ValidationMessageFor(model => model.TiYong, "", new { @class = "text-danger" })
@@ -114,8 +107,15 @@
             </div>
         </div>
         <div class="form-group">
+            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
             @Html.LabelFor(model => model.IsDelete, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-3">
+            <div class="col-md-offset-1 col-md-5">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.IsDelete)
                     @Html.ValidationMessageFor(model => model.IsDelete, "", new { @class = "text-danger" })
@@ -124,8 +124,8 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-3 col-md-6">
-                <input type="submit" value="新建" class="btn btn-info" />
-         
+                <input type="submit" value="保存" class="btn btn-info" />
+
                 @Html.ActionLink("返回列表", "Index", null, htmlAttributes: new { @class = "btn btn-default" })
             </div>
         </div>

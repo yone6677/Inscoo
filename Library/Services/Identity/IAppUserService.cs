@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Models.Role;
 using Models.User;
+using Models;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,13 +16,14 @@ namespace Services
 {
     public interface IAppUserService
     {
-        Task<IdentityResult> AddToRoleAsync(string uid, string roleid);
+        Task<IdentityResult> AddToRoleAsync(string uid, string roleName);
+
         bool ChangePassword(string id, string oldPassword, string password);
         Task<IdentityResult> CreateAsync(AppUser user, string name, string password);
         Task<ClaimsIdentity> CreateIdentityAsync(AppUser user, string appCookie);
         ClaimsIdentity CreateIdentity(AppUser user, string appCookie);
         Task<IdentityResult> DeleteAsync(AppUser user);
-
+        bool DeleteBeforeRoleAndNew(string uid, string roleName);
 
         AppUser FindByEmail(string email);
         AppUser FindByName(string name);
@@ -35,7 +37,7 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         AppUser GetCurrentUser();
-        UserModel Get_UserModel_ById(string id);
+        RegisterModel Get_RegisterModel_ById(string id);
         string GetRoleByUserId(string uId);
         List<string> GetRolesByUserId(string uId);
 
@@ -45,8 +47,8 @@ namespace Services
         /// <param name="uId"></param>
         /// <param name="valueField">该参数值只能是Name或Id</param>
         /// <returns></returns>
-        List<SelectListItem> GetRolesManagerPermissionByUserId(string uId, string valueField = "Name");
-        IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "",string roleId = "");
+        SelectList GetRolesManagerPermissionByUserId(string uId, string valueField, string selectedValue = "");
+        IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "", string roleId = "", string createUserId = "-1");
         List<UserRoleModel> GetUserRoles();
 
 

@@ -34,7 +34,7 @@ namespace Inscoo.Controllers
             return View();
         }
 
-        public ActionResult List(string roleId, string userName)
+        public ActionResult List(string roleId, string userName, int pageIndex = 1, int pageSize = 10)
         {
             var uId = User.Identity.GetUserId();
 
@@ -43,7 +43,7 @@ namespace Inscoo.Controllers
             if (_appUserService.GetRolesByUserId(uId).Contains("Admin"))
                 list = _appUserService.GetUserList(userName: userName, roleId: roleId);
             else
-                list = _appUserService.GetUserList(userName: userName, roleId: roleId, createUserId: uId);
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId, createUserId: uId, pageIndex: pageIndex, pageSize: pageSize);
 
 
             var command = new PageCommand()

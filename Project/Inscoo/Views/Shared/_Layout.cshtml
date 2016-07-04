@@ -32,7 +32,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                        @RenderBody()
+                    @RenderBody()
                 </div>
                 @RenderSection("firstPanelFooter", required: false)
             </div>
@@ -40,10 +40,45 @@
             @RenderSection("thirdPanel", required: false)
         </div>
     </div>
+    <div class="modal fade" id="modalShowMessage" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/base")
     @Styles.Render("~/Content/FontAwesome")
     @RenderSection("scripts", required: false)
+    <script>
+        jQuery(function () {
+            ShowMessage();
+        });
+        function ShowMessage() {
+            console.log('@ViewBag.ErrorMes');
+            if ('@ViewBag.ErrorMes'.length > 0) {
+                jQuery('.modal-body').html(' <h3 class="text-danger">@ViewBag.ErrorMes</h3>');
+                jQuery('#modalShowMessage').modal('show');
+            }
+            else if ('@ViewBag.SuccessMes'.length > 0) {
+                jQuery('.modal-body').html(' <h3 class="text-success">@ViewBag.SuccessMes</h3>');
+                jQuery('#modalShowMessage').modal('show');
+            }
+            else {
+                jQuery('.modal-body').html("");
+            }
+        }
+    </script>
 </body>
 </html>

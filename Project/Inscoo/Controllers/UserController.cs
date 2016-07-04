@@ -34,14 +34,14 @@ namespace Inscoo.Controllers
             return View();
         }
 
-        public ActionResult List(string roleId, string userName, int pageIndex = 1, int pageSize = 10)
+        public ActionResult List(string roleId, string userName, int pageIndex = 1, int pageSize = 15)
         {
             var uId = User.Identity.GetUserId();
 
             //出admin外，其他用户只能看到自己创建的用户
             IPagedList<UserModel> list;
             if (_appUserService.GetRolesByUserId(uId).Contains("Admin"))
-                list = _appUserService.GetUserList(userName: userName, roleId: roleId);
+                list = _appUserService.GetUserList(userName: userName, roleId: roleId, pageIndex: pageIndex, pageSize: pageSize);
             else
                 list = _appUserService.GetUserList(userName: userName, roleId: roleId, createUserId: uId, pageIndex: pageIndex, pageSize: pageSize);
 
@@ -63,12 +63,14 @@ namespace Inscoo.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult Create(string errorMes, string successMes)
         {
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name");
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
             var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
+            if (!string.IsNullOrEmpty(errorMes)) ViewBag.ErrorMes = errorMes;
+            if (!string.IsNullOrEmpty(successMes)) ViewBag.SuccessMes = successMes;
 
             return View(model);
         }
@@ -102,14 +104,12 @@ namespace Inscoo.Controllers
                 if (result.Succeeded)
                 {
                     if (ForRole(user, model.Roles))
-                        return RedirectToAction("Index");
-                    else
                     {
-                        return View();
+                        return RedirectToAction("Create", new { successMes = "添加成功" });
                     }
                 }
             }
-            return View();
+            return RedirectToAction("Create", new { errorMes = "添加失败" });
         }
 
         public bool ForRole(AppUser user, string roleName)

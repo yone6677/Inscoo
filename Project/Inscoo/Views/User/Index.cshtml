@@ -25,22 +25,18 @@
             </dd>
             @if (ViewBag.CanCreate)
             {
-                <dt></dt>
-                <dd>
-                    <p>  @Html.ActionLink("新建", "Create", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
-                </dd>
+            <dt></dt>
+            <dd>
+                <p>  @Html.ActionLink("新建", "Create", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            </dd>
             }
 
         </dl>
         <p class="clearfix"></p>
     </div>
-}
 
-<div id="dadaGrid">
-    @Html.Action("List")
-</div>
-@section Scripts{
-    <script type="text/javascript">
 
-    </script>
+    <div id="dadaGrid">
+        @Html.Action("List")
+    </div>
 }

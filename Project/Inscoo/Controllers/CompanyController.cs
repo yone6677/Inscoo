@@ -46,9 +46,9 @@ namespace Inscoo.Controllers
         }
 
         [HttpPost]
-        public ActionResult ListData(vCompanySearch companySearch)
+        public ActionResult ListData(vCompanySearch companySearch, int pageIndex = 1, int pageSize = 15)
         {
-            var list = _companyService.GetCompanys(companySearch);
+            var list = _companyService.GetCompanys(companySearch, pageIndex: pageIndex, pageSize: pageSize);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,

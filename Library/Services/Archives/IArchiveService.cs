@@ -17,6 +17,13 @@ namespace Services
         /// <param name="companyId"></param>
         /// <returns></returns>
         int InsertBusinessLicense(HttpPostedFileBase file, string userName, int companyId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="userId"></param>
+        /// <returns>路径</returns>
+        string InsertUserPortrait(HttpPostedFileBase file);
         Archive GetById(int id);
     }
 }

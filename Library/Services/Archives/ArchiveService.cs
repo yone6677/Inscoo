@@ -95,6 +95,23 @@ namespace Services
             }
             return 0;
         }
+        public string InsertUserPortrait(HttpPostedFileBase file)
+        {
+            try
+            {
+                if (file.ContentLength > 200 * 1024) throw new Exception("文件太大");
+                var model = _fileService.SaveFile(file);
+                if (model != null)
+                {
+                    return model.Path + model.Name + model.Postfix;
+                }
+                throw new Exception("修改失败");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         public Archive GetById(int id)
         {
             try

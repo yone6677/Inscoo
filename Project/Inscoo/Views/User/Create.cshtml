@@ -17,13 +17,15 @@
                 @Html.DropDownList("Roles", Model.RoleSelects, new { @class = "form-control" })
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -49,7 +51,6 @@
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
@@ -57,6 +58,7 @@
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
@@ -79,16 +81,11 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate, min = 0 } })
-                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-1">
-                <label class="control-label">%</label>
-            </div>
-            @*<label class="control-label col-md-3"></label>*@
-
         </div>
         <div class="form-group" id="roleChange">
             @Html.LabelFor(model => model.FanBao, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -106,11 +103,15 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group">
-            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate, min = 0 } })
+                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">%</label>
             </div>
         </div>
         <div class="form-group">
@@ -139,18 +140,20 @@
         jQuery(function () {
             TongleWhenRoleChange();
         })
-        jQuery("#Roles").change(function () {
-            TongleWhenRoleChange();
-        })
+        jQuery("#Roles")
+            .change(function () {
+                TongleWhenRoleChange();
+            })
+
         function TongleWhenRoleChange() {
             var value = event.target.value;;
             //console.log(value);
             if (value == "PartnerChannel") {
                 jQuery("#roleChange").show();
-            }
-            else {
+            } else {
                 jQuery("#roleChange").hide();
             }
         }
+
     </script>
 }

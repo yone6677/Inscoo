@@ -243,7 +243,7 @@ namespace Services
                         RoleName = u.Roles.Any() ? _appRoleManager.FindById(u.Roles.First().RoleId).Name : "",
                         CreateTime = u.CreateTime,
                         CreaterId = u.CreaterId
-                    }).ToList();
+                    }).OrderBy(c => c.CreateTime).ToList();
                 }
                 return new PagedList<UserModel>(model, pageIndex, pageSize);
             }
@@ -318,6 +318,7 @@ namespace Services
                         AccountName = result.AccountName,
                         IsDelete = result.IsDelete,
                         Roles = _appRoleManager.FindById(result.Roles.First().RoleId).Name
+
                     };
                 }
                 else
@@ -381,6 +382,9 @@ namespace Services
 
                 if (userRoles.Contains("BusinessDeveloper"))
                 {
+                    allRoles =
+                        _appRoleManager.Roles.Where(r => r.Name.Equals("PartnerChannel") || r.Name.Equals("CompanyHR"))
+                            .ToList();
                 }
 
                 if (userRoles.Contains("PartnerChannel"))
@@ -422,7 +426,25 @@ namespace Services
             }
         }
 
+        public bool IsUserExist(string key)
+        {
+            try
+            {
+                var role = _userManager.FindByEmail(key) != null;
+                if (role) return true;
 
+                role = _userManager.FindByName(key) != null;
+
+                if (role) return true;
+
+                return false;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
 
         public void SignIn(AppUser user, bool isPersistent)
         {

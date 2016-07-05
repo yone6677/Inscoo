@@ -10,12 +10,14 @@ namespace Models
         [Display(Name = "角色")]
         public string Roles { get; set; }
 
-        [Required]
-        [Display(Name = "登陆用户名")]
+        //[Remote("IsUserExist", "User")]
+        //[Display(Name = "登陆用户名")]
         public string UserName { get; set; }
-        [Required]
+
         [Display(Name = "企业名称")]
+        [MaxLength(120, ErrorMessage = "请检查输入")]
         public string CompanyName { get; set; }
+
         [Required]
         [Display(Name = "联系人")]
         public string Linkman { get; set; }
@@ -24,6 +26,7 @@ namespace Models
         [Display(Name = "电话")]
         public string PhoneNumber { get; set; }
         [Required]
+        [Remote("IsUserExist", "User")]
         [DataType(DataType.EmailAddress, ErrorMessage = "请输入正确的邮箱地址")]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }

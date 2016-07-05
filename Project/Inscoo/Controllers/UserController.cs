@@ -10,7 +10,10 @@ using System;
 using System.Web.UI;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Web;
 using Core.Pager;
+using Microsoft.Ajax.Utilities;
+using OfficeOpenXml.FormulaParsing.Utilities;
 
 namespace Inscoo.Controllers
 {
@@ -19,11 +22,16 @@ namespace Inscoo.Controllers
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleManager;
         private readonly IGenericAttributeService _svGenericAttribute;
-        public UserController(IAppUserService appUserService, IAppRoleService appRoleManager, IGenericAttributeService svGenericAttribute)
+        private readonly IArchiveService _archiveService;
+        private readonly IPermissionService _svPermissionService;
+        public UserController(IAppUserService appUserService, IAppRoleService appRoleManager, IGenericAttributeService svGenericAttribute, IArchiveService archiveService, IPermissionService svPermissionService)
         {
             _appRoleManager = appRoleManager;
             _appUserService = appUserService;
             _svGenericAttribute = svGenericAttribute;
+            _archiveService = archiveService;
+            _svPermissionService = svPermissionService;
+
         }
         // GET: User
         public ActionResult Index()
@@ -54,6 +62,8 @@ namespace Inscoo.Controllers
                 TotalPages = list.TotalPages
             };
             ViewBag.pageCommand = command;
+            ViewBag.CanEdit = _svPermissionService.HasPermissionByUser(71, User.Identity.GetUserId());
+            //ViewBag.CanDelete = _svPermissionService.HasPermissionByUser(72, User.Identity.GetUserId());
             return PartialView(list);
         }
         // GET: User/Details/5
@@ -82,6 +92,7 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.UserName = model.Email;
                 var uId = User.Identity.GetUserId();
                 var user = new AppUser()
                 {
@@ -98,7 +109,8 @@ namespace Inscoo.Controllers
                     CreaterId = uId,
                     Changer = uId,
                     CommissionMethod = model.CommissionMethod,
-                    AccountName = model.AccountName
+                    AccountName = model.AccountName,
+                    Rebate = model.Rebate
                 };
                 var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
                 if (result.Succeeded)
@@ -110,6 +122,25 @@ namespace Inscoo.Controllers
                 }
             }
             return RedirectToAction("Create", new { errorMes = "添加失败" });
+        }
+
+        [AllowAnonymous]
+        public JsonResult IsUserExist(string email)
+        {
+            var isExist = false;
+            //if (!string.IsNullOrEmpty(userName))
+            //{
+            //    isExist = _appUserService.IsUserExist(userName);
+            //}
+            //if (isExist) return Json("用户名已使用", JsonRequestBehavior.AllowGet);
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                isExist = _appUserService.IsUserExist(email);
+            }
+            if (isExist) return Json("邮箱已使用", JsonRequestBehavior.AllowGet);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public bool ForRole(AppUser user, string roleName)
@@ -137,6 +168,8 @@ namespace Inscoo.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.UserName = model.Email;
+
                     var user = _appUserService.FindById(model.Id);
                     user.UserName = model.UserName;
                     user.CompanyName = model.CompanyName;
@@ -179,6 +212,8 @@ namespace Inscoo.Controllers
                 return View(model);
             }
         }
+
+        [AllowAnonymous]
         public ActionResult ChangePassword()
         {
             var model = new ChangePasswordModel();
@@ -187,6 +222,7 @@ namespace Inscoo.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
             try
@@ -230,5 +266,33 @@ namespace Inscoo.Controllers
                 return View();
             }
         }
+        [AllowAnonymous]
+        public ActionResult ChangePortrait()
+        {
+
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePortrait(HttpPostedFileBase portrait)
+        {
+            try
+            {
+                var user = _appUserService.GetCurrentUser();
+                var path = _archiveService.InsertUserPortrait(portrait);
+                user.PortraitPath = path;
+                _appUserService.UpdateAsync(user);
+                Request.Cookies.Set(new HttpCookie("PortraitPath", path) { HttpOnly = true, Expires = DateTime.Now.AddYears(1) });
+                ViewBag.SuccessMes = "修改成功";
+
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMes = "修改失败";
+            }
+            return View();
+        }
+
     }
 }

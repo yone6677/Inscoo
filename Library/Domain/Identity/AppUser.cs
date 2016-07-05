@@ -36,5 +36,8 @@ namespace Domain
 
         //佣金计算方法
         public string CommissionMethod { get; set; }
+
+        //头像
+        public string PortraitPath { set; get; }
     }
 }

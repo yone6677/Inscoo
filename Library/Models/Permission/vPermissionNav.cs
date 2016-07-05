@@ -10,6 +10,11 @@ namespace Models.Permission
 {
     public class vPermissionNav : BaseViewModel
     {
+        public vPermissionNav()
+        {
+            CanEdit = true;
+        }
+
         public string Controller { set; get; }
 
         public string Action { set; get; }
@@ -19,5 +24,7 @@ namespace Models.Permission
 
         [DisplayName("是否分配")]
         public bool IsUsed { set; get; }
+
+        public bool CanEdit { set; get; }
     }
 }

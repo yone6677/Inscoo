@@ -18,6 +18,8 @@ namespace Inscoo.Infrastructure
         }
         public override void OnException(ExceptionContext filterContext)
         {
+            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+                filterContext.HttpContext.Response.Redirect("~/Account/Login");
             Exception exception = filterContext.Exception;
             if (filterContext.ExceptionHandled == true)
             {
@@ -82,7 +84,7 @@ namespace Inscoo.Infrastructure
                     var client = new WebClient();
                     client.Encoding = Encoding.UTF8;
                     client.Headers.Add("Content-Type", "application/json");
-                    client.UploadString(_resourceService.GetLogger()+"logs", "post", sendData);
+                    client.UploadString(_resourceService.GetLogger() + "logs", "post", sendData);
                 }
                 catch (Exception)//日志服务器若返回异常不能抛至当前程序
                 {

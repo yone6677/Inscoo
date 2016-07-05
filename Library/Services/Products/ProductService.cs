@@ -53,7 +53,7 @@ namespace Services.Products
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Select(p => new { p.InsuredCom }).Distinct().ToList();
+                var list = _productRepository.TableNoTracking.Where(p => p.IsDeleted == false).Select(p => new { p.InsuredCom }).Distinct().ToList();
                 return new SelectList(list, "InsuredCom", "InsuredCom", selectedValue);
             }
             catch (Exception e)
@@ -65,11 +65,12 @@ namespace Services.Products
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom&&p.IsDeleted==false).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
                 return list;
             }
             catch (Exception e)
             {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetProvisionPdfByInsuredCom");
                 return new List<vProvisionPDF>();
             }
         }
@@ -82,6 +83,7 @@ namespace Services.Products
             }
             catch (Exception e)
             {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetProvisionPdfByInsuredComAndSafeguardName");
                 return null;
             }
         }
@@ -94,6 +96,7 @@ namespace Services.Products
             }
             catch (Exception e)
             {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetSafeguardNameByInsuredCom");
                 return null;
             }
         }
@@ -135,7 +138,7 @@ namespace Services.Products
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "ProductService：Update");
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：UpdateProvisionPath");
                 return -1;
             }
         }
@@ -143,7 +146,7 @@ namespace Services.Products
         {
             try
             {
-                var query = _productRepository.TableFromBuffer(72);
+                var query = _productRepository.TableFromBuffer(72).Where(p => p.IsDeleted == false);
                 if (!string.IsNullOrEmpty(company))
                 {
                     query = query.Where(q => q.InsuredCom == company);
@@ -180,8 +183,8 @@ namespace Services.Products
             try
             {
                 var model = new List<ProductListModel>();
-                var query = _productRepository.TableFromBuffer(72).OrderBy(q => q.SafeguardName);
-                var slectList = _productRepository.TableFromBuffer(72);
+                var query = _productRepository.TableFromBuffer(72).Where(p => p.IsDeleted == false).OrderBy(q => q.SafeguardName);
+                var slectList = _productRepository.TableFromBuffer(72).Where(p => p.IsDeleted == false);
                 var gQuey = from p in query
                             group p by new
                             {

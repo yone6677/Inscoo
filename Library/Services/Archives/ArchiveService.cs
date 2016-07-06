@@ -4,7 +4,10 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web;
+using Core.Pager;
 
 namespace Services
 {
@@ -12,17 +15,49 @@ namespace Services
     {
         private readonly IRepository<Archive> _archiveRepository;
         private readonly IRepository<BusinessLicense> _rpBusinessLicense;
+        private readonly IRepository<CarInsuranceExcel> _rpCarInsuranceExcel;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
         private readonly IFileService _fileService;
-        public ArchiveService(IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense)
+        public ArchiveService(IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense, IRepository<CarInsuranceExcel> rpCarInsuranceExcel)
         {
             _archiveRepository = archiveRepository;
             _authenticationManager = authenticationManager;
             _loggerService = loggerService;
             _fileService = fileService;
             _rpBusinessLicense = rpBusinessLicense;
+            _rpCarInsuranceExcel = rpCarInsuranceExcel;
         }
+
+        public void DeleteCarInsuranceExcel(string excelId)
+        {
+            try
+            {
+
+                var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
+                _fileService.DeleteFile(item.Url);
+                _rpCarInsuranceExcel.Delete(item);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                throw e;
+            }
+        }
+
+        public Archive GetById(int id)
+        {
+            try
+            {
+                return _archiveRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：GetById");
+            }
+            return null;
+        }
+
         public int InsertByUrl(List<string> fileInfo, string type, int pid, string memo)
         {
             try
@@ -95,6 +130,32 @@ namespace Services
             }
             return 0;
         }
+        public int InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName)
+        {
+            try
+            {
+                var model = _fileService.SaveCarInsuranceExcel(file);
+                if (model != null)
+                {
+                    var item = new CarInsuranceExcel()
+                    {
+                        AppUserId = userId,
+                        Author = userName,
+                        Name = model.Name + model.Postfix,
+                        Path = model.Path,
+                        Url = model.Path + model.Name + model.Postfix
+                    };
+                    return _rpCarInsuranceExcel.InsertGetId(item);
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                throw e;
+            }
+            return 0;
+        }
+
         public string InsertUserPortrait(HttpPostedFileBase file)
         {
             try
@@ -112,17 +173,49 @@ namespace Services
                 throw e;
             }
         }
-        public Archive GetById(int id)
+
+
+
+        public IPagedList<CarInsuranceExcel> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
         {
             try
             {
-                return _archiveRepository.GetById(id);
+                var list = _rpCarInsuranceExcel.Table.Where(c => c.AppUserId == createrId || createrId == "-1");
+                return new PagedList<CarInsuranceExcel>(list.ToList(), pageIndex, pageSize);
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Archive：GetById");
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                return new PagedList<CarInsuranceExcel>(new List<CarInsuranceExcel>(), pageIndex, pageSize);
             }
-            return null;
         }
+
+        public void UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId)
+        {
+            try
+            {
+                var model = _fileService.SaveCarInsuranceExcel(file);
+                if (model != null)
+                {
+                    var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
+                    _fileService.DeleteFile(item.Url);
+                    item.Url = model.Path + model.Name + model.Postfix;
+                    item.Name = model.Name;
+
+                    _rpCarInsuranceExcel.Update(item);
+                }
+                else
+                {
+                    throw new Exception("保存文件失败");
+                }
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                throw e;
+            }
+        }
+
     }
 }

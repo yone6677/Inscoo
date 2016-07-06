@@ -39,5 +39,7 @@ namespace Domain
 
         //头像
         public string PortraitPath { set; get; }
+        public string ProdInsurance { set; get; }
+        public string ProdSeries { set; get; }
     }
 }

@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="File\CarInsuranceExcel.cs" />
     <Compile Include="File\BusinessLicense.cs" />
     <Compile Include="File\Archive.cs" />
     <Compile Include="File\BaseFile.cs" />

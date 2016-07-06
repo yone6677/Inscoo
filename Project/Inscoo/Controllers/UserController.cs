@@ -10,6 +10,7 @@ using System;
 using System.Web.UI;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using Core.Pager;
 using Microsoft.Ajax.Utilities;
@@ -79,6 +80,11 @@ namespace Inscoo.Controllers
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
             var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
+            //model.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
+            //model.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
+            //string[] list = new string[] { "PICC", "CHINALIFE" };
+
+            //model.ProdInsurances = list;
             if (!string.IsNullOrEmpty(errorMes)) ViewBag.ErrorMes = errorMes;
             if (!string.IsNullOrEmpty(successMes)) ViewBag.SuccessMes = successMes;
 
@@ -90,6 +96,8 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(RegisterModel model)
         {
+            var s = "";
+
             if (ModelState.IsValid)
             {
                 model.UserName = model.Email;
@@ -156,6 +164,8 @@ namespace Inscoo.Controllers
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name", model.Roles);
 
             model.RoleSelects = roles;
+            model.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
+            model.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
             ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }

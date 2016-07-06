@@ -384,6 +384,9 @@
     <Content Include="Views\Order\ProvisionList.cshtml" />
     <Content Include="Views\Order\BuyMore.cshtml" />
     <Content Include="Views\Order\ProvisionCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceSearch.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceList.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -392,6 +395,7 @@
     <Content Include="Views\Shared\Extension.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Changeportrait.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

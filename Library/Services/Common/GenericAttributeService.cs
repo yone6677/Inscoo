@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace Services
 {
@@ -98,6 +99,21 @@ namespace Services
             {
                 var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
                 return new SelectList(list, "Value", "Key", selectedValue);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public ListBox GetListBoxtByGroup(string keyGroup, string selectedValue)
+        {
+            try
+            {
+                var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
+                var listBox= new ListBox();
+                //listBox.
+
+                return new ListBox();
             }
             catch (Exception e)
             {

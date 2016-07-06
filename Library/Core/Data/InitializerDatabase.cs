@@ -21,7 +21,7 @@ namespace Core.Data
         private void InitUserAndRoles()
         {
             //添加admin用户，密码123456
-            var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo" };
+            var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo",ProdInsurance = "",ProdSeries = ""};
             _context.Users.Add(user);
             //var admin = new AppRole { Name = "Admin", Description = "Admin" };
             //_context.Roles.Add(admin);

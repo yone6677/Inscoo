@@ -7,3 +7,5 @@ INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES
 INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES (N'70e917dc-a514-45ea-93a5-4f56343e9e10', N'Admin', N'Admin', N'AppRole')
 INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES (N'6e1a3f94-84d4-44e2-a3f8-e90012b5f494', N'InscooOperator', N'保酷运营', N'AppRole')
 INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES (N'C4CC0E41-B815-4216-9006-22F6E064762C', N'HealthCheck', N'体检公司', N'AppRole')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES (N'e89edf7f-8ae2-4423-abdb-017190fbfe80', N'CarInscuranceCompany', N'车险保险公司', N'AppRole')
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [Description], [Discriminator]) VALUES (N'fde5fcef-6d19-47c4-9515-941ba10aeecd', N'CarInscuranceCustomer', N'车险用户', N'AppRole')

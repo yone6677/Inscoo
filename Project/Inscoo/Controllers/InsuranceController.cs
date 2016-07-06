@@ -124,7 +124,7 @@ namespace Inscoo.Controllers
             var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
             var canEdit = roles.Contains("CarInscuranceCustomer");
             ViewBag.CanEdit = canEdit;
-            if (canEdit) uId = "-1";//车险用户可以编辑，只能查看自己上传的文件。车险公司不能编辑，但可以查看所有。
+            if (!canEdit) uId = "-1";//车险用户可以编辑，只能查看自己上传的文件。车险公司不能编辑，但可以查看所有。
 
             //出admin外，其他用户只能看到自己创建的用户
             IPagedList<CarInsuranceExcel> list = _archiveService.GetCarInsuranceExcel(pageIndex, pageSize, uId);

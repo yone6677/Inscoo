@@ -35,11 +35,15 @@ namespace Inscoo.Controllers
 
         }
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index(string erorrMes, string successMes)
         {
             ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
             var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
             ViewBag.CanCreate = !(roles.Contains("InsuranceCompany") && roles.Count == 1);
+
+            ViewData["ErorrMes"] = erorrMes;
+            ViewData["SuccessMes"] = successMes;
+
             return View();
         }
 
@@ -74,7 +78,7 @@ namespace Inscoo.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create(string errorMes, string successMes)
+        public ActionResult Create()
         {
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name");
             var user = _appUserService.FindById(User.Identity.GetUserId());
@@ -85,8 +89,6 @@ namespace Inscoo.Controllers
             //string[] list = new string[] { "PICC", "CHINALIFE" };
 
             //model.ProdInsurances = list;
-            if (!string.IsNullOrEmpty(errorMes)) ViewBag.ErrorMes = errorMes;
-            if (!string.IsNullOrEmpty(successMes)) ViewBag.SuccessMes = successMes;
 
             return View(model);
         }
@@ -125,11 +127,11 @@ namespace Inscoo.Controllers
                 {
                     if (ForRole(user, model.Roles))
                     {
-                        return RedirectToAction("Create", new { successMes = "添加成功" });
+                        return RedirectToAction("Index", new { successMes = "添加成功" });
                     }
                 }
             }
-            return RedirectToAction("Create", new { errorMes = "添加失败" });
+            return RedirectToAction("Index", new { errorMes = "添加失败" });
         }
 
         [AllowAnonymous]
@@ -172,7 +174,8 @@ namespace Inscoo.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(RegisterModel model)
+
+        public ActionResult Edit(RegisterModel model)
         {
             try
             {
@@ -185,7 +188,7 @@ namespace Inscoo.Controllers
                     user.CompanyName = model.CompanyName;
                     user.LinkMan = model.Linkman;
                     user.PhoneNumber = model.PhoneNumber;
-                    user.Email = model.Email;
+                    //user.Email = model.Email;
                     user.TiYong = model.TiYong;
                     user.FanBao = model.FanBao;
                     user.Rebate = model.Rebate;
@@ -196,16 +199,14 @@ namespace Inscoo.Controllers
                     user.IsDelete = model.IsDelete;
                     user.Changer = User.Identity.GetUserId();
 
-                    var result = await _appUserService.UpdateAsync(user);
-                    if (result.Succeeded)
+                    if (_appUserService.Update(user))
                     {
                         if (ForRole(user, model.Roles))
-                            return RedirectToAction("Index");
+                            return RedirectToAction("Index", new { successMes = "修改成功" });
                         else
                         {
-                            return View();
+                            throw new Exception();
                         }
-                        //return View("Details", model);
                     }
                     else
                     {
@@ -217,9 +218,9 @@ namespace Inscoo.Controllers
                     throw new Exception("输入有误");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return View(model);
+                return RedirectToAction("Index", new { errorMes = e.Message });
             }
         }
 

@@ -61,6 +61,7 @@ namespace Services
         void SignOut();
 
         Task<IdentityResult> UpdateAsync(AppUser user);
+        bool Update(AppUser user);
         Task<IdentityResult> UpdateSecurityStampAsync(AppUser user);
 
     }

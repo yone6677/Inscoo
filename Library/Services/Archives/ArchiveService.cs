@@ -40,7 +40,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：Delete");
                 throw e;
             }
         }
@@ -185,7 +185,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：GetList");
                 return new PagedList<CarInsuranceExcel>(new List<CarInsuranceExcel>(), pageIndex, pageSize);
             }
         }
@@ -212,7 +212,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：Update");
                 throw e;
             }
         }

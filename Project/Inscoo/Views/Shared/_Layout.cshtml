@@ -10,7 +10,7 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    @Html.Partial("_Header")
+    @Html.Partial("_Header", ViewData)
     <div class="main">
         <div class="mainNav">
             @Html.Action("Portrait", "Home")
@@ -40,29 +40,29 @@
             @RenderSection("thirdPanel", required: false)
         </div>
     </div>
-    <div class="modal fade" id="modalShowMessage" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body text-center">
+    @*<div class="modal fade" id="modalShowMessage" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">
-                        关闭
-                    </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">
+                            关闭
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>*@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/base")
     @Styles.Render("~/Content/FontAwesome")
     @RenderSection("scripts", required: false)
     <script>
-        jQuery(function () {
+        @*jQuery(function () {
             ShowMessage();
         });
         function ShowMessage() {
@@ -78,7 +78,7 @@
             else {
                 jQuery('.modal-body').html("");
             }
-        }
+        }*@
     </script>
 </body>
 </html>

@@ -170,6 +170,7 @@
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
+    <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
@@ -182,6 +183,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\imgIndex\base.css">
+      <DependentUpon>base.less</DependentUpon>
+    </Content>
+    <Content Include="Content\imgIndex\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
     <Content Include="Content\imgIndex\bg1.jpg" />
     <Content Include="Content\imgIndex\bg2.jpg" />
     <Content Include="Content\imgIndex\bg2.png" />
@@ -272,6 +279,7 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
     <Content Include="fonts\STSONG.TTF" />
+    <Content Include="Content\imgIndex\base.less" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\index.js" />
@@ -287,6 +295,14 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="info\_aboutUs.html" />
+    <Content Include="Views\About\AboutBaoku.cshtml" />
+    <Content Include="Views\About\ViewPage1.cshtml" />
+    <Content Include="Views\About\_Header.cshtml" />
+    <Content Include="Views\About\_footer.cshtml" />
+    <Content Include="Views\About\Question.cshtml" />
+    <Content Include="Views\About\cooperation.cshtml" />
+    <None Include="Views\About\_menu.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -297,6 +313,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -384,6 +401,9 @@
     <Content Include="Views\Order\ProvisionList.cshtml" />
     <Content Include="Views\Order\BuyMore.cshtml" />
     <Content Include="Views\Order\ProvisionCreate.cshtml" />
+    <Content Include="Views\About\AboutUs.cshtml" />
+    <Content Include="Views\About\_AboutLayout.cshtml" />
+    <Content Include="Views\About\serveOrder.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

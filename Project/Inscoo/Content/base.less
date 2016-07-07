@@ -36,6 +36,12 @@ table {
         }
     }
 }
+//新增：控制表格字体大小
+.table-style-control{
+    font-size:13px;
+}
+
+
 
 header {
     width: 100%;
@@ -44,6 +50,8 @@ header {
     color: @menuColor;
     margin-bottom: 1em;
     box-shadow: 0 1px 3px #999;
+    position:fixed;
+    z-index:10;
 
     ul {
         .contentWidth;
@@ -84,9 +92,11 @@ body {
     background-color: @menuColor;
     min-height: 400px;
     min-width: 135px;
-    width: 15%;
+    width: 11%;
     float: left;
     padding-bottom: 1em;
+    position:fixed;
+    top:80px;
 }
 
 .firstMenu {
@@ -98,12 +108,17 @@ body {
     }
 
     li a {
-        text-align: center;
+        text-align: left;
         font-weight: bold;
         color: #fff;
+        padding-left:28%;
     }
-
+    li a.son-list{
+        padding-left:40%;
+    }
     li a i {
+        width:18px;
+        text-align:center;
         margin-right: .5em;
     }
 
@@ -119,6 +134,18 @@ body {
         background-color: #5E6E7E;
         border-radius: 0;
     }
+    /*li a:focus {
+        background-color: #5E6E7E;
+        width:100%;
+    }*/
+}
+//新增
+.nav.nav-list a{
+    line-height:10px;
+}
+.nav-background{
+    background-color:#bbb;
+    width:100%;
 }
 
 .secondmenu {
@@ -144,6 +171,7 @@ body {
     float: right;
     width: 85%;
     padding-left: 10px;
+    margin-top:80px;
 }
 
 .full {
@@ -175,6 +203,7 @@ body {
     height: 2em;
     line-height: 2em;
     text-align: center;
+    font-size:13px;
 }
 
 .pager span {
@@ -209,6 +238,7 @@ body {
     width: 60%;
     min-width: 512px;
     margin: 0 auto;
+    font-size:13px;
 }
 
 .dl-horizontal {
@@ -219,11 +249,30 @@ body {
     padding: 0 0;
 }
 
+
+//新增产品种类
+.product-type{
+    width:100%;
+    min-height:40px;
+    margin:0px 1%;
+    margin-bottom:5px;
+    .main-product{
+        width:20%;
+        height:2em;
+        line-height:2em;
+        padding-left:6px;
+        border:1px solid #ddd;
+        font-size:13px;
+    }
+}
+
+
 .inscooCase {
-    width: 48%;
+    width: 100%;
     float: left;
     margin: 0 1%;
     box-shadow: 0 0 .5em #ddd;
+    margin-bottom:30px;
 }
 
 .inscooCase-title-left {
@@ -253,7 +302,7 @@ body {
     width: 96%;
     margin: 0 auto;
     box-shadow: 0 1px 0 #ddd inset;
-    height: 260px;
+    height: 220px;
 }
 
 .inscooCase-title-right {
@@ -268,10 +317,10 @@ body {
 }
 
 .inscoo-programme-left {
-    width: 40%;
+    width: 14%;
     height: 124px;
     float: left;
-    margin: 3px 5%;
+    margin: 30px 5%;
     text-align: center;
 
     a {
@@ -306,21 +355,23 @@ body {
 
     tr {
         width: 100%;
+        
 
         th {
             width: 50%;
             color: @inscooGreen;
-            height: 2em;
-            line-height: 2em;
-            box-shadow: 0 1px 0 #ddd;
+            height: 2.8em;
+            line-height: 2.8em;
+            border-bottom: 1px dashed #ddd;
         }
 
         td {
             width: 50%;
             color: #666;
-            height: 1.8em;
-            line-height: 1.8em;
-            box-shadow: 0 1px 0 #ddd;
+            height: 2.8em;
+            line-height: 2.8em;
+            border-bottom: 1px dashed #ddd;
+            font-size:12px;
         }
     }
 }
@@ -348,7 +399,7 @@ body {
 
 .programme-query {
     width: 100%;
-    line-height: 3em;
+    line-height: 4em;
     font-size: 1.1em;
     border-bottom: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -361,27 +412,49 @@ body {
     height: 3em;
 }
 
+//新增
+.describe_name{
+     font-weight:bold;
+     margin-top:1.5em;
+     margin-bottom:1em;
+     padding-left:10px;
+     border-left:5px solid #5CB85C;
+       
+}
+.nav-tabs{
+    font-size:12px;
+    
+}
+.radio-inline, .checkbox-inline{
+    font-size:12px;
+}
+//以上是新增
 .inscoo-productTable {
     margin: .5em auto;
+    margin-bottom:1.5em;
     width: 100%;
-    border-left: 1px solid #ddd;
+    border: 1px solid #ddd;
 
     tr {
         th {
             text-align: center;
-            background-color: @iscooBlue;
-            color: #fff;
-            line-height: 2.5em;
-            height: 2.5em;
-            border-right: 1px solid @iscooBlue;
+            font-weight:;
+            line-height: 3.2em;
+            height: 3.2em;
+            border-right: 1px dashed #ddd;
+            border-bottom:1px solid #ddd;
+             //字体改变
+            font-size:14px;
         }
 
         td {
             text-align: center;
-            line-height: 2em;
-            height: 2em;
-            border-right: 1px solid #ddd;
+            line-height: 2.2em;
+            height: 4.5em;
+            border-right: 1px dashed #ddd;
             border-bottom: 1px solid #ddd;
+            //字体改变
+            font-size:12px;
 
             select {
                 width: 50%;
@@ -392,15 +465,50 @@ body {
             b {
                 color: @inscooGreen;
             }
+            
+            .check_product{
+                width:1.2em;
+                height:1.2em;
+                margin-top:20px;
+            }
+        }
+        
+        &:hover{
+            background-color:#FFF9F2;
         }
     }
 }
-
+.toggle_color{
+    display:inline-block;
+    width:27px;
+    height:27px;
+    margin-bottom:-11px;
+    cursor:pointer;
+}
+.show_color{
+    background:url('../Content/imgIndex/question.png') no-repeat;
+}
+.hide_color{
+    background:url('../Content/imgIndex/question_1.png') no-repeat;
+}
+.hideDeclare{
+    font-size:0.8em;
+    display:none;
+    text-indent:20px;
+    padding:0 10px;
+}
+.hideDeclare.showDeclare{
+    font-size:0.8em;
+    display:table-cell;
+    text-indent:20px;
+    padding:0 10px;
+    line-height:25px;
+}
 .customProduct_purchase {
-    border-top: 1px solid @iscooBlue;
+
     width: 100%;
-    height: 4em;
-    line-height: 4em;
+    height: 5em;
+    line-height: 5em;
     box-shadow: 0 0 3px #999;
 
     from {
@@ -420,6 +528,7 @@ body {
 
         b {
             color: @inscooGreen;
+            font-size:1.5em;
         }
     }
 }
@@ -428,6 +537,7 @@ body {
     width: 100%;
     margin: 0 auto;
     box-shadow: 0 0 3px #ccc;
+    margin-bottom:20px;
 }
 
 .orderConfirmLi {
@@ -466,8 +576,9 @@ body {
 
 .orderConfirmBody {
     width: 100%;
-    border: 1px solid @iscooBlue;
-
+    border: 1px solid #ddd;
+    margin-bottom:10px;
+    
     dl {
         width: 100%;
         margin: 0 auto;
@@ -480,7 +591,29 @@ body {
             background-color: @iscooBlue;
             color: #fff;
         }
+        .dd-product-style{
+              width:60%; 
 
+
+              ul{
+                  margin-left:70%;
+
+                  li:nth-child(odd){
+                      width:68%;
+                  }
+                  li:nth-child(even){
+                      width:30%;
+                  }
+                  .product-select{
+                      font-size:13px;
+                      border-radius:3px;
+                      height:22px;
+                      line-height:22px;
+                      width:70%;
+                  }
+              }
+              
+        }
         dd {
             ol {
                 width: 96%;
@@ -503,11 +636,12 @@ body {
                     text-align: left;
                 }
             }
+           
 
             ul {
                 width: 96%;
                 height: 2em;
-                margin: .5em 2%;
+                margin: .3em 2%;
 
                 li {
                     height: 2em;
@@ -587,6 +721,7 @@ body {
 
 .orderEntryInfoBody {
     width: 100%;
+    font-size:13px;
 
     ul {
         width: 100%;
@@ -753,9 +888,11 @@ body {
 }
 
 .Search {
-    padding: .3em 0;
-    margin-bottom: .3em;
+    padding: 1.3em 0 0.1em 0;
+    margin-bottom: 2em;
     box-shadow: 0 0 2px #999;
+    font-size:13px;
+    
 
     dl {
         width: 85%;
@@ -768,6 +905,7 @@ body {
             color: #555;
             text-align: right;
             float: left;
+            margin-bottom:6px;
         }
 
         dd {
@@ -775,6 +913,7 @@ body {
             height: 35px;
             float: left;
             text-align: left;
+            margin-bottom:6px;
 
             input {
                 border-radius: 3px;

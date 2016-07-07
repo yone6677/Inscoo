@@ -1,11 +1,19 @@
 ﻿@model IEnumerable<Models.Insurance.RecommendationModel>
 
+<div class="product-type">
+    <select name="product-type" class="main-product">
+        <option value="0">--请选择产品类型--</option>
+        <option value="1">中高端员工福利保险</option>
+        <option value="2">企业团体保险</option>
+        <option value="3">短期旅行险及意外险</option>
+    </select>
+</div>
 <div class="panel inscooCase">
     <div class="inscooCase-title-left">
         <strong>选择一个方案</strong>
         <span>SELECT A PROGRAMME</span>
     </div>
-
+    
     <div class="panel-body inscooCase-body">
         @{
             var ids = "";
@@ -57,8 +65,17 @@
                     @foreach (var s in item.item)
                     {
                         <tr>
-                            <td>@s.SafefuardName</td>
+                            <td>
+                                <span class="toggle_color show_color"></span>
+                                @s.SafefuardName
+                            </td>
                             <td>@s.CoverageSum</td>
+                        </tr>
+                        <tr> 
+                            <td colspan="2"  class="hideDeclare" style="text-align:left">
+                                <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
+                                <a class="">请查看保险条款</a>
+                            </td>
                         </tr>
                     }
                     <tr>
@@ -73,7 +90,7 @@
                 @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
                 {
                     <div class="programme-price">@item.Price / 年</div>
-                    <p class="programme-clause"><a href="/">保险条款</a></p>
+                    <!--<p class="programme-clause"><a href="/">保险条款</a></p>-->
                     <p class="programme-clause">
 
                         <input type="hidden" name="CustomizeProductId" value=@item.Id />

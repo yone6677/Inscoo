@@ -304,6 +304,7 @@ namespace Services
                     var role = result.Roles;
                     var roles = "";
                     if (role.Any()) roles = _appRoleManager.FindById(role.First().RoleId).Name;
+                    string[] nulklStr = new string[0];
                     return new RegisterModel
                     {
                         Id = result.Id,
@@ -321,8 +322,8 @@ namespace Services
                         AccountName = result.AccountName,
                         IsDelete = result.IsDelete,
                         Roles = roles,
-                        ProdSeries = result.ProdSeries.Split(';'),
-                        ProdInsurances = result.ProdInsurance.Split(';')
+                        ProdSeries = result.ProdSeries == null ? nulklStr : result.ProdSeries.Split(';'),
+                        ProdInsurances = result.ProdInsurance == null ? nulklStr : result.ProdInsurance.Split(';')
 
                     };
                 }

@@ -320,7 +320,9 @@ namespace Services
                         CommissionMethod = result.CommissionMethod,
                         AccountName = result.AccountName,
                         IsDelete = result.IsDelete,
-                        Roles = roles
+                        Roles = roles,
+                        ProdSeries = result.ProdSeries.Split(';'),
+                        ProdInsurances = result.ProdInsurance.Split(';')
 
                     };
                 }

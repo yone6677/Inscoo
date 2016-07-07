@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/css")
+    @RenderSection("head", required: false)
 </head>
 <body>
     @Html.Partial("_Header", ViewData)

@@ -84,11 +84,11 @@ namespace Inscoo.Controllers
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
             var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
-            //model.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
-            //model.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
-            //string[] list = new string[] { "PICC", "CHINALIFE" };
 
-            //model.ProdInsurances = list;
+            ViewBag.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
+            ViewBag.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
+            model.ProdSeries = user.ProdSeries.Split(';');
+            model.ProdInsurances = user.ProdInsurance.Split(';');
 
             return View(model);
         }
@@ -98,12 +98,26 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(RegisterModel model)
         {
-            var s = "";
-
             if (ModelState.IsValid)
             {
                 model.UserName = model.Email;
                 var uId = User.Identity.GetUserId();
+                var ProdSeries = "";
+                if (model.ProdSeries != null)
+                {
+                    foreach (var item in model.ProdSeries)
+                    {
+                        ProdSeries += item + ';';
+                    }
+                }
+                var ProdInsurance = "";
+                if (model.ProdInsurances != null)
+                {
+                    foreach (var item in model.ProdInsurances)
+                    {
+                        ProdInsurance += item + ';';
+                    }
+                }
                 var user = new AppUser()
                 {
                     BankName = model.BankName,
@@ -120,7 +134,10 @@ namespace Inscoo.Controllers
                     Changer = uId,
                     CommissionMethod = model.CommissionMethod,
                     AccountName = model.AccountName,
-                    Rebate = model.Rebate
+                    Rebate = model.Rebate,
+                    ProdSeries = ProdSeries,
+                    ProdInsurance = ProdInsurance
+
                 };
                 var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
                 if (result.Succeeded)
@@ -166,8 +183,8 @@ namespace Inscoo.Controllers
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name", model.Roles);
 
             model.RoleSelects = roles;
-            model.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
-            model.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
+            ViewBag.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
+            ViewBag.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
             ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }
@@ -182,6 +199,22 @@ namespace Inscoo.Controllers
                 if (ModelState.IsValid)
                 {
                     model.UserName = model.Email;
+                    var ProdSeries = "";
+                    if (model.ProdSeries != null)
+                    {
+                        foreach (var item in model.ProdSeries)
+                        {
+                            ProdSeries += item + ';';
+                        }
+                    }
+                    var ProdInsurance = "";
+                    if (model.ProdInsurances != null)
+                    {
+                        foreach (var item in model.ProdInsurances)
+                        {
+                            ProdInsurance += item + ';';
+                        }
+                    }
 
                     var user = _appUserService.FindById(model.Id);
                     user.UserName = model.UserName;
@@ -198,7 +231,8 @@ namespace Inscoo.Controllers
                     user.AccountName = model.AccountName;
                     user.IsDelete = model.IsDelete;
                     user.Changer = User.Identity.GetUserId();
-
+                    user.ProdSeries = ProdSeries;
+                    user.ProdInsurance = ProdInsurance;
                     if (_appUserService.Update(user))
                     {
                         if (ForRole(user, model.Roles))

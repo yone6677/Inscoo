@@ -56,11 +56,9 @@ namespace Models
         public SelectList RoleSelects { get; set; }
         public SelectList CommissionMethods { get; set; }
 
-        public List<SelectListItem> ProdInsurancesList { get; set; }
         [Display(Name = "保险公司")]
         public string[] ProdInsurances { get; set; }
 
-        public List<SelectListItem> ProdSeriesList { get; set; }
         [Display(Name = "保险系列")]
         public string[] ProdSeries { get; set; }
 

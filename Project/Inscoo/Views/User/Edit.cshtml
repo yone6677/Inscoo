@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "编辑用户";
 }
-
+@section head {
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -19,13 +21,13 @@
                 @Html.DropDownList("Roles", Model.RoleSelects, new { @class = "form-control" })
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -45,8 +47,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                <label class="control-label">@Model.Email</label>
+                @Html.HiddenFor(m => m.Email)
+                @* @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
@@ -78,14 +82,24 @@
                 @Html.ValidationMessageFor(model => model.BankNumber, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
-            @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate, min = 0 } })
-                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-1">
-                <label class="control-label">%</label>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProdInsurances, htmlAttributes: new { @class = "control-label col-md-3 " })
+            <div class="col-md-9">
+                @Html.ListBoxFor(m => m.ProdInsurances, ViewBag.ProdInsurancesList as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", multiple = "", data_placeholder = "选择保险公司" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProdSeries, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.ListBoxFor(m => m.ProdSeries, ViewBag.ProdSeriesList as IEnumerable<SelectListItem>, new { @class = "form-control chosen-select", multiple = "multiple", data_placeholder = "选择保险系列" })
             </div>
         </div>
         <div class="form-group" id="roleChange">
@@ -106,10 +120,13 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.Rebate, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Rebate, new { htmlAttributes = new { @class = "form-control", max = ViewBag.maxRebate, min = 0 } })
+                @Html.ValidationMessageFor(model => model.Rebate, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">%</label>
             </div>
         </div>
         <div class="form-group">
@@ -134,20 +151,24 @@
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
     <script>
         jQuery(function () {
             TongleWhenRoleChange();
-        })
-        jQuery("#Roles").change(function () {
-            TongleWhenRoleChange();
-        })
+            jQuery(".chosen-select").chosen();
+        });
+
+        jQuery("#Roles")
+            .change(function () {
+                TongleWhenRoleChange();
+            });
+
         function TongleWhenRoleChange() {
             var value = jQuery("#Roles").val();
             //console.log(value);
             if (value == "PartnerChannel") {
                 jQuery("#roleChange").show();
-            }
-            else {
+            } else {
                 jQuery("#roleChange").hide();
             }
         }

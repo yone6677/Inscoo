@@ -15,7 +15,7 @@ namespace Core.Mapping
             Property(p => p.CreaterId).IsOptional().HasMaxLength(128);
             Property(p => p.Changer).IsOptional().HasMaxLength(128);
             Property(p => p.Email).IsRequired().HasMaxLength(32);
-            Property(p => p.CompanyName).IsRequired().HasMaxLength(128);
+            Property(p => p.CompanyName).HasMaxLength(128);
             Property(p => p.LinkMan).IsOptional().HasMaxLength(32);
             Property(p => p.Ident).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(p => p.Rebate).IsRequired();

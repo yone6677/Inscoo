@@ -179,14 +179,32 @@ namespace Inscoo.Controllers
                     var tasks = actions.Select(a => Task.Run(() =>
                     {
                         var nav = _navService.GetByUrl(controlName, a.Name);
-                        list.Add(new vPermissionNav()
+                        var hasAllowAnonymousAttribute =
+                            a.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any();
+                        if (hasAllowAnonymousAttribute)
                         {
+                            list.Add(new vPermissionNav()
+                            {
 
-                            Controller = control.Name,
-                            Action = a.Name,
-                            IsUsed = _permisService.HasNavUsedByRole(controlName, a.Name, roleId),
-                            Name = nav == null ? a.Name : nav.name
-                        });
+                                Controller = control.Name,
+                                Action = a.Name,
+                                IsUsed = true,
+                                CanEdit = false,//不允许调整权限
+                                Name = nav == null ? a.Name : nav.name
+                            });
+                        }
+                        else
+                        {
+                            list.Add(new vPermissionNav()
+                            {
+
+                                Controller = control.Name,
+                                Action = a.Name,
+                                IsUsed = _permisService.HasNavUsedByRole(controlName, a.Name, roleId),
+                                Name = nav == null ? a.Name : nav.name
+                            });
+                        }
+
                     }
                   )
                   );

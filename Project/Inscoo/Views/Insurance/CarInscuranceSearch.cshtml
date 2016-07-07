@@ -1,0 +1,34 @@
+﻿<div class="Search">
+    <dl>
+        @*<dt>
+            角色
+        </dt>
+        <dd>
+            @Html.DropDownList("RoleId", ViewBag.RoleId as List<SelectListItem>, "全部")
+        </dd>
+        <dt>用户名</dt>
+        <dd>
+            <input type="text" name="UserName" value="" placeholder="用户名称" />
+        </dd>
+        <dt></dt>
+        <dd>
+            <p> <input type="submit" value="查找" /></p>
+        </dd>*@
+        @if (ViewBag.CanCreate)
+            {
+            @*<dt></dt>*@
+            <dd>
+                <p>  @Html.ActionLink("新建", "CarInscuranceCreate", "Insurance", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            </dd>
+        }
+
+    </dl>
+    <p class="clearfix"></p>
+</div>
+
+
+<div id="dadaGrid">
+    @Html.Action("CarInscuranceList")
+</div>
+
+

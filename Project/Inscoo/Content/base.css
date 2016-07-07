@@ -45,7 +45,7 @@ header ul {
 }
 header ul li {
   height: 50px;
-  width: 50%;
+  width: 30%;
   float: left;
 }
 header ul li:last-child {

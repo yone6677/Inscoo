@@ -37,13 +37,16 @@
                     @Html.DisplayFor(modelItem => item.IsUsed)
                 </td>
                 <td>
-                    @if (item.IsUsed)
+                    @if (item.CanEdit)
                     {
-                        <a href="javascript:" onclick="Manage('@item.Action','DeletePermission')">取消</a>
-                    }
-                    else
-                    {
-                        <a href="javascript:" onclick="Manage('@item.Action','AddPermission')">添加</a>
+                        if (item.IsUsed)
+                        {
+                            <a href="javascript:" onclick="Manage('@item.Action', 'DeletePermission')">取消</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:" onclick="Manage('@item.Action', 'AddPermission')">添加</a>
+                        }
                     }
                 </td>
             </tr>

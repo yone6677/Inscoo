@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Services;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,7 +38,7 @@ namespace Inscoo.Infrastructure
             string actionName = filterContext.ActionDescriptor.ActionName;
             var name = filterContext.HttpContext.User.Identity.Name;
             var userId = filterContext.HttpContext.User.Identity.GetUserId();
-
+            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any()) return;
             if (CommonAuthorizationCheck(controllerName, actionName, userId)) return;
 
             var httpcontext = filterContext.HttpContext;
@@ -78,27 +79,6 @@ namespace Inscoo.Infrastructure
         /// <returns></returns>
         bool CommonAuthorizationCheck(string controllerName, string actionName, string userId)
         {
-            switch (controllerName)
-            {
-                case "AccountController":
-                    if (
-  actionName.Equals("Login")
-  || actionName.Equals("SignOut")) { return true; }
-                    break;
-                case "HomeController":
-                    if (
-  actionName.Equals("Index")
-  || actionName.Equals("Menu")
-  || actionName.Equals("Portrait")
- ) { return true; }
-                    break;
-                case "UserController":
-                    if (
-  actionName.Equals("ChangePassword")
- ) { return true; }
-                    break;
-            }
-
             var roles = _appUserService.GetRolesByUserId(userId);
             var onlyIsInscooOperator = roles.Count == 1 && roles.Contains("InscooOperator");
             if (onlyIsInscooOperator)

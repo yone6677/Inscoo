@@ -181,6 +181,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chosen.css" />
+    <Content Include="Content\chosen.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\imgIndex\base.css">
@@ -282,6 +284,8 @@
     <Content Include="Content\imgIndex\base.less" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
@@ -401,6 +405,9 @@
     <Content Include="Views\Order\ProvisionList.cshtml" />
     <Content Include="Views\Order\BuyMore.cshtml" />
     <Content Include="Views\Order\ProvisionCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceSearch.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceList.cshtml" />
     <Content Include="Views\About\AboutUs.cshtml" />
     <Content Include="Views\About\_AboutLayout.cshtml" />
     <Content Include="Views\About\serveOrder.cshtml" />
@@ -412,6 +419,7 @@
     <Content Include="Views\Shared\Extension.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Changeportrait.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

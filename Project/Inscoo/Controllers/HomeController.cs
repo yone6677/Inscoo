@@ -13,19 +13,19 @@ namespace Inscoo.Controllers
         private readonly IFileService _fileService;
         private readonly IResourceService _resource;
         private readonly INavigationService _navService;
-        public HomeController(IFileService fileService, IResourceService resource, INavigationService navService)
+        private readonly IAppUserService _appUserService;
+        public HomeController(IFileService fileService, IResourceService resource, INavigationService navService, IAppUserService appUserService)
         {
             _fileService = fileService;
             _resource = resource;
             _navService = navService;
+            _appUserService = appUserService;
         }
+        [AllowAnonymous]
         public PartialViewResult Menu()
         {
             var navs = _navService.GetLeftNavigations(User.Identity.GetUserId());
-            if (!navs.Any(n => n.name.Equals("退出")))
-            {
-                navs.Add(_navService.GetByUrl("AccountController", "signout"));
-            }
+
             if (!navs.Any(n => n.name.Equals("设置")))
             {
                 navs.Add(_navService.GetById(16));//设置菜单
@@ -34,7 +34,11 @@ namespace Inscoo.Controllers
             {
                 navs.Add(_navService.GetByUrl("UserController", "ChangePassword"));
             }
-            var bottomNav = navs.Where(n => n.name == "设置" || n.name == "退出").ToList();
+            if (!navs.Any(n => n.name.Equals("退出")))
+            {
+                navs.Add(_navService.GetByUrl("AccountController", "signout"));
+            }
+            var bottomNav = navs.Where(n => n.name == "设置" || n.name == "退出").OrderBy(m => m.sequence).ToList();
             navs.RemoveAll(n => n.name == "设置" || n.name == "退出");
 
             ViewBag.allNavs = navs;
@@ -43,6 +47,7 @@ namespace Inscoo.Controllers
 
             return PartialView();
         }
+        [AllowAnonymous]
         // GET: Home
         public ActionResult Index()
         {
@@ -104,9 +109,18 @@ namespace Inscoo.Controllers
         /// 头像/NAME
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public ActionResult Portrait()
         {
             ViewBag.UserName = User.Identity.Name;
+            var portraitPath = Request.Cookies.Get("PortraitPath");
+            if (portraitPath == null)
+            {
+                var path = _appUserService.FindById(User.Identity.GetUserId()).PortraitPath;
+                if (string.IsNullOrEmpty(path)) path = "/Content/img/inscoo.png";
+                Request.Cookies.Add(new HttpCookie("PortraitPath") { HttpOnly = true, Expires = DateTime.Now.AddYears(1), Value = path });
+            }
+            ViewBag.Portrait = Request.Cookies.Get("PortraitPath")?.Value;
             return PartialView();
         }
     }

@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "上传车险Excel";
+}
+@using (Html.BeginForm("CarInscuranceCreate", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="excelId" name="excelId" value="@ViewBag.ExcelId" />
+    <div class="form-horizontal formCreate">
+        <br />
+
+        <div class="form-group">
+            <label class="control-label col-md-3">上传Excel</label>
+            <div class="col-md-9">
+                <input type="file" name="excel" id="excel" required="" />
+                <input type="submit" class="btn btn-info" value="提交" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3"></label>
+            <div class="col-md-9">
+                @if (ViewBag.Mes == "上传成功")
+                {
+                    <div class="alert alert-success">上传成功</div>
+                }
+                else if (ViewBag.Mes == "上传失败")
+                {
+                    <div class="alert alert-danger">上传失败</div>
+                }
+            </div>
+        </div>
+    </div>
+}

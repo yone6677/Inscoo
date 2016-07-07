@@ -21,7 +21,7 @@ namespace Core.Data
         private void InitUserAndRoles()
         {
             //添加admin用户，密码123456
-            var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo" };
+            var user = new AppUser() { UserName = "Admin", CreaterId = "", Changer = "", PasswordHash = "ABo9ONAMgkexrgRTN919lzfKw74MNsiN7kkkf6IOc/ZsVvewJGIohiZsL8nIqZ4/5w==", SecurityStamp = "4c773bd1-61ba-4d60-ae19-97dfbdae46f4", Email = "1172445486@qq.com", CompanyName = "Inscoo",ProdInsurance = "",ProdSeries = ""};
             _context.Users.Add(user);
             //var admin = new AppRole { Name = "Admin", Description = "Admin" };
             //_context.Roles.Add(admin);
@@ -40,20 +40,28 @@ namespace Core.Data
         }
         private void InitBaseData()
         {
-
-            var customCommands = new List<string>();
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Role.sql"), false));//产品
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Products.sql"), false));//产品
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/MixProduct.sql"), false));//推荐产品
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性         
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/menu.sql"), false));//菜单
-            customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Permission.sql"), false));//权限
-            if (customCommands != null && customCommands.Count > 0)
+            try
             {
+
+                var customCommands = new List<string>();
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Role.sql"), false));//产品
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Products.sql"), false));//产品
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/MixProduct.sql"), false));//推荐产品
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/GenericAttribute.sql"), false));//通用属性         
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/menu.sql"), false));//菜单
+                customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Sql/Permission.sql"), false));//权限
+                if (customCommands.Count <= 0) return;
                 foreach (var command in customCommands)
+                {
                     _context.Database.ExecuteSqlCommand(command);
+                    _context.SaveChanges();
+                }
             }
-            _context.SaveChanges();
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
         #region Utilities
 

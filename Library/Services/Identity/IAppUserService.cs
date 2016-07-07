@@ -51,11 +51,17 @@ namespace Services
         IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "", string roleId = "", string createUserId = "-1");
         List<UserRoleModel> GetUserRoles();
 
-
+        /// <summary>
+        /// 判断是否用户名已使用。用户名和邮箱都不能存在
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        bool IsUserExist(string key);
         void SignIn(AppUser user, bool isPersistent);
         void SignOut();
 
         Task<IdentityResult> UpdateAsync(AppUser user);
+        bool Update(AppUser user);
         Task<IdentityResult> UpdateSecurityStampAsync(AppUser user);
 
     }

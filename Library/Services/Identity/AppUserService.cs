@@ -243,7 +243,7 @@ namespace Services
                         RoleName = u.Roles.Any() ? _appRoleManager.FindById(u.Roles.First().RoleId).Name : "",
                         CreateTime = u.CreateTime,
                         CreaterId = u.CreaterId
-                    }).ToList();
+                    }).OrderBy(c => c.CreateTime).ToList();
                 }
                 return new PagedList<UserModel>(model, pageIndex, pageSize);
             }
@@ -301,6 +301,9 @@ namespace Services
                 var result = _userManager.FindById(id);
                 if (result != null)
                 {
+                    var role = result.Roles;
+                    var roles = "";
+                    if (role.Any()) roles = _appRoleManager.FindById(role.First().RoleId).Name;
                     return new RegisterModel
                     {
                         Id = result.Id,
@@ -317,7 +320,10 @@ namespace Services
                         CommissionMethod = result.CommissionMethod,
                         AccountName = result.AccountName,
                         IsDelete = result.IsDelete,
-                        Roles = _appRoleManager.FindById(result.Roles.First().RoleId).Name
+                        Roles = roles,
+                        ProdSeries = result.ProdSeries.Split(';'),
+                        ProdInsurances = result.ProdInsurance.Split(';')
+
                     };
                 }
                 else
@@ -377,10 +383,15 @@ namespace Services
                     allRoles.RemoveAll(r => r.Name.Equals("Admin"));
                     allRoles.RemoveAll(r => r.Name.Equals("InscooFinance"));
                     allRoles.RemoveAll(r => r.Name.Equals("InsuranceCompany"));
+                    allRoles.RemoveAll(r => r.Name.Equals("CarInscuranceCompany"));
+                    allRoles.RemoveAll(r => r.Name.Equals("CarInscuranceCustomer"));
                 }
 
                 if (userRoles.Contains("BusinessDeveloper"))
                 {
+                    allRoles =
+                        _appRoleManager.Roles.Where(r => r.Name.Equals("PartnerChannel") || r.Name.Equals("CompanyHR"))
+                            .ToList();
                 }
 
                 if (userRoles.Contains("PartnerChannel"))
@@ -400,6 +411,7 @@ namespace Services
                 }
 
                 SelectList result;
+                if (!allRoles.Any()) allRoles = new List<AppRole>();
                 if (valueField.Equals("Name", StringComparison.CurrentCultureIgnoreCase))
                 {
                     result = new SelectList(allRoles, "Name", "Description", sellectedValue);
@@ -422,7 +434,25 @@ namespace Services
             }
         }
 
+        public bool IsUserExist(string key)
+        {
+            try
+            {
+                var role = _userManager.FindByEmail(key) != null;
+                if (role) return true;
 
+                role = _userManager.FindByName(key) != null;
+
+                if (role) return true;
+
+                return false;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
 
         public void SignIn(AppUser user, bool isPersistent)
         {
@@ -449,6 +479,23 @@ namespace Services
             {
                 _loggerService.insert(e, LogLevel.Information, "AppUserService:UpdateAsync");
                 return null;
+            }
+        }
+        public bool Update(AppUser user)
+        {
+            try
+            {
+                user.Changer = _authenticationManager.User.Identity.Name;
+                user.ModifyTime = DateTime.Now;
+                var result = _userManager.Update(user);
+
+                if (result.Succeeded) return true;
+                else throw new Exception(result.Errors.First());
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:Update");
+                throw e;
             }
         }
         public Task<IdentityResult> UpdateSecurityStampAsync(AppUser user)

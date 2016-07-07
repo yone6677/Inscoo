@@ -1,4 +1,5 @@
-﻿using Domain.Products;
+﻿using System;
+using Domain.Products;
 using Models.Insurance;
 using Models.Order;
 using Models;
@@ -7,8 +8,13 @@ using Services.Products;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using Core.Pager;
+using Domain;
+using Innscoo.Infrastructure;
+using Microsoft.AspNet.Identity;
 
 namespace Inscoo.Controllers
 {
@@ -17,12 +23,17 @@ namespace Inscoo.Controllers
         private readonly IMixProductService _mixProductService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IProductService _productService;
-
-        public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService)
+        private readonly IArchiveService _archiveService;
+        private readonly IPermissionService _svPermissionService;
+        private readonly IAppUserService _appUserService;
+        public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService, IArchiveService archiveService, IPermissionService svPermissionService, IAppUserService appUserService)
         {
             _mixProductService = mixProductService;
             _genericAttributeService = genericAttributeService;
             _productService = productService;
+            _archiveService = archiveService;
+            _svPermissionService = svPermissionService;
+            _appUserService = appUserService;
         }
         // GET: Insurance
         public ActionResult Index()
@@ -97,5 +108,74 @@ namespace Inscoo.Controllers
             }
             return null;
         }
+
+        public ActionResult CarInscuranceSearch()
+        {
+            //ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+            var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            ViewBag.CanCreate = roles.Contains("CarInscuranceCustomer");
+            return View();
+        }
+
+        [AllowAnonymous]
+        public PartialViewResult CarInscuranceList(int pageIndex = 1, int pageSize = 15)
+        {
+            var uId = User.Identity.GetUserId();
+            var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            var canEdit = roles.Contains("CarInscuranceCustomer");
+            ViewBag.CanEdit = canEdit;
+            if (!canEdit) uId = "-1";//车险用户可以编辑，只能查看自己上传的文件。车险公司不能编辑，但可以查看所有。
+
+            //出admin外，其他用户只能看到自己创建的用户
+            IPagedList<CarInsuranceExcel> list = _archiveService.GetCarInsuranceExcel(pageIndex, pageSize, uId);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        public ActionResult CarInscuranceCreate(string excelId)
+        {
+            ViewBag.ExcelId = excelId;
+            return View();
+        }
+
+        // POST: User/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CarInscuranceCreate(HttpPostedFileBase excel, string excelId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(excelId))
+                {
+                    _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
+                       User.Identity.Name);
+                }
+                else
+                {
+                    _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                }
+                ViewBag.Mes = "上传成功";
+            }
+            catch (Exception e)
+            {
+                ViewBag.Mes = "上传失败";
+            }
+            return View();
+        }
+
+        public ActionResult CarInscuranceDelete(string excelId)
+        {
+            _archiveService.DeleteCarInsuranceExcel(excelId);
+            return RedirectToAction("CarInscuranceSearch");
+        }
+
     }
 }

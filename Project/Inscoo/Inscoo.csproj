@@ -187,13 +187,9 @@
     <Content Include="Content\chosen.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\imgIndex\base.css">
-      <DependentUpon>base.less</DependentUpon>
-    </Content>
-    <Content Include="Content\imgIndex\base.min.css">
-      <DependentUpon>base.css</DependentUpon>
-    </Content>
+    <Content Include="Content\imgIndex\about_img1.png" />
     <Content Include="Content\imgIndex\bg1.jpg" />
+    <Content Include="Content\imgIndex\bg1_1.jpg" />
     <Content Include="Content\imgIndex\bg2.jpg" />
     <Content Include="Content\imgIndex\bg2.png" />
     <Content Include="Content\imgIndex\bg3.jpg" />
@@ -201,6 +197,13 @@
     <Content Include="Content\imgIndex\bg6.jpg" />
     <Content Include="Content\imgIndex\bg6.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
+    <Content Include="Content\imgIndex\icon_1_1.png" />
+    <Content Include="Content\imgIndex\icon_1_2.jpg" />
+    <Content Include="Content\imgIndex\icon_1_3.jpg" />
+    <Content Include="Content\imgIndex\icon_1_4.jpg" />
+    <Content Include="Content\imgIndex\icon_1_5.jpg" />
+    <Content Include="Content\imgIndex\icon_1_6.jpg" />
+    <Content Include="Content\imgIndex\icon_1_7.jpg" />
     <Content Include="Content\imgIndex\img01.jpg" />
     <Content Include="Content\imgIndex\img02.jpg" />
     <Content Include="Content\imgIndex\img03.jpg" />
@@ -220,6 +223,8 @@
     <Content Include="Content\imgIndex\p4.png" />
     <Content Include="Content\imgIndex\patternGroup.png" />
     <Content Include="Content\imgIndex\polygon.png" />
+    <Content Include="Content\imgIndex\question.png" />
+    <Content Include="Content\imgIndex\question_1.png" />
     <Content Include="Content\imgIndex\v1.jpg" />
     <Content Include="Content\imgIndex\v2.jpg" />
     <Content Include="Content\imgIndex\新建文件夹\i1.png" />
@@ -283,7 +288,6 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
     <Content Include="fonts\STSONG.TTF" />
-    <Content Include="Content\imgIndex\base.less" />
     <Content Include="Error.html" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
@@ -302,7 +306,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="info\_aboutUs.html" />
     <Content Include="Views\About\AboutBaoku.cshtml" />
     <Content Include="Views\About\ViewPage1.cshtml" />
     <Content Include="Views\About\_Header.cshtml" />

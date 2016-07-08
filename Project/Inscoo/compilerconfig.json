@@ -2,5 +2,13 @@
   {
     "outputFile": "Content/base.css",
     "inputFile": "Content/base.less"
+  },
+  {
+    "outputFile": "Content/imgIndex/base.css",
+    "inputFile": "Content/imgIndex/base.less"
+  },
+  {
+    "outputFile": "Content/_aboutUs.css",
+    "inputFile": "Content/_aboutUs.less"
   }
 ]

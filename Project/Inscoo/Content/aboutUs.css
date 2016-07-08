@@ -1,0 +1,363 @@
+﻿* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+body {
+  background-color: #fff;
+  font-size:13px;
+  width:100%;
+  min-height: 400px;
+}
+
+a {
+  text-decoration: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: center;
+}
+table tr th {
+  text-align: center;
+}
+
+.header {
+  width: 100%;
+  height: 60px;
+  background-color: #fff;
+  color: #333F4D;
+  box-shadow: 0 1px 3px #999;
+}
+.header>.wrapper {
+  margin: 0 auto;
+  width: 1200px;
+  max-width: 1050px;
+  min-width: 900px;
+  height: 60px;
+}
+.header>.wrapper div{
+  height: 50px;
+  width: 48%;
+  float: left;
+}
+.header>.wrapper div:last-child {
+  text-align: right;
+  padding-right: 2em;
+  font-size: 1.6em;
+  line-height: 60px;
+}
+.header>.wrapper div a img {
+  margin-top: 5px;
+  width: auto;
+  height: 50px;
+}
+.header>.wrapper .login span i{
+  display: inline-block;
+  width:24px;
+  height:22px;
+  background:url('imgIndex/iconGroup.png') no-repeat -153px -45px;
+  margin:17px 10px 0px 30px;
+}
+.header>.wrapper .login>a{
+  padding:5px 15px;
+  background-color:#2090C8;
+  border-radius: 26px;
+  color:#fff;
+}
+
+
+/*主题部分*/
+section{
+   width:100%;
+ }
+
+
+section .main-content{
+  width:1050px;
+  margin:0 auto;
+  margin-top:20px;
+}
+section .main-content:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+section .main-content .main-left{
+  background-color: #0091C6;
+  width:15%;
+  margin-top:8px;
+  text-align:center;
+  float:left;
+}
+section .main-content .main-left li{
+  font-size:1.1em;
+  line-height:45px;
+}
+section .main-content .main-left li:hover{
+  background-color: #5E6E7E;
+}
+.active{
+  background-color: #5E6E7E;
+}
+section .main-content .main-left li a{
+  color:#fff;
+}
+section .main-content .main-left li a i{
+  display: inline-block;
+  width:30px;
+  height:20px;
+  margin-right:5px;
+  margin-bottom: -7px;
+  text-align: center;
+
+}
+.about-icon1{
+  background: url('imgIndex/icon_1_1.png') no-repeat;
+}
+.about-icon2{
+  background: url('imgIndex/icon_1_2.jpg') no-repeat;
+}
+.about-icon3{
+  background: url('imgIndex/icon_1_3.jpg') no-repeat;
+}
+.about-icon4{
+  background: url('imgIndex/icon_1_4.jpg') no-repeat;
+}
+.about-icon5{
+  background: url('imgIndex/icon_1_5.jpg') no-repeat;
+}
+.about-icon6{
+  background: url('imgIndex/icon_1_6.jpg') no-repeat;
+}
+.about-icon7{
+  background: url('imgIndex/icon_1_7.jpg') no-repeat;
+}
+
+section .main-content .main-right{
+  float:right;
+  width:85%;
+  box-sizing: border-box;
+}
+.main-right .main-right-header{
+  padding:10px 70px;
+}
+.main-right h2{
+  text-align:center;
+  font-size: 2.8em;
+  font-weight: bold;
+  padding-bottom: 10px;
+  color:#00B0E4;
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 10px;
+}
+
+.main-right .main-right-body{
+  padding:0 50px;
+}
+.main-right .main-right-body h3{
+  text-align: center;
+  font-size:26px;
+  line-height: 50px;
+}
+
+.main-right .main-right-body ul>li{
+  list-style: disc;
+  color:#0070C0;
+  font-size:15px;
+  margin-top:10px;
+  font-weight: bold;
+}
+.main-right .main-right-body ul>li>ul{
+  padding-left:50px;
+
+}
+.main-right .main-right-body ul>li>ul>li{
+  list-style: disc;
+  color:#111;
+  font-size:14px;
+  line-height:26px;
+  padding-left: 5px;
+  margin-top:30px;
+  font-weight: normal;
+}
+.main-right .main-right-body ul>li>ul>div{
+  color:#111;
+  line-height: 30px;
+  margin-left: -20px;
+  margin-top:10px;
+  font-weight: normal;
+}
+.main-right .main-right-body p{
+  text-indent: 28px;
+  line-height: 30px;
+  font-size: 14px;
+  margin-top:10px;
+  color:#111;
+  font-weight: normal;
+}
+.main-right .main-right-body ol{
+  font-size: 14px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+.main-right .main-right-body b{
+  font-size: 14px;
+  line-height: 30px;
+}
+
+.main-right-body .serve-http>ol>li{
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 80px;
+  margin-bottom: 0;
+}
+.main-right-body .serve-http>ol>li>p{
+  font-size: 14px;
+
+}
+.main-right-body .serve-http>ol>li>ul{
+  padding-left: 50px;
+  line-height: 50px;
+}
+.main-right-body .serve-http>ol>li>ul>li{
+  color:#555;
+}
+.main-bg{
+  width:100%;
+}
+.main-bg img{
+  width:100%;
+  margin: 0 auto;
+}
+
+
+/*footer部分*/
+footer{
+  width:100%;
+  background: #292F3E;
+  min-height: 450px;
+}
+footer .box{
+  margin:0 auto;
+  text-align:center;
+  padding:20px 0;
+}
+footer .box h2{
+  color:#fff;
+  font-size: 40px;
+}
+footer .top{
+  margin: 0 auto;
+  width: 1050px;
+  padding: 20px 0 30px;
+  text-align: center;
+  color: #fff;
+  letter-spacing: 2px;
+}
+footer .phone{
+  position: relative;
+  float: left;
+  display: inline;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 30px;
+}
+footer .phone:before{
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 30px; height: 30px;
+  background: url(imgIndex/iconGroup.png) -184px 0px;
+}
+footer .email{
+  position: relative;
+  float: right;
+  display: inline;
+  height: 30px;
+  padding-left: 30px;
+}
+footer .email:before{
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 30px; height: 30px;
+  background: url(imgIndex/iconGroup.png) -133px 0px;
+}
+footer .address{
+  position: relative;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 30px;
+}
+footer .address:before{
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 30px; height: 30px;
+  background: url(imgIndex/iconGroup.png) -92px 0px;
+}
+
+
+footer .box hr{
+  margin: 20px 0;
+  opacity: 0.6;
+}
+footer .bottom{
+  margin: 20px auto 0;
+  width: 1050px;
+}
+footer .bottom:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+footer .ulist{
+  float: left;
+  margin-right: 75px;
+  letter-spacing: 1px;
+  background: #292F3E;
+}
+footer .ulist li{
+  height: 25px;
+  line-height: 25px;
+}
+footer .ulist li.title{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color:#fff;
+}
+footer .ulist li a{
+  font-size: 14px;
+  color: #fff;
+}
+footer .VRcode{
+  float: right;
+  position: relative;
+  margin-top: 40px;
+  width: 156px; height: 114px;
+  color: #fff;
+  font-size: 14px;
+}
+.VRcode .font{
+  position: absolute;
+  bottom: 0; right: 0;
+  display: block;
+  width: 20px;
+  text-align: center;
+}
+footer{
+  position: relative;
+}
+.copyRignt{
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  background: #19202f;
+}

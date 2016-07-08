@@ -25,3 +25,16 @@ function selectAll(e, subCheck) {
     }
 }
 
+$(".toggle_color").click(function () {
+    $(this).parent().parent().next().children().slideToggle();
+    console.log($(this).parent().parent().siblings().children().children().removeClass('hide_color'));
+    $(this).toggleClass('hide_color');
+    $(this).parent().parent().next().siblings().children('.hideDeclare').slideUp();
+    
+})
+
+$(".nav-header").click(function () {
+    $(this).parent().siblings().children('.nav-background').removeClass('nav-background');
+    $(this).addClass('nav-background');
+});
+

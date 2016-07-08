@@ -1,17 +1,18 @@
 ﻿@model IEnumerable<Models.Insurance.ProductListModel>
 
+<div class="describe_name">保障利益</div>
 <table class="inscoo-productTable">
     <tr>
-        <th style="width:5%;">
-
+        <th style="width:8%;">
+            @*  *@
         </th>
-        <th style="width:30%;">
+        <th style="width:35%;">
             @Html.DisplayNameFor(model => model.SafeguardName)
         </th>
         <th style="width:20%;">
             @Html.DisplayNameFor(model => model.CoverageSum)
         </th>
-        <th style="width:30%;">
+        <th style="width:22%;">
             @Html.DisplayNameFor(model => model.PayoutRatio)
         </th>
         <th style="width:15%;">
@@ -24,7 +25,7 @@
         foreach (var item in Model.OrderBy(a => a.SafeguardCode))
         {
             <tr>
-                <td>
+                <td rowspan="2">
                     @{
                         var checkName = "check_" + item.InsuredCom + "_" + i;
                         var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
@@ -35,15 +36,16 @@
 
                         if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
                         {
-                            <input type="checkbox" checked="checked" disabled="disabled" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
+                            <input type="checkbox" checked="checked" disabled="disabled" class="check_product" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
                         }
                         else
                         {
-                            <input type="checkbox" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
+                            <input type="checkbox" name=@checkName id=@checkName class="check_product"  value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
                         }
                     }
                 </td>
                 <td>
+                    <span class="toggle_color show_color"></span>
                     @Html.DisplayFor(modelItem => item.SafeguardName)
                 </td>
                 <td>
@@ -58,6 +60,12 @@
                 <td>
                     <b id=@priceName name=@priceName>0.00</b>
                     <input type="hidden" id=@idname value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="hideDeclare" style="text-align:left">
+                    <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
+                    <a class="">请查看保险条款</a>
                 </td>
             </tr>
                             i++;
@@ -75,9 +83,9 @@
             <li>
                 @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
             </li>
-            <li>
+            <!--<li>
                 <a href="#">保险条款</a>
-            </li>
+            </li>-->
         </ul>
     </div>
 }

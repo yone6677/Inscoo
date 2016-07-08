@@ -207,26 +207,14 @@ body {
 .panel-footer {
   padding: 0 0;
 }
-.product-type {
-  width: 100%;
-  min-height: 40px;
-  margin: 0px 1%;
-  margin-bottom: 5px;
-}
-.product-type .main-product {
-  width: 20%;
-  height: 2em;
-  line-height: 2em;
-  padding-left: 6px;
-  border: 1px solid #ddd;
-  font-size: 13px;
-}
 .inscooCase {
   width: 100%;
   float: left;
-  margin: 0 1%;
   box-shadow: 0 0 .5em #ddd;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
+}
+.inscooCase .inscooCase-extend {
+  box-shadow: none;
 }
 .inscooCase-title-left {
   height: 55px;
@@ -252,23 +240,25 @@ body {
   width: 96%;
   margin: 0 auto;
   box-shadow: 0 1px 0 #ddd inset;
-  height: 220px;
+  min-height: 220px;
 }
 .inscooCase-title-right {
-  text-align: center;
-  background-color: #83BA21;
-  border-bottom: 5px solid #71A01E;
+  text-align: left;
+  /*background-color: @inscooGreen;*/
+  border-bottom: 1px solid #71A01E;
   height: 50px;
   line-height: 50px;
-  font-size: 1.3em;
-  color: #fff;
+  font-size: 1.6em;
+  color: #111;
+  font-weight: bold;
   border-radius: 3px;
+  margin: 0 30px 0 10px;
 }
 .inscoo-programme-left {
   width: 14%;
   height: 124px;
   float: left;
-  margin: 30px 5%;
+  margin: 30px 0;
   text-align: center;
 }
 .inscoo-programme-left a {
@@ -302,17 +292,32 @@ body {
 .programme-details tr th {
   width: 50%;
   color: #83BA21;
-  height: 2.8em;
-  line-height: 2.8em;
-  border-bottom: 1px dashed #ddd;
+  height: 2em;
+  line-height: 2em;
+}
+.programme-details tr th:nth-child(odd) {
+  text-align: left;
+  padding-left: 10px;
+}
+.programme-details tr th:nth-child(even) {
+  text-align: right;
+  padding-right: 30px;
 }
 .programme-details tr td {
   width: 50%;
   color: #666;
-  height: 2.8em;
-  line-height: 2.8em;
-  border-bottom: 1px dashed #ddd;
+  height: 2em;
+  line-height: 2em;
   font-size: 12px;
+}
+.programme-details tr td:nth-child(odd) {
+  text-align: left;
+  padding-left: 10px;
+}
+.programme-details tr td:nth-child(even) {
+  text-align: right;
+  padding-right: 30px;
+  color: #3E933E;
 }
 .programme-price {
   color: #83BA21;
@@ -351,6 +356,10 @@ body {
   margin-bottom: 1em;
   padding-left: 10px;
   border-left: 5px solid #5CB85C;
+}
+.describe_name_left {
+  margin-left: 20px;
+  font-size: 16px;
 }
 .nav-tabs {
   font-size: 12px;

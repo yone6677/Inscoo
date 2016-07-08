@@ -284,6 +284,7 @@
     <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
     <Content Include="fonts\STSONG.TTF" />
     <Content Include="Content\imgIndex\base.less" />
+    <Content Include="Error.html" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -413,6 +414,7 @@
     <Content Include="Views\About\AboutUs.cshtml" />
     <Content Include="Views\About\_AboutLayout.cshtml" />
     <Content Include="Views\About\serveOrder.cshtml" />
+    <Content Include="Views\Error\ExceedMaxRequestLength.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

@@ -153,15 +153,28 @@ namespace Inscoo.Controllers
         {
             try
             {
+                string mailContent;
                 if (string.IsNullOrEmpty(excelId))
                 {
                     _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
                        User.Identity.Name);
+                    mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
                 }
                 else
                 {
+                    mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
                     _archiveService.UpdateCarInsuranceExcel(excel, excelId);
                 }
+                var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                MailService.SendMailAsync(new MailQueue()
+                {
+                    MQTYPE = "UploadCarInscurance",
+                    MQSUBJECT = "上传车险通知",
+                    MQMAILCONTENT = mailContent,
+                    MQMAILFRM = "redy.yone@inscoo.com",
+                    MQMAILTO = string.Join(";", mailTo)
+                });
+
                 ViewBag.Mes = "上传成功";
             }
             catch (Exception e)

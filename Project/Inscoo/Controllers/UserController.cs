@@ -87,8 +87,8 @@ namespace Inscoo.Controllers
 
             ViewBag.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
             ViewBag.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
-            model.ProdSeries = user.ProdSeries.Split(';');
-            model.ProdInsurances = user.ProdInsurance.Split(';');
+            //model.ProdSeries = user.ProdSeries.Split(';');
+            //model.ProdInsurances = user.ProdInsurance.Split(';');
 
             return View(model);
         }

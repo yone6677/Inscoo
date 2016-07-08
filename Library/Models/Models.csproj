@@ -73,6 +73,7 @@
     <Compile Include="Account\LoginModel.cs" />
     <Compile Include="Account\RegisterModel.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Common\MailQueue.cs" />
     <Compile Include="Common\GenericAttributeModel.cs" />
     <Compile Include="Company\vCompanyList.cs" />
     <Compile Include="Company\vCompanySearch.cs" />

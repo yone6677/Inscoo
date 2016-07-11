@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Models.vClaimManagementDetailList>
+
+
+
+<table class="table table-bordered table-style-control">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            @Html.DisplayNameFor(model => model.InsuranceGroupName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsuranceNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsuranceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClaimAccdtDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClaimPayDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClaimAmt)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuranceGroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuranceNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuranceName)
+            </td>
+            <td>
+                @item.ClaimAccdtDate.ToShortDateString()
+            </td>
+            <td>
+                @item.ClaimPayDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClaimAmt)
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.Pager(ViewBag.pageCommand as PageCommand)
+

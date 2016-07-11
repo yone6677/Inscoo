@@ -177,16 +177,18 @@
     <Content Include="Content\base.min.css">
       <DependentUpon>base.css</DependentUpon>
     </Content>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker.css" />
+    <Content Include="Content\css\bootstrap-datepicker.min.css" />
+    <Content Include="Content\css\bootstrap-theme.css" />
+    <Content Include="Content\css\bootstrap-theme.min.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\chosen-sprite%402x.png" />
     <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\chosen.min.css" />
-    <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\imgIndex\about_img1.png" />
     <Content Include="Content\imgIndex\bg1.jpg" />
     <Content Include="Content\imgIndex\bg1_1.jpg" />
@@ -250,6 +252,8 @@
     <Content Include="Content\imgIndex\新建文件夹\p6.png" />
     <Content Include="Content\imgIndex\新建文件夹\p7.png" />
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\inscoo.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\p1.jpg" />
@@ -258,18 +262,21 @@
     <Content Include="Content\img\p4.jpg" />
     <Content Include="Content\img\tt.png" />
     <Content Include="Content\index.css" />
+    <Content Include="Content\js\bootstrap-datepicker.js" />
+    <Content Include="Content\js\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="Content\js\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\css\bootstrap.min.css.map" />
+    <Content Include="Content\css\bootstrap.css.map" />
+    <Content Include="Content\css\bootstrap-theme.min.css.map" />
+    <Content Include="Content\css\bootstrap-theme.css.map" />
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\上传人员信息.xlsx" />
     <Content Include="Archive\Template\投保单.doc" />
@@ -279,16 +286,17 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Scripts\base.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
-    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\js\bootstrap.js" />
+    <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
-    <Content Include="fonts\STSONG.TTF" />
+    <Content Include="Content\fonts\STSONG.TTF" />
     <Content Include="Error.html" />
+    <Content Include="Content\css\bootstrap-datepicker.css.map" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
@@ -337,6 +345,7 @@
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\ClaimController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -418,6 +427,8 @@
     <Content Include="Views\About\_AboutLayout.cshtml" />
     <Content Include="Views\About\serveOrder.cshtml" />
     <Content Include="Views\Error\ExceedMaxRequestLength.cshtml" />
+    <Content Include="Views\Claim\ListSearch.cshtml" />
+    <Content Include="Views\Claim\ListData.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -435,6 +446,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\locales\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

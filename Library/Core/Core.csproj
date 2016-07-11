@@ -108,10 +108,15 @@
     <Compile Include="Mapping\PermissionMap.cs" />
     <Compile Include="Mapping\ProductMixItemMap.cs" />
     <Compile Include="Mapping\ProductMixMap.cs" />
+    <Compile Include="Mapping\ClaimManagementDetailMap.cs" />
     <Compile Include="Mapping\ProductsMap.cs" />
     <Compile Include="Migrations\201607070702246_InitialCreate.cs" />
     <Compile Include="Migrations\201607070702246_InitialCreate.Designer.cs">
       <DependentUpon>201607070702246_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607110841362_AddTable_ClaimManagementDetail.cs" />
+    <Compile Include="Migrations\201607110841362_AddTable_ClaimManagementDetail.Designer.cs">
+      <DependentUpon>201607110841362_AddTable_ClaimManagementDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
@@ -131,6 +136,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201607070702246_InitialCreate.resx">
       <DependentUpon>201607070702246_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607110841362_AddTable_ClaimManagementDetail.resx">
+      <DependentUpon>201607110841362_AddTable_ClaimManagementDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

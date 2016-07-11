@@ -10,5 +10,9 @@
   {
     "outputFile": "Content/_aboutUs.css",
     "inputFile": "Content/_aboutUs.less"
+  },
+  {
+    "outputFile": "Content/css/datepicker3.css",
+    "inputFile": "Content/css/datepicker3.less"
   }
 ]

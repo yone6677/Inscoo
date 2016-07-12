@@ -30,7 +30,7 @@ namespace Inscoo
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Content/js/bootstrap.js",
+                      "~/Scripts/bootstrap.js",
                       "~/Content/js/bootstrap-datepicker.js",
                       "~/Content/js/bootstrap-datepicker.zh-CN.js",
                       "~/Scripts/respond.js"));
@@ -41,10 +41,10 @@ namespace Inscoo
                      "~/Content/base.css"));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                  "~/Content/css/bootstrap-datepicker.css",
-                 "~/Content/css/bootstrap-theme.css",
-                    "~/Content/css/bootstrap.css"));
+                 "~/Content/bootstrap-theme.css",
+                    "~/Content/bootstrap.css"));
             bundles.Add(new StyleBundle("~/Content/FontAwesome").Include(
-                    "~/Content/css/font-awesome.css"));
+                    "~/Content/font-awesome.css"));
 
         }
     }

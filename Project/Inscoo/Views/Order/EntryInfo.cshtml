@@ -23,24 +23,8 @@
         </li>
     </ul>
 </div>
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
-{
-    <ul>
-        <li>
-            <label>
-                上传员工名单：
-            </label>
-        </li>
-        <li>
-            <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="empinfo" name="empinfo" />
-        </li>
-        <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-    </ul>
-}
+
+
 @using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm" }))
 {
     @Html.AntiForgeryToken()
@@ -49,6 +33,7 @@
 
 
     <div class="orderEntryInfoBody">
+        <p class="basic-information"><i class="fa fa-edit fa-2x"></i>基本信息</p>
         <ul>
             <li>
                 @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
@@ -72,7 +57,19 @@
                 @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
             </li>
         </ul>
-
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                <sapn style="color:#888;">(保单及发票寄送)</sapn>
+            </li>
+            <li>
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                
+            </li>
+        </ul>
         <ul>
             <li>
                 @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
@@ -85,28 +82,38 @@
             </li>
         </ul>
 
-        <ul>
-            <li>
-                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
-            </li>
-            <li>
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-            </li>
-            <li>
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </li>
-        </ul>
+        
+        <p class="basic-information" style="margin-top:140px;"><i  class="fa fa-edit fa-2x"></i>详细信息填写</p>
         <ul>
             <li>
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>
-                <input readonly="readonly" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.ToShortDateString()" />
+                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
                 @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
             </li>
         </ul>
     </div>
-    <div style="line-height:2em;width:100%;text-align:center;">
+    
+}
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+    <ul style="margin-left:20px;">
+        <li>
+            <label>
+                上传员工名单：
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value=@Model.Id name="Id" />
+            <input type="file" id="empinfo" name="empinfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
+        </li>
+    </ul>
+    <div style="line-height:2em;width:45%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
             <span class="text-danger">@ViewBag.error</span>
@@ -149,7 +156,7 @@
         var count = @Model.IsUploadInfo
 
         function subInfo() {
-            var startDate = $("#StartDate").val();
+            var startDate = $("#StartDate").val();         
             if (count > 0) {
                 if (dateCompare(startDate)) {
                     $("#EntryInfoForm").submit();
@@ -170,7 +177,13 @@
                 var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
             }
             var nowDate = @ts.TotalMilliseconds.ToString("0");
-            var arr = startdate.split("-");
+            var arr=new Array();
+            if(startdate.indexOf("-")>0){
+                arr = startdate.split("-");
+            }
+            if(startdate.indexOf("/")>0){
+                arr = startdate.split("/");
+            }
             var starttime = new Date(arr[0], arr[1] - 1, arr[2]);
             var starttimes = starttime.getTime();
             if (nowDate <= starttimes && !isNaN(starttimes)) {

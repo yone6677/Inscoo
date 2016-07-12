@@ -107,34 +107,11 @@ section .main-content .main-left li a{
 }
 section .main-content .main-left li a i{
   display: inline-block;
-  width:30px;
+  width:25px;
   height:20px;
-  margin-right:5px;
-  margin-bottom: -7px;
   text-align: center;
+}
 
-}
-.about-icon1{
-  background: url('imgIndex/icon_1_1.png') no-repeat;
-}
-.about-icon2{
-  background: url('imgIndex/icon_1_2.jpg') no-repeat;
-}
-.about-icon3{
-  background: url('imgIndex/icon_1_3.jpg') no-repeat;
-}
-.about-icon4{
-  background: url('imgIndex/icon_1_4.jpg') no-repeat;
-}
-.about-icon5{
-  background: url('imgIndex/icon_1_5.jpg') no-repeat;
-}
-.about-icon6{
-  background: url('imgIndex/icon_1_6.jpg') no-repeat;
-}
-.about-icon7{
-  background: url('imgIndex/icon_1_7.jpg') no-repeat;
-}
 
 section .main-content .main-right{
   float:right;
@@ -201,13 +178,19 @@ section .main-content .main-right{
 .main-right .main-right-body ol{
   font-size: 14px;
   line-height: 30px;
-  margin-bottom: 30px;
+  margin:0 0 30px 30px;
 }
 .main-right .main-right-body b{
   font-size: 14px;
   line-height: 30px;
+  margin-left:30px;
 }
-
+.main-right .main-right-body .contact {
+    margin-left:30px;    
+}
+.main-right .main-right-body .contact>p {
+    margin-top:0px;   
+}
 .main-right-body .serve-http>ol>li{
   font-size: 20px;
   font-weight: bold;

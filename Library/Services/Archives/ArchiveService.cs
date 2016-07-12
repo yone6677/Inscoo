@@ -36,7 +36,7 @@ namespace Services
 
                 var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
                 _fileService.DeleteFile(item.Url);
-                _rpCarInsuranceExcel.Delete(item);
+                _rpCarInsuranceExcel.Delete(item, disable: true);
             }
             catch (Exception e)
             {
@@ -130,7 +130,7 @@ namespace Services
             }
             return 0;
         }
-        public int InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName)
+        public string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName)
         {
             try
             {
@@ -145,7 +145,38 @@ namespace Services
                         Path = model.Path,
                         Url = model.Path + model.Name + model.Postfix
                     };
-                    return _rpCarInsuranceExcel.InsertGetId(item);
+                    _rpCarInsuranceExcel.InsertGetId(item);
+                    return item.Url;
+                }
+                throw new Exception("操作失败");
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                throw e;
+            }
+        }
+        public string InsertCarEinsurance(HttpPostedFileBase file, string excelId)
+        {
+            try
+            {
+                var model = _fileService.SaveCarInsuranceExcel(file);
+                if (model != null)
+                {
+
+                    var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
+                    var oldUrl = item.EinsuranceUrl;
+                    item.EinsuranceUrl = model.Path + model.Name + model.Postfix;
+                    item.EinsuranceName = model.Name;
+                    item.EinsurancePath = model.Path;
+                    _rpCarInsuranceExcel.Update(item);
+                    if (!string.IsNullOrEmpty(oldUrl))
+                        _fileService.DeleteFile(oldUrl);
+                    return item.EinsuranceUrl;
+                }
+                else
+                {
+                    throw new Exception("保存文件失败");
                 }
             }
             catch (Exception e)
@@ -153,9 +184,8 @@ namespace Services
                 _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
                 throw e;
             }
-            return 0;
+            return "";
         }
-
         public string InsertUserPortrait(HttpPostedFileBase file)
         {
             try
@@ -190,25 +220,25 @@ namespace Services
             }
         }
 
-        public void UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId)
+        public string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId)
         {
             try
             {
                 var model = _fileService.SaveCarInsuranceExcel(file);
                 if (model != null)
                 {
+
                     var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
-                    _fileService.DeleteFile(item.Url);
+                    var oldUrl = item.Url;
                     item.Url = model.Path + model.Name + model.Postfix;
                     item.Name = model.Name;
-
+                    item.Path = model.Path;
                     _rpCarInsuranceExcel.Update(item);
-                }
-                else
-                {
-                    throw new Exception("保存文件失败");
+                    _fileService.DeleteFile(oldUrl);
+                    return item.Url;
                 }
 
+                throw new Exception("保存文件失败");
             }
             catch (Exception e)
             {
@@ -216,6 +246,5 @@ namespace Services
                 throw e;
             }
         }
-
     }
 }

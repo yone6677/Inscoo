@@ -190,13 +190,6 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\imgIndex\about_img1.png" />
-    <Content Include="Content\imgIndex\base.css">
-      <DependentUpon>base.less</DependentUpon>
-    </Content>
-    <Content Include="Content\imgIndex\base.min.css">
-      <DependentUpon>base.css</DependentUpon>
-    </Content>
-    <Content Include="Content\imgIndex\basic_information_1.png" />
     <Content Include="Content\imgIndex\bg1.jpg" />
     <Content Include="Content\imgIndex\bg1_1.jpg" />
     <Content Include="Content\imgIndex\bg2.jpg" />
@@ -207,13 +200,6 @@
     <Content Include="Content\imgIndex\bg6.png" />
     <Content Include="Content\imgIndex\health_img_1.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
-    <Content Include="Content\imgIndex\icon_1_1.png" />
-    <Content Include="Content\imgIndex\icon_1_2.jpg" />
-    <Content Include="Content\imgIndex\icon_1_3.jpg" />
-    <Content Include="Content\imgIndex\icon_1_4.jpg" />
-    <Content Include="Content\imgIndex\icon_1_5.jpg" />
-    <Content Include="Content\imgIndex\icon_1_6.jpg" />
-    <Content Include="Content\imgIndex\icon_1_7.jpg" />
     <Content Include="Content\imgIndex\img01.jpg" />
     <Content Include="Content\imgIndex\img02.jpg" />
     <Content Include="Content\imgIndex\img03.jpg" />

@@ -69,10 +69,9 @@ body {
 }
 .mainNav {
   background-color: #333F4D;
-  padding-bottom: 1em;
   min-height: 400px;
   min-width: 135px;
-  width: 14%;
+  width: 15%;
   float: left;
   padding-bottom: 2em;
   margin-top: 80px;
@@ -601,6 +600,9 @@ body {
   width: 100%;
   font-size: 13px;
   overflow: hidden;
+}
+.orderEntryInfoBody .unloadFile {
+  width: 100%;
 }
 .orderEntryInfoBody ul {
   width: 50%;

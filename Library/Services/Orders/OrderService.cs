@@ -94,9 +94,13 @@ namespace Services.Orders
                 //根据角色获得列表
                 var user = _appUserService.GetCurrentUser();
                 var role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
-                if (role == "PartnerChannel" || role == "CompanyHR")
+                if (role == "InscooFinance" || role == "InscooOperator" || role == "Admin")
                 {
-                    query = query.Where(q => q.Author == user.UserName);//这两种角色只能查看自己的订单
+                    
+                }
+                else
+                {
+                    query = query.Where(q => q.Author == user.UserName);//其他角色只能查看自己的订单
                 }
                 query = query.Where(q => q.IsDeleted == false);
                 if (!string.IsNullOrEmpty(name))

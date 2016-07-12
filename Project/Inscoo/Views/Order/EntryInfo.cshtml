@@ -101,7 +101,7 @@
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>
-                <input readonly="readonly" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.ToShortDateString()" />
+                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
                 @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
             </li>
         </ul>
@@ -149,7 +149,7 @@
         var count = @Model.IsUploadInfo
 
         function subInfo() {
-            var startDate = $("#StartDate").val();
+            var startDate = $("#StartDate").val();         
             if (count > 0) {
                 if (dateCompare(startDate)) {
                     $("#EntryInfoForm").submit();
@@ -170,7 +170,13 @@
                 var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
             }
             var nowDate = @ts.TotalMilliseconds.ToString("0");
-            var arr = startdate.split("-");
+            var arr=new Array();
+            if(startdate.indexOf("-")>0){
+                arr = startdate.split("-");
+            }
+            if(startdate.indexOf("/")>0){
+                arr = startdate.split("/");
+            }
             var starttime = new Date(arr[0], arr[1] - 1, arr[2]);
             var starttimes = starttime.getTime();
             if (nowDate <= starttimes && !isNaN(starttimes)) {

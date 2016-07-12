@@ -37,7 +37,7 @@ namespace Inscoo
             bundles.Add(new ScriptBundle("~/bundles/base").Include(
                  "~/Scripts/jquery.unobtrusive*",
                       "~/Scripts/base.js"));
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/base").Include(
                      "~/Content/base.css"));
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                  "~/Content/css/bootstrap-datepicker.css",

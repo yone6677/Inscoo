@@ -89,10 +89,8 @@
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control",type="date" } })             
-            </li>
-            <li>
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
+                @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
             </li>
         </ul>
     </div>
@@ -128,13 +126,13 @@
         <a href="/">返回</a>
     </div>
     <div>
-        @if (Model.State<4)
+        @if (Model.State < 4)
         {
-        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+            <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
         }
         else
         {
-          <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
+            <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
         }
     </div>
 </div>
@@ -149,35 +147,48 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        var count =@Model.IsUploadInfo
+        jQuery(function() {
+            jQuery("#StartDate")
+                .datepicker({
+                    startDate: '@DateTime.Now.AddDays(4).ToShortDateString()'
+                });
+        });
+        var count = @Model.IsUploadInfo
+
         function subInfo() {
-            var startDate = $("#StartDate").val();
+            var startDate = $("#StartDate").val();         
             if (count > 0) {
-                if(dateCompare(startDate)){
+                if (dateCompare(startDate)) {
                     $("#EntryInfoForm").submit();
-                }else{
+                } else {
                     $("#error").text("生效时间最早为三日之后，请重新选择");
                 }
-            }
-            else {
+            } else {
                 $("#error").text("还未上传人员资料");
             }
         }
+
         function errorInfo() {
             $("#error").text("订单已送出审核，无法修改信息");
         }
+
         function dateCompare(startdate) {
-           @{
-               var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
-           }
-            var nowDate=@ts.TotalMilliseconds.ToString("0");
-            var arr = startdate.split("-");
-            var starttime = new Date(arr[0], arr[1]-1, arr[2]);
-            var starttimes = starttime.getTime();
-            if(nowDate <= starttimes && !isNaN(starttimes)){
-                return true;
+            @{
+                var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
             }
-            else
+            var nowDate = @ts.TotalMilliseconds.ToString("0");
+            var arr=new Array();
+            if(startdate.indexOf("-")>0){
+                arr = startdate.split("-");
+            }
+            if(startdate.indexOf("/")>0){
+                arr = startdate.split("/");
+            }
+            var starttime = new Date(arr[0], arr[1] - 1, arr[2]);
+            var starttimes = starttime.getTime();
+            if (nowDate <= starttimes && !isNaN(starttimes)) {
+                return true;
+            } else
                 return false;
         }
     </script>

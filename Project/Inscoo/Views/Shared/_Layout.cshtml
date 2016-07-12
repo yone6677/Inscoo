@@ -23,11 +23,11 @@
                     <h3 class="panel-title">
                         @{if (string.IsNullOrEmpty(ViewBag.HeadTitle))
                             {
-                                <b>@ViewBag.Title</b>
+                        <b>@ViewBag.Title</b>
                             }
                             else
                             {
-                                <b>@ViewBag.HeadTitle</b>
+                        <b>@ViewBag.HeadTitle</b>
                             }
                         }
                     </h3>
@@ -63,10 +63,12 @@
     @Styles.Render("~/Content/FontAwesome")
     @RenderSection("scripts", required: false)
     <script>
-        @*jQuery(function () {
-            ShowMessage();
+        jQuery(function () {
+            $('.inputDate').each(function () {
+                $(this).datepicker();
+            });
         });
-        function ShowMessage() {
+        @* function ShowMessage() {
             console.log('@ViewBag.ErrorMes');
             if ('@ViewBag.ErrorMes'.length > 0) {
                 jQuery('.modal-body').html(' <h3 class="text-danger">@ViewBag.ErrorMes</h3>');

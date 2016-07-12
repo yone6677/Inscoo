@@ -20,68 +20,77 @@
         </th>
     </tr>
     @{
-        var i = 1;
-        var pcount = Model.Count();
-        foreach (var item in Model.OrderBy(a => a.SafeguardCode))
+        if (Model != null)
         {
-            <tr>
-                <td rowspan="2">
-                    @{
-                        var checkName = "check_" + item.InsuredCom + "_" + i;
-                        var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
-                        var payratName = "PayoutRatio" + item.InsuredCom + "_" + i;
-                        var priceName = "price" + item.InsuredCom + "_" + i;
-                        var idname = "id" + item.InsuredCom + "_" + i;
-                        var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + i + ")";
+            var i = 1;
+            var pcount = Model.Count();
+            foreach (var item in Model.OrderBy(a => a.SafeguardCode))
+            {
+                <tr>
+                    <td rowspan="2">
+                        @{
+                            var checkName = "check_" + item.InsuredCom + "_" + i;
+                            var coveName = "CoverageSum_" + item.InsuredCom + "_" + i;
+                            var payratName = "PayoutRatio" + item.InsuredCom + "_" + i;
+                            var priceName = "price" + item.InsuredCom + "_" + i;
+                            var idname = "id" + item.InsuredCom + "_" + i;
+                            var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + i + ")";
 
-                        if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
-                        {
-                            <input type="checkbox" checked="checked" disabled="disabled" class="check_product" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
+                            if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
+                            {
+                                <input type="checkbox" checked="checked" disabled="disabled" class="check_product" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name=@checkName id=@checkName class="check_product" value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
+                            }
                         }
-                        else
-                        {
-                            <input type="checkbox" name=@checkName id=@checkName class="check_product"  value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
-                        }
-                    }
-                </td>
-                <td>
-                    <span class="toggle_color show_color"></span>
-                    @Html.DisplayFor(modelItem => item.SafeguardName)
-                </td>
-                <td>
-                    @Html.DropDownList(coveName, item.CoverageSumList, new { onchange = Html.Raw(onchangeFun) })
-                </td>
-                <td>
-                    @if (item.PayoutRatioList.Count > 0)
+                    </td>
+                    <td>
+                        <span class="toggle_color show_color"></span>
+                        @Html.DisplayFor(modelItem => item.SafeguardName)
+                    </td>
+                    <td>
+                        @Html.DropDownList(coveName, item.CoverageSumList, new { onchange = Html.Raw(onchangeFun) })
+                    </td>
+                    <td>
+                        @if (item.PayoutRatioList.Count > 0)
                     {
-                        @Html.DropDownList(payratName, item.PayoutRatioList, new { onchange = Html.Raw(onchangeFun) })
-                    }
-                </td>
-                <td>
-                    <b id=@priceName name=@priceName>0.00</b>
-                    <input type="hidden" id=@idname value="0" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" class="hideDeclare" style="text-align:left">
-                    <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
-                    <a class="">请查看保险条款</a>
-                </td>
-            </tr>
-                            i++;
+                            @Html.DropDownList(payratName, item.PayoutRatioList, new { onchange = Html.Raw(onchangeFun) })
                         }
-    }
+                    </td>
+                    <td>
+                        <b id=@priceName name=@priceName>0.00</b>
+                        <input type="hidden" id=@idname value="0" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="hideDeclare" style="text-align:left">
+                        <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
+                        <a class="">请查看保险条款</a>
+                    </td>
+                </tr>
+                                    i++;
+                                }
+                            } }
 </table>
 
 @{
-    var totalName = "total_" + Model.FirstOrDefault().InsuredCom;
+    var totalName = "";
+    if (Model != null)
+    {
+        totalName = "total_" + Model.FirstOrDefault().InsuredCom;
+    }
     <div class="customProduct_purchase">
         <ul class="customProduct_purchaseul">
             <li>
                 总保费：<b id=@totalName>0.00</b>
             </li>
             <li>
-                @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+                @if (Model != null)
+                {
+                    @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
+                }
             </li>
             <!--<li>
                 <a href="#">保险条款</a>

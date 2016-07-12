@@ -7,22 +7,25 @@
     <div class="describe_name">投保类型</div>
     <ul id="myTab" class="nav nav-tabs">
         @{
-            int i = 0;
-            foreach (var s in Model.CompanyList)
+            if (Model.CompanyList.Count > 0)
             {
-                if (i == 0)
+                int i = 0;
+                foreach (var s in Model.CompanyList)
                 {
-                    <li class="active">
-                        <a href="#@s.Value" data-toggle="tab">@s.Key</a>
-                    </li>
+                    if (i == 0)
+                    {
+                        <li class="active">
+                            <a href="#@s.Value" data-toggle="tab">@s.Key</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#@s.Value" data-toggle="tab">@s.Key</a>
+                        </li>
+                    }
+                    i++;
                 }
-                else
-                {
-                    <li>
-                        <a href="#@s.Value" data-toggle="tab">@s.Key</a>
-                    </li>
-                }
-                i++;
             }
         }
     </ul>
@@ -39,6 +42,7 @@
                 var isShow = "";
                 var onchangeFun = "getProduct(c='" + s.Value + "',p=0)";
                 var changeCon = "changeCon('" + s.Value + "');";
+                var changeAge = "changeAge('" + s.Value + "');";
                 if (n == 0)
                 {
                     isShow = " in active";
@@ -60,7 +64,7 @@
                         </label>
                         <label class="checkbox-inline">
                             @Html.DisplayNameFor(m => m.Avarage)
-                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(changeCon) })
+                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(changeAge) })
                         </label>
                     </div>
                     <div id="@ProductName">
@@ -75,14 +79,17 @@
                         @Html.Raw(compangName)
                     });
 
-
-                    function changeCon(c) {
+                    function changeAge(c) {
                         for (var i = 1; i < 12; i++) {
                             getPriceAndIds(c, i);
-                            console.log(c);
                         }
                     }
+                    function changeCon(c) {
+                        var prodType = $("#" + "ProductType_" + c).val();
+                        getProduct(c, prodType);
+                    }
                     function getProduct(e, p) {
+                        console.log(e + "/" + p);
                         if (p == "0") {
                             var radioName = "ProductType_" + e;
                             p = $("#" + radioName).val();
@@ -97,7 +104,6 @@
                                 getPriceAndIds(e, 1);
                             }
                         });
-
                     }
                     function getPriceAndIds(c, e) {
                         var isChecked = $("#check_" + c + "_" + e).is(':checked');
@@ -127,20 +133,22 @@
                                     if (typeof (pr) == "number" && !isNaN(pr) && typeof (id) == "number") {
                                         price.text(pr);
                                         idname.val(id);
-                                        reckonAmount(c);
-                                        reckonIds(c);
-                                        $(StaffsNumCart).val(StaffsNumber);
-                                        $(AvarageCart).val(AvarageName);
                                     }
                                     else {
                                         price.text("无可选产品");
                                         idname.val("0");
                                     }
+                                    reckonAmount(c);
+                                    reckonIds(c);
+                                    $(StaffsNumCart).val(StaffsNumber);
+                                    $(AvarageCart).val(AvarageName);
                                 }
                             });
                         }
                         else {
                             $("#price" + c + "_" + e).text("0.00");
+                            $("#id" + c + "_" + e).val("0");
+                            reckonAmount(c);
                         }
                     }
                     function reckonIds(e) {

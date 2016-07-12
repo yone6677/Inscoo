@@ -15,6 +15,7 @@ using Core.Pager;
 using Domain;
 using Innscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
+using Models.Common;
 
 namespace Inscoo.Controllers
 {
@@ -76,9 +77,30 @@ namespace Inscoo.Controllers
         public ActionResult CustomizeProduct()
         {
             var model = new CustomProductModel();
+            model.CompanyList = new List<GenericAttributeModel>();
+            var user = _appUserService.GetCurrentUser();
+            if (user != null && !string.IsNullOrEmpty(user.ProdInsurance))//当前用户可选择的保险公司
+            {
+                var userProdIns = user.ProdInsurance.Split(new char[] { ';' });
+                foreach (var p in userProdIns)
+                {
+                    if (!string.IsNullOrEmpty(p.Trim()))
+                    {
+                        var company = _genericAttributeService.GetByKey(null, "InsuranceCompany", p);
+                        if (company != null)
+                        {
+                            var item = new GenericAttributeModel()
+                            {
+                                Key = company.Key,
+                                Value = company.Value
+                            };
+                            model.CompanyList.Add(item);
+                        }
+                    }
+                }
+            }
             model.Avarage = _genericAttributeService.GetSelectList("AgeRange");
             model.StaffsNumber = _genericAttributeService.GetSelectList("StaffRange");
-            model.CompanyList = _genericAttributeService.GetList("InsuranceCompany");
             return View(model);
         }
         public ActionResult ProductList(string company = null, string productType = "员工福利保险", int stuffsNum = 1)
@@ -153,15 +175,28 @@ namespace Inscoo.Controllers
         {
             try
             {
+                string mailContent;
                 if (string.IsNullOrEmpty(excelId))
                 {
                     _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
                        User.Identity.Name);
+                    mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
                 }
                 else
                 {
+                    mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
                     _archiveService.UpdateCarInsuranceExcel(excel, excelId);
                 }
+                var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                MailService.SendMailAsync(new MailQueue()
+                {
+                    MQTYPE = "UploadCarInscurance",
+                    MQSUBJECT = "上传车险通知",
+                    MQMAILCONTENT = mailContent,
+                    MQMAILFRM = "redy.yone@inscoo.com",
+                    MQMAILTO = string.Join(";", mailTo)
+                });
+
                 ViewBag.Mes = "上传成功";
             }
             catch (Exception e)

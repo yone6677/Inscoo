@@ -35,8 +35,7 @@ namespace Services
             {
 
                 var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
-                _fileService.DeleteFile(item.Url);
-                _rpCarInsuranceExcel.Delete(item, disable: true);
+                _rpCarInsuranceExcel.Delete(item);
             }
             catch (Exception e)
             {
@@ -143,7 +142,8 @@ namespace Services
                         Author = userName,
                         Name = model.Name + model.Postfix,
                         Path = model.Path,
-                        Url = model.Path + model.Name + model.Postfix
+                        Url = model.Path + model.Name + model.Postfix,
+                        EinsuranceEditTime = DateTime.Now
                     };
                     _rpCarInsuranceExcel.InsertGetId(item);
                     return item.Url;
@@ -169,6 +169,7 @@ namespace Services
                     item.EinsuranceUrl = model.Path + model.Name + model.Postfix;
                     item.EinsuranceName = model.Name;
                     item.EinsurancePath = model.Path;
+                    item.EinsuranceEditTime=DateTime.Now;
                     _rpCarInsuranceExcel.Update(item);
                     if (!string.IsNullOrEmpty(oldUrl))
                         _fileService.DeleteFile(oldUrl);
@@ -233,6 +234,7 @@ namespace Services
                     item.Url = model.Path + model.Name + model.Postfix;
                     item.Name = model.Name;
                     item.Path = model.Path;
+                    item.CreateTime = DateTime.Now;
                     _rpCarInsuranceExcel.Update(item);
                     _fileService.DeleteFile(oldUrl);
                     return item.Url;

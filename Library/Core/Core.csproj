@@ -122,6 +122,10 @@
     <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.Designer.cs">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs" />
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.Designer.cs">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -146,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.resx">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.resx">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

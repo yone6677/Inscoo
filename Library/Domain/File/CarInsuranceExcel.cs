@@ -1,9 +1,16 @@
 ﻿
+using System;
+
 namespace Domain
 {
     public class CarInsuranceExcel : BaseFile
     {
+        public CarInsuranceExcel()
+        {
+            EinsuranceEditTime = DateTime.Now;
+        }
         public string AppUserId { set; get; }
+        public DateTime EinsuranceEditTime { set; get; }
         /// <summary>
         /// 电子保单目录
         /// </summary>

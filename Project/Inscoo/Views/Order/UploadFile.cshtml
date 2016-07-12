@@ -101,7 +101,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.BusinessLicenseSealUrl>查看</a>
-                            <a href="/Order/DeleteFile/1" style="color:#ff0000">删除</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 },new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>
@@ -114,7 +114,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
-                            <a href="/Order/DeleteFile/2" style="color:#ff0000">删除</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>
@@ -127,7 +127,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.InsurancePolicySealUrl>查看</a>
-                            <a href="/Order/DeleteFile/3" style="color:#ff0000">删除</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>

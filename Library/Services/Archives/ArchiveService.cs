@@ -57,7 +57,23 @@ namespace Services
             }
             return null;
         }
-
+        public bool Delete(Archive item, bool disable)
+        {
+            try
+            {
+                _archiveRepository.Delete(item, false, disable);
+                if (disable)//从硬盘中删除文件
+                {
+                    _fileService.DeleteFile(item.Url);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：Delete");
+            }
+            return false;
+        }
         public int InsertByUrl(List<string> fileInfo, string type, int pid, string memo)
         {
             try

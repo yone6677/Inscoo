@@ -43,6 +43,8 @@ namespace Services
         /// <returns>路径</returns>
         string InsertUserPortrait(HttpPostedFileBase file);
         Archive GetById(int id);
+
+        bool Delete(Archive item, bool disable = false);
         /// <summary>
         /// 
         /// </summary>

@@ -67,7 +67,7 @@
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                
+
             </li>
         </ul>
         <ul>
@@ -82,8 +82,8 @@
             </li>
         </ul>
 
-        
-        <p class="basic-information" style="margin-top:140px;"><i  class="fa fa-edit fa-2x"></i>详细信息填写</p>
+
+        <p class="basic-information" style="margin-top:140px;"><i class="fa fa-edit fa-2x"></i>详细信息填写</p>
         <ul>
             <li>
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
@@ -94,7 +94,7 @@
             </li>
         </ul>
     </div>
-    
+
 }
 @using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
 {
@@ -116,7 +116,11 @@
     <div style="line-height:2em;width:45%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
-            <span class="text-danger">@ViewBag.error</span>
+            <span class="text-danger">@ViewBag.error</span><br />
+        }
+        @if (TempData["error"] != null)
+        {
+            <span class="text-danger">@TempData["error"]</span><br />
         }
         <span class="text-danger" id="error"></span>
     </div>
@@ -156,7 +160,7 @@
         var count = @Model.IsUploadInfo
 
         function subInfo() {
-            var startDate = $("#StartDate").val();         
+            var startDate = $("#StartDate").val();
             if (count > 0) {
                 if (dateCompare(startDate)) {
                     $("#EntryInfoForm").submit();

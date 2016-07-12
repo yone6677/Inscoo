@@ -190,6 +190,14 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\imgIndex\about_img1.png" />
+  
+    <Content Include="Content\imgIndex\base.css">
+      <DependentUpon>base.less</DependentUpon>
+    </Content>
+    <Content Include="Content\imgIndex\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="Content\imgIndex\basic_information_1.png" />
     <Content Include="Content\imgIndex\bg1.jpg" />
     <Content Include="Content\imgIndex\bg1_1.jpg" />
     <Content Include="Content\imgIndex\bg2.jpg" />
@@ -198,6 +206,7 @@
     <Content Include="Content\imgIndex\bg5.jpg" />
     <Content Include="Content\imgIndex\bg6.jpg" />
     <Content Include="Content\imgIndex\bg6.png" />
+    <Content Include="Content\imgIndex\health_img_1.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
     <Content Include="Content\imgIndex\icon_1_1.png" />
     <Content Include="Content\imgIndex\icon_1_2.jpg" />
@@ -336,6 +345,8 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
+    <Compile Include="Controllers\HealthController.cs" />
+    <Compile Include="Controllers\HealthProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\MixProductController.cs" />
@@ -428,6 +439,8 @@
     <Content Include="Views\Error\ExceedMaxRequestLength.cshtml" />
     <Content Include="Views\Claim\ListSearch.cshtml" />
     <Content Include="Views\Claim\ListData.cshtml" />
+    <Content Include="Views\Health\Index.cshtml" />
+    <Content Include="Views\HealthProduct\ProDetail.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

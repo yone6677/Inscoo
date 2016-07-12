@@ -71,7 +71,7 @@
                         @{
                             if (string.IsNullOrEmpty(Model.OrderName))
                             {
-                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入方案名称" } })
+                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control product-select", placeholder = "请输入方案名称" } })
                             }
                             else
                             {
@@ -116,8 +116,6 @@
                     </li>
                 </ul>
             </dd>
-
-
         </dl>
     </div>
     <div class="orderConfirmBody">

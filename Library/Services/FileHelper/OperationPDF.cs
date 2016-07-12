@@ -14,25 +14,25 @@ namespace Services.FileHelper
         #region static
         public static BaseFont GetBaseFont(string path = "STSONG.ttf")
         {
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Content\fonts\" + path;
+            path = AppDomain.CurrentDomain.BaseDirectory + @"fonts\" + path;
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return basefont;
         }
         public static Font GetFont(string path = "STSONG.ttf", int fontSize = 12, int style = 0)
         {
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Content\fonts\" + path;
+            path = AppDomain.CurrentDomain.BaseDirectory + @"fonts\" + path;
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return new Font(basefont, fontSize, style);
         }
         public static Font GetTitleFont(string path = "STSONG.ttf")
         {
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Content\fonts\" + path;
+            path = AppDomain.CurrentDomain.BaseDirectory + @"fonts\" + path;
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return new Font(basefont, 17, 1);
         }
         public static Font GetUnderLineFont(string path = "STSONG.ttf")
         {
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Content\fonts\" + path;
+            path = AppDomain.CurrentDomain.BaseDirectory + @"fonts\" + path;
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return new Font(basefont, 12, 4);
         }

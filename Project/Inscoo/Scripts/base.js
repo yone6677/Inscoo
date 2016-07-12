@@ -81,9 +81,9 @@ function menuNav(name, csskey, cssvalue) {
 $(function () {
     menuNav('.mainNav li a');
 });
-$(".mainNav>ul>li>a").click(function () {
-    $(this).parent().siblings().children().removeClass('in');
-    $(this).parent().parent().siblings().children().children().removeClass('in');
-    $(this).addClass('in');
-});
+//$(".mainNav>ul>li>a").click(function () {
+//    $(this).parent().siblings().children().removeClass('in');
+//    $(this).parent().parent().siblings().children().children().removeClass('in');
+//    $(this).next().addClass('in');
+//});
 

@@ -69,11 +69,12 @@ body {
 }
 .mainNav {
   background-color: #333F4D;
+  padding-bottom: 1em;
   min-height: 400px;
   min-width: 135px;
   width: 14%;
   float: left;
-  padding-bottom: 1em;
+  padding-bottom: 2em;
   margin-top: 80px;
 }
 .firstMenu {

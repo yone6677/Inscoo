@@ -162,41 +162,85 @@ namespace Inscoo.Controllers
 
             return PartialView(list);
         }
-        public ActionResult CarInscuranceCreate(string excelId)
+        public ActionResult CarInscuranceCreate(string excelId, string type = "AddCarInscuranceExcel")
         {
             ViewBag.ExcelId = excelId;
+            if (type == "AddCarInscuranceExcel")
+            {
+                ViewBag.OperateDes = "上传Excel";
+            }
+            else if (type == "AddEinscurance")
+            {
+                ViewBag.OperateDes = "添加电子保单";
+            }
+            ViewBag.Type = type;
             return View();
         }
 
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CarInscuranceCreate(HttpPostedFileBase excel, string excelId)
+        public ActionResult CarInscuranceCreate(HttpPostedFileBase excel, string excelId, string type)
         {
             try
             {
-                string mailContent;
-                if (string.IsNullOrEmpty(excelId))
+                ViewBag.ExcelId = excelId;
+                ViewBag.Type = type;
+                if (type == "AddCarInscuranceExcel")
                 {
-                    _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
-                       User.Identity.Name);
-                    mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
+                    string mailContent, path;
+                    if (string.IsNullOrEmpty(excelId))
+                    {
+                        path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
+                           User.Identity.Name);
+                        mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
+                    }
+                    else
+                    {
+                        mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
+                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                    }
+                    var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                    MailService.SendMailAsync(new MailQueue()
+                    {
+                        MQTYPE = "UploadCarInscurance",
+                        MQSUBJECT = "上传车险通知",
+                        MQMAILCONTENT = mailContent,
+                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILTO = string.Join(";", mailTo),
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path
+                    });
+                }
+                else if (type == "AddEinscurance")
+                {
+                    string mailContent, path;
+                    path = _archiveService.InsertCarEinsurance(excel, excelId);
+                    if (string.IsNullOrEmpty(excelId))
+                    {
+                        mailContent = string.Format("用户：{0}上传车险电子保单{1}", User.Identity.Name, excel.FileName);
+                    }
+                    else
+                    {
+                        mailContent = string.Format("用户：{0}重新上传车险电子保单{1}", User.Identity.Name, excel.FileName);
+                    }
+
+                    var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                    MailService.SendMailAsync(new MailQueue()
+                    {
+                        MQTYPE = "UploadCarInscurance",
+                        MQSUBJECT = "上传车险电子保单通知",
+                        MQMAILCONTENT = mailContent,
+                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILTO = string.Join(";", mailTo),
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path
+
+                    });
                 }
                 else
                 {
-                    mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
-                    _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                    ViewBag.Mes = "上传失败";
+                    return View();
                 }
-                var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
-                MailService.SendMailAsync(new MailQueue()
-                {
-                    MQTYPE = "UploadCarInscurance",
-                    MQSUBJECT = "上传车险通知",
-                    MQMAILCONTENT = mailContent,
-                    MQMAILFRM = "redy.yone@inscoo.com",
-                    MQMAILTO = string.Join(";", mailTo)
-                });
-
                 ViewBag.Mes = "上传成功";
             }
             catch (Exception e)

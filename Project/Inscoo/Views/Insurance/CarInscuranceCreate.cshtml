@@ -4,12 +4,13 @@
 @using (Html.BeginForm("CarInscuranceCreate", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="excelId" name="excelId" value="@ViewBag.ExcelId" />
+    <input type="hidden" id="excelId" name="excelId" value="@ViewBag.ExcelId"/>
+    <input type="hidden" id="type" name="type" value="@ViewBag.Type" />
     <div class="form-horizontal formCreate">
         <br />
 
         <div class="form-group">
-            <label class="control-label col-md-3">上传Excel</label>
+            <label class="control-label col-md-3">@ViewBag.OperateDes</label>
             <div class="col-md-9">
                 <input type="file" name="excel" id="excel" required="" />
                 <input type="submit" class="btn btn-info" value="提交" />

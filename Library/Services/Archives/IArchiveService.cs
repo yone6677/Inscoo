@@ -26,7 +26,15 @@ namespace Services
         /// <param name="userId"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        int InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName);
+        string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName);
+
+        /// <summary>
+        /// 上传车险电子保单
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="excelId"></param>
+        /// <returns></returns>
+        string InsertCarEinsurance(HttpPostedFileBase file, string excelId);
         /// <summary>
         /// 
         /// </summary>
@@ -44,6 +52,6 @@ namespace Services
         /// <returns></returns>
         IPagedList<CarInsuranceExcel> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1");
 
-        void UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId);
+        string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId);
     }
 }

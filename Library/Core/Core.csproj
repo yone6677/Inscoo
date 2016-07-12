@@ -118,6 +118,10 @@
     <Compile Include="Migrations\201607110841362_AddTable_ClaimManagementDetail.Designer.cs">
       <DependentUpon>201607110841362_AddTable_ClaimManagementDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs" />
+    <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.Designer.cs">
+      <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -139,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607110841362_AddTable_ClaimManagementDetail.resx">
       <DependentUpon>201607110841362_AddTable_ClaimManagementDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.resx">
+      <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

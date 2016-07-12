@@ -59,6 +59,7 @@ header ul li a img {
 body {
   background-color: #fff;
   color: #232323;
+  overflow-y: scroll;
 }
 .main {
   margin: 0 auto;
@@ -84,13 +85,9 @@ body {
   width: 100%;
 }
 .firstMenu li a {
-  text-align: left;
+  text-align: center;
   font-weight: bold;
   color: #fff;
-  padding-left: 28%;
-}
-.firstMenu li a.son-list {
-  padding-left: 40%;
 }
 .firstMenu li a i {
   width: 18px;
@@ -1014,7 +1011,7 @@ body {
   width: 80%;
   color: #FFF;
   border-radius: 6px;
-  margin: 10px auto;
+  margin: 20px auto;
 }
 .health_box .health_box_header ul li.header_right > ul li {
   float: left;

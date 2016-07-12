@@ -578,6 +578,19 @@ namespace Inscoo.Controllers
 
         #region 第三步上传资料
         /// <summary>
+        /// 删除资料
+        /// </summary>
+        /// <param name="fid"></param>
+        /// <returns></returns>
+        public ActionResult DeleteFile(int Id,int fType)
+        {
+            if (Id > 0 && fType > 0)
+            {
+                var userName = User.Identity.Name;
+            }
+            return View();
+        }
+        /// <summary>
         /// 完成第三步
         /// </summary>
         /// <param name="model"></param>

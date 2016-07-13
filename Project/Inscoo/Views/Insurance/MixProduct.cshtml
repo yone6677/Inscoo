@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<Models.Insurance.RecommendationModel>
 
+
+
 <div class="panel inscooCase">
     <div class="inscooCase-title-left">
         <strong>选择一个方案</strong>
         <span>SELECT A PROGRAMME</span>
     </div>
-
-    <div class="panel-body inscooCase-body">
+    
+    <div class="inscooCase-body inscooCase-body-top">
+        <div class="describe_name">中高端员工福利保险</div>
         @{
             var ids = "";
             int icon = 1;
@@ -23,80 +26,96 @@
 
                 var src = "/Content/img/p" + icon + ".jpg";
                 icon++;
-                <div class="inscoo-programme-left">
-                    <a>
-                        <img onclick="showDetails(@item.Id)" src="@src" class="img-circle" />
-                    </a>
-                    <p>  @Html.DisplayFor(modelItem => item.Name)</p>
-                </div>
+                <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
+                    <tbody>
+                        <tr>
+                            <td style="width:20%;padding:10px;">
+                                <div class="inscoo-programme-left" style="width:100%">
+                                    <a>
+                                        @*<img onclick="showDetails(@item.Id)" src="@src" class="img-circle" />*@
+                                        <img src="@src" class="img-circle" />
+                                    </a>
+                                    <p>  @Html.DisplayFor(modelItem => item.Name)</p>
+                                </div>
+                            </td>
+                            <td style="width:60%">
+                                <div class="panel inscooCase inscooCase-extend" id="programme_@item.Id">
+                                    <div class="inscooCase-title-right">
+                                        <b>@item.Name</b>
+                                    </div>
+                                    <div>
+                                        <table class="programme-details">
+                                            <tr>
+                                                @*<th>保障项目</th>
+                                                <th>保障额度</th>*@
+                                                <th style="color:#444">@Html.DisplayNameFor(model => model.StaffRange):@item.StaffRange</th>
+                                                <th style="color:#444">@Html.DisplayNameFor(model => model.AgeRange):@item.AgeRange</th>
+                                            </tr>
+                                            @foreach (var s in item.item)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <span class="toggle_color show_color"></span>
+                                                        @s.SafefuardName
+                                                    </td>
+                                                    <td>@s.CoverageSum</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" class="hideDeclare" style="text-align:left">
+                                                        <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的.</span>&nbsp;&nbsp;
+                                                        <a class="">请查看保险条款</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @*<tr>
+                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
+                                                <th style="color:#83BA21">@item.StaffRange</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
+                                                <th style="color:#83BA21">@item.AgeRange</th>
+                                            </tr>*@
+                                        </table>
 
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width:20%;background:#F5F5F5">
+                                @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
+                                {
+                                    <div class="programme-price">@item.Price / 年</div>
+                                    <p class="programme-clause">
+
+                                        <input type="hidden" name="CustomizeProductId" value=@item.Id />
+                                        <input type="submit" value="立即购买" class="btn btn-success" />
+                                    </p>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             }
             <input type="hidden" id="ids" value="@ids" />
         }
-    </div>
-</div>
-@{
-    var i = 0;
-    foreach (var item in Model)
-    {
-        var isHide = "";
-        if (i > 0)
-        {
-            isHide = "style=display:none;";
-        }
-        <div class="panel inscooCase" @isHide id="programme_@item.Id">
-            <div class="inscooCase-title-right">
-                <b>@item.Name</b>
-            </div>
-            <div class="panel-body">
-                <table class="programme-details">
-                    <tr>
-                        <th>保障项目</th>
-                        <th>保障额度</th>
-                    </tr>
-                    @foreach (var s in item.item)
-                    {
-                        <tr>
-                            <td>@s.SafefuardName</td>
-                            <td>@s.CoverageSum</td>
-                        </tr>
-                    }
-                    <tr>
-                        <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
-                        <th style="color:#83BA21">@item.StaffRange</th>
-                    </tr>
-                    <tr>
-                        <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
-                        <th style="color:#83BA21">@item.AgeRange</th>
-                    </tr>
-                </table>
-                @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
-                {
-                    <div class="programme-price">@item.Price / 年</div>
-                    <p class="programme-clause"><a href="/">保险条款</a></p>
-                    <p class="programme-clause">
 
-                        <input type="hidden" name="CustomizeProductId" value=@item.Id />
-                        <input type="submit" value="立即购买" class="btn btn-success" />
-                    </p>
-                }
-            </div>
-        </div>
-        i++;
-    }
-}
+
+    </div>
+
+</div>
+
 <script>
-    function showDetails(e) {
-        var ary = new Array();
-        var ids = $('#ids').val();
-        ary = ids.split(',');
-        for (var i = 0; i < ary.length; i++) {
-            if (e == ary[i]) {
-                $('#programme_' + ary[i]).show();
-            }
-            else {
-                $('#programme_' + ary[i]).hide();
-            }
-        }
-    }
+
+    //function showDetails(e) {
+    //    var ary = new Array();
+    //    var ids = $('#ids').val();
+    //    ary = ids.split(',');
+    //    for (var i = 0; i < ary.length; i++) {
+    //        if (e == ary[i]) {
+    //            $('#programme_' + ary[i]).show();
+    //        }
+    //        else {
+    //            $('#programme_' + ary[i]).hide();
+    //        }
+    //    }
+    //}
 </script>

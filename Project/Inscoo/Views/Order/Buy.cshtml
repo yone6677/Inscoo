@@ -51,7 +51,7 @@
                         {
                             foreach (var item in Model.ProdItem)
                             {
-                                <tr>
+                                <tr  class="table-style-control">
                                     <td>@item.SafeguardName</td>
                                     <td>@item.CoverageSum</td>
                                     <td>@item.PayoutRatio</td>
@@ -62,16 +62,16 @@
                     }
                 </table>
             </dd>
-            <dd>
+            <dd class="dd-product-style">
                 <ul>
-                    <li>
+                    <li class="table-style-control">
                         @Html.LabelFor(model => model.OrderName, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
                         @{
                             if (string.IsNullOrEmpty(Model.OrderName))
                             {
-                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入方案名称" } })
+                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control product-select", placeholder = "请输入方案名称" } })
                             }
                             else
                             {
@@ -82,36 +82,40 @@
                     </li>
                 </ul>
                 <ul>
-                    <li>
+                    <li class="table-style-control">
                         @Html.LabelFor(model => model.Memo, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
                         @{
-                            @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control product-select" } })
                         }
                     </li>
                 </ul>
                 <ul>
-                    <li>
+                    <li class="table-style-control">
                         @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
                         @Html.HiddenFor(model => model.StaffRange)
-                        <span>@Model.StaffRange</span>
+                        <select disabled="disabled" class="product-select">
+                            <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
+                        </select>
+                       @* <span>@Model.StaffRange</span>*@
+                        
                     </li>
                 </ul>
                 <ul>
-                    <li>
+                    <li class="table-style-control">
                         @Html.LabelFor(model => model.AgeRange, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
                         @Html.HiddenFor(model => model.AgeRange)
-                        <span>@Model.AgeRange</span>
+                        <select disabled class="product-select">
+                            <option value=@Model.AgeRange selected>@Model.AgeRange</option>
+                        </select>
                     </li>
                 </ul>
             </dd>
-
-
         </dl>
     </div>
     <div class="orderConfirmBody">
@@ -119,7 +123,7 @@
             <dt>保费信息</dt>
             <dd style="padding:.5em 0 1em 0;">
                 <ul>
-                    <li>
+                    <li class="table-style-control">
                         @Html.LabelFor(model => model.AnnualExpense, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>

@@ -10,6 +10,7 @@ namespace Services.Orders
     public interface IOrderBatchService
     {
         bool Insert(OrderBatch item);
+        int InsertGetId(OrderBatch item);
         bool DeleteById(int id);
         bool Update(OrderBatch item);
         OrderBatch GetById(int id);

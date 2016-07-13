@@ -140,17 +140,17 @@
         {
             foreach (var item in Model.orderBatch)
             {
-                <dl>
-                    <dt>
+                <dl style="margin-top:1em;">
+                    <dt style="border-top:1px solid #0094ff;">
                         批次编号
                     </dt>
-                    <dd>
+                    <dd  style="border-top:1px solid #0094ff;">
                         @item.BId
                     </dd>
-                    <dt>
+                    <dt style="border-top:1px solid #0094ff;">
                         批次状态
                     </dt>
-                    <dd>
+                    <dd  style="border-top:1px solid #0094ff;">
                         @item.BState
                     </dd>
                     <dt>
@@ -206,13 +206,14 @@
                         }
                     </dd>
                     <dt>
-                        投保操作时间
+                        批次总额
                     </dt>
-                    <dd>                     
-                        @if (item.PolicyHolderDate != DateTime.MinValue)
+                    <dd>         
+                        <span> @item.OrderAmount</span>            
+                        @*@if (item.PolicyHolderDate != DateTime.MinValue)
                         {
                             <span>@item.PolicyHolderDate</span>
-                        }
+                        }*@
                     </dd>
                     <dt>
                         Inscoo确认时间
@@ -281,7 +282,6 @@
                         @item.InsurerMemo
                     </dd>
                 </dl>
-                <hr />
             }
         }
     }

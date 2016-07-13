@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Models.Order.OrderEmployeeModel>
 @if (Model.Any())
 {
+    @Html.Hidden("isListExist")
     <div class="orderConfirmBody form-inline ">
         <dl>
             <dt>投保人员信息</dt>

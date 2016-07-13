@@ -14,7 +14,8 @@ namespace Core.Data
         public AppDbContext(string nameOrConnectionString = "Inscoo")
             : base(nameOrConnectionString)
         {
-            Database.SetInitializer(new AppDbInitializer());
+            //Database.SetInitializer(new AppDbInitializer());
+            Database.SetInitializer<AppDbContext>(null);
             Configuration.LazyLoadingEnabled = true;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

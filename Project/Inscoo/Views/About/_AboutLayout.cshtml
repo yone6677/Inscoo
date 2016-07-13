@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Inscoo</title>
+   
+    <link href="../../../content/aboutUs.css" rel="stylesheet" />
+</head>
+<body>
+    @Html.Partial("~/Views/About/_Header.cshtml")
+    <section>
+        <div class="main-content">
+            @Html.Partial("~/Views/About/_menu.cshtml")
+            @RenderBody()
+        </div>
+    </section>
+    <div class="main-bg">
+        <img src="../../../Content/imgIndex/bg1_1.jpg" alt="" />
+    </div>
+    <footer>
+        <div class="box">
+            <div class="title">
+                <h2>联系我们</h2>
+            </div>
+            <div class="cont">
+                <div class="top">
+                    <div class="phone">电话:400-612-6750</div>
+                    <div class="email">邮箱:service@inscoo.com</div>
+                    <div class="address">地址:上海杨浦区控江路1690号凤凰大厦1707室</div>
+                </div>
+                <hr>
+                <div class="bottom">
+                    <ul class="ulist">
+                        <li class="title">发现 Discovery</li>
+                        <li><a href="javascript:;">更新产品</a></li>
+                        <li><a href="javascript:;">更新服务</a></li>
+                        <li><a href="javascript:;">更新体验</a></li>
+                    </ul>
+                    <ul class="ulist">
+                        <li class="title">探索 Explore</li>
+                        <li><a href="AboutUs">关于我们</a></li>
+                        <li><a href="AboutBaoku">关于保酷</a></li>
+                        <li><a href="cooperation">战略合作</a></li>
+                    </ul>
+                    <ul class="ulist">
+                        <li class="title">帮助Help</li>
+                        <li><a href="javascript:;">新手指南</a></li>
+                        <li><a href="Question">常见问题</a></li>
+                        <li><a href="serveOrder">服务协议</a></li>
+                        <li><a href="javascript:;">使用手册</a></li>
+                        <li><a href="javascript:;">保险条款</a></li>
+                    </ul>
+                    <div class="VRcode">
+                        <img src="../../../Content/imgIndex/v2.jpg" width="114" height="114" alt="">
+                        <span class="font">服务号</span>
+                    </div>
+                    <div class="VRcode">
+                        <img src="../../../Content/imgIndex/v1.jpg" width="114" height="114" alt="">
+                        <span class="font">订阅号</span>
+                    </div>
+                </div>
+            </div>
+            <div class="copyRignt">
+                Copyright© 2016-2016 上海皓为商务咨询有限公司 版权所有 沪ICP备10016101号-3
+            </div>
+        </div>
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/base")
+    @Styles.Render("~/Content/FontAwesome")
+    @RenderSection("scripts", required: false)
+    <script>
+      
+    </script>
+</body>
+</html>

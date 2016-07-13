@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Models.User.UserModel>
-<table class="table table-bordered">
+<table class="table table-bordered table-style-control">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -16,18 +16,21 @@
         <th>
             @Html.DisplayNameFor(model => model.FanBao)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Phone)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RoleName)
         </th>
-        <th>
-            操作
-        </th>
+        @if (ViewBag.CanEdit)
+        {
+            <th>
+                操作
+            </th>
+        }
     </tr>
 
     @foreach (var item in Model)
@@ -48,18 +51,24 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FanBao)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
-            <td>
-                @Html.ActionLink("编辑", "Edit", new { id = item.Id })
-            </td>
+
+            @if (ViewBag.CanEdit)
+            {
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id })
+                </td>
+            }
+
+
         </tr>
     }
 

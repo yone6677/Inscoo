@@ -170,6 +170,7 @@
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
+    <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
@@ -180,15 +181,24 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chosen-sprite%402x.png" />
+    <Content Include="Content\chosen-sprite.png" />
+    <Content Include="Content\chosen.css" />
+    <Content Include="Content\chosen.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker.css" />
+    <Content Include="Content\css\bootstrap-datepicker.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\imgIndex\about_img1.png" />
     <Content Include="Content\imgIndex\bg1.jpg" />
+    <Content Include="Content\imgIndex\bg1_1.jpg" />
     <Content Include="Content\imgIndex\bg2.jpg" />
     <Content Include="Content\imgIndex\bg2.png" />
     <Content Include="Content\imgIndex\bg3.jpg" />
     <Content Include="Content\imgIndex\bg5.jpg" />
     <Content Include="Content\imgIndex\bg6.jpg" />
     <Content Include="Content\imgIndex\bg6.png" />
+    <Content Include="Content\imgIndex\health_img_1.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
     <Content Include="Content\imgIndex\img01.jpg" />
     <Content Include="Content\imgIndex\img02.jpg" />
@@ -209,6 +219,8 @@
     <Content Include="Content\imgIndex\p4.png" />
     <Content Include="Content\imgIndex\patternGroup.png" />
     <Content Include="Content\imgIndex\polygon.png" />
+    <Content Include="Content\imgIndex\question.png" />
+    <Content Include="Content\imgIndex\question_1.png" />
     <Content Include="Content\imgIndex\v1.jpg" />
     <Content Include="Content\imgIndex\v2.jpg" />
     <Content Include="Content\imgIndex\新建文件夹\i1.png" />
@@ -234,6 +246,8 @@
     <Content Include="Content\imgIndex\新建文件夹\p6.png" />
     <Content Include="Content\imgIndex\新建文件夹\p7.png" />
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
+    <Content Include="Content\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\inscoo.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\p1.jpg" />
@@ -242,10 +256,25 @@
     <Content Include="Content\img\p4.jpg" />
     <Content Include="Content\img\tt.png" />
     <Content Include="Content\index.css" />
+    <Content Include="Content\js\bootstrap-datepicker.js" />
+    <Content Include="Content\js\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="Content\js\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Content\base.less" />
+    <Content Include="Archive\Template\上传人员信息.xlsx" />
+    <Content Include="Archive\Template\投保单.doc" />
+    <Content Include="Archive\Template\人员信息变更模板.xlsx" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="Scripts\base.js" />
+    <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
+    <Content Include="Error.html" />
+    <Content Include="Content\css\bootstrap-datepicker.css.map" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -254,25 +283,18 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\base.less" />
-    <Content Include="Archive\Template\上传人员信息.xlsx" />
-    <Content Include="Archive\Template\投保单.doc" />
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
-    <Content Include="Scripts\base.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="Content\imgIndex\新建文件夹\img.sprite" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\STSONG.TTF" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
@@ -286,6 +308,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\About\AboutBaoku.cshtml" />
+    <Content Include="Views\About\ViewPage1.cshtml" />
+    <Content Include="Views\About\_Header.cshtml" />
+    <Content Include="Views\About\_footer.cshtml" />
+    <Content Include="Views\About\Question.cshtml" />
+    <Content Include="Views\About\cooperation.cshtml" />
+    <None Include="Views\About\_menu.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -296,11 +325,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
+    <Compile Include="Controllers\HealthController.cs" />
+    <Compile Include="Controllers\HealthProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\MixProductController.cs" />
@@ -309,6 +341,7 @@
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\ClaimController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -381,6 +414,20 @@
     <Content Include="Views\Order\CompletedOrder.cshtml" />
     <Content Include="Views\Order\CompletedOrderList.cshtml" />
     <Content Include="Views\Order\ProvisionList.cshtml" />
+    <Content Include="Views\Order\BuyMore.cshtml" />
+    <Content Include="Views\Order\ProvisionCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceCreate.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceSearch.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceList.cshtml" />
+    <Content Include="Views\About\AboutUs.cshtml" />
+    <Content Include="Views\About\_AboutLayout.cshtml" />
+    <Content Include="Views\About\serveOrder.cshtml" />
+    <Content Include="Views\Error\ExceedMaxRequestLength.cshtml" />
+    <Content Include="Views\Claim\ListSearch.cshtml" />
+    <Content Include="Views\Claim\ListData.cshtml" />
+    <Content Include="Views\Health\Index.cshtml" />
+    <Content Include="Views\HealthProduct\ProDetail.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceUploadEinsurance.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -389,6 +436,7 @@
     <Content Include="Views\Shared\Extension.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Changeportrait.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -397,6 +445,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\locales\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

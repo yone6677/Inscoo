@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Models.Order.OrderListModel>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-style-control">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -50,7 +50,7 @@
                 @switch (item.State)
                 {
                     case 2:
-                       @Html.ActionLink(item.StateDesc, "EntryInfo", new { id = item.Id })
+                        @Html.ActionLink(item.StateDesc, "EntryInfo", new { id = item.Id })
                         break;
                     case 3:
                         @Html.ActionLink(item.StateDesc, "UploadFile", new { id = item.Id })
@@ -73,19 +73,21 @@
                 @{
                     if (item.State == 1)
                     {
-                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id });
+                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id })<span>|</span>
                     }
                     if (item.State == 2)
                     {
-                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id });
+                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id })<span>|</span>
                     }
                     if (item.State == 3)
                     {
-                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id });
+                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id })<span>|</span>
+                        if (item.State < 6)
+                        {
+                            @Html.ActionLink("删除", "Delete", new { id = item.Id })
+                        }
                     }
                 }
-                |
-                @Html.ActionLink("删除", "Delete", new { id = item.Id })
             </td>
         </tr>
                     }

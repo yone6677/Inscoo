@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "修改头像";
+}
+@using (Html.BeginForm("ChangePortrait", "User", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal formCreate">
+        <br />
+
+        <div class="form-group">
+            <label class="control-label col-md-3">上传图片</label>
+            <div class="col-md-9">
+                <input type="file" name="portrait" id="portrait" />
+                <input type="submit" class="btn btn-info" value="提交" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3"></label>
+            <div class="col-md-9">
+                <small>图片不能大于200KB</small>
+            </div>
+        </div>
+    </div>
+}

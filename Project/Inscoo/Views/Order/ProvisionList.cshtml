@@ -3,31 +3,32 @@
 @{
     ViewBag.Title = "保险条款";
 }
-
-<div class="Search">
-    <dl>
-        <dt> 保险公司</dt>
-        <dd>
-            @Html.DropDownList("InsuredCom", ViewBag.InsuredCom as SelectList)
-        </dd>
-        <dt> </dt>
-        <dd>
-            <p>  <input type="submit" value="搜索" /></p>
-        </dd>
-        <dt> </dt>
-        <dd>
-            <p>  @Html.ActionLink("添加", "ProvisionCreate", "Order", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
-        </dd>
-    </dl>
-    <p class="clearfix"></p>
-</div>
-
-<table class="table table-bordered">
+@using (Html.BeginForm())
+{
+    <div class="Search">
+        <dl>
+            <dt> 保险公司</dt>
+            <dd>
+                @Html.DropDownList("InsuredCom", ViewBag.InsuredCom as SelectList)
+            </dd>
+            <dt> </dt>
+            <dd>
+                <p>  <input type="submit" value="搜索" /></p>
+            </dd>
+            <dt> </dt>
+            @*<dd>
+                <p>  @Html.ActionLink("添加", "ProvisionCreate", "Order", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            </dd>*@
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+}
+<table class="table table-bordered table-style-control">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
             @Html.DisplayNameFor(model => model.SafeguardName)
         </th>
-        <th></th>
+        <th>操作</th>
     </tr>
 
     @foreach (var item in Model)
@@ -37,8 +38,16 @@
                 @Html.DisplayFor(modelItem => item.SafeguardName)
             </td>
             <td>
-                <a href="@item.ProvisionPath" target="_blank">查看</a>
-                @Html.ActionLink("编辑", "ProvisionEdit", new { insuredCom = item.InsuredCom, safeguardName = item.SafeguardName })
+
+                @if (!string.IsNullOrEmpty(item.ProvisionPath))
+                {
+                    <a href="@item.ProvisionPath" target="_blank">查看</a>
+                    @Html.ActionLink("编辑", "ProvisionCreate", new { insuredCom = item.InsuredCom, safeguardName = item.SafeguardName })
+                }
+                else
+                {
+                    @Html.ActionLink("添加", "ProvisionCreate", new { insuredCom = item.InsuredCom, safeguardName = item.SafeguardName })
+                }
             </td>
         </tr>
     }

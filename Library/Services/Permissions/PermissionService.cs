@@ -65,7 +65,13 @@ namespace Services.Permissions
                 {
                     var navs = _navService.GetNotControllerNav();
                     var nav = navs.Single(s => s.name.Equals(action) && string.IsNullOrEmpty(s.controller));
-                    return _navService.DeleteById(nav.Id);
+                    var per = _permissionRepository.Table.SingleOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
+                    if (per != null)
+                    {
+                        _permissionRepository.Delete(per, disable: true);
+                        return true;
+                    }
+                    return false;
                 }
                 else
                 {
@@ -254,6 +260,7 @@ namespace Services.Permissions
             try
             {
                 var roles = _appUserService.FindById(uid).Roles;
+                if (roles.Any(r => r.RoleId == "70e917dc-a514-45ea-93a5-4f56343e9e10")) return true;
 
                 return roles.Any(r => HasPermissionByRoleId(navigationId, r.RoleId));
 

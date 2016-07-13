@@ -18,5 +18,9 @@ namespace Inscoo.Controllers
         {
             return View();
         }
+        public ActionResult ExceedMaxRequestLength()
+        {
+            return View();
+        }
     }
 }

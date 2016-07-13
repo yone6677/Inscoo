@@ -5,8 +5,27 @@
                 <img src="~/Content/img/logo.png" />
             </a>
         </li>
+        <li>
+            @if (ViewData["SuccessMes"] != null)
+            {
+
+                <div class="alert alert-success mes">@ViewData["SuccessMes"]</div>
+            }
+            else if (ViewData["ErrorMes"] != null)
+            {
+                <div class="alert alert-danger">@ViewData["ErrorMes"]</div>
+            }
+        </li>
+
         <li class="fa fa-phone fa-2x">
             <strong> 400-612-6750</strong>
         </li>
     </ul>
 </header>
+<script>
+    function HideMes() {
+        jQuery('.mes').slideUp('slow');
+    }
+
+    setTimeout(HideMes, 5000);
+</script>

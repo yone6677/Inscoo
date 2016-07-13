@@ -1,0 +1,53 @@
+﻿@model Models.vClaimManagementDetailListSearch
+
+@{
+    ViewBag.Title = "理赔中心";
+}
+
+@using (Ajax.BeginForm("ListData", null, new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    <div class="Search">
+        <dl>
+
+            <dt> 团体名称</dt>
+            <dd>
+                @Html.EditorFor(model => model.InsuranceGroupName)
+            </dd>
+            <dt> 保单号</dt>
+            <dd>
+                @Html.EditorFor(model => model.InsuranceNo)
+            </dd>
+            <dt> 被保险人姓名</dt>
+            <dd>
+                @Html.EditorFor(model => model.InsuranceName)
+            </dd>
+
+
+
+            <dt> 事故日期</dt>
+            <dd>
+                <input type="text" class="inputDate" id="ClaimAccdtDateBegin" name="ClaimAccdtDateBegin" value="@Model.ClaimAccdtDateBegin.ToShortDateString()" style="width: 115px">
+                <label>到</label>
+                <input type="text" class="inputDate" id="ClaimAccdtDateEnd" name="ClaimAccdtDateEnd" value="@Model.ClaimAccdtDateEnd.ToShortDateString()" style="width: 115px">
+            </dd>
+            <dt></dt>
+            <dd><p><input type="submit" value="查找" /></p></dd>
+            <dt></dt>
+            <dd>
+            </dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid">
+        @Html.Action("ListData")
+    </div>
+}
+@section Scripts {
+    <script>
+    </script>
+}

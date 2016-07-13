@@ -27,7 +27,7 @@
 </div>
 @using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
-    <ul>
+    <ul class="unloadFile">
         <li>
             <label>
                 营业执照(加盖公章)
@@ -46,7 +46,7 @@
 }
 @using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
 {
-    <ul>
+    <ul class="unloadFile">
         <li>
             <label>
                 员工名单(加盖公章)
@@ -65,7 +65,7 @@
 }
 @using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
 {
-    <ul>
+    <ul class="unloadFile">
         <li>
             <label>
                 投保单(加盖公章)
@@ -101,6 +101,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.BusinessLicenseSealUrl>查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 },new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>
@@ -113,6 +114,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>
@@ -125,6 +127,7 @@
                         <li>
                             <span>已上传</span>
                             <a href=@Model.InsurancePolicySealUrl>查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
                         </li>
                     </ul>
                 </dd>

@@ -73,6 +73,9 @@
     <Compile Include="Account\LoginModel.cs" />
     <Compile Include="Account\RegisterModel.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />
+    <Compile Include="Claim\vClaimManagementDetailList.cs" />
+    <Compile Include="Common\MailQueue.cs" />
     <Compile Include="Common\GenericAttributeModel.cs" />
     <Compile Include="Company\vCompanyList.cs" />
     <Compile Include="Company\vCompanySearch.cs" />
@@ -84,11 +87,13 @@
     <Compile Include="Infrastructure\LogsModel.cs" />
     <Compile Include="Infrastructure\PMTypecs.cs" />
     <Compile Include="Infrastructure\SaveResultModel.cs" />
+    <Compile Include="Insurance\vCarInsuranceList.cs" />
     <Compile Include="Insurance\CustomProductModel.cs" />
     <Compile Include="Insurance\ProductListModel.cs" />
     <Compile Include="Insurance\RecommendationModel.cs" />
     <Compile Include="Navigation\NavigationModel.cs" />
     <Compile Include="Order\AuditOrderModel.cs" />
+    <Compile Include="Order\BuyMoreModel.cs" />
     <Compile Include="Order\ConfirmOrderModel.cs" />
     <Compile Include="Order\ConfirmPaymentModel.cs" />
     <Compile Include="Order\OrderDatailsModel.cs" />

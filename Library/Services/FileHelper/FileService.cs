@@ -25,139 +25,59 @@ namespace Services
             _resource = resource;
             _loggerService = loggerService;
         }
-        public List<string> GenerateFilePathBySuffix(string postfix)
-        {
-            var result = new List<string>();
-            var filePath = _resource.GetFileCatalog();
-            //虚拟路径
-            var savePath = "/" + filePath + "/";
-            var date = DateTime.Now;
-            switch (postfix)
-            {
-                case ".jpge":
-                    savePath += "img/";
-                    break;
-                case ".jpg":
-                    savePath += "img/";
-                    break;
-                case ".bmp":
-                    savePath += "img/";
-                    break;
-                case ".gif":
-                    savePath += "img/";
-                    break;
-                case ".png":
-                    savePath += "img/";
-                    break;
-                default:
-                    savePath = savePath += "doc/";
-                    break;
-            }
-            savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
-            //保存路径
-            string phyPath = _httpContext.Request.MapPath("~" + savePath);
-            //新文件名
-            var ts = _webHelper.GetTimeStamp();
-            var saveName = ts + postfix;
-            //如果不存在,创建文件夹    
-            if (!Directory.Exists(phyPath))
-            {
-                Directory.CreateDirectory(phyPath);
-            }
-            result.Add(phyPath + saveName);//物理路径
-            result.Add(savePath + saveName);//虚拟路径
-            result.Add(savePath);//保存路径
-            result.Add(saveName);//文件名
-            result.Add(postfix);//后缀
-            return result;
 
-        }
-        public virtual SaveResultModel SaveFile(HttpPostedFileBase postedFileBase)
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="url">路径</param>
+        /// <param name="fileName">文件名称</param>
+        public void DownloadFile(string url, string fileName)
         {
             try
             {
-                //源文件名
-                var fileName = Path.GetFileName(postedFileBase.FileName);
-                //后缀
-                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
-                var filePath = _resource.GetFileCatalog();
-                //虚拟路径
-                var savePath = "/" + filePath + "/";
-                var date = DateTime.Now;
-                switch (postfix)
-                {
-                    case ".jpge":
-                        savePath += "img/";
-                        break;
-                    case ".jpg":
-                        savePath += "img/";
-                        break;
-                    case ".bmp":
-                        savePath += "img/";
-                        break;
-                    case ".gif":
-                        savePath += "img/";
-                        break;
-                    case ".png":
-                        savePath += "img/";
-                        break;
-                    default:
-                        savePath = savePath += "doc/";
-                        break;
-                }
-                savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
-                //保存路径
-                string phyPath = _httpContext.Request.MapPath("~" + savePath);
-                //新文件名
-                var ts = _webHelper.GetTimeStamp();
-                var saveName = ts + postfix;
-                //如果不存在,创建文件夹    
-                if (!Directory.Exists(phyPath))
-                {
-                    Directory.CreateDirectory(phyPath);
-                }
-                postedFileBase.SaveAs(phyPath + saveName);
-                return new SaveResultModel() { Name = ts, Postfix = postfix, Path = savePath };
+                var pUrl = _httpContext.Request.MapPath("~" + url);
+                FileStream fs = new FileStream(pUrl, FileMode.Open);
+                byte[] bytes = new byte[(int)fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                fs.Close();
+                HttpContext.Current.Response.ContentType = "application/octet-stream";
+                HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, Encoding.UTF8));
+                HttpContext.Current.Response.BinaryWrite(bytes);
+                HttpContext.Current.Response.Flush();
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+                throw new Exception(e.Message.ToString());
             }
-            return null;
+            finally
+            {
+                try
+                {
+                    HttpContext.Current.Response.End();
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Close();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message.ToString());
+                }
+            }
         }
-        public virtual string MakeHtmlFile(string TempName)
+        public void DeleteFile(string url)
         {
-            return null;
-            //try
-            //{
-            //    var filePath = "";
-            //    switch (TempName)
-            //    {
-            //        case "Article":
-            //            filePath = _httpContext.Server.MapPath("Infrastructure/Template/Article.html");
-            //            break;
-            //    }
-            //    FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read);
-            //    StreamReader reader = new StreamReader(fs);
-            //    StringBuilder sb = new StringBuilder(reader.ReadToEnd());
-            //    reader.Close();
-            //    sb.Replace("@title", model.title);
-            //    sb.Replace("@content", model.content);
-            //    sb.Replace("@author", model.author);
-            //    sb.Replace("@date", model.date.ToString());
-            //    string newFileName = _webHelper.GetTimeStamp(DateTime.Now) + ".html";
-            //    FileStream newFile = File.Create(_httpContext.Server.MapPath("Archive") + "/" + newFileName);
-            //    StreamWriter writer = new StreamWriter(newFile, Encoding.UTF8);
-            //    writer.Write(sb.ToString());
-            //    writer.Flush();
-            //    writer.Close();
-            //    return "Archive/" + newFileName;
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
+            try
+            {
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                File.Delete(path + url);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "删除文件失败");
+                throw e;
+            }
         }
+
         public bool ExportExcel(DataSet ds, string activateName = null)
         {
             try
@@ -224,43 +144,6 @@ namespace Services
                 return false;
             }
         }
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="url">路径</param>
-        /// <param name="fileName">文件名称</param>
-        public void DownloadFile(string url, string fileName)
-        {
-            try
-            {
-                var pUrl = _httpContext.Request.MapPath("~" + url);
-                FileStream fs = new FileStream(pUrl, FileMode.Open);
-                byte[] bytes = new byte[(int)fs.Length];
-                fs.Read(bytes, 0, bytes.Length);
-                fs.Close();
-                HttpContext.Current.Response.ContentType = "application/octet-stream";
-                HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, Encoding.UTF8));
-                HttpContext.Current.Response.BinaryWrite(bytes);
-                HttpContext.Current.Response.Flush();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message.ToString());
-            }
-            finally
-            {
-                try
-                {
-                    HttpContext.Current.Response.End();
-                    HttpContext.Current.Response.Clear();
-                    HttpContext.Current.Response.Close();
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message.ToString());
-                }
-            }
-        }
 
         /// <summary>
         /// 使用反射获取类的属性和值
@@ -295,5 +178,218 @@ namespace Services
 
             return ret;
         }
+        public List<string> GenerateFilePathBySuffix(string postfix)
+        {
+            var result = new List<string>();
+            var filePath = _resource.GetFileCatalog();
+            //虚拟路径
+            var savePath = "/" + filePath + "/";
+            var date = DateTime.Now;
+            switch (postfix)
+            {
+                case ".jpge":
+                    savePath += "img/";
+                    break;
+                case ".jpg":
+                    savePath += "img/";
+                    break;
+                case ".bmp":
+                    savePath += "img/";
+                    break;
+                case ".gif":
+                    savePath += "img/";
+                    break;
+                case ".png":
+                    savePath += "img/";
+                    break;
+                default:
+                    savePath = savePath += "doc/";
+                    break;
+            }
+            savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+            //保存路径
+            string phyPath = _httpContext.Request.MapPath("~" + savePath);
+            //新文件名
+            var ts = _webHelper.GetTimeStamp();
+            var saveName = ts + postfix;
+            //如果不存在,创建文件夹    
+            if (!Directory.Exists(phyPath))
+            {
+                Directory.CreateDirectory(phyPath);
+            }
+            result.Add(phyPath + saveName);//物理路径
+            result.Add(savePath + saveName);//虚拟路径
+            result.Add(savePath);//保存路径
+            result.Add(saveName);//文件名
+            result.Add(postfix);//后缀
+            return result;
+
+        }
+
+        public virtual string MakeHtmlFile(string TempName)
+        {
+            return null;
+            //try
+            //{
+            //    var filePath = "";
+            //    switch (TempName)
+            //    {
+            //        case "Article":
+            //            filePath = _httpContext.Server.MapPath("Infrastructure/Template/Article.html");
+            //            break;
+            //    }
+            //    FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            //    StreamReader reader = new StreamReader(fs);
+            //    StringBuilder sb = new StringBuilder(reader.ReadToEnd());
+            //    reader.Close();
+            //    sb.Replace("@title", model.title);
+            //    sb.Replace("@content", model.content);
+            //    sb.Replace("@author", model.author);
+            //    sb.Replace("@date", model.date.ToString());
+            //    string newFileName = _webHelper.GetTimeStamp(DateTime.Now) + ".html";
+            //    FileStream newFile = File.Create(_httpContext.Server.MapPath("Archive") + "/" + newFileName);
+            //    StreamWriter writer = new StreamWriter(newFile, Encoding.UTF8);
+            //    writer.Write(sb.ToString());
+            //    writer.Flush();
+            //    writer.Close();
+            //    return "Archive/" + newFileName;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception(e.Message);
+            //}
+        }
+
+        public virtual SaveResultModel SaveFile(HttpPostedFileBase postedFileBase)
+        {
+            try
+            {
+                //源文件名
+                var fileName = Path.GetFileName(postedFileBase.FileName);
+                //后缀
+                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+                switch (postfix)
+                {
+                    case ".jpge":
+                        savePath += "img/";
+                        break;
+                    case ".jpg":
+                        savePath += "img/";
+                        break;
+                    case ".bmp":
+                        savePath += "img/";
+                        break;
+                    case ".gif":
+                        savePath += "img/";
+                        break;
+                    case ".png":
+                        savePath += "img/";
+                        break;
+                    default:
+                        savePath = savePath += "doc/";
+                        break;
+                }
+                savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = _webHelper.GetTimeStamp();
+                var saveName = ts + postfix;
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                postedFileBase.SaveAs(phyPath + saveName);
+                return new SaveResultModel() { Name = ts, Postfix = postfix, Path = savePath };
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+            }
+            return null;
+        }
+        public virtual string SaveProvision(HttpPostedFileBase postedFileBase)
+        {
+            try
+            {
+                //源文件名
+                var fileName = Path.GetFileNameWithoutExtension(postedFileBase.FileName);
+                //后缀
+                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
+
+                //if (!postfix.Contains("")) throw new Exception("不正确的文件格式");
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+
+                savePath = savePath += "provisionPdf/";
+
+                savePath += date.Year + "/" + date.Month + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = fileName + _webHelper.GetTimeStamp();
+                var saveName = ts + postfix;
+
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                postedFileBase.SaveAs(phyPath + saveName);
+                return savePath + saveName;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+            }
+            return null;
+        }
+        public virtual SaveResultModel SaveCarInsuranceExcel(HttpPostedFileBase postedFileBase)
+        {
+            try
+            {
+                //源文件名
+                var fileName = Path.GetFileNameWithoutExtension(postedFileBase.FileName);
+                //后缀
+                var postfix = Path.GetExtension(postedFileBase.FileName).ToLower();
+
+                //if (!postfix.Contains("")) throw new Exception("不正确的文件格式");
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+
+                savePath = savePath += "CarInsuranceExcel/";
+
+                savePath += date.Year + "/" + date.Month + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = fileName + _webHelper.GetTimeStamp();
+                var saveName = ts + postfix;
+
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                postedFileBase.SaveAs(phyPath + saveName);
+                return new SaveResultModel() { Name = ts, Postfix = postfix, Path = savePath };
+                //return savePath + saveName;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+                throw e;
+            }
+        }
+
     }
 }

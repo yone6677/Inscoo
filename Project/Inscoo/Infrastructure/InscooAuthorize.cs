@@ -1,5 +1,7 @@
-﻿using Services;
+﻿using Microsoft.AspNet.Identity;
+using Services;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,28 +33,18 @@ namespace Inscoo.Infrastructure
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            return;
             if (filterContext.HttpContext.User.Identity.Name == "Admin") return;
             string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";
             string actionName = filterContext.ActionDescriptor.ActionName;
-            switch (controllerName)
-            {
-                case "AccountController":
-                    if (
-  actionName.Equals("Login")
-  || actionName.Equals("SignOut")) { return; }
-                    break;
-                case "HomeController":
-                    if (
-  actionName.Equals("Index")
-  || actionName.Equals("Menu")
-  || actionName.Equals("Portrait")
- ) { return; }
-                    break;
-            }
+            var name = filterContext.HttpContext.User.Identity.Name;
+            var userId = filterContext.HttpContext.User.Identity.GetUserId();
+            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any()) return;
+            if (CommonAuthorizationCheck(controllerName, actionName, userId)) return;
+
             var httpcontext = filterContext.HttpContext;
             try
             {
-                var name = httpcontext.User.Identity.Name;
                 if (string.IsNullOrEmpty(name))
                 {
                     filterContext.Result = new RedirectResult("/account/login");
@@ -80,6 +72,27 @@ namespace Inscoo.Infrastructure
             {
                 throw new HttpException(401, "没有权限", e);
             }
+        }
+
+        /// <summary>
+        /// 检查通用的权限验证
+        /// </summary>
+        /// <returns></returns>
+        bool CommonAuthorizationCheck(string controllerName, string actionName, string userId)
+        {
+            var roles = _appUserService.GetRolesByUserId(userId);
+            if (roles.Contains("Admin")) return true;
+            var onlyIsInscooOperator = roles.Count == 1 && (roles.Contains("InscooOperator"));
+            if (onlyIsInscooOperator)
+            {
+                if (controllerName == "RoleController" || controllerName == "NavController" || controllerName == "PermissionController" || controllerName == "GenericattributeController") return false;
+                else
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
     }
 }

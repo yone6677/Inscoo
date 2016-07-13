@@ -1,0 +1,68 @@
+﻿@model Models.Order.BuyMoreModel
+@{
+    ViewBag.Title = "保全操作";
+}
+@using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "buyMore", enctype = "multipart/form-data", onsubmit = "return checkDate()" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <ul>
+        <li>
+            <label>
+                上传员工名单
+            </label>
+        </li>
+        <li>
+            <input type="file" id="empinfo" name="empinfo" />
+        </li>
+        <li>
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载投保变更模板</a>
+        </li>
+    </ul>
+    <p style="text-align:center;margin-top:2em">
+        <input type="submit" value="确认提交" class="btn btn-default" />
+    </p>
+}
+<div style="line-height:2em;width:100%;text-align:center;">
+    <span>@Model.Result</span>
+    <span class="text-danger" id="error"></span>
+</div>
+
+<div class="clearfix"></div>
+<h4 class="text-primary">已有人员信息</h4>
+@using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
+{
+    <input type="hidden" name="Id" value=@Model.Id />
+    <div id="dadaGrid">
+        @Html.Action("DetailsEmp", new { id = Model.Id })
+    </div>
+}
+
+@section Scripts
+    {
+    <script>
+        function checkDate(){
+            var startDate = $("#StartDate").val();
+            if(dateCompare(startDate)){
+                return true;
+            }else{
+                $("#error").text("生效时间最早为三日之后，请重新选择");
+                return false;
+            }
+        }
+        function dateCompare(startdate) {
+            @{
+               var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
+           }
+            var nowDate=@ts.TotalMilliseconds.ToString("0");
+            var arr = startdate.split("-");
+            var starttime = new Date(arr[0], arr[1]-1, arr[2]);
+            var starttimes = starttime.getTime();
+            if(nowDate <= starttimes && !isNaN(starttimes)){
+                return true;
+            }
+            else
+                return false;
+        }
+    </script>
+}

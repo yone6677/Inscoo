@@ -2,19 +2,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace Inscoo.Models.Account
+namespace Models
 {
     public class RegisterModel
     {
+        public string Id { set; get; }
         [Display(Name = "角色")]
         public string Roles { get; set; }
 
-        [Required]
-        [Display(Name = "用户名")]
+        //[Remote("IsUserExist", "User")]
+        //[Display(Name = "登陆用户名")]
         public string UserName { get; set; }
-        [Required]
+
         [Display(Name = "企业名称")]
+        [MaxLength(120, ErrorMessage = "请检查输入")]
         public string CompanyName { get; set; }
+
         [Required]
         [Display(Name = "联系人")]
         public string Linkman { get; set; }
@@ -23,6 +26,7 @@ namespace Inscoo.Models.Account
         [Display(Name = "电话")]
         public string PhoneNumber { get; set; }
         [Required]
+        [Remote("IsUserExist", "User")]
         [DataType(DataType.EmailAddress, ErrorMessage = "请输入正确的邮箱地址")]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
@@ -33,7 +37,7 @@ namespace Inscoo.Models.Account
 
         [Display(Name = "户名")]
         public string AccountName { get; set; }
-        
+
         [MaxLength(50)]
         [DataType(DataType.CreditCard)]
         [Display(Name = "开户账号")]
@@ -47,10 +51,17 @@ namespace Inscoo.Models.Account
         [Display(Name = "理赔比率")]
         public bool FanBao { set; get; }
 
-        [Display(Name = "是否启用")]
+        [Display(Name = "是否停用")]
         public bool IsDelete { set; get; }
-        public List<SelectListItem> selectList { get; set; }
+        public SelectList RoleSelects { get; set; }
         public SelectList CommissionMethods { get; set; }
+
+        [Display(Name = "保险公司")]
+        public string[] ProdInsurances { get; set; }
+
+        [Display(Name = "保险系列")]
+        public string[] ProdSeries { get; set; }
+
         [Display(Name = "佣金计算方法")]
         public string CommissionMethod { get; set; }
     }

@@ -45,6 +45,39 @@ namespace Services.Orders
                 return false;
             }
         }
+        public OrderEmployee GetByInfo(string idNumber, string name, int oid)
+        {
+            try
+            {
+                var list = new List<OrderEmployee>();
+                var orderBatch = _orderService.GetById(oid).orderBatch;
+                if (orderBatch.Any())
+                {
+                    foreach (var b in orderBatch)
+                    {
+                        var query = GetListByBid(b.Id);
+                        if (query.Any())
+                        {
+                            foreach (var item in query)
+                            {
+                                list.Add(item);
+                            }
+                        }
+                    }
+                    list = list.Where(e => e.IDNumber == idNumber && e.Name == name).ToList();
+                    if (list.Count > 0)
+                    {
+                        return list.FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetByInfo");
+
+            }
+            return null;
+        }
         public OrderEmployee GetById(int id)
         {
             try
@@ -172,10 +205,16 @@ namespace Services.Orders
                     var stream = new FileStream(paths[0], FileMode.Create);
                     var font = OperationPDF.GetFont();
                     var document = new Document();
+                    document.SetPageSize(PageSize.A4.Rotate());
+                    document.SetMargins(10, 10, 10, 10);
                     PdfWriter.GetInstance(document, stream);
                     document.Open();
+
                     PdfPTable table = new PdfPTable(9);
-                    table.SetWidths(new int[] { 4, 8, 10, 10, 14, 8, 6, 6, 4 });
+                    table.SetWidths(new float[] { 4, 8, 10, 10, 14, 8, 6, 6, 4 });
+                    
+                    //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
+                    //table.SetTotalWidth(100);
                     PdfPCell cell;
                     cell = new PdfPHeaderCell() { Colspan = 9, Phrase = new Phrase(order.CompanyName, font), HorizontalAlignment = Element.ALIGN_CENTER };
                     table.AddCell(cell);

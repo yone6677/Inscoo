@@ -14,7 +14,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 
 namespace Inscoo.Controllers
 {
@@ -37,8 +36,7 @@ namespace Inscoo.Controllers
         private readonly ICompanyService _svCompany;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService)
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, ICompanyService svCompany)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;

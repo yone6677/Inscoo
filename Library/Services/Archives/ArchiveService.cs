@@ -4,10 +4,12 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
 using Core.Pager;
+using Models;
 
 namespace Services
 {
@@ -15,18 +17,20 @@ namespace Services
     {
         private readonly IRepository<Archive> _archiveRepository;
         private readonly IRepository<BusinessLicense> _rpBusinessLicense;
-        private readonly IRepository<CarInsuranceExcel> _rpCarInsuranceExcel;
+        private readonly IRepository<CarInsuranceFile> _rpCarInsuranceFile;
+        private readonly IRepository<CarInsurance> _rpCarInsurance;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
         private readonly IFileService _fileService;
-        public ArchiveService(IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense, IRepository<CarInsuranceExcel> rpCarInsuranceExcel)
+        public ArchiveService(IRepository<CarInsurance> rpCarInsurance, IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense, IRepository<CarInsuranceFile> rpCarInsuranceFile)
         {
+            _rpCarInsuranceFile = rpCarInsuranceFile;
+            _rpCarInsurance = rpCarInsurance;
             _archiveRepository = archiveRepository;
             _authenticationManager = authenticationManager;
             _loggerService = loggerService;
             _fileService = fileService;
             _rpBusinessLicense = rpBusinessLicense;
-            _rpCarInsuranceExcel = rpCarInsuranceExcel;
         }
 
         public void DeleteCarInsuranceExcel(string excelId)
@@ -34,8 +38,8 @@ namespace Services
             try
             {
 
-                var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
-                _rpCarInsuranceExcel.Delete(item);
+                var item = _rpCarInsurance.GetById(Convert.ToInt32(excelId));
+                _rpCarInsurance.Delete(item);
             }
             catch (Exception e)
             {
@@ -150,18 +154,20 @@ namespace Services
             try
             {
                 var model = _fileService.SaveCarInsuranceExcel(file);
+
                 if (model != null)
                 {
-                    var item = new CarInsuranceExcel()
+                    var item = new CarInsuranceFile()
                     {
-                        AppUserId = userId,
+
+                        CarInsurance = new CarInsurance() { AppUserId = userId },
                         Author = userName,
                         Name = model.Name + model.Postfix,
                         Path = model.Path,
                         Url = model.Path + model.Name + model.Postfix,
-                        EinsuranceEditTime = DateTime.Now
+                        EditTime = DateTime.Now
                     };
-                    _rpCarInsuranceExcel.InsertGetId(item);
+                    _rpCarInsuranceFile.InsertGetId(item);
                     return item.Url;
                 }
                 throw new Exception("操作失败");
@@ -172,36 +178,40 @@ namespace Services
                 throw e;
             }
         }
-        public string InsertCarEinsurance(HttpPostedFileBase file, string excelId)
+        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId)
         {
             try
             {
                 var model = _fileService.SaveCarInsuranceExcel(file);
                 if (model != null)
                 {
+                    var item = new CarInsuranceFile()
+                    {
+                        Type = 2,
+                        CarInsuranceId = insuranceId,
+                        Author = userName,
+                        Name = model.Name + model.Postfix,
+                        Path = model.Path,
+                        Url = model.Path + model.Name + model.Postfix,
+                        EditTime = DateTime.Now
+                    };
 
-                    var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
-                    var oldUrl = item.EinsuranceUrl;
-                    item.EinsuranceUrl = model.Path + model.Name + model.Postfix;
-                    item.EinsuranceName = model.Name;
-                    item.EinsurancePath = model.Path;
-                    item.EinsuranceEditTime=DateTime.Now;
-                    _rpCarInsuranceExcel.Update(item);
-                    if (!string.IsNullOrEmpty(oldUrl))
-                        _fileService.DeleteFile(oldUrl);
-                    return item.EinsuranceUrl;
+                    //var sql =
+                    //    string.Format(
+                    //        "insert into CarInsuranceExcel (CarInsuranceId,CarInsurance_Id,Author,Name,Path,Url,EditTime) values({0},{1},{2},{3},{4},{5}) ",
+                    //        insuranceId, insuranceId, userName, model.Name + model.Postfix, model.Path,
+                    //        model.Path + model.Name + model.Postfix, DateTime.Now);
+                    _rpCarInsuranceFile.Insert(item);
+                    //_rpCarInsuranceEinsurance.DatabaseContext.Database.ExecuteSqlCommand(sql);
+                    return item.Url;
                 }
-                else
-                {
-                    throw new Exception("保存文件失败");
-                }
+                throw new Exception("操作失败");
             }
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
                 throw e;
             }
-            return "";
         }
         public string InsertUserPortrait(HttpPostedFileBase file)
         {
@@ -223,17 +233,36 @@ namespace Services
 
 
 
-        public IPagedList<CarInsuranceExcel> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
+        public IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
         {
             try
             {
-                var list = _rpCarInsuranceExcel.Table.Where(c => c.AppUserId == createrId || createrId == "-1");
-                return new PagedList<CarInsuranceExcel>(list.ToList(), pageIndex, pageSize);
+                //var s = _rpCarInsurance.Table.FirstOrDefault().CarInsuranceEinsurances;
+                var listOri =
+                    _rpCarInsurance.Entities.Include(c => c.CarInsuranceFiles)
+                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1"))
+                       .AsNoTracking().ToList();
+                var list = (from c in listOri
+                            let excel = c.CarInsuranceFiles.Where(f => f.Type == 1).OrderByDescending(e => e.Id).FirstOrDefault()
+                            let ei = c.CarInsuranceFiles.Where(f => f.Type == 2).OrderByDescending(e => e.Id).FirstOrDefault()
+                            select new vCarInsuranceList()
+                            {
+                                ExcelId = excel.Id,
+                                InsuranceId = c.Id,
+                                ExcelName = excel.Name,
+                                ExceUrl = excel.Url,
+                                ExceCreateTime = excel.CreateTime,
+                                ExceCreateUser = c.AppUser.UserName,
+                                EinsuranceName = ei == null ? "" : ei.Name,
+                                EinsuranceUrl = ei == null ? "" : ei.Url
+                            }).ToList();
+
+                return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);
             }
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：GetList");
-                return new PagedList<CarInsuranceExcel>(new List<CarInsuranceExcel>(), pageIndex, pageSize);
+                return new PagedList<vCarInsuranceList>(new List<vCarInsuranceList>(), pageIndex, pageSize);
             }
         }
 
@@ -245,13 +274,13 @@ namespace Services
                 if (model != null)
                 {
 
-                    var item = _rpCarInsuranceExcel.GetById(Convert.ToInt32(excelId));
+                    var item = _rpCarInsuranceFile.GetById(Convert.ToInt32(excelId));
                     var oldUrl = item.Url;
                     item.Url = model.Path + model.Name + model.Postfix;
                     item.Name = model.Name;
                     item.Path = model.Path;
                     item.CreateTime = DateTime.Now;
-                    _rpCarInsuranceExcel.Update(item);
+                    _rpCarInsuranceFile.Update(item);
                     _fileService.DeleteFile(oldUrl);
                     return item.Url;
                 }

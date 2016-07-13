@@ -131,6 +131,10 @@
     <Compile Include="Migrations\201607130800561_orderEmpTemp1.Designer.cs">
       <DependentUpon>201607130800561_orderEmpTemp1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs" />
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.Designer.cs">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -161,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607130800561_orderEmpTemp1.resx">
       <DependentUpon>201607130800561_orderEmpTemp1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.resx">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

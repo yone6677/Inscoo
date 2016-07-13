@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Inscoo.Controllers
 {
@@ -33,9 +34,11 @@ namespace Inscoo.Controllers
         private readonly IResourceService _resourceService;
         private readonly IAppRoleService _appRoleService;
         private readonly IFileService _fileService;
+        private readonly ICompanyService _svCompany;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
             IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, ICompanyService svCompany)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -49,6 +52,7 @@ namespace Inscoo.Controllers
             _resourceService = resourceService;
             _appRoleService = appRoleService;
             _fileService = fileService;
+            _svCompany = svCompany;
             _orderEmpTempService = orderEmpTempService;
         }
         #endregion
@@ -423,6 +427,7 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(id);
                 if (order.State > 0)
                 {
+                    ViewBag.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
                     var empCount = _orderEmpService.GetListByOid(id);
                     var model = new EntryInfoModel()
                     {
@@ -454,7 +459,11 @@ namespace Inscoo.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                var companyList = Request.Form["isCompanySelect"];
+                if (companyList == "false")
+                {
+                    _svCompany.AddNewCompany(new vCompanyAdd() { Name = model.CompanyName, Address = model.Address, Email = "", LinkMan = model.Linkman, Phone = model.PhoneNumber }, User.Identity.GetUserId());
+                }
                 var order = _orderService.GetById(model.Id);
                 if (order != null)
                 {
@@ -462,6 +471,9 @@ namespace Inscoo.Controllers
                     order.Linkman = model.Linkman;
                     order.PhoneNumber = model.PhoneNumber;
                     order.Address = model.Address;
+
+
+
                     order.StartDate = DateTime.Parse(model.StartDate);
                     order.EndDate = DateTime.Parse(model.StartDate).AddYears(1).AddSeconds(-1);
                     order.State = 2;//已完成人员上传
@@ -612,6 +624,14 @@ namespace Inscoo.Controllers
                 result = "上传失败";
             }
             return Content(result);
+        }
+
+        [AllowAnonymous]
+        public JsonResult GetCompanyInfo(int id)
+        {
+            var com = _svCompany.GetCompanyById(id);
+            if (com == null) return Json(null);
+            return Json(new { com.Name, com.LinkMan, com.Address, com.Phone });
         }
         #endregion
 

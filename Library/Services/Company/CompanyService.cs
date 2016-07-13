@@ -18,6 +18,7 @@ using Domain;
 using Models;
 using Core.Pager;
 using System.Data.Entity;
+using System.Web.Mvc;
 
 namespace Services
 {
@@ -172,6 +173,19 @@ namespace Services
                 }).FirstOrDefault();
             }
             catch (Exception)
+            {
+                return null;
+            }
+        }
+        public SelectList GetCompanySelectlistByUserId(string uId)
+        {
+            try
+            {
+                var list = _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c => c.UserId == uId).Select(c => new { c.Id, c.Name });
+                if (!list.Any()) return null;
+                return new SelectList(list, "Id", "Name");
+            }
+            catch (Exception e)
             {
                 return null;
             }

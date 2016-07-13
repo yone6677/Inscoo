@@ -31,7 +31,7 @@
 
             <td>
                 <a href="@item.Url" target="blank">下载</a>
-                @if (ViewBag.CanEdit)
+                @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
                     <span>|</span>
                     @Html.ActionLink("更新", "CarInscuranceCreate", new { excelId = item.Id })
@@ -40,8 +40,18 @@
                 }
                 else
                 {
-                    @Html.ActionLink("上传电子保单", "CarInscuranceCreate", new { excelId = item.Id, type = "AddEinscurance" })
+                    if (string.IsNullOrEmpty(item.EinsuranceUrl))
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("上传电子保单", "CarInscuranceCreate", new { excelId = item.Id, type = "AddEinscurance" })
+                    }
+                    else
+                    {
+                        <span>|</span>
+                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                    }
                 }
+
             </td>
 
 

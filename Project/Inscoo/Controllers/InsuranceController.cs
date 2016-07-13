@@ -208,7 +208,7 @@ namespace Inscoo.Controllers
                         MQMAILCONTENT = mailContent,
                         MQMAILFRM = "redy.yone@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
-                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
                     });
                 }
                 else if (type == "AddEinscurance")
@@ -232,7 +232,7 @@ namespace Inscoo.Controllers
                         MQMAILCONTENT = mailContent,
                         MQMAILFRM = "redy.yone@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
-                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
 
                     });
                 }

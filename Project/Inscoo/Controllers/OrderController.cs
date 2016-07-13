@@ -520,6 +520,40 @@ namespace Inscoo.Controllers
             if (empinfo != null && Id > 0)
             {
                 var order = _orderService.GetById(Id);
+                //打开excel
+                var ep = new ExcelPackage(empinfo.InputStream);
+                var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null)
+                    result = "上传的文件内容不能为空";
+                var rowNumber = worksheet.Dimension.Rows;
+                var minInsuranceNumber = 0;
+                var StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
+                switch (StaffRange)
+                {
+                    case 1:
+                        minInsuranceNumber = 3;
+                        break;
+                    case 2:
+                        minInsuranceNumber = 5;
+                        break;
+                    case 3:
+                        minInsuranceNumber = 11;
+                        break;
+                    case 4:
+                        minInsuranceNumber = 31;
+                        break;
+                    case 5:
+                        minInsuranceNumber = 51;
+                        break;
+                    case 6:
+                        minInsuranceNumber = 100;
+                        break;
+                }
+                if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
+                {
+                   TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
+                    return RedirectToAction("EntryInfo", new { id = order.Id });
+                }
                 var batch = _orderBatchService.GetByOrderId(Id);
                 //若有旧数据先删除
                 var oldInfo = _orderEmpService.GetListByOid(Id);
@@ -531,12 +565,8 @@ namespace Inscoo.Controllers
                     }
                 }
                 var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
-                /***暂时写这里*/
-                var ep = new ExcelPackage(empinfo.InputStream);
-                var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
-                if (worksheet == null)
-                    result = "上传的文件内容不能为空";
-                var rowNumber = worksheet.Dimension.Rows;
+
+                //读取excel数据
                 var Cells = worksheet.Cells;
                 if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
                     result = "上传的文件不正确";
@@ -567,7 +597,8 @@ namespace Inscoo.Controllers
                         result = "上传失败";
                     }
                 }
-                order.InsuranceNumber = _orderEmpService.GetListByOid(Id).Count; //更新订单主表投保人数
+                var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
+                order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
                 _orderService.Update(order);
                 //定单批次
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
@@ -600,13 +631,70 @@ namespace Inscoo.Controllers
         /// </summary>
         /// <param name="fid"></param>
         /// <returns></returns>
-        public ActionResult DeleteFile(int Id, int fType)
+        public ActionResult DeleteFile(int id, int fType)
         {
-            if (Id > 0 && fType > 0)
+            try
             {
                 var userName = User.Identity.Name;
+                var order = _orderService.GetById(id);
+                if (userName == order.Author)//只有用户自己能删除资料
+                {
+                    if (fType == 1)
+                    {
+                        var file = _archiveService.GetById(order.BusinessLicense);
+                        if (file != null)
+                        {
+                            if (_archiveService.Delete(file))
+                            {
+                                order.BusinessLicense = 0;
+                                if (_orderService.Update(order))
+                                {
+                                    return RedirectToAction("UploadFile", new { id = id });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var batch = _orderBatchService.GetById(order.orderBatch.FirstOrDefault().Id);
+                        if (fType == 2)
+                        {
+                            var file = _archiveService.GetById(batch.EmpInfoFileSeal);
+                            if (file != null)
+                            {
+                                if (_archiveService.Delete(file))
+                                {
+                                    batch.EmpInfoFileSeal = 0;
+                                    if (_orderBatchService.Update(batch))
+                                    {
+                                        return RedirectToAction("UploadFile", new { id = id });
+                                    }
+                                }
+                            }
+                        }
+                        if (fType == 3)
+                        {
+                            var file = _archiveService.GetById(batch.PolicySeal);
+                            if (file != null)
+                            {
+                                if (_archiveService.Delete(file))
+                                {
+                                    batch.PolicySeal = 0;
+                                    if (_orderBatchService.Update(batch))
+                                    {
+                                        return RedirectToAction("UploadFile", new { id = id });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            return View();
+            catch (Exception e)
+            {
+                ;
+            }
+            return RedirectToAction("UploadFile", new { id = id });
         }
         /// <summary>
         /// 完成第三步

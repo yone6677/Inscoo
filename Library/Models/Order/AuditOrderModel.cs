@@ -25,6 +25,8 @@ namespace Models.Order
         public bool InscooAudit { get; set; }
         [DisplayName("是否同意")]
         public bool FinanceAudit { get; set; }
+        [DisplayName("订单金额")]
+        public decimal Price { get; set; }
         [DisplayName("收款金额")]
         [Required]
         public decimal AmountCollected { get; set; }

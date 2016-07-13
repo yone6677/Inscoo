@@ -1,5 +1,6 @@
 ﻿using Domain.Orders;
 using Innscoo.Infrastructure;
+using Microsoft.AspNet.Identity;
 using Models;
 using Models.Infrastructure;
 using Models.Order;
@@ -27,13 +28,14 @@ namespace Inscoo.Controllers
         private readonly IOrderItemService _orderItemService;
         private readonly IArchiveService _archiveService;
         private readonly IOrderEmpService _orderEmpService;
+        private readonly IOrderEmpTempService _orderEmpTempService;
         private readonly IOrderBatchService _orderBatchService;
         private readonly IResourceService _resourceService;
         private readonly IAppRoleService _appRoleService;
         private readonly IFileService _fileService;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -47,6 +49,7 @@ namespace Inscoo.Controllers
             _resourceService = resourceService;
             _appRoleService = appRoleService;
             _fileService = fileService;
+            _orderEmpTempService = orderEmpTempService;
         }
         #endregion
         #region 订单管理
@@ -97,6 +100,8 @@ namespace Inscoo.Controllers
                 TotalPages = model.TotalPages
             };
             ViewBag.pageCommand = command;
+            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
+            ViewBag.role = role;
             return PartialView(model);
         }
 
@@ -113,6 +118,8 @@ namespace Inscoo.Controllers
                 TotalPages = model.TotalPages
             };
             ViewBag.pageCommand = command;
+            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
+            ViewBag.role = role;
             return PartialView(model);
         }
         #endregion
@@ -365,7 +372,8 @@ namespace Inscoo.Controllers
                         order_Id = result,
                         BState = 0,
                         PolicyHolder = _appUserService.GetCurrentUser().Id,
-                        PolicyHolderDate = DateTime.Now
+                        PolicyHolderDate = DateTime.Now,
+                        BNum = "1"
                     };
                     _orderBatchService.Insert(ob);
                     int staffnum = 0;
@@ -540,7 +548,7 @@ namespace Inscoo.Controllers
                 }
                 if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
                 {
-                   TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
+                    TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
                     return RedirectToAction("EntryInfo", new { id = order.Id });
                 }
                 var batch = _orderBatchService.GetByOrderId(Id);
@@ -754,7 +762,7 @@ namespace Inscoo.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
         [HttpPost]
-        public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id)
+        public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id, int uType = 0)
         {
             if (EmpInfoPdfSeal != null && Id > 0)
             {
@@ -767,7 +775,14 @@ namespace Inscoo.Controllers
                         orderBatch.EmpInfoFileSeal = fileId;
                         if (_orderBatchService.Update(orderBatch))
                         {
-                            return RedirectToAction("UploadFile", new { id = Id });
+                            if (uType > 0)
+                            {
+                                return RedirectToAction("Details", new { id = Id });
+                            }
+                            else
+                            {
+                                return RedirectToAction("UploadFile", new { id = Id });
+                            }
                         }
                     }
                 }
@@ -775,7 +790,7 @@ namespace Inscoo.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
         [HttpPost]
-        public ActionResult UploadPolicyPdfSeal(HttpPostedFileBase PolicyPdfSeal, int Id)
+        public ActionResult UploadPolicyPdfSeal(HttpPostedFileBase PolicyPdfSeal, int Id, int uType = 0)
         {
             if (PolicyPdfSeal != null && Id > 0)
             {
@@ -788,7 +803,14 @@ namespace Inscoo.Controllers
                         orderBatch.PolicySeal = fileId;
                         if (_orderBatchService.Update(orderBatch))
                         {
-                            return RedirectToAction("UploadFile", new { id = Id });
+                            if (uType > 0)
+                            {
+                                return RedirectToAction("Details", new { id = Id });
+                            }
+                            else
+                            {
+                                return RedirectToAction("UploadFile", new { id = Id });
+                            }
                         }
                     }
                 }
@@ -862,9 +884,9 @@ namespace Inscoo.Controllers
             {
                 var model = new OrderDatailsModel();
                 var user = _appUserService.GetCurrentUser();
-                var roles = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
+                var role = _appUserService.GetRoleByUserId(user.Id);
                 var order = _orderService.GetById(id);
-                if (roles == "PartnerChannel" || roles == "CompanyHR")
+                if (role == "PartnerChannel" || role == "CompanyHR" || role == "BusinessDeveloper")
                 {
                     if (order.Author != user.UserName)
                     {
@@ -888,6 +910,7 @@ namespace Inscoo.Controllers
                 model.StaffRange = order.StaffRange;
                 model.StartDate = order.StartDate.ToShortDateString();
                 model.State = _genericAttributeService.GetByKey(null, "orderState", order.State.ToString()).Key;
+                model.Role = role;
                 model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
                 {
                     CoverageSum = p.CoverageSum,
@@ -907,7 +930,7 @@ namespace Inscoo.Controllers
                     {
                         var batchItem = new OrderBatchModel();
                         batchItem.AmountCollected = b.AmountCollected;
-                        batchItem.BId = b.Id;
+                        batchItem.BNum = b.BNum;
                         batchItem.InscooConfirmDate = b.InscooConfirmDate;
                         batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
                         batchItem.FinanceDate = b.FinanceDate;
@@ -917,7 +940,13 @@ namespace Inscoo.Controllers
                         batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
                         batchItem.CourierNumber = b.CourierNumber;
                         batchItem.InsurerMemo = b.InsurerMemo;
-                        batchItem.OrderAmount = b.orderEmp.Sum(e => e.Premium);
+                        var empTemp = _orderEmpTempService.GetListByBid(b.Id);
+                        decimal empTempAmount = 0;
+                        if (empTemp.Count > 0)
+                        {
+                            empTempAmount = empTemp.Sum(e => e.Premium);
+                        }
+                        batchItem.OrderAmount = b.orderEmp.Sum(e => e.Premium) + empTempAmount;
                         var PaymentNoticePDF = _archiveService.GetById(b.PaymentNoticePDF);
                         if (PaymentNoticePDF != null)
                         {
@@ -1007,10 +1036,18 @@ namespace Inscoo.Controllers
                         var mid = batch.Max(o => o.Id);
                         batch = batch.Where(b => b.Id == mid);
                     }
+
+
                     if (batch.Any())
                     {
                         var user = _appUserService.GetCurrentUser();
                         var item = batch.FirstOrDefault();
+                        var empTemp = _orderEmpTempService.GetListByBid(item.Id);
+                        decimal empTempAmount = 0;
+                        if (empTemp.Count > 0)
+                        {
+                            empTempAmount = empTemp.Sum(e => e.Premium);
+                        }
                         var model = new AuditOrderModel();
                         model.State = item.BState;
                         model.Id = item.Id;
@@ -1018,6 +1055,7 @@ namespace Inscoo.Controllers
                         model.Insurer = order.Insurer;
                         model.Role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
                         model.UserCompany = user.CompanyName;
+                        model.Price = item.orderEmp.Sum(e => e.Premium) + empTempAmount; ;
                         return PartialView(model);
                     }
                 }
@@ -1084,6 +1122,52 @@ namespace Inscoo.Controllers
                     if (model.InsurerAudit)
                     {
                         batch.BState = 5;//订单完结
+                        var EmpTemp = _orderEmpTempService.GetListByBid(batch.Id);
+                        if (EmpTemp.Count > 0)
+                        {
+                            foreach (var t in EmpTemp)
+                            {
+                                var item = new OrderEmployee()
+                                {
+                                    Author = t.Author,
+                                    BankCard = t.BankCard,
+                                    BankName = t.BankName,
+                                    batch_Id = t.Bid,
+                                    BirBirthday = t.BirBirthday,
+                                    BNum = t.BNum,
+                                    CreateTime = t.CreateTime,
+                                    Email = t.Email,
+                                    EndDate = t.EndDate,
+                                    HasSocialSecurity = t.HasSocialSecurity,
+                                    IDNumber = t.IDNumber,
+                                    IDType = t.IDType,
+                                    Name = t.Name,
+                                    PhoneNumber = t.PhoneNumber,
+                                    PMCode = t.PMCode,
+                                    PMName = t.PMName,
+                                    Premium = t.Premium,
+                                    Relationship = t.Relationship,
+                                    Sex = t.Sex,
+                                    StartDate = t.StartDate
+                                };
+                                if (t.BuyType == 2)//减保
+                                {
+                                    var emp = _orderEmpService.GetByInfo(t.IDNumber, t.Name, model.OId);
+                                    if (emp != null && emp.Premium > 0)
+                                    {
+                                        emp.IsDeleted = true;
+                                        _orderEmpService.Update(emp);//将已有人员设为删除
+                                    }
+                                }
+                                _orderEmpService.Insert(item);
+                                _orderEmpTempService.Delete(t);
+                            }
+                            var empList = _orderEmpService.GetListByOid(model.Id);
+                            if (empList.Any())
+                            {
+                                order.InsuranceNumber = empList.Count();
+                            }
+                        }
                         if (order.State != 6)
                         {
                             order.State = 6;
@@ -1144,7 +1228,7 @@ namespace Inscoo.Controllers
                     {
                         throw new Exception("上传的文件不正确,请检查");
                     }
-                    var eList = new List<OrderEmployee>();
+                    var eList = new List<OrderEmpTemp>();
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
@@ -1167,11 +1251,11 @@ namespace Inscoo.Controllers
                         {
                             throw new Exception("请注意生效日期，最小应为三日之后");
                         }
-                        var item = new OrderEmployee();
+                        var item = new OrderEmpTemp();
                         if (insType == "加保")
                         {
                             item.PMCode = PMType.PM15.ToString();
-
+                            item.BuyType = 1;
                             double tsDay = (order.EndDate - changeDate).TotalDays;
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
                             item.StartDate = changeDate;
@@ -1180,6 +1264,7 @@ namespace Inscoo.Controllers
                         if (insType == "减保")
                         {
                             item.PMCode = PMType.PM16.ToString();
+                            item.BuyType = 2;
                             item.EndDate = changeDate;
                             double tsDay = (changeDate - order.StartDate).TotalDays;
                             decimal useAmount = premium * int.Parse(tsDay.ToString("0"));//已使用金额
@@ -1204,51 +1289,74 @@ namespace Inscoo.Controllers
                     if (eList.Count > 0)
                     {
                         var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), model.Id);
-                        var batchItem = new OrderBatch()
+                        var obid = order.orderBatch.Max(q => q.Id);
+                        var batch = _orderBatchService.GetById(obid);
+                        if (batch.BState == 1 && batch.BState == 3)
                         {
-                            order_Id = model.Id,
-                            BState = 0,
-                            PolicyHolder = _appUserService.GetCurrentUser().Id,
-                            PolicyHolderDate = DateTime.Now,
-                            EmpInfoFile = fileModel
-                        };
-                        var bid = _orderBatchService.InsertGetId(batchItem);
+                            throw new Exception("抱歉，订单已经在审核当中，无法更改人员信息，请耐心等待。");
+                        }
+                        var bnum = 0;
+                        var bid = 0;
+                        if (batch.BState == 0)
+                        {
+                            bnum = int.Parse(batch.BNum);
+                            bid = batch.Id;
+                        }
+                        else
+                        {
+                            bnum = int.Parse(batch.BNum) + 1;
+                            var batchItem = new OrderBatch()
+                            {
+                                order_Id = model.Id,
+                                BState = 0,
+                                BNum = bnum.ToString(),
+                                PolicyHolder = _appUserService.GetCurrentUser().Id,
+                                PolicyHolderDate = DateTime.Now,
+                                EmpInfoFile = fileModel
+                            };
+                            bid = _orderBatchService.InsertGetId(batchItem);
+                        }
                         foreach (var e in eList)
                         {
-                            e.batch_Id = bid;
+                            e.Bid = bid;
+                            e.BNum = bnum.ToString();
                             if (e.Premium > 0)
                             {
-                                _orderEmpService.Insert(e);
+                                _orderEmpTempService.Insert(e);
                             }
                             if (e.Premium < 0)
                             {
                                 var emp = _orderEmpService.GetByInfo(e.IDNumber, e.Name, model.Id);
                                 if (emp != null && emp.Premium > 0)
                                 {
-                                    emp.IsDeleted = true;
-                                    _orderEmpService.Update(emp);//将已有人员设为删除
-                                    _orderEmpService.Insert(e);//新增减保人员信息
+                                    _orderEmpTempService.Insert(e);
+                                    //emp.IsDeleted = true;
+                                    //_orderEmpService.Update(emp);//将已有人员设为删除
+                                    //_orderEmpService.Insert(e);//新增减保人员信息
                                 }
                                 else
                                 {
-                                    if (_orderBatchService.DeleteById(bid))
-                                    {
-                                        throw new Exception("减保人员信息有误，在已投保人员中未找到：" + e.Name);
-                                    }
+                                    _orderBatchService.DeleteById(bid);
+                                    throw new Exception("减保人员信息有误，在已投保人员中未找到：" + e.Name);
+                                    //if (_orderBatchService.DeleteById(bid))
+                                    //{
+                                    //    throw new Exception("减保人员信息有误，在已投保人员中未找到：" + e.Name);
+                                    //}
                                 }
                             }
                         }
 
                     }
-                    var empList = _orderEmpService.GetListByOid(model.Id).Where(e => e.EndDate >= DateTime.Now);
-                    if (empList.Any())
-                    {
-                        order.InsuranceNumber = empList.Count();
-                        if (_orderService.Update(order))
-                        {
-                            return RedirectToAction("Details", new { id = model.Id });
-                        }
-                    }
+                    return RedirectToAction("BuyMore", new { id = model.Id });
+                    //var empList = _orderEmpService.GetListByOid(model.Id).Where(e => e.EndDate >= DateTime.Now);
+                    //if (empList.Any())
+                    //{
+                    //    order.InsuranceNumber = empList.Count();
+                    //    if (_orderService.Update(order))
+                    //    {
+                    //        return RedirectToAction("Details", new { id = model.Id });
+                    //    }
+                    //}
                 }
                 catch (Exception e)
                 {
@@ -1257,6 +1365,33 @@ namespace Inscoo.Controllers
                 }
             }
             return View();
+        }
+        public ActionResult EmpChanges(int id, int PageIndex = 1, int PageSize = 15)
+        {
+            if (id > 0)
+            {
+                var order = _orderService.GetById(id);
+                if (order != null && order.orderBatch.Any())
+                {
+                    var obid = order.orderBatch.Max(q => q.Id);
+                    var model = _orderEmpTempService.GetListOfPager(PageIndex, PageSize, obid);
+                    if (model.TotalCount == 0)
+                    {
+                        return null;
+                    }
+                    var command = new PageCommand()
+                    {
+                        PageIndex = model.PageIndex,
+                        PageSize = model.PageSize,
+                        TotalCount = model.TotalCount,
+                        TotalPages = model.TotalPages
+                    };
+                    ViewBag.pageCommand = command;
+                    return PartialView(model);
+                }
+
+            }
+            return null;
         }
         #endregion
 
@@ -1313,6 +1448,39 @@ namespace Inscoo.Controllers
         //    else
         //        return View();
         //}
+        #endregion
+        #region 删除订单
+        [HttpPost]
+        public ActionResult Delete(int id, int oType)
+        {
+            if (id > 0)
+            {
+                var user = _appUserService.GetCurrentUser();
+                var order = _orderService.GetById(id);
+                var role = _appUserService.GetRoleByUserId(user.Id);
+                if (order != null)
+                {
+                    if (user.UserName == order.Author || role == "Admin")//只能删除自己的订单,admin例外
+                    {
+                        _orderService.Delete(order);
+                    }
+                }
+            }
+            var action = "";
+            switch (oType)
+            {
+                case 1:
+                    action = "OrderToPayList";
+                    break;
+                case 2:
+                    action = "List";
+                    break;
+                case 3:
+                    action = "CompletedOrderList";
+                    break;
+            }
+            return RedirectToAction(action);
+        }
         #endregion
     }
 }

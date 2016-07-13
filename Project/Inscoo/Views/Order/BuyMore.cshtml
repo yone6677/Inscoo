@@ -25,7 +25,7 @@
 }
 <div style="line-height:2em;width:100%;text-align:center;">
     <span>@Model.Result</span>
-    <span class="text-danger" id="error"></span>
+    <span class="text-danger" style="color:red;" id="error"></span>
 </div>
 
 <div class="clearfix"></div>
@@ -35,6 +35,15 @@
     <input type="hidden" name="Id" value=@Model.Id />
     <div id="dadaGrid">
         @Html.Action("DetailsEmp", new { id = Model.Id })
+    </div>
+}
+<div class="clearfix"></div>
+<h4 class="text-primary">投保变更详细</h4>
+@using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
+{
+    <input type="hidden" name="Id" value=@Model.Id />
+    <div id="empTempData">
+        @Html.Action("EmpChanges", new { id = Model.Id })
     </div>
 }
 

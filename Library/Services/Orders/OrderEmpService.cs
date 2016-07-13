@@ -41,7 +41,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：DeleteById");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：DeleteById");
                 return false;
             }
         }
@@ -73,7 +73,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetByInfo");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetByInfo");
 
             }
             return null;
@@ -86,7 +86,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：Insert");
                 return null;
             }
         }
@@ -99,7 +99,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：Insert");
                 return false;
             }
         }
@@ -113,7 +113,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：Insert");
                 return false;
             }
         }
@@ -124,12 +124,12 @@ namespace Services.Orders
                 var query = _orderEmpRepository.Table;
                 if (bid > 0)
                 {
-                    return query.Where(c => c.batch_Id == bid).ToList();
+                    return query.Where(c => c.batch_Id == bid && c.IsDeleted == false).ToList();
                 }
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetListByBid");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetListByBid");
             }
             return new List<OrderEmployee>();
         }
@@ -157,7 +157,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：GetListByOid");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetListByOid");
             }
             return new List<OrderEmployee>();
         }
@@ -212,7 +212,7 @@ namespace Services.Orders
 
                     PdfPTable table = new PdfPTable(9);
                     table.SetWidths(new float[] { 4, 8, 10, 10, 14, 8, 6, 6, 4 });
-                    
+
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);
                     PdfPCell cell;
@@ -303,7 +303,7 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(yearRange, font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.SpacingAfter = 30;
                     document.Add(table);
-                    document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪有限公司\n账    户：\n开户  行：\n汇款备注：公司名 - 保单号（后台自动生成）\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                    document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号（后台自动生成）\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
                     document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
                     document.Close();
@@ -313,7 +313,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetPaymentNoticePdf");
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetPaymentNoticePdf");
             }
             return null;
         }

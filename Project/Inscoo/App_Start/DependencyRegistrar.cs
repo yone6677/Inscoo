@@ -74,7 +74,7 @@ namespace Inscoo
             builder.RegisterType<OrderBatchService>().As<IOrderBatchService>().InstancePerDependency();
             builder.RegisterType<CompanyService>().As<ICompanyService>().InstancePerDependency();
             builder.RegisterType<ClaimService>().As<IClaimService>().InstancePerDependency();
-
+            builder.RegisterType<OrderEmpTempService>().As<IOrderEmpTempService>().InstancePerDependency();
         }
     }
 }

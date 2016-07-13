@@ -103,6 +103,7 @@
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\OrderBatchMap.cs" />
     <Compile Include="Mapping\OrderEmployeeMap.cs" />
+    <Compile Include="Mapping\OrderEmpTempMap.cs" />
     <Compile Include="Mapping\OrderItemMap.cs" />
     <Compile Include="Mapping\OrderMap.cs" />
     <Compile Include="Mapping\PermissionMap.cs" />
@@ -121,6 +122,14 @@
     <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs" />
     <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.Designer.cs">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607130736563_orderEmpTemp.cs" />
+    <Compile Include="Migrations\201607130736563_orderEmpTemp.Designer.cs">
+      <DependentUpon>201607130736563_orderEmpTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607130800561_orderEmpTemp1.cs" />
+    <Compile Include="Migrations\201607130800561_orderEmpTemp1.Designer.cs">
+      <DependentUpon>201607130800561_orderEmpTemp1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
@@ -146,6 +155,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.resx">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607130736563_orderEmpTemp.resx">
+      <DependentUpon>201607130736563_orderEmpTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607130800561_orderEmpTemp1.resx">
+      <DependentUpon>201607130800561_orderEmpTemp1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

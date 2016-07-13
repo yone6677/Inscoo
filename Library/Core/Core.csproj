@@ -97,6 +97,7 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\CarInsuranceMap.cs" />
     <Compile Include="Mapping\FileInfoMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />
@@ -127,9 +128,9 @@
     <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.Designer.cs">
       <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607131210332_AddTableFileInfoAndCarInsurance.cs" />
-    <Compile Include="Migrations\201607131210332_AddTableFileInfoAndCarInsurance.Designer.cs">
-      <DependentUpon>201607131210332_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    <Compile Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.cs" />
+    <Compile Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.Designer.cs">
+      <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
@@ -159,8 +160,8 @@
     <EmbeddedResource Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.resx">
       <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607131210332_AddTableFileInfoAndCarInsurance.resx">
-      <DependentUpon>201607131210332_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.resx">
+      <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

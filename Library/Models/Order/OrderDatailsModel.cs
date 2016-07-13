@@ -44,7 +44,10 @@ namespace Models.Order
         public int InsuranceNumber { get; set; }
         [DisplayName("订单状态")]
         public string State { get; set; }
-
+        /// <summary>
+        /// 当前用户角色
+        /// </summary>
+        public string Role { get; set; }
         public List<OrderBatchModel> orderBatch { get; set; }
 
         public List<ProductModel> orderItem { get; set; }

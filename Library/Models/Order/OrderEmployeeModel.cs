@@ -5,6 +5,15 @@ namespace Models.Order
 {
     public class OrderEmployeeModel : BaseViewModel
     {
+        /// <summary>
+        /// 批次ID
+        /// </summary>
+        public int BId { get; set; }
+        /// <summary>
+        /// 加保1，减保2
+        /// </summary>
+        public int BuyType { get; set; }
+
         [DisplayName("姓名")]
         public string Name { get; set; }
         [DisplayName("证件类型")]

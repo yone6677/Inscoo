@@ -26,13 +26,20 @@
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
         </th>
-        <th></th>
+        <th>操作</th>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                <a href="/Order/Details/@item.Id">@item.Name</a>
+                @if (item.State > 3)
+                {
+                    <a href="/Order/Details/@item.Id">@item.Name</a>
+                }
+                else
+                {
+                    <span>@item.Name</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompanyName)
@@ -73,19 +80,19 @@
                 @{
                     if (item.State == 1)
                     {
-                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id })<span>|</span>
+                        @Html.ActionLink("继续", "EntryInfo", new { id = item.Id }) <span>|</span>
                     }
                     if (item.State == 2)
                     {
-                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id })<span>|</span>
+                        @Html.ActionLink("继续", "UploadFile", new { id = item.Id }) <span>|</span>
                     }
                     if (item.State == 3)
                     {
-                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id })<span>|</span>
-                        if (item.State < 6)
-                        {
-                            @Html.ActionLink("删除", "Delete", new { id = item.Id })
-                        }
+                        @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id }) <span>|</span>
+                    }
+                    if (item.State < 6)
+                    {
+                        @Ajax.ActionLink("删除", "Delete", new { id = item.Id, oType = 1 }, new AjaxOptions { HttpMethod = "post", Confirm = "确定要删除该数据？", UpdateTargetId = "dadaGrid" }, new { @style = "color:green" })
                     }
                 }
             </td>

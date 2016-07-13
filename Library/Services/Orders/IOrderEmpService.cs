@@ -14,7 +14,6 @@ namespace Services.Orders
         List<OrderEmployee> GetListByBid(int bid);
         List<OrderEmployee> GetListByOid(int oid);
         OrderEmployee GetByInfo(string idNumber, string name, int oid);
-
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);
         List<string> GetPdf(int oid);
         List<string> GetPaymentNoticePdf(int oid);

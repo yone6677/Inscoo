@@ -77,7 +77,14 @@
             <td>
                 @{ if (item.State < 6)
                     {
-                        @Html.ActionLink("删除", "Delete", new { id = item.Id })
+                        string role = ViewBag.role.ToLower();
+                        if (!string.IsNullOrEmpty(role))
+                        {
+                            if (role == "admin")
+                            {
+                                @Ajax.ActionLink("删除", "Delete", new { id = item.Id, oType = 2 }, new AjaxOptions { HttpMethod = "post", Confirm = "确定要删除该数据？", UpdateTargetId = "dadaGrid" }, new { @style = "color:green" })
+                            }
+                        }
                     }
                 }
 

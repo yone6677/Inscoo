@@ -89,7 +89,6 @@
                         getProduct(c, prodType);
                     }
                     function getProduct(e, p) {
-                        console.log(e + "/" + p);
                         if (p == "0") {
                             var radioName = "ProductType_" + e;
                             p = $("#" + radioName).val();
@@ -164,7 +163,6 @@
                             }
                         }
                         $("#productIds_" + e).val(ids);
-                        console.log(ids);
                     }
                     function reckonAmount(e) {
                         var total = 0;

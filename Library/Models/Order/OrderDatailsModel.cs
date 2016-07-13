@@ -14,6 +14,8 @@ namespace Models.Order
         }
         [DisplayName("方案名称")]
         public string Name { get; set; }
+        [DisplayName("订单编号")]
+        public string OrderNum { get; set; }
         [DisplayName("产品备注")]
         public string Memo { get; set; }
         [DisplayName("人数范围")]

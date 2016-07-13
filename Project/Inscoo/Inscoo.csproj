@@ -170,6 +170,7 @@
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
+    <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>

@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Claim\ClaimManagementDetail.cs" />
     <Compile Include="File\CarInsurance\CarInsurance.cs" />
-    <Compile Include="File\CarInsurance\CarInsuranceFile.cs" />
+    <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\BusinessLicense.cs" />
     <Compile Include="File\Archive.cs" />
     <Compile Include="File\BaseFile.cs" />

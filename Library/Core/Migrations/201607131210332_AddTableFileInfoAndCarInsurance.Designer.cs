@@ -7,13 +7,13 @@ namespace Core.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddTablesAboutCarInsurance : IMigrationMetadata
+    public sealed partial class AddTableFileInfoAndCarInsurance : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTablesAboutCarInsurance));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTableFileInfoAndCarInsurance));
         
         string IMigrationMetadata.Id
         {
-            get { return "201607131131178_AddTablesAboutCarInsurance"; }
+            get { return "201607131210332_AddTableFileInfoAndCarInsurance"; }
         }
         
         string IMigrationMetadata.Source

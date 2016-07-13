@@ -3,18 +3,12 @@ using System;
 
 namespace Domain
 {
-    public class CarInsuranceFile : BaseEntity
+    public class FileInfo : BaseEntity
     {
-        public CarInsuranceFile()
+        public FileInfo()
         {
             EditTime = DateTime.Now;
-            Type = 1;
         }
-
-        /// <summary>
-        /// excel 1  Einsurance 2
-        /// </summary>
-        public int Type { get; set; }
         /// <summary>
         /// 文件名
         /// </summary>
@@ -33,6 +27,5 @@ namespace Domain
 
         public int CarInsuranceId { set; get; }
         public DateTime EditTime { set; get; }
-        public virtual CarInsurance CarInsurance { set; get; }
     }
 }

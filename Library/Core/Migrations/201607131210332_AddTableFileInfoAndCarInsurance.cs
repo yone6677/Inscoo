@@ -3,18 +3,17 @@ namespace Core.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddTablesAboutCarInsurance : DbMigration
+    public partial class AddTableFileInfoAndCarInsurance : DbMigration
     {
         public override void Up()
         {
             DropForeignKey("dbo.BaseFile", "AppUserId", "dbo.AspNetUsers");
             DropIndex("dbo.BaseFile", new[] { "AppUserId" });
             CreateTable(
-                "dbo.CarInsuranceFile",
+                "dbo.FileInfo",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Type = c.Int(nullable: false),
                         Name = c.String(nullable: false, maxLength: 64),
                         Path = c.String(nullable: false, maxLength: 256),
                         Memo = c.String(maxLength: 512),
@@ -25,23 +24,7 @@ namespace Core.Migrations
                         CreateTime = c.DateTime(nullable: false),
                         IsDeleted = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.CarInsurance", t => t.CarInsuranceId, cascadeDelete: true)
-                .Index(t => t.CarInsuranceId);
-            
-            CreateTable(
-                "dbo.CarInsurance",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        AppUserId = c.String(maxLength: 128),
-                        Author = c.String(),
-                        CreateTime = c.DateTime(nullable: false),
-                        IsDeleted = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.AppUserId)
-                .Index(t => t.AppUserId);
+                .PrimaryKey(t => t.Id);
             
             AlterColumn("dbo.Navigation", "name", c => c.String(nullable: false, maxLength: 50));
             DropColumn("dbo.BaseFile", "AppUserId");
@@ -58,13 +41,8 @@ namespace Core.Migrations
             AddColumn("dbo.BaseFile", "EinsurancePath", c => c.String());
             AddColumn("dbo.BaseFile", "EinsuranceEditTime", c => c.DateTime());
             AddColumn("dbo.BaseFile", "AppUserId", c => c.String(maxLength: 128));
-            DropForeignKey("dbo.CarInsuranceFile", "CarInsuranceId", "dbo.CarInsurance");
-            DropForeignKey("dbo.CarInsurance", "AppUserId", "dbo.AspNetUsers");
-            DropIndex("dbo.CarInsurance", new[] { "AppUserId" });
-            DropIndex("dbo.CarInsuranceFile", new[] { "CarInsuranceId" });
             AlterColumn("dbo.Navigation", "name", c => c.String(nullable: false, maxLength: 16));
-            DropTable("dbo.CarInsurance");
-            DropTable("dbo.CarInsuranceFile");
+            DropTable("dbo.FileInfo");
             CreateIndex("dbo.BaseFile", "AppUserId");
             AddForeignKey("dbo.BaseFile", "AppUserId", "dbo.AspNetUsers", "Id");
         }

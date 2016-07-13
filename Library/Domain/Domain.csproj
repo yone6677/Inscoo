@@ -60,7 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Claim\ClaimManagementDetail.cs" />
-    <Compile Include="File\CarInsuranceExcel.cs" />
+    <Compile Include="File\CarInsurance.cs" />
+    <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\BusinessLicense.cs" />
     <Compile Include="File\Archive.cs" />
     <Compile Include="File\BaseFile.cs" />

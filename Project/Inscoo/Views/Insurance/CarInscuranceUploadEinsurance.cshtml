@@ -1,15 +1,15 @@
 ﻿@{
-    ViewBag.Title = "上传车险Excel";
+    ViewBag.Title = "上传车险电子保单";
 }
-@using (Html.BeginForm("CarInscuranceCreate", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CarInscuranceUploadEinsurance", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <input type="hidden" id="excelId" name="excelId" value="@ViewBag.ExcelId"/>
+    <input type="hidden" id="insuranceId" name="insuranceId" value="@ViewBag.InsuranceId" />
     <div class="form-horizontal formCreate">
         <br />
 
         <div class="form-group">
-            <label class="control-label col-md-3">上传Excel</label>
+            <label class="control-label col-md-3">添加电子保单</label>
             <div class="col-md-9">
                 <input type="file" name="excel" id="excel" required="" />
                 <input type="submit" class="btn btn-info" value="提交" />

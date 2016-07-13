@@ -97,6 +97,8 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\CarInsuranceMap.cs" />
+    <Compile Include="Mapping\FileInfoMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
@@ -134,6 +136,10 @@
     <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs" />
     <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.Designer.cs">
       <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.cs" />
+    <Compile Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.Designer.cs">
+      <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201607131145410_order_orderNum.cs" />
     <Compile Include="Migrations\201607131145410_order_orderNum.Designer.cs">
@@ -175,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607131145410_order_orderNum.resx">
       <DependentUpon>201607131145410_order_orderNum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.resx">
+      <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

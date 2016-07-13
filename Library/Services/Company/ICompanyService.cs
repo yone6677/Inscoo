@@ -3,6 +3,7 @@ using Domain;
 using Models;
 using System.Linq;
 using System.IO;
+using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Core.Pager;
 
@@ -34,6 +35,8 @@ namespace Services
         void DeletetById(int id);
         IPagedList<vCompanyList> GetCompanys(vCompanySearch company, int pageIndex = 1, int pageSize = 15);
         vCompanyEdit GetCompanyById(int id);
+
+        SelectList GetCompanySelectlistByUserId(string uId);
         /// <summary>
         /// 初始化企业名称下拉菜单
         /// </summary>

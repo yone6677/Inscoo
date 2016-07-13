@@ -551,7 +551,7 @@ namespace Inscoo.Controllers
                 }
                 if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
                 {
-                   TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
+                    TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
                     return RedirectToAction("EntryInfo", new { id = order.Id });
                 }
                 var batch = _orderBatchService.GetByOrderId(Id);
@@ -621,6 +621,7 @@ namespace Inscoo.Controllers
         public JsonResult GetCompanyInfo(int id)
         {
             var com = _svCompany.GetCompanyById(id);
+            if (com == null) return Json(null);
             return Json(new { com.Name, com.LinkMan, com.Address, com.Phone });
         }
         #endregion

@@ -47,15 +47,19 @@
             <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
         </li>
     </ul>
-    <div style="line-height: 2em; width: 45%; text-align: left; float: left;">
+    <div style="line-height:2em;width:45%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
-            <span class="text-danger">@ViewBag.error</span>
+            <span class="text-danger">@ViewBag.error</span><br />
+        }
+        @if (TempData["error"] != null)
+        {
+            <span class="text-danger">@TempData["error"]</span><br />
         }
         <span class="text-danger" id="error"></span>
     </div>
 }
-@using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm" }))
+@using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm", style = "display: none" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -141,11 +145,11 @@
     <div>
         @if (Model.State < 4)
         {
-        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+            <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
         }
         else
         {
-        <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
+            <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
         }
     </div>
 </div>
@@ -168,8 +172,8 @@
                 });
             InitCompanyList();
 
-            if (document.getElementById("isListExist") == null) {
-                jQuery("#EntryInfoForm").hide();
+            if (document.getElementById("isListExist") != null) {
+                jQuery("#EntryInfoForm").show();
             }
         });
         var count = @Model.IsUploadInfo

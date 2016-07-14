@@ -401,7 +401,7 @@ namespace Services
 
                 if (userRoles.Contains("PartnerChannel"))
                 {
-                    allRoles.RemoveAll(r => r.Name.Equals("BusinessDeveloper"));
+                    allRoles.RemoveAll(r => !r.Name.Equals("CompanyHR"));
                 }
 
                 if (userRoles.Contains("CompanyHR"))

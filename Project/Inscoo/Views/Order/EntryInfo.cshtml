@@ -46,7 +46,11 @@
             <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
         </li>
+        
     </ul>
+    <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
+            <span class="text-danger">如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
+    </div>
     <div style="line-height:2em;width:35%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
@@ -77,7 +81,7 @@
                 @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
             </li>
         </ul>
-        <p class="basic-information" style="margin-top: 140px;">
+        <p class="basic-information" style="margin-top: 70px;">
             <i class="fa fa-edit fa-2x"></i>基本信息
             <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
         </p>
@@ -132,9 +136,6 @@
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </li>
         </ul>
-
-
-
     </div>
 
 }
@@ -184,7 +185,9 @@
                 } else {
                     $("#error").text("生效时间最早为三日之后，请重新选择");
                 }
+                
             } else {
+                $('.text-danger-hide').hide();
                 $("#error").text("还未上传人员资料");
             }
         }

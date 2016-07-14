@@ -534,7 +534,7 @@ body {
     height: 4em;
 
     li {
-        width: 300px;
+        width: 33%;
         text-align: center;
         float: left;
         margin: 0 auto;
@@ -762,7 +762,6 @@ body {
             width: 20%;
             text-align: right;
         }
-
         li:nth-child(even) {
             width: 40%;
 
@@ -771,7 +770,7 @@ body {
                 margin: 0 auto;
             }
         }
-
+        
         li:last-child {
             text-align: left;
             width: 40%;
@@ -783,7 +782,60 @@ body {
     }
     
 }
+.orderEntryInfoBody-loadfile{
+    width: 100%;
+    font-size:13px;
+    overflow:hidden;
+    ul {
+        width: 100%;
+        height: 40px;
+        float:left;
 
+        li {
+            height: 28px;
+            line-height: 28px;
+            float: left;
+        }
+
+        li:first-child {
+            width: 20%;
+            text-align: right;
+        }
+        li:nth-child(2) {
+            width: 30%;
+        }
+        li:nth-child(3) {
+            width: 20%;
+        }
+        li:last-child {
+            text-align: center;
+            width: 30%;
+            font-size:16px;
+            ul{
+                width:100%;
+                li{
+                    width:100%
+                }
+            }
+            
+            span{
+
+                color:#83ba21;
+                height:28px;
+                line-height:28px;
+            }
+            a{
+                height:28px;
+                line-height:28px;
+            }
+        }
+        li>.form-control{
+            height:28px;
+            border-radius:0px;
+        }
+    }
+    
+}
 .orderEntryInfoBodyUpload {
     height: 34px;
     line-height: 34px;
@@ -813,16 +865,7 @@ body {
         width: 100%;
         margin: 0 auto;
 
-        dt {
-            width: 100%;
-            height: 35px;
-            line-height: 35px;
-            text-align: center;
-            background-color: @iscooBlue;
-            color: #fff;
-        }
-
-        dd {
+        div {
             ul {
                 width: 96%;
                 height: 2em;
@@ -853,6 +896,11 @@ body {
     }
 }
 
+div:after{
+    content:'';
+    display:block;
+    clear:both;
+}
 .confirmPayment {
     width: 100%;
 
@@ -925,7 +973,7 @@ body {
 
     dl {
         width: 85%;
-
+        
         dt {
             width: 15%;
             height: 35px;

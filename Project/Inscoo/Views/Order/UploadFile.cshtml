@@ -173,7 +173,7 @@
             $("#errorInfo").text("请先上传所有资料！");
         }
         function checkFile(e) {
-            return true;
+            //return true;
             var errorInfo = $("#errorInfo");
             var empFile = $("#EmpInfoPdfSeal").val();
             var blFile = $("#BusinessLicensePdfSeal").val();
@@ -187,7 +187,7 @@
                         return false;
                     }
                     pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar') {
+                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
                         errorInfo.text("员工名单只能上传压缩文件，请压缩后再重新上传！");
@@ -211,7 +211,7 @@
                         return false;
                     }
                     pf = (ppFile.substring(ppFile.lastIndexOf(".") + 1, ppFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar') {
+                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
                         errorInfo.text("投保单只能上传压缩文件，请压缩后再重新上传！");

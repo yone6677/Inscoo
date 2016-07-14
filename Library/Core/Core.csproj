@@ -170,6 +170,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.resx">
       <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607131246360_AddTableFileInfoAndCarInsurance.resx">
       <DependentUpon>201607131246360_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </EmbeddedResource>

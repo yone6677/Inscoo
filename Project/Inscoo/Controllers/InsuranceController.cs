@@ -43,36 +43,41 @@ namespace Inscoo.Controllers
         }
         public ActionResult MixProduct()
         {
-            var product = _mixProductService.GetAll();
-            var model = new List<RecommendationModel>();
-            foreach (var p in product)
-            {
-                var item = new RecommendationModel()
-                {
-                    Address = p.Address,
-                    AgeRange = p.AgeRange,
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    StaffRange = p.StaffRange
-                };
-                var itemModelList = new List<MixProductItemModel>();
-                foreach (var s in p.ProductMixItem)
-                {
-                    var itemModel = new MixProductItemModel()
-                    {
-                        CoverageSum = s.CoverageSum,
-                        Id = s.Id,
-                        mid = s.mid,
-                        OriginalPrice = s.OriginalPrice,
-                        SafefuardName = s.SafefuardName
-                    };
-                    itemModelList.Add(itemModel);
-                }
-                item.item = itemModelList;
-                model.Add(item);
-            }
-            return PartialView(model);
+            //var product = _mixProductService.GetAll();
+            //var model = new List<RecommendationModel>();
+            //foreach (var p in product)
+            //{
+            //    var item = new RecommendationModel()
+            //    {
+            //        Address = p.Address,
+            //        AgeRange = p.AgeRange,
+            //        Id = p.Id,
+            //        Name = p.Name,
+            //        Price = p.Price,
+            //        StaffRange = p.StaffRange,
+
+            //    };
+            //    var itemModelList = new List<MixProductItemModel>();
+            //    foreach (var s in p.ProductMixItem)
+            //    {
+            //        var itemModel = new MixProductItemModel()
+            //        {
+            //            CoverageSum = s.CoverageSum,
+            //            Id = s.Id,
+            //            mid = s.mid,
+            //            OriginalPrice = s.OriginalPrice,
+            //            SafefuardName = s.SafefuardName,
+            //            ProdMemo = s.product.ProdMemo,
+            //            ProdInsuredName = s.product.ProdInsuredName,
+            //            ProvisionPath = s.product.ProvisionPath
+            //        };
+            //        itemModelList.Add(itemModel);
+            //    }
+            //    item.item = itemModelList;
+            //    model.Add(item);
+            //}
+            //return PartialView(model);
+            return PartialView();
         }
         public ActionResult CustomizeProduct()
         {
@@ -193,7 +198,7 @@ namespace Inscoo.Controllers
                 {
                     MQTYPE = "UploadCarInscurance",
                     MQSUBJECT = "上传车险通知",
-                    MQMAILCONTENT = mailContent,
+                    MQMAILCONTENT = "",
                     MQMAILFRM = "redy.yone@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
@@ -229,7 +234,7 @@ namespace Inscoo.Controllers
                 {
                     MQTYPE = "UploadCarInscurance",
                     MQSUBJECT = "上传车险电子保单通知",
-                    MQMAILCONTENT = mailContent,
+                    MQMAILCONTENT = "",
                     MQMAILFRM = "redy.yone@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)

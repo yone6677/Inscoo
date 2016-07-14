@@ -65,7 +65,7 @@ namespace Services.Products
         {
             try
             {
-                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom&&p.IsDeleted==false).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
+                var list = _productRepository.TableNoTracking.Where(p => p.InsuredCom == insuredCom && p.IsDeleted == false).Select(p => new vProvisionPDF { InsuredCom = p.InsuredCom, SafeguardName = p.SafeguardName, ProvisionPath = p.ProvisionPath }).Distinct().ToList();
                 return list;
             }
             catch (Exception e)
@@ -191,14 +191,20 @@ namespace Services.Products
                                 p.SafeguardName,
                                 p.ProdType,
                                 p.InsuredCom,
-                                p.SafeguardCode
+                                p.SafeguardCode,
+                                p.ProdMemo,
+                                p.ProdInsuredName,
+                                p.ProvisionPath
                             } into g
                             select new
                             {
                                 SafeguardName = g.Key.SafeguardName,
                                 ProdType = g.Key.ProdType,
                                 InsuredCom = g.Key.InsuredCom,
-                                SafeguardCode = g.Key.SafeguardCode
+                                SafeguardCode = g.Key.SafeguardCode,
+                                g.Key.ProdMemo,
+                                g.Key.ProdInsuredName,
+                                g.Key.ProvisionPath,
                             };
                 if (gQuey.Any())
                 {
@@ -216,6 +222,10 @@ namespace Services.Products
                         productItem.SafeguardName = s.SafeguardName;
                         productItem.InsuredCom = s.InsuredCom;
                         productItem.SafeguardCode = s.SafeguardCode;
+                        productItem.ProdMemo = s.ProdMemo;
+                        productItem.ProdInsuredName = s.ProdInsuredName;
+                        productItem.ProvisionPath = s.ProvisionPath;
+
                         var CoverageSumList = new List<SelectListItem>();
                         var selectCove = slectList.Where(c => c.SafeguardName == s.SafeguardName && c.InsuredCom == s.InsuredCom && c.ProdType == s.ProdType && c.InsuredWho == InsuredWho);
                         foreach (var a in selectCove)

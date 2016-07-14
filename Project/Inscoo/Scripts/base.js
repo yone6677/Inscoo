@@ -26,13 +26,11 @@ function selectAll(e, subCheck) {
 }
 
 /*表格内？？？保险条款部分切换*/
-$(".toggle_color").click(function () {
+$(document).on('click',".toggle_color", function () {
     $(this).parent().parent().next().siblings().children('.hideDeclare').hide();
     $(this).parent().parent().next().children().toggle();
     $(this).parent().parent().siblings().children().children().removeClass('hide_color');
-    $(this).toggleClass('hide_color');
-    
-    
+    $(this).toggleClass('hide_color');  
 })
 
 /*体检详情*/
@@ -87,3 +85,17 @@ $(".mainNav>ul>li>a").click(function () {
     $(this).parent().parent().siblings().children().children('ul').removeClass('in').addClass('collapse');
     //$(this).next().addClass('in');
 });
+
+/*专属产品*/
+$(function () {
+    $(".look-more").on('mouseenter', function () {
+        $(this).next('.look-more-hide').slideDown();
+        $(this).slideUp();
+    });
+    $(".look-more-hide").on('mouseleave', function () {
+        $(this).slideUp();
+        $('.look-more').slideDown();
+    });
+})
+
+

@@ -13,7 +13,7 @@ namespace Core.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201607131217261_AddTableFileInfoAndCarInsurance"; }
+            get { return "201607131246360_AddTableFileInfoAndCarInsurance"; }
         }
         
         string IMigrationMetadata.Source

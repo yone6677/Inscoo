@@ -7,115 +7,411 @@
         <strong>选择一个方案</strong>
         <span>SELECT A PROGRAMME</span>
     </div>
-    
+
     <div class="inscooCase-body inscooCase-body-top">
         <div class="describe_name">中高端员工福利保险</div>
-        @{
-            var ids = "";
-            int icon = 1;
-            foreach (var item in Model)
-            {
-                if (icon == Model.Count())
-                {
-                    ids += item.Id;
-                }
-                else
-                {
-                    ids += item.Id + ",";
-                }
-
-                var src = "/Content/img/p" + icon + ".jpg";
-                icon++;
                 <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
                     <tbody>
                         <tr>
                             <td style="width:20%;padding:10px;">
                                 <div class="inscoo-programme-left" style="width:100%">
-                                    <a>
-                                        @*<img onclick="showDetails(@item.Id)" src="@src" class="img-circle" />*@
-                                        <img src="@src" class="img-circle" />
+                                    <a>                                    
+                                        <img src="/Content/img/p1.jpg" class="img-circle" />
                                     </a>
-                                    <p>  @Html.DisplayFor(modelItem => item.Name)</p>
+                                    <p>保酷计划一</p>
                                 </div>
                             </td>
                             <td style="width:60%">
-                                <div class="panel inscooCase inscooCase-extend" id="programme_@item.Id">
-                                    <div class="inscooCase-title-right">
-                                        <b>@item.Name</b>
+                                <div class="inscooCase-title-right look-more">
+                                    <h3>保酷计划一</h3>
+                                    <p><span class="fa-left">人身意外伤害保险保额</span><span class="f-right">500000</span></p>
+                                    <p><span class="fa-left">高端医疗保险保额</span><span class="f-right">500000</span></p>
+                                    <p>开放三甲医院特需门诊</p>
+                                </div>
+                                <div class="panel inscooCase inscooCase-extend look-more-hide" id="programme_1">
+                                    <div class="inscooCase-title-right inscooCase-title-right-title">
+                                        <p class="fa-left">医疗总保额：500000</p>
+                                        <p class="f-right">人身意外总保额：500000</p>
                                     </div>
                                     <div>
-                                        <table class="programme-details">
+                                        <table class="programme-details">                                         
                                             <tr>
-                                                @*<th>保障项目</th>
-                                                <th>保障额度</th>*@
-                                                <th style="color:#444">@Html.DisplayNameFor(model => model.StaffRange):@item.StaffRange</th>
-                                                <th style="color:#444">@Html.DisplayNameFor(model => model.AgeRange):@item.AgeRange</th>
-                                            </tr>
-                                            @foreach (var s in item.item)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        <span class="toggle_color show_color"></span>
-                                                        @s.SafefuardName
-                                                    </td>
-                                                    <td>@s.CoverageSum</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" class="hideDeclare" style="text-align:left">
-                                                        <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的.</span>&nbsp;&nbsp;
-                                                        <a class="">请查看保险条款</a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                            @*<tr>
-                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
-                                                <th style="color:#83BA21">@item.StaffRange</th>
-                                            </tr>
-                                            <tr>
-                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
-                                                <th style="color:#83BA21">@item.AgeRange</th>
-                                            </tr>*@
+                                                <td>
+                                                    <div class="programme-details-four programme-details-four-130">
+                                                        <table class="insurance-detail">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">住院</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>赔付比例</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>床位日限额</td>
+                                                                    <td>600元/天</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="programme-details-four programme-details-four-80">
+                                                        <table class="insurance-detail">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">医院范围</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>公立医院普通</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>三甲医院特需</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                   
+                                                </td>
+                                                <td>
+                                                    <div class="programme-details-four programme-details-four-130">
+                                                        <table class="insurance-detail">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">门诊</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>赔付比例</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>挂号费</td>
+                                                                    <td>无赔付</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>诊疗费</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>检查费</td>
+                                                                    <td>100%</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </div>
+                                                        <div class="programme-details-four programme-details-four-80">
+                                                            <table class="insurance-detail">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2">药品范围</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>甲乙类药品</td>
+                                                                        <td>100%</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>自费药</td>
+                                                                        <td>无赔付</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>  
+                                                 </td>
+                                            </tr>                                           
                                         </table>
-
                                     </div>
                                 </div>
                             </td>
-                            <td style="width:20%;background:#F5F5F5">
-                                @using (Html.BeginForm("Buy", "Order", FormMethod.Post))
-                                {
-                                    <div class="programme-price">@item.Price / 年</div>
-                                    <p class="programme-clause">
-
-                                        <input type="hidden" name="CustomizeProductId" value=@item.Id />
-                                        <input type="submit" value="立即购买" class="btn btn-success" />
-                                    </p>
-                                }
+                            <td style="width:20%;background:#F5F5F5">                              
+                                <div class="programme-price">3600元 / 年</div>
+                                <p class="programme-clause">
+                                    <input type="hidden" name="CustomizeProductId" value="2"/>
+                                    <input type="submit" value="立即购买" class="btn btn-success" />
+                                </p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            }
-            <input type="hidden" id="ids" value="@ids" />
-        }
+        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
+            <tbody>
+                <tr>
+                    <td style="width:20%;padding:10px;">
+                        <div class="inscoo-programme-left" style="width:100%">
+                            <a>
+                                <img src="/Content/img/p2.jpg" class="img-circle" />
+                            </a>
+                            <p>保酷计划二</p>
+                        </div>
+                    </td>
+                    <td style="width:60%">
+                        <div class="inscooCase-title-right look-more">
+                            <h3>保酷计划二</h3>
+                            <p><span class="fa-left">人身意外伤害保险保额</span><span class="f-right">1000000</span></p>
+                            <p><span class="fa-left">高端医疗保险保额</span><span class="f-right">500000</span></p>
+                            <p>开放三甲医院特需门诊</p>
+                        </div>
+                        <div class="panel inscooCase inscooCase-extend look-more-hide" id="programme_1">
+                            <div class="inscooCase-title-right inscooCase-title-right-title">
+                                <p class="fa-left">医疗总保额：1000000</p>
+                                <p class="f-right">人身意外总保额：500000</p>
+                            </div>
+                            <div>
+                                <table class="programme-details">
+                                    <tr>
+                                        <td>
+                                            <div class="programme-details-four programme-details-four-130">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">住院</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>赔付比例</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>床位日限额</td>
+                                                            <td>1000元/天</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="programme-details-four programme-details-four-80">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">医院范围</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>公立医院普通</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>三甲医院特需</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
+                                        </td>
+                                        <td>
+                                            <div class="programme-details-four programme-details-four-130">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">门诊</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>赔付比例</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>挂号费</td>
+                                                            <td>无赔付</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>诊疗费</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>检查费</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="programme-details-four programme-details-four-80">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">药品范围</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>甲乙类药品</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>自费药</td>
+                                                            <td>75%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width:20%;background:#F5F5F5">
+                        <div class="programme-price">6000元 / 年</div>
+                        <p class="programme-clause">
+                            <input type="hidden" name="CustomizeProductId" value="2" />
+                            <input type="submit" value="立即购买" class="btn btn-success" />
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
+            <tbody>
+                <tr>
+                    <td style="width:20%;padding:10px;">
+                        <div class="inscoo-programme-left" style="width:100%">
+                            <a>
+                                <img src="/Content/img/p3.jpg" class="img-circle" />
+                            </a>
+                            <p>保酷计划三</p>
+                        </div>
+                    </td>
+                    <td style="width:60%">
+                        <div class="inscooCase-title-right look-more">
+                            <h3>保酷计划三</h3>
+                            <p><span class="fa-left">人身意外伤害保险保额</span><span class="f-right">10000000</span></p>
+                            <p><span class="fa-left">高端医疗保险保额</span><span class="f-right">500000</span></p>
+                            <p>开放三甲医院特需门诊</p>
+                        </div>
+                        <div class="panel inscooCase inscooCase-extend look-more-hide" id="programme_1">
+                            <div class="inscooCase-title-right inscooCase-title-right-title">
+                                <p class="fa-left">医疗总保额：10000000</p>
+                                <p class="f-right">人身意外总保额：500000</p>
+                            </div>
+                            <div>
+                                <table class="programme-details">
+                                    <tr>
+                                        <td>
+                                            <div class="programme-details-four programme-details-four-130">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">住院</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>赔付比例</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>床位日限额</td>
+                                                            <td>无限额</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="programme-details-four programme-details-four-80">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">医院范围</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>公立医院普通</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>三甲医院特需</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>和睦家</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
+                                        </td>
+                                        <td>
+                                            <div class="programme-details-four programme-details-four-130">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">门诊</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>赔付比例</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>挂号费</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>诊疗费</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>检查费</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="programme-details-four programme-details-four-80">
+                                                <table class="insurance-detail">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">药品范围</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>甲乙类药品</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>自费药</td>
+                                                            <td>100%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width:20%;background:#F5F5F5">
+                        <div class="programme-price">18000元 / 年</div>
+                        <p class="programme-clause">
+                            <input type="hidden" name="CustomizeProductId" value="3" />
+                            <input type="submit" value="立即购买" onclick="clickBtn()" class="btn btn-success" />
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
 
 <script>
 
-    //function showDetails(e) {
-    //    var ary = new Array();
-    //    var ids = $('#ids').val();
-    //    ary = ids.split(',');
-    //    for (var i = 0; i < ary.length; i++) {
-    //        if (e == ary[i]) {
-    //            $('#programme_' + ary[i]).show();
-    //        }
-    //        else {
-    //            $('#programme_' + ary[i]).hide();
-    //        }
-    //    }
-    //}
+    function clickBtn() {
+        console.log(1000);
+
+    }
 </script>

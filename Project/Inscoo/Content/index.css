@@ -134,6 +134,7 @@ a.loginButton{
 }
 .floor1{
 	background: url(imgIndex/bg1.jpg) no-repeat center;
+    margin-top:70px;
 }
 .floor2{
 	background: url(imgIndex/bg2.png) no-repeat center;

@@ -225,7 +225,64 @@ namespace Services
             return result;
 
         }
-
+        public List<string> CopyFileByUrl(string url)
+        {
+            try
+            {
+                var result = new List<string>();
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+                var arry = url.Split('.');
+                var postfix = arry[1];
+                switch (postfix)
+                {
+                    case "jpge":
+                        savePath += "img/";
+                        break;
+                    case "jpg":
+                        savePath += "img/";
+                        break;
+                    case "bmp":
+                        savePath += "img/";
+                        break;
+                    case "gif":
+                        savePath += "img/";
+                        break;
+                    case "png":
+                        savePath += "img/";
+                        break;
+                    default:
+                        savePath = savePath += "doc/";
+                        break;
+                }
+                savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = _webHelper.GetTimeStamp();
+                var saveName = ts + "." + postfix;
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                string phyFile = _httpContext.Request.MapPath("~" + url);
+                File.Copy(phyFile, phyPath + saveName);//复制文件
+                result.Add(phyPath + saveName);//物理路径
+                result.Add(savePath + saveName);//虚拟路径
+                result.Add(savePath);//保存路径
+                result.Add(saveName);//文件名
+                result.Add(postfix);//后缀
+                return result;
+            }
+            catch(Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件复制失败");
+            }
+            return null;
+        }
         public virtual string MakeHtmlFile(string TempName)
         {
             return null;

@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Web;
 namespace Services.Orders
 {
     public class OrderEmpService : IOrderEmpService
@@ -22,8 +22,10 @@ namespace Services.Orders
         private readonly IFileService _fileService;
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderitemService;
+        private readonly HttpContextBase _httpContext;
+        private readonly IWebHelper _webHelper;
         public OrderEmpService(ILoggerService loggerService, IRepository<OrderEmployee> orderEmpRepository, IAuthenticationManager authenticationManager, IFileService fileService,
-            IOrderService orderService, IOrderItemService orderitemService)
+            IOrderService orderService, IOrderItemService orderitemService, HttpContextBase httpContext, IWebHelper webHelper)
         {
             _loggerService = loggerService;
             _orderEmpRepository = orderEmpRepository;
@@ -31,6 +33,8 @@ namespace Services.Orders
             _fileService = fileService;
             _orderService = orderService;
             _orderitemService = orderitemService;
+            _httpContext = httpContext;
+            _webHelper = webHelper;
         }
         public bool DeleteById(int id)
         {
@@ -133,6 +137,38 @@ namespace Services.Orders
             }
             return new List<OrderEmployee>();
         }
+        public decimal GetOrderTotalAmount(int oId)
+        {
+            try
+            {
+                var empList = new List<OrderEmployee>() { };
+                var order = _orderService.GetById(oId);
+                if (order.orderBatch.Any())
+                {
+                    foreach (var b in order.orderBatch)
+                    {
+                        var query = _orderEmpRepository.Table;
+                        query = query.Where(q => q.batch_Id == b.Id);
+                        if (query.Any())
+                        {
+                            foreach (var e in query)
+                            {
+                                empList.Add(e);
+                            }
+                        }
+                    }
+                }
+                if (empList.Count > 0)
+                {
+                    return empList.Sum(e => e.Premium);
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetTotalAmount");
+            }
+            return 0;
+        }
         public List<OrderEmployee> GetListByOid(int oid)
         {
             try
@@ -211,7 +247,7 @@ namespace Services.Orders
                     document.Open();
 
                     PdfPTable table = new PdfPTable(9);
-                    table.SetWidths(new float[] { 4, 8, 10, 10, 14, 8, 6, 6, 4 });
+                    table.SetWidths(new float[] { 4, 8, 3, 5, 14, 10, 11, 11, 4 });
 
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);
@@ -235,9 +271,9 @@ namespace Services.Orders
                         table.AddCell(new Phrase(item.Sex, font));
                         table.AddCell(new Phrase(item.IDType, font));
                         table.AddCell(new Phrase(item.IDNumber, font));
-                        table.AddCell(new Phrase(item.BirBirthday.ToShortDateString(), font));
-                        table.AddCell(new Phrase(item.StartDate.ToShortDateString(), font));
-                        table.AddCell(new Phrase(item.EndDate.ToShortTimeString(), font));
+                        table.AddCell(new Phrase(item.BirBirthday.ToLongDateString(), font));
+                        table.AddCell(new Phrase(item.StartDate.ToLongDateString(), font));
+                        table.AddCell(new Phrase(item.EndDate.ToLongDateString(), font));
                         table.AddCell(new Phrase(item.HasSocialSecurity, font));
                         index++;
                     }
@@ -314,6 +350,252 @@ namespace Services.Orders
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetPaymentNoticePdf");
+            }
+            return null;
+        }
+        public List<string> GetPolicyPdf(int oid)
+        {
+            try
+            {
+                var order = _orderService.GetById(oid);
+                var products = _orderitemService.GetList(oid);
+                string secondPdfName = null;
+                if (order != null)
+                {
+                    var paths = _fileService.GenerateFilePathBySuffix(".pdf");
+                    var stream = new FileStream(paths[0], FileMode.Create);
+                    var baseFont = OperationPDF.GetBaseFont();
+                    var font = OperationPDF.GetFont();
+                    var document = new Document();
+                    PdfWriter writer = PdfWriter.GetInstance(document, stream);
+                    document.Open();
+                    document.Add(new Phrase("B 投保单位信息", OperationPDF.GetFont("STSONG.ttf", 14, 1)));
+                    document.Add(new Phrase(string.Format("（加*处为必填事项，下同）"), font));
+                    PdfPTable table = new PdfPTable(6);
+                    table.WidthPercentage = 100;
+                    table.SetWidths(new int[] { 17, 18, 12, 18, 13, 22 });
+                    PdfPCell cell = new PdfPCell();
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell.FixedHeight = 22;
+                    cell.Phrase = new Phrase("*投保单位全称", font);
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase(order.CompanyName, font);
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*行业类别", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*组织机构代码", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("企业性质", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*单位地址", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    //公司地址
+                    cell.Phrase = new Phrase(order.Address, font);
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*邮政编码", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*联系部门", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*联系人", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase(order.Linkman, font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*联系电话", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase(order.PhoneNumber, font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*投保日期", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase(order.StartDate.ToLongDateString(), font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*参保人数", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase(order.InsuranceNumber.ToString(), font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("*单位人数", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    cell.Phrase = new Phrase("", font);
+                    cell.Colspan = 1;
+                    table.AddCell(cell);
+                    document.Add(table);
+                    /**/
+                    decimal totalAmount = GetOrderTotalAmount(oid);//订单总额 包括已减保
+                    document.Add(new Phrase("C 险种保障信息", OperationPDF.GetFont("STSONG.ttf", 14, 1)));
+                    document.Add(new Phrase(string.Format("（可附详细清单）"), font));
+                    PdfPTable table2 = new PdfPTable(4);
+                    table2.WidthPercentage = 100;
+                    table2.SetWidths(new int[] { 40, 20, 20, 20 });
+                    PdfPCell cell2 = new PdfPCell();
+                    cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell2.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell2.FixedHeight = 22;
+                    cell2.Phrase = new Phrase("*险种名称", font);
+                    cell2.Colspan = 1;
+                    cell2.Rowspan = 2;
+                    table2.AddCell(cell2);
+                    cell2.Rowspan = 1;
+                    cell2.Phrase = new Phrase("*每个被保险人保额及分类", font);
+                    cell2.Colspan = 3;
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("费用", font);
+                    cell2.Colspan = 1;
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("免赔", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("给付比例", font);
+                    table2.AddCell(cell2);
+                    foreach (var p in products)
+                    {
+                        cell2.Phrase = new Phrase(p.SafeguardName, font);
+                        table2.AddCell(cell2);
+                        cell2.Phrase = new Phrase(p.Price.ToString(), font);
+                        table2.AddCell(cell2);
+                        cell2.Phrase = new Phrase(p.CoverageSum, font);
+                        table2.AddCell(cell2);
+                        cell2.Phrase = new Phrase(p.PayoutRatio, font);
+                        table2.AddCell(cell2);
+                    }
+                    cell2.Phrase = new Phrase("每人保费", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase(order.AnnualExpense.ToString() + " 元", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("人数", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase(order.InsuranceNumber.ToString() + " 人", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("小计", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase(totalAmount.ToString() + " 元", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
+                    document.Add(table2);
+                    PdfPTable table3 = new PdfPTable(4);
+                    table3.WidthPercentage = 100;
+                    table3.SetWidths(new int[] { 16, 22, 14, 48 });
+                    PdfPCell cell3 = new PdfPCell();
+                    cell3.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell3.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell3.FixedHeight = 22;
+                    cell3.Phrase = new Phrase("*保额等级划分", font);
+                    cell3.Colspan = 1;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("□统一标准 □按职务级别 □按工种 □按工资 □其它方式（详细说明）", font);
+                    cell3.Colspan = 3;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("*保险费合计", font);
+                    cell3.Colspan = 1;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("（大写）" + _webHelper.CmycurD(totalAmount) + "（小写）" + totalAmount.ToString() + " 元", font);
+                    cell3.Colspan = 3;
+                    cell3.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("*保险金额合计", font);
+                    cell3.Colspan = 1;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("（大写）                                            （小写）", font);
+                    cell3.Colspan = 3;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("*保险期间", font);
+                    cell3.Colspan = 1;
+                    cell3.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase(string.Format("自 {0} 年 {1} 月 {2} 日零时起至 {3} 年 {4} 月 {5} 日二十四时止", order.StartDate.Year,
+                        order.StartDate.Month, order.StartDate.Day, order.EndDate.Year, order.EndDate.Month, order.EndDate.Day), font);
+                    cell3.Colspan = 3;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("*争议处理方式", font);
+                    cell3.Colspan = 1;
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("□诉讼    □仲裁  ", font);
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("仲裁机构", font);
+                    table3.AddCell(cell3);
+                    cell3.Phrase = new Phrase("", font);
+                    table3.AddCell(cell3);
+                    document.Add(table3);
+                    document.Close();
+                    secondPdfName = paths[1];
+                }
+                if (!string.IsNullOrEmpty(secondPdfName))
+                {
+                    var paths = _fileService.GenerateFilePathBySuffix(".pdf");
+                    var stream = new FileStream(paths[0], FileMode.Create);
+                    var baseFont = OperationPDF.GetBaseFont();
+                    var font = OperationPDF.GetFont();
+                    var document = new Document();
+                    PdfWriter writer = PdfWriter.GetInstance(document, stream);
+                    document.Open();
+
+                    PdfContentByte cb = writer.DirectContent;
+                    PdfImportedPage newPage;
+                    /**/
+                    List<string> mergePdf = new List<string>() {
+                        "/Archive/Template/投保单1.pdf",
+                        secondPdfName,
+                        "/Archive/Template/投保单2.pdf"
+                    };
+                    for (int j = 0; j < mergePdf.Count; j++)
+                    {
+                        PdfReader reader = new PdfReader(_httpContext.Request.MapPath("~" + mergePdf[j]));
+                        var totalPages = reader.NumberOfPages;
+                        for (int i = 1; i <= totalPages; i++)
+                        {
+                            document.NewPage();
+                            newPage = writer.GetImportedPage(reader, i);
+                            cb.AddTemplate(newPage, 1f, 0, 0, 1f, 0, 0);
+                        }
+                    }
+                    document.Close();
+                    return paths;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetPolicyPdf");
             }
             return null;
         }

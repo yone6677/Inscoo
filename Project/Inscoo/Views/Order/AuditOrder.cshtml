@@ -226,6 +226,7 @@
                  var ts = DateTime.Now.ToUniversalTime() - DateTime.Parse("1970-1-1");
              }
             var nowDate=@ts.TotalMilliseconds.ToString("0");
+            startdate=startdate.replace("年","").replace("月","").replace("日","");
             var arr=new Array();
             if(startdate.indexOf("-")>0){
                 arr = startdate.split("-");

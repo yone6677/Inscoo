@@ -68,5 +68,11 @@ namespace Services
         /// <param name="url">URL</param>
         /// <param name="fileType">文件类型</param>
         void DownloadFile(string url, string fileType = null);
+        /// <summary>
+        /// 金额转换汉字大写
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        string CmycurD(decimal num);
     }
 }

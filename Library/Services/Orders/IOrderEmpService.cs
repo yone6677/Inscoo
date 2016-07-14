@@ -10,6 +10,12 @@ namespace Services.Orders
         bool Insert(OrderEmployee item);
         bool DeleteById(int id);
         bool Update(OrderEmployee item);
+        /// <summary>
+        /// 获取订单总额，减保人员也算在内
+        /// </summary>
+        /// <param name="oId"></param>
+        /// <returns></returns>
+        decimal GetOrderTotalAmount(int oId);
         OrderEmployee GetById(int id);
         List<OrderEmployee> GetListByBid(int bid);
         List<OrderEmployee> GetListByOid(int oid);
@@ -17,5 +23,11 @@ namespace Services.Orders
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);
         List<string> GetPdf(int oid);
         List<string> GetPaymentNoticePdf(int oid);
+        /// <summary>
+        /// 产生投保单
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        List<string> GetPolicyPdf(int oid);
     }
 }

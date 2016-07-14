@@ -738,13 +738,31 @@ namespace Inscoo.Controllers
             {
                 var model = new UploadInfoModel();
                 model.Id = id;
-                model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                // model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
                 var order = _orderService.GetById(id);
                 if (order.State > 1)
                 {
                     var orderBatch = _orderBatchService.GetByOrderId(id);
                     if (orderBatch != null)
                     {
+                        if (orderBatch.PolicyPDF == 0)
+                        {
+                            var virpath = _orderEmpService.GetPolicyPdf(id);//产生投保单PDF文件
+                            if (virpath.Count > 0)
+                            {
+                                var fid = _archiveService.InsertByUrl(virpath, FileType.PolicySeal.ToString(), id, "投保单PDF");
+                                orderBatch.PolicyPDF = fid;
+                                if (_orderBatchService.Update(orderBatch))
+                                {
+                                    model.InsurancePolicyTemp = virpath[1];
+                                }
+                            }
+                        }
+                        else//已生成投保单PDF文件
+                        {
+                            var archive = _archiveService.GetById(orderBatch.PolicyPDF);
+                            model.InsurancePolicyTemp = archive.Url;
+                        }
                         if (orderBatch.EmpInfoFilePDF == 0)//还未生成PDF
                         {
                             var virpath = _orderEmpService.GetPdf(id);//产生PDF文件
@@ -762,21 +780,21 @@ namespace Inscoo.Controllers
                         {
                             var archive = _archiveService.GetById(orderBatch.EmpInfoFilePDF);
                             model.EmpInfoFilePDFUrl = archive.Url;
-                            if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
-                            {
-                                model.HasEmpInfoFilePDFSeal = true;
-                                model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
-                            }
-                            if (order.BusinessLicense > 0)//已上传营业执照
-                            {
-                                model.HasBusinessLicense = true;
-                                model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
-                            }
-                            if (orderBatch.PolicySeal > 0)//已上传投保单
-                            {
-                                model.HasInsurancePolicy = true;
-                                model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
-                            }
+                        }
+                        if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
+                        {
+                            model.HasEmpInfoFilePDFSeal = true;
+                            model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
+                        }
+                        if (order.BusinessLicense > 0)//已上传营业执照
+                        {
+                            model.HasBusinessLicense = true;
+                            model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
+                        }
+                        if (orderBatch.PolicySeal > 0)//已上传投保单
+                        {
+                            model.HasInsurancePolicy = true;
+                            model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
                         }
                         return View(model);
                     }

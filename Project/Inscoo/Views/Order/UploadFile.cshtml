@@ -37,7 +37,7 @@
             <input type="file" id="BusinessLicensePdfSeal" name="BusinessLicensePdfSeal" />
         </li>
         <li>
-            <input type="submit" value="上传" class="btn btn-default" />
+            <input type="submit" value="上传"  required="" class="btn btn-default" />
             <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
         </li>
         <li>
@@ -72,10 +72,10 @@
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />
+            <input type="file" id="EmpInfoPdfSeal" required="" name="EmpInfoPdfSeal" />
         </li>
         <li>
-            <input type="submit" value="上传" class="btn btn-default" />
+            <input type="submit" value="上传" required="" class="btn btn-default" />
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
         </li>
         <li>
@@ -110,7 +110,7 @@
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />
+            <input type="file" id="PolicyPdfSeal" required="" name="PolicyPdfSeal" />
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
@@ -140,8 +140,8 @@
 <div style="height:5em;width:100%;height:auto;">
     <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
-        <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF/Doc或者压缩文件</span><br />
-        <span style="color:gray">2.员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
+        <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式文件</span><br />
+        <span style="color:gray">2.员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式文件</span><br />
         <span style="color:gray">3.如果文件超过2M,请将文件压缩后上传</span><br />
         <span class="text-danger" id="errorInfo"></span>
     </div>
@@ -173,6 +173,7 @@
             $("#errorInfo").text("请先上传所有资料！");
         }
         function checkFile(e) {
+            return true;
             var errorInfo = $("#errorInfo");
             var empFile = $("#EmpInfoPdfSeal").val();
             var blFile = $("#BusinessLicensePdfSeal").val();

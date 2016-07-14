@@ -833,6 +833,10 @@ body {
 .Search dl dd p input:hover {
   background-color: #469B46;
 }
+.company-list {
+  overflow: hidden;
+  margin-bottom: 0px;
+}
 .orderDetails {
   width: 100%;
   margin: .5em auto;

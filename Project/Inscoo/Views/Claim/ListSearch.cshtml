@@ -48,6 +48,17 @@
     </div>
 }
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
+        jQuery(function () {
+            jQuery('#ClaimAccdtDateBegin')
+                .datepicker({
+                    endDate:'@Model.ClaimAccdtDateEnd.ToShortDateString()'
+                });
+            jQuery("#ClaimAccdtDateEnd")
+                .datepicker({
+                    endDate:'@Model.ClaimAccdtDateEnd.ToShortDateString()'
+                });
+        });
     </script>
 }

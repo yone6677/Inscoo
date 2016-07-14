@@ -10,6 +10,7 @@ using Services.Orders;
 using Services.Products;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -850,6 +851,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id, int uType = 0)
         {
+            if (!CheckFileInfo(EmpInfoPdfSeal, "EmpInfoPdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (EmpInfoPdfSeal != null && Id > 0)
             {
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
@@ -906,6 +908,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadBusinessLicensePdf(HttpPostedFileBase BusinessLicensePdfSeal, int Id)
         {
+            if (!CheckFileInfo(BusinessLicensePdfSeal, "BusinessLicensePdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (BusinessLicensePdfSeal != null && Id > 0)
             {
                 var order = _orderService.GetById(Id);
@@ -1595,6 +1598,28 @@ namespace Inscoo.Controllers
                     break;
             }
             return RedirectToAction(action);
+        }
+        #endregion
+
+        #region private
+
+        bool CheckFileInfo(HttpPostedFileBase file, string type)
+        {
+            if (file == null || string.IsNullOrEmpty(file.FileName)) return false;
+            var size = file.ContentLength;
+            if (size > 2 * 1024 * 1024) return false;
+            var suffix = Path.GetExtension(file.FileName).ToUpper().Substring(1);
+            if (type == "BusinessLicensePdf")
+            {
+
+                return ("JPG/PNG/PDF/DOC/ZIP/RAR").Split('/').Contains(suffix);
+
+            }
+            if (type == "EmpInfoPdf")
+            {
+                return ("JPG/PNG/PDF/DOC/ZIP/RAR").Split('/').Contains(suffix);
+            }
+            return true;
         }
         #endregion
     }

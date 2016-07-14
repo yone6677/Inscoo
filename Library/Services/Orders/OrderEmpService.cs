@@ -332,18 +332,24 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(order.InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("金额合计", font));
-                    table.AddCell(new PdfPCell() { Phrase = new Phrase((order.InsuranceNumber * order.AnnualExpense) + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
+                    decimal totalAmount = GetOrderTotalAmount(oid);//订单总额 包括已减保
+                    table.AddCell(new PdfPCell() { Phrase = new Phrase(totalAmount + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("保险期间", font));
                     var yearRange = string.Format("一年（{0}-{1}）", order.StartDate.ToShortDateString(), order.EndDate.ToShortDateString());
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(yearRange, font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.SpacingAfter = 30;
                     document.Add(table);
-                    document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号（后台自动生成）\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                    document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
                     document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
-                    document.Close();
+                    var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
+                    Image gif = Image.GetInstance(img + "gongzhang.jpg");
+                    gif.ScalePercent(15f);
+                    gif.Alignment = Element.ALIGN_RIGHT;
+                    document.Add(gif);
 
+                    document.Close();
                     return paths;
                 }
             }
@@ -353,6 +359,34 @@ namespace Services.Orders
             }
             return null;
         }
+
+        //public void ss()
+        //{
+        //    string pdfpath = Server.MapPath("PDFs");
+        //    string imagepath = Server.MapPath("Images");
+        //    Document doc = new Document();
+        //    try {
+        //        PdfWriter.GetInstance(doc, new FileStream(pdfpath + "/Images.pdf", FileMode.Create));
+        //        doc.Open();
+        //        doc.Add(new Paragraph("GIF"));
+        //        Image gif = Image.GetInstance(imagepath + "/mikesdotnetting.gif");
+        //        doc.Add(gif);
+        //    }
+        //    catch (DocumentException dex)
+        //    {
+        //        Response.Write(dex.Message);
+        //    }
+        //    catch (IOException ioex)
+        //    {
+        //        Response.Write(ioex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write(ex.Message);
+        //    }
+        //    finally { doc.Close(); }
+        //}
+
         public List<string> GetPolicyPdf(int oid)
         {
             try

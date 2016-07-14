@@ -184,7 +184,10 @@
                             <a href=@item.EmpInfoFileSeal target="_blank">下载</a>
                             if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
                             {
-                                <span> |</span><a href="#" data-toggle="modal" data-target="#EmpInfoFileSealUpload">重新上传</a>
+                                if (item.State == 0 || item.State == 1 || item.State == 3)
+                                {
+                                    <span> |</span><a href="#" data-toggle="modal" data-target="#EmpInfoFileSealUpload">重新上传</a>
+                                }
                             }
                         }
                     </dd>
@@ -201,7 +204,10 @@
                             <a href=@item.PolicySeal target="_blank">下载</a>
                             if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
                             {
-                                <span> |</span><a href="#" data-toggle="modal" data-target="#PolicySealUpload">重新上传</a>
+                                if (item.State == 0 || item.State == 1 || item.State == 3)
+                                {
+                                    <span> |</span><a href="#" data-toggle="modal" data-target="#PolicySealUpload">重新上传</a>
+                                }
                             }
                         }
                     </dd>

@@ -138,11 +138,10 @@
     </div>
 
 }
-<div class="orderConfirmBodyNext">
-    <div>
-        <a href="/">返回</a>
-    </div>
-    <div>
+<div class="orderConfirmBodyNext" style="text-align:center;">
+    @*<div>
+        <a href="/Order/Buy/@Model.Id">返回</a>
+    </div>*@
         @if (Model.State < 4)
         {
             <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
@@ -151,7 +150,6 @@
         {
             <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
         }
-    </div>
 </div>
 @using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
 {

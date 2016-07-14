@@ -19,8 +19,9 @@ namespace Services.Orders
         private readonly IAppUserService _appUserService;
         private readonly IAppRoleService _appRoleService;
         private readonly IGenericAttributeService _genericAttributeService;
+        private readonly IOrderBatchService _orderBatchService;
         public OrderService(ILoggerService loggerService, IRepository<Order> orderRepository, IAuthenticationManager authenticationManager, IAppUserService appUserService,
-            IGenericAttributeService genericAttributeService, IAppRoleService appRoleService)
+            IGenericAttributeService genericAttributeService, IAppRoleService appRoleService, IOrderBatchService orderBatchService)
         {
             _loggerService = loggerService;
             _orderRepository = orderRepository;
@@ -28,6 +29,7 @@ namespace Services.Orders
             _appUserService = appUserService;
             _genericAttributeService = genericAttributeService;
             _appRoleService = appRoleService;
+            _orderBatchService = orderBatchService;
         }
         public bool Delete(Order item)
         {
@@ -186,7 +188,7 @@ namespace Services.Orders
                         StartDate = s.StartDate,
                         StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
                         State = s.State,
-                        BatchState = s.orderBatch.Where(b => b.InsurerConfirmDate == DateTime.MinValue).Any()
+                        BatchState = _orderBatchService.GetById(s.orderBatch.Max(b => b.Id)).BState
                     }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }

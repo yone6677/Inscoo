@@ -12,6 +12,7 @@ namespace Core.Mapping
             Property(c => c.Key).IsRequired().HasMaxLength(20);
             Property(c => c.KeyGroup).IsRequired().HasMaxLength(20);
             Property(c => c.Value).IsRequired().HasMaxLength(50);
+            Property(c => c.Sequence).IsOptional();
         }
     }
 }

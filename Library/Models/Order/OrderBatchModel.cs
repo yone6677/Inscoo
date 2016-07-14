@@ -9,6 +9,7 @@ namespace Models.Order
         public string BNum { get; set; }
         [DisplayName("状态")]
         public string BState { get; set; }
+        public int State { get; set; }
         [DisplayName("人员资料")]
         public string EmpInfoFile { get; set; }
         [DisplayName("人员资料盖章PDF")]

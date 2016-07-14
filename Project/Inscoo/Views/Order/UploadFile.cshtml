@@ -140,7 +140,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
     <div>
-        <a href="/">返回</a>
+        <a href="/Order/EntryInfo/@Model.Id ">返回</a>
     </div>
     <div>
         @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)

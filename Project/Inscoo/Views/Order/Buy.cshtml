@@ -51,7 +51,7 @@
                         {
                             foreach (var item in Model.ProdItem)
                             {
-                                <tr  class="table-style-control">
+                                <tr class="table-style-control">
                                     <td>@item.SafeguardName</td>
                                     <td>@item.CoverageSum</td>
                                     <td>@item.PayoutRatio</td>
@@ -100,8 +100,8 @@
                         <select disabled="disabled" class="product-select">
                             <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
                         </select>
-                       @* <span>@Model.StaffRange</span>*@
-                        
+                        @* <span>@Model.StaffRange</span>*@
+
                     </li>
                 </ul>
                 <ul>
@@ -170,14 +170,7 @@
             </dd>
             <dd class="orderConfirmBodyNext">
                 <div>
-                    @if (string.IsNullOrEmpty(Model.OrderName))
-                    {
-                        <a href="/Insurance/CustomizeProduct">返回</a>
-                    }
-                    else
-                    {
-                        <a href="/Insurance/index">返回</a>
-                    }
+                    <a href="/Insurance/CustomizeProduct">返回</a>
                 </div>
                 <div>
                     <input type="submit" value="下一步" class="orderConfirmNextSubmit" />

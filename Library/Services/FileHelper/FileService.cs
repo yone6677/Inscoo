@@ -210,7 +210,7 @@ namespace Services
             //保存路径
             string phyPath = _httpContext.Request.MapPath("~" + savePath);
             //新文件名
-            var ts = _webHelper.GetTimeStamp();
+            var ts = _webHelper.GetTimeStamp(null, false);
             var saveName = ts + postfix;
             //如果不存在,创建文件夹    
             if (!Directory.Exists(phyPath))

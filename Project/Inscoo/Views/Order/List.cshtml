@@ -31,18 +31,12 @@
 
     @foreach (var item in Model)
     {
-
-        //var cssClass = "";
-        //if (item.State < 3)
-        //{
-        //    cssClass = "active";
-        //}
-        //else
-        //{
-        //    cssClass = "success";
-        //}
-        //<tr class=@cssClass>
-        <tr>
+        var cssClass = "";
+        if (item.BatchState == 0 || item.BatchState == 1 || item.BatchState == 3)
+        {
+            cssClass = "success";
+        }
+        <tr class=@cssClass>
             <td>
                 <a href="/Order/Details/@item.Id">@item.Name</a>
             </td>

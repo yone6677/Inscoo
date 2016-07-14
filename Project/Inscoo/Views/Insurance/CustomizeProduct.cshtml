@@ -10,7 +10,7 @@
             if (Model.CompanyList.Count > 0)
             {
                 int i = 0;
-                foreach (var s in Model.CompanyList)
+                foreach (var s in Model.CompanyList.OrderBy(s => s.Sequence))
                 {
                     if (i == 0)
                     {
@@ -33,7 +33,7 @@
         @{
             var n = 0;
             var compangName = "";
-            foreach (var s in Model.CompanyList)
+            foreach (var s in Model.CompanyList.OrderBy(s => s.Sequence))
             {
                 var radioName = "ProductType_" + s.Value;//产品类型ID
                 var ProductName = "Product_" + s.Value;//产品列表ID

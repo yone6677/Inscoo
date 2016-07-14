@@ -148,7 +148,15 @@
                             @Html.LabelFor(model => model.PolicyNumber)
                         </li>
                         <li>
-                            @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @if (string.IsNullOrEmpty(Model.PolicyNumber))
+                            {
+                                @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            }
+
                         </li>
                         <li>
                             @Html.ValidationMessageFor(model => model.PolicyNumber, "", new { @class = "text-danger" })
@@ -201,8 +209,13 @@
             }
             if(e == 2){
                 var PolicyNumber=$("#PolicyNumber").val();
-                if(PolicyNumber.length<3){
+                var CourierNumber=$("#CourierNumber").val();
+                if(PolicyNumber.length<2){
                     error.text("请填写保单号码");
+                    return;
+                }
+                if(CourierNumber.length<2){
+                    error.text("请填写快递单号");
                     return;
                 }
                 from.submit();

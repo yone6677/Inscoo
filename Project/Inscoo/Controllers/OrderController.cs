@@ -34,9 +34,10 @@ namespace Inscoo.Controllers
         private readonly IAppRoleService _appRoleService;
         private readonly IFileService _fileService;
         private readonly ICompanyService _svCompany;
+        private readonly IWebHelper _webHelper;
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany, IWebHelper webHelper)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -52,6 +53,7 @@ namespace Inscoo.Controllers
             _fileService = fileService;
             _svCompany = svCompany;
             _orderEmpTempService = orderEmpTempService;
+            _webHelper = webHelper;
         }
         #endregion
         #region 订单管理
@@ -366,6 +368,9 @@ namespace Inscoo.Controllers
                 order.StaffRange = model.StaffRange;
                 order.TiYong = model.TiYong;
                 order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
+                var ts = DateTime.Now - DateTime.MinValue;
+                var ary = ts.TotalMilliseconds.ToString().Split('.');
+                order.OrderNum = "Ins" + ary[0];
                 int result = _orderService.Insert(order);
                 if (result > 0)//写产品&批次
                 {
@@ -929,6 +934,7 @@ namespace Inscoo.Controllers
                 model.StartDate = order.StartDate.ToShortDateString();
                 model.State = _genericAttributeService.GetByKey(null, "orderState", order.State.ToString()).Key;
                 model.Role = role;
+                model.OrderNum = order.OrderNum;
                 model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
                 {
                     CoverageSum = p.CoverageSum,
@@ -1054,8 +1060,6 @@ namespace Inscoo.Controllers
                         var mid = batch.Max(o => o.Id);
                         batch = batch.Where(b => b.Id == mid);
                     }
-
-
                     if (batch.Any())
                     {
                         var user = _appUserService.GetCurrentUser();
@@ -1074,6 +1078,7 @@ namespace Inscoo.Controllers
                         model.Role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
                         model.UserCompany = user.CompanyName;
                         model.Price = item.orderEmp.Sum(e => e.Premium) + empTempAmount; ;
+                        model.PolicyNumber = order.PolicyNumber;
                         return PartialView(model);
                     }
                 }
@@ -1278,6 +1283,22 @@ namespace Inscoo.Controllers
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
                             item.StartDate = changeDate;
                             item.EndDate = order.EndDate;
+                            if (!string.IsNullOrEmpty(Cells["H" + i].Value.ToString()))
+                            {
+                                item.BankCard = Cells["H" + i].Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                throw new Exception("人员" + Cells["A" + i].Value.ToString() + "开户行未填写");
+                            }
+                            if (!string.IsNullOrEmpty(Cells["I" + i].Value.ToString()))
+                            {
+                                item.BankName = Cells["I" + i].Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                throw new Exception("人员" + Cells["A" + i].Value.ToString() + "银行账号未填写");
+                            }
                         }
                         if (insType == "减保")
                         {
@@ -1289,6 +1310,14 @@ namespace Inscoo.Controllers
                             item.Premium = useAmount - order.AnnualExpense;//未使用金额
                             item.StartDate = order.StartDate;
                             item.EndDate = changeDate;
+                            if (!string.IsNullOrEmpty(Cells["H" + i].Value.ToString()))
+                            {
+                                item.BankCard = Cells["H" + i].Value.ToString().Trim();
+                            }
+                            if (!string.IsNullOrEmpty(Cells["I" + i].Value.ToString()))
+                            {
+                                item.BankName = Cells["I" + i].Value.ToString().Trim();
+                            }
                         }
                         item.Relationship = "本人";
                         item.Name = Cells["A" + i].Value.ToString().Trim();
@@ -1296,10 +1325,14 @@ namespace Inscoo.Controllers
                         item.IDNumber = Cells["C" + i].Value.ToString().Trim();
                         item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
                         item.Sex = Cells["G" + i].Value.ToString().Trim();
-                        item.BankCard = Cells["H" + i].Value.ToString().Trim();
-                        item.BankName = Cells["I" + i].Value.ToString().Trim();
-                        item.PhoneNumber = Cells["J" + i].Value.ToString().Trim();
-                        item.Email = Cells["K" + i].Value.ToString().Trim();
+                        if (!string.IsNullOrEmpty(Cells["J" + i].Value.ToString()))
+                        {
+                            item.PhoneNumber = Cells["J" + i].Value.ToString().Trim();
+                        }
+                        if (!string.IsNullOrEmpty(Cells["K" + i].Value.ToString()))
+                        {
+                            item.Email = Cells["K" + i].Value.ToString().Trim();
+                        }
                         item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
 
                         eList.Add(item);

@@ -54,7 +54,8 @@ namespace Inscoo.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Price = p.Price,
-                    StaffRange = p.StaffRange
+                    StaffRange = p.StaffRange,
+
                 };
                 var itemModelList = new List<MixProductItemModel>();
                 foreach (var s in p.ProductMixItem)
@@ -65,7 +66,10 @@ namespace Inscoo.Controllers
                         Id = s.Id,
                         mid = s.mid,
                         OriginalPrice = s.OriginalPrice,
-                        SafefuardName = s.SafefuardName
+                        SafefuardName = s.SafefuardName,
+                        ProdMemo = s.product.ProdMemo,
+                        ProdInsuredName = s.product.ProdInsuredName,
+                        ProvisionPath = s.product.ProvisionPath
                     };
                     itemModelList.Add(itemModel);
                 }
@@ -193,7 +197,7 @@ namespace Inscoo.Controllers
                 {
                     MQTYPE = "UploadCarInscurance",
                     MQSUBJECT = "上传车险通知",
-                    MQMAILCONTENT = mailContent,
+                    MQMAILCONTENT = "",
                     MQMAILFRM = "redy.yone@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
@@ -229,7 +233,7 @@ namespace Inscoo.Controllers
                 {
                     MQTYPE = "UploadCarInscurance",
                     MQSUBJECT = "上传车险电子保单通知",
-                    MQMAILCONTENT = mailContent,
+                    MQMAILCONTENT = "",
                     MQMAILFRM = "redy.yone@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)

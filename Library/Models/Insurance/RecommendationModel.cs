@@ -26,5 +26,7 @@ namespace Models.Insurance
         public string AgeRange { get; set; }
         public List<int> pids { get; set; }
         public List<MixProductItemModel> item { get; set; }
+
+       
     }
 }

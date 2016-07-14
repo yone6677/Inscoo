@@ -13,5 +13,10 @@ namespace Models
         public decimal OriginalPrice { get; set; }
         [DisplayName("保障额度")]
         public string CoverageSum { get; set; }
+
+        public string ProdInsuredName { set; get; }
+
+        public string ProdMemo { set; get; }
+        public string ProvisionPath { get; set; }
     }
 }

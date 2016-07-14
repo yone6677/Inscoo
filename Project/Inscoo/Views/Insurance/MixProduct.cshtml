@@ -7,7 +7,7 @@
         <strong>选择一个方案</strong>
         <span>SELECT A PROGRAMME</span>
     </div>
-    
+
     <div class="inscooCase-body inscooCase-body-top">
         <div class="describe_name">中高端员工福利保险</div>
         @{
@@ -47,7 +47,7 @@
                                         <table class="programme-details">
                                             <tr>
                                                 @*<th>保障项目</th>
-                                                <th>保障额度</th>*@
+                                                    <th>保障额度</th>*@
                                                 <th style="color:#444">@Html.DisplayNameFor(model => model.StaffRange):@item.StaffRange</th>
                                                 <th style="color:#444">@Html.DisplayNameFor(model => model.AgeRange):@item.AgeRange</th>
                                             </tr>
@@ -56,25 +56,30 @@
                                                 <tr>
                                                     <td>
                                                         <span class="toggle_color show_color"></span>
-                                                        @s.SafefuardName
+                                                        @*@s.SafefuardName*@
+                                                        @s.ProdInsuredName
                                                     </td>
                                                     <td>@s.CoverageSum</td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2" class="hideDeclare" style="text-align:left">
-                                                        <span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的.</span>&nbsp;&nbsp;
-                                                        <a class="">请查看保险条款</a>
+                                                        @*<span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的.</span>&nbsp;&nbsp;
+
+                                                            <a class="">请查看保险条款</a>*@
+                                                        <span>@s.ProdMemo</span>
+                                                        <a href="@s.ProvisionPath" target="_blank">请查看保险条款</a>
                                                     </td>
                                                 </tr>
                                             }
-                                            @*<tr>
-                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
-                                                <th style="color:#83BA21">@item.StaffRange</th>
-                                            </tr>
-                                            <tr>
-                                                <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
-                                                <th style="color:#83BA21">@item.AgeRange</th>
-                                            </tr>*@
+                                            @*
+                                                <tr>
+                                                    <th style="color:#83BA21">@Html.DisplayNameFor(model => model.StaffRange)</th>
+                                                    <th style="color:#83BA21">@item.StaffRange</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="color:#83BA21">@Html.DisplayNameFor(model => model.AgeRange)</th>
+                                                    <th style="color:#83BA21">@item.AgeRange</th>
+                                                </tr>*@
                                         </table>
 
                                     </div>

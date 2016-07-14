@@ -86,8 +86,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CommissionMethod, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
+                @if (Model.CommissionMethods != null)
+                {
+                    @Html.DropDownList("CommissionMethod", Model.CommissionMethods, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CommissionMethod, "", new { @class = "text-danger" })
+                }
+                else
+                {
+                    <label>@ViewBag.CommissionMethod</label>
+                }
             </div>
         </div>
         <div class="form-group">

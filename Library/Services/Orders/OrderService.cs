@@ -80,8 +80,7 @@ namespace Services.Orders
         public bool Update(Order item)
         {
             try
-            {
-                item.Author = _authenticationManager.User.Identity.Name;
+            {              
                 item.Changer = item.Author;
                 item.ChangeDate = DateTime.Now;
                 _orderRepository.Update(item);

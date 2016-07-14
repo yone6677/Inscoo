@@ -8,21 +8,17 @@
 {
 
     <div class="Search">
-        <dl class="company-list">
+        <dl>
             <dt>
                 角色
             </dt>
             <dd>
                 @Html.DropDownList("RoleId", ViewBag.RoleId as List<SelectListItem>, "全部")
             </dd>
-            </dl>
-        <dl  class="company-list">
             <dt>用户名</dt>
             <dd>
                 <input type="text" name="UserName" value="" placeholder="用户名称" />
             </dd>
-            </dl>
-        <dl class="company-list">
             <dt></dt>
             <dd>
                 <p> <input type="submit" value="查找" /></p>
@@ -34,7 +30,6 @@
                 <p>  @Html.ActionLink("新建用户", "Create", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
             </dd>
             }
-
         </dl>
         <p class="clearfix"></p>
     </div>

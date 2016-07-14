@@ -23,9 +23,8 @@
         </li>
     </ul>
 </div>
-<div style="height:5em;width:100%">
-</div>
-@using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
+
+@using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
     <ul class="unloadFile">
         <li>
@@ -40,11 +39,30 @@
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
-            请将文件压缩后上传
+        </li>
+        <li>
+            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            {
+                <div class="uploadInfo">
+                    @if (Model.HasBusinessLicense)
+                    {
+                        <div>
+                            <ul>
+
+                                <li>
+                                    <span><i class="fa fa-check"></i>已上传</span>
+                                    <a href=@Model.BusinessLicenseSealUrl>查看</a>
+                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+             }
         </li>
     </ul>
 }
-@using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
+@using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
 {
     <ul class="unloadFile">
         <li>
@@ -59,11 +77,30 @@
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
-            请将文件压缩后上传
         </li>
+        <li>
+            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            {
+                <div class="uploadInfo">
+                    @if (Model.HasEmpInfoFilePDFSeal)
+                    {
+                        <div>
+                            <ul>
+                                <li>
+                                    <span><i class="fa fa-check"></i>已上传</span>
+                                    <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+             }
+        </li>
+
     </ul>
 }
-@using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
+@using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
 {
     <ul class="unloadFile">
         <li>
@@ -78,63 +115,38 @@
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">下载模板</a>
-            请将文件压缩后上传
+        </li>
+        <li>
+            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            {
+                <div class="uploadInfo">
+                    @if (Model.HasInsurancePolicy)
+                    {
+                        <div>
+                            <ul>
+                                <li>
+                                    <span>已上传</span>
+                                    <a href=@Model.InsurancePolicySealUrl>查看</a>
+                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            }
         </li>
     </ul>
 }
-<div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
-    <span style="color:#333">注意：重新上传会覆盖之前的文件。</span><br />
-    <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF//Doc或者压缩文件</span><br />
-    <span style="color:gray">2.员工名单/投保单只能上传ZIP/RAR格式压缩文件</span><br />
-    <span class="text-danger" id="errorInfo"></span>
-</div>
-@if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
-{
-    <div class="uploadInfo">
-        <dl>
-            <dt>已上传资料</dt>
-            @if (Model.HasBusinessLicense)
-            {
-                <dd>
-                    <ul>
-                        <li>营业执照(加盖公章)</li>
-                        <li>
-                            <span>已上传</span>
-                            <a href=@Model.BusinessLicenseSealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 },new { @style = "color:red;" })
-                        </li>
-                    </ul>
-                </dd>
-            }
-            @if (Model.HasEmpInfoFilePDFSeal)
-            {
-                <dd>
-                    <ul>
-                        <li>员工名单(加盖公章)</li>
-                        <li>
-                            <span>已上传</span>
-                            <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
-                        </li>
-                    </ul>
-                </dd>
-            }
-            @if (Model.HasInsurancePolicy)
-            {
-                <dd>
-                    <ul>
-                        <li>投保单(加盖公章)</li>
-                        <li>
-                            <span>已上传</span>
-                            <a href=@Model.InsurancePolicySealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
-                        </li>
-                    </ul>
-                </dd>
-            }
-        </dl>
+<div style="height:5em;width:100%;height:auto;">
+    <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
+        <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
+        <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF//Doc或者压缩文件</span><br />
+        <span style="color:gray">2.员工名单/投保单只能上传ZIP/RAR格式压缩文件</span><br />
+        <span style="color:gray">3.请将文件压缩后上传</span><br />
+        <span class="text-danger" id="errorInfo"></span>
     </div>
-}
+</div>
+
 @using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
 {
     @Html.AntiForgeryToken()

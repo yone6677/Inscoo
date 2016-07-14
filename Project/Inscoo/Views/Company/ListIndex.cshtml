@@ -12,29 +12,24 @@
 {
     @Html.HiddenFor(m => m.UserId)
     <div class="Search">
-            <dl class="company-list">
-                <dt class=""> 企业名称</dt>
-                <dd class="">
-                    @Html.EditorFor(model => model.Name)
-                </dd>
-                </dl>
-            <dl class="company-list">
-                <dt> 企业地址</dt>
-                <dd>
-                    @Html.EditorFor(model => model.Address)
-                </dd>
-
-            </dl>
-            <dl class="company-list">
-                <dt> </dt>
-                <dd>
-                    <p>  <input type="submit" value="搜索" /></p>
-                </dd>
-                <dt> </dt>
-                <dd>
-                    <p>  @Html.ActionLink("添加新企业", "Create", "Company", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
-                </dd>
-            </dl>
+        <dl>
+            <dt class=""> 企业名称</dt>
+            <dd class="">
+                @Html.EditorFor(model => model.Name)
+            </dd>
+            <dt> 企业地址</dt>
+            <dd>
+                @Html.EditorFor(model => model.Address)
+            </dd>
+            <dt> </dt>
+            <dd>
+                <p>  <input type="submit" value="搜索" /></p>
+            </dd>
+            <dt> </dt>
+            <dd>
+                <p>  @Html.ActionLink("添加新企业", "Create", "Company", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            </dd>
+        </dl>
         <p class="clearfix"></p>
     </div>
 

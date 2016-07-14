@@ -98,7 +98,7 @@
 }
 @using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
 {
-    <ul style="margin-left:20px;">
+    <ul style="width:65%">
         <li>
             <label>
                 上传员工名单：
@@ -113,7 +113,7 @@
             <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
         </li>
     </ul>
-    <div style="line-height:2em;width:45%;text-align:left;float:left;">
+    <div style="line-height:2em;width:30%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
             <span class="text-danger">@ViewBag.error</span>

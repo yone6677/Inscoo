@@ -12,9 +12,13 @@
             <dt>方案名称:</dt>
             <dd><input type="text" name="name" value="" placeholder="请输入方案名称" /></dd>
             <dt>时间起:</dt>
-            <dd><input type="date" name="beginDate" value="" /></dd>
+            <dd>
+                <input type="text" readonly="readonly" name="beginDate" class="form-control" value="@DateTime.Now.ToShortDateString()">
+            </dd>
             <dt>时间止:</dt>
-            <dd><input type="date" name="endDate" value="" /></dd>
+            <dd>
+                <input type="text" readonly="readonly" name="endDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()">
+            </dd>
             <dt></dt>
             <dd><p><input type="submit" value="查找" /></p></dd>
         </dl>
@@ -25,4 +29,19 @@
     </div>
 }
 
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        jQuery(function () {
+            jQuery("[name='beginDate']")
+                .datepicker({
+                    //beginDate:'@DateTime.Now.ToShortDateString()'
+                });
+            jQuery("[name='endDate']")
+                .datepicker({
+                    //endDate:'@DateTime.Now.AddDays(4).ToShortDateString()'
+                });
+        });
+    </script>
+}
 

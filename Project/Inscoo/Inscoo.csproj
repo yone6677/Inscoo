@@ -174,9 +174,6 @@
     <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Archive\Template\上传人员信息.xlsx" />
     <Content Include="Archive\Template\人员信息变更模板.xlsx" />
-    <Content Include="Archive\Template\投保单.doc" />
-    <Content Include="Archive\Template\投保单1.pdf" />
-    <Content Include="Archive\Template\投保单2.pdf" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
@@ -273,6 +270,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\base.less" />
+    <Content Include="Archive\Template\投保单1.pdf" />
+    <Content Include="Archive\Template\投保单2.pdf" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -484,7 +483,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60617</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.CarInsuranceExcel>
+﻿@model IEnumerable<Models.vCarInsuranceList>
 <table class="table table-bordered">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
@@ -19,29 +19,39 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.ExcelName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateTime)
+                @Html.DisplayFor(modelItem => item.ExceCreateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author)
+                @Html.DisplayFor(modelItem => item.ExceCreateUser)
             </td>
 
 
             <td>
-                <a href="@item.Url" target="blank">下载</a>
-                @if (ViewBag.CanEdit)
+                <a href="@item.ExceUrl" target="blank">下载</a>
+                @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
                     <span>|</span>
-                    @Html.ActionLink("更新", "CarInscuranceCreate", new { excelId = item.Id })
+                    @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId })
                     <span>|</span>
-                    @Html.ActionLink("删除", "CarInscuranceDelete", new { excelId = item.Id })
+                    @Html.ActionLink("删除", "CarInscuranceDelete", new { ExcelId = item.InsuranceId })
                 }
                 else
                 {
-                    @Html.ActionLink("上传电子保单", "CarInscuranceCreate", new { excelId = item.Id, type = "AddEinscurance" })
+                    if (string.IsNullOrEmpty(item.EinsuranceUrl))
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId })
+                    }
+                    else
+                    {
+                        <span>|</span>
+                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                    }
                 }
+
             </td>
 
 

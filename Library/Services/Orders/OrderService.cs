@@ -31,12 +31,30 @@ namespace Services.Orders
         }
         public bool Delete(Order item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _orderRepository.Delete(item);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：Delete");
+            }
+            return false;
         }
 
         public bool DeleteById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _orderRepository.DeleteById(id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：DeleteById");
+            }
+            return false;
         }
 
         public int Insert(Order item)
@@ -96,11 +114,18 @@ namespace Services.Orders
                 var role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
                 if (role == "InscooFinance" || role == "InscooOperator" || role == "Admin")
                 {
-                    
+
                 }
                 else
                 {
-                    query = query.Where(q => q.Author == user.UserName);//其他角色只能查看自己的订单
+                    if (role == "InsuranceCompany")
+                    {
+                        query = query.Where(q => q.Insurer == user.CompanyName);
+                    }
+                    else
+                    {
+                        query = query.Where(q => q.Author == user.UserName);//其他角色只能查看自己的订单
+                    }
                 }
                 query = query.Where(q => q.IsDeleted == false);
                 if (!string.IsNullOrEmpty(name))
@@ -161,7 +186,7 @@ namespace Services.Orders
                         StartDate = s.StartDate,
                         StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
                         State = s.State,
-                        BatchState=s.orderBatch.Where(b=>b.InsurerConfirmDate==DateTime.MinValue).Any()
+                        BatchState = s.orderBatch.Where(b => b.InsurerConfirmDate == DateTime.MinValue).Any()
                     }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }
@@ -179,7 +204,7 @@ namespace Services.Orders
                 var batch = item.orderBatch.Where(b => b.IsDeleted == false);
                 if (batch.Any())
                 {
-                   foreach(var b in batch)
+                    foreach (var b in batch)
                     {
                         if (b.orderEmp.Any())
                         {
@@ -189,7 +214,7 @@ namespace Services.Orders
                 }
                 return total;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "OrderService：GetPrice");
             }

@@ -29,10 +29,4 @@ namespace Core.Mapping
             //HasRequired(b => b.Company).WithMany().HasForeignKey(b => b.CompanyId);
         }
     }
-    public class CarInsuranceExcelMap : EntityTypeConfiguration<CarInsuranceExcel>
-    {
-        public CarInsuranceExcelMap()
-        {
-        }
-    }
 }

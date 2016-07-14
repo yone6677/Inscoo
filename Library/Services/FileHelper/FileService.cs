@@ -73,6 +73,7 @@ namespace Services
             }
             catch (Exception e)
             {
+                _loggerService.insert(e, LogLevel.Fatal, "删除文件失败");
                 throw e;
             }
         }
@@ -385,10 +386,9 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw e;
                 _loggerService.insert(e, LogLevel.Fatal, "文件上传失败");
+                throw e;
             }
-            return null;
         }
 
     }

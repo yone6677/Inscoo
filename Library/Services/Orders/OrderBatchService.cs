@@ -102,7 +102,7 @@ namespace Services.Orders
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "OrderBatch：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "OrderBatch：Update");
             }
             return false;
         }

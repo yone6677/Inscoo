@@ -3,8 +3,6 @@
 @using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()
-    @*@Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.OId)*@
     <input type="hidden" name="Id" id="Id" value=@Model.Id />
     <input type="hidden" name="OId" id="OId" value=@Model.OId />
 
@@ -66,7 +64,7 @@
                         @Html.LabelFor(model => model.AmountCollected)
                     </li>
                     <li>
-                        @Html.EditorFor(model => model.AmountCollected, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                        <input type="number" id="AmountCollected" name="AmountCollected" class="form-control" value=@Model.Price />
                     </li>
                     <li>
                         @Html.ValidationMessageFor(model => model.AmountCollected, "", new { @class = "text-danger" })
@@ -77,10 +75,10 @@
                         @Html.LabelFor(model => model.CollectionDate)
                     </li>
                     <li>
-                        <input type="date" name="CollectionDate" id="CollectionDate" value="" class="form-control" />
+                        <input readonly="readonly" type="text" name="CollectionDate" id="CollectionDate" class="form-control" value="@DateTime.Now.ToShortDateString()" />
+                        @*<input type="date" name="CollectionDate" id="CollectionDate" value="" class="form-control" />*@
                     </li>
                     <li>
-
                         @Html.ValidationMessageFor(model => model.CollectionDate, "", new { @class = "text-danger" })
                     </li>
                 </ul>
@@ -150,7 +148,15 @@
                             @Html.LabelFor(model => model.PolicyNumber)
                         </li>
                         <li>
-                            @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @if (string.IsNullOrEmpty(Model.PolicyNumber))
+                            {
+                                @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.PolicyNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            }
+
                         </li>
                         <li>
                             @Html.ValidationMessageFor(model => model.PolicyNumber, "", new { @class = "text-danger" })
@@ -203,8 +209,13 @@
             }
             if(e == 2){
                 var PolicyNumber=$("#PolicyNumber").val();
-                if(PolicyNumber.length<3){
+                var CourierNumber=$("#CourierNumber").val();
+                if(PolicyNumber.length<2){
                     error.text("请填写保单号码");
+                    return;
+                }
+                if(CourierNumber.length<2){
+                    error.text("请填写快递单号");
                     return;
                 }
                 from.submit();
@@ -215,7 +226,13 @@
                  var ts = DateTime.Now.ToUniversalTime() - DateTime.Parse("1970-1-1");
              }
             var nowDate=@ts.TotalMilliseconds.ToString("0");
-            var arr = startdate.split("-");
+            var arr=new Array();
+            if(startdate.indexOf("-")>0){
+                arr = startdate.split("-");
+            }
+            if(startdate.indexOf("/")>0){
+                arr = startdate.split("/");
+            }
             var starttime = new Date(arr[0], arr[1]-1, arr[2]);
             var starttimes = starttime.getTime();
             if(nowDate >= starttimes && !isNaN(starttimes)){
@@ -226,3 +243,4 @@
         }
     </script>
     }
+

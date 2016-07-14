@@ -8,6 +8,10 @@ namespace Domain.Products
 {
     public class Product : BaseEntity
     {
+
+        public string ProdInsuredName { set; get; }
+
+        public string ProdMemo { set; get; }
         /// <summary>
         /// 产品编号
         /// </summary>

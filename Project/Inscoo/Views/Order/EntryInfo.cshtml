@@ -25,21 +25,72 @@
 </div>
 
 
-@using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm" }))
+
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+
+    <p class="basic-information">
+        <i class="fa fa-edit fa-2x"></i>详细信息填写
+    </p>
+    <ul style="margin-left: 20px;">
+        <li>
+            <label>
+                上传员工名单：
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value=@Model.Id name="Id" />
+            <input type="file" id="empinfo" required name="empinfo" />
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
+        </li>
+    </ul>
+    <div style="line-height:2em;width:45%;text-align:left;float:left;">
+        @if (!string.IsNullOrEmpty(ViewBag.error))
+        {
+            <span class="text-danger">@ViewBag.error</span><br />
+        }
+        @if (TempData["error"] != null)
+        {
+            <span class="text-danger">@TempData["error"]</span><br />
+        }
+        <span class="text-danger" id="error"></span>
+    </div>
+}
+@using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm", style = "display: none" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.IsUploadInfo)
+    @Html.Hidden("isCompanySelect")
 
 
     <div class="orderEntryInfoBody">
-        <p class="basic-information"><i class="fa fa-edit fa-2x"></i>基本信息</p>
+        <ul style="margin-left: 20px;">
+            <li>
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
+                @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
+            </li>
+        </ul>
+        <p class="basic-information" style="margin-top: 140px;">
+            <i class="fa fa-edit fa-2x"></i>基本信息
+            <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
+        </p>
         <ul>
             <li>
                 @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>
                 @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                @if (ViewBag.CompanyNameList != null)
+                {
+                    @Html.DropDownList("CompanyNameList", ViewBag.CompanyNameList as SelectList, null, new { @class = "form-control" })
+                }
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
@@ -67,7 +118,7 @@
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                
+
             </li>
         </ul>
         <ul>
@@ -82,44 +133,10 @@
             </li>
         </ul>
 
-        
-        <p class="basic-information" style="margin-top:140px;"><i  class="fa fa-edit fa-2x"></i>详细信息填写</p>
-        <ul>
-            <li>
-                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
-            </li>
-            <li>
-                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
-                @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
-            </li>
-        </ul>
+
+
     </div>
-    
-}
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
-{
-    <ul style="width:65%">
-        <li>
-            <label>
-                上传员工名单：
-            </label>
-        </li>
-        <li>
-            <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="empinfo" name="empinfo" />
-        </li>
-        <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-    </ul>
-    <div style="line-height:2em;width:30%;text-align:left;float:left;">
-        @if (!string.IsNullOrEmpty(ViewBag.error))
-        {
-            <span class="text-danger">@ViewBag.error</span>
-        }
-        <span class="text-danger" id="error"></span>
-    </div>
+
 }
 <div class="orderConfirmBodyNext">
     <div>
@@ -147,16 +164,22 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+
         jQuery(function() {
             jQuery("#StartDate")
                 .datepicker({
                     startDate: '@DateTime.Now.AddDays(4).ToShortDateString()'
                 });
+            InitCompanyList();
+
+            if (document.getElementById("isListExist") != null) {
+                jQuery("#EntryInfoForm").show();
+            }
         });
         var count = @Model.IsUploadInfo
 
         function subInfo() {
-            var startDate = $("#StartDate").val();         
+            var startDate = $("#StartDate").val();
             if (count > 0) {
                 if (dateCompare(startDate)) {
                     $("#EntryInfoForm").submit();
@@ -177,11 +200,11 @@
                 var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
             }
             var nowDate = @ts.TotalMilliseconds.ToString("0");
-            var arr=new Array();
-            if(startdate.indexOf("-")>0){
+            var arr = new Array();
+            if (startdate.indexOf("-") > 0) {
                 arr = startdate.split("-");
             }
-            if(startdate.indexOf("/")>0){
+            if (startdate.indexOf("/") > 0) {
                 arr = startdate.split("/");
             }
             var starttime = new Date(arr[0], arr[1] - 1, arr[2]);
@@ -190,6 +213,78 @@
                 return true;
             } else
                 return false;
+        }
+
+
+        function InitCompanyList() {
+            var list = document.getElementById("CompanyNameList");
+            //console.log(list);
+            if (list == null || list == undefined) {
+                jQuery("#companyInfoEdit").hide();
+                jQuery("#isCompanySelect").val(false);
+                return false;
+            } else {
+                jQuery("#CompanyName").hide();
+                jQuery("#isCompanySelect").val(true);
+            }
+            jQuery("#companyInfoEdit")
+                .click(function() {
+                    ChangeButtonValue();
+                    return false;
+                });
+            jQuery("#CompanyNameList")
+                .change(function() {
+                    GetCompanyInfo();
+                }
+            );
+            GetCompanyInfo();
+            return false;
+        };
+
+        function GetCompanyInfo() {
+            var id = jQuery("#CompanyNameList").val();
+            //console.log(id);
+            $.ajax({
+                url: "/Order/GetCompanyInfo",
+                type: "post", //数据发送方式
+                async: false,
+                data: { id: id },
+                dataType: "json", //接受数据格式
+                error: function() {
+                    alert("服务器没有返回数据，可能服务器忙，请重试");
+                },
+                success: function(result) {
+                    //console.log(result);
+                    //console.log(event);
+                    if (result != null) {
+                        jQuery("#Linkman").val(result.LinkMan);
+                        jQuery("#Address").val(result.Address);
+                        jQuery("#PhoneNumber").val(result.Phone);
+                        jQuery("#CompanyName").val(result.Name);
+                    }
+                }
+            });
+        }
+
+        function ChangeButtonValue() {
+            jQuery("#Linkman").val("");
+            jQuery("#Address").val("");
+            jQuery("#PhoneNumber").val("");
+            jQuery("#CompanyName").val("");
+            var v = jQuery("#companyInfoEdit").val();
+            if (v === "选择信息") {
+                jQuery("#companyInfoEdit").val("新增信息");
+                jQuery("#CompanyNameList").show();
+                jQuery("#CompanyName").hide();
+                jQuery("#isCompanySelect").val(true);
+                GetCompanyInfo();
+            } else {
+                jQuery("#companyInfoEdit").val("选择信息");
+
+                jQuery("#CompanyNameList").hide();
+                jQuery("#CompanyName").show();
+                jQuery("#isCompanySelect").val(false);
+            }
         }
     </script>
 }

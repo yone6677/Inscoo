@@ -87,6 +87,7 @@
     <Compile Include="Infrastructure\LogsModel.cs" />
     <Compile Include="Infrastructure\PMTypecs.cs" />
     <Compile Include="Infrastructure\SaveResultModel.cs" />
+    <Compile Include="Insurance\vCarInsuranceList.cs" />
     <Compile Include="Insurance\CustomProductModel.cs" />
     <Compile Include="Insurance\ProductListModel.cs" />
     <Compile Include="Insurance\RecommendationModel.cs" />

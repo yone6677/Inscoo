@@ -170,6 +170,7 @@
     <Content Include="App_Data\Sql\Permission.sql" />
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
+    <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
@@ -427,6 +428,8 @@
     <Content Include="Views\Claim\ListData.cshtml" />
     <Content Include="Views\Health\Index.cshtml" />
     <Content Include="Views\HealthProduct\ProDetail.cshtml" />
+    <Content Include="Views\Order\EmpChanges.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceUploadEinsurance.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

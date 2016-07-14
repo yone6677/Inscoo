@@ -14,6 +14,8 @@ namespace Models.Order
         }
         [DisplayName("方案名称")]
         public string Name { get; set; }
+        [DisplayName("订单编号")]
+        public string OrderNum { get; set; }
         [DisplayName("产品备注")]
         public string Memo { get; set; }
         [DisplayName("人数范围")]
@@ -44,7 +46,10 @@ namespace Models.Order
         public int InsuranceNumber { get; set; }
         [DisplayName("订单状态")]
         public string State { get; set; }
-
+        /// <summary>
+        /// 当前用户角色
+        /// </summary>
+        public string Role { get; set; }
         public List<OrderBatchModel> orderBatch { get; set; }
 
         public List<ProductModel> orderItem { get; set; }

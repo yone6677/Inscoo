@@ -163,10 +163,12 @@
     <Compile Include="Navigations\NavigationService.cs" />
     <Compile Include="Orders\IOrderBatchService.cs" />
     <Compile Include="Orders\IOrderEmpService.cs" />
+    <Compile Include="Orders\IOrderEmpTempService.cs" />
     <Compile Include="Orders\IOrderItemService.cs" />
     <Compile Include="Orders\IOrderService.cs" />
     <Compile Include="Orders\OrderBatchService.cs" />
     <Compile Include="Orders\OrderEmpService.cs" />
+    <Compile Include="Orders\OrderEmpTempService.cs" />
     <Compile Include="Orders\OrderItemService.cs" />
     <Compile Include="Orders\OrderService.cs" />
     <Compile Include="Permissions\IPermissionService.cs" />

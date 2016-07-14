@@ -97,12 +97,15 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\CarInsuranceMap.cs" />
+    <Compile Include="Mapping\FileInfoMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\OrderBatchMap.cs" />
     <Compile Include="Mapping\OrderEmployeeMap.cs" />
+    <Compile Include="Mapping\OrderEmpTempMap.cs" />
     <Compile Include="Mapping\OrderItemMap.cs" />
     <Compile Include="Mapping\OrderMap.cs" />
     <Compile Include="Mapping\PermissionMap.cs" />
@@ -121,6 +124,18 @@
     <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs" />
     <Compile Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.Designer.cs">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs" />
+    <Compile Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.Designer.cs">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607131246360_AddTableFileInfoAndCarInsurance.cs" />
+    <Compile Include="Migrations\201607131246360_AddTableFileInfoAndCarInsurance.Designer.cs">
+      <DependentUpon>201607131246360_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607131145410_order_orderNum.cs" />
+    <Compile Include="Migrations\201607131145410_order_orderNum.Designer.cs">
+      <DependentUpon>201607131145410_order_orderNum.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
@@ -146,6 +161,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.resx">
       <DependentUpon>201607120517556_CarInsuranceExcel_AddColumn_EinsuranceNameEinsurancePath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.resx">
+      <DependentUpon>201607120658531_CarInsuranceExcel_AddColumn_EinsuranceEditTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607131145410_order_orderNum.resx">
+      <DependentUpon>201607131145410_order_orderNum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607131217261_AddTableFileInfoAndCarInsurance.resx">
+      <DependentUpon>201607131217261_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607131246360_AddTableFileInfoAndCarInsurance.resx">
+      <DependentUpon>201607131246360_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

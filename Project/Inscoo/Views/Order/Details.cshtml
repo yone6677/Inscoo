@@ -13,7 +13,12 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderNum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderNum)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Memo)
         </dt>
@@ -144,13 +149,13 @@
                     <dt style="border-top:1px solid #0094ff;">
                         批次编号
                     </dt>
-                    <dd  style="border-top:1px solid #0094ff;">
-                        @item.BId
+                    <dd style="border-top:1px solid #0094ff;">
+                        @item.BNum
                     </dd>
                     <dt style="border-top:1px solid #0094ff;">
                         批次状态
                     </dt>
-                    <dd  style="border-top:1px solid #0094ff;">
+                    <dd style="border-top:1px solid #0094ff;">
                         @item.BState
                     </dd>
                     <dt>
@@ -177,6 +182,10 @@
                         else
                         {
                             <a href=@item.EmpInfoFileSeal target="_blank">下载</a>
+                            if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
+                            {
+                                <span> |</span><a href="#" data-toggle="modal" data-target="#EmpInfoFileSealUpload">重新上传</a>
+                            }
                         }
                     </dd>
                     <dt>
@@ -190,6 +199,10 @@
                         else
                         {
                             <a href=@item.PolicySeal target="_blank">下载</a>
+                            if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
+                            {
+                                <span> |</span><a href="#" data-toggle="modal" data-target="#PolicySealUpload">重新上传</a>
+                            }
                         }
                     </dd>
                     <dt>
@@ -208,12 +221,8 @@
                     <dt>
                         批次总额
                     </dt>
-                    <dd>         
-                        <span> @item.OrderAmount</span>            
-                        @*@if (item.PolicyHolderDate != DateTime.MinValue)
-                        {
-                            <span>@item.PolicyHolderDate</span>
-                        }*@
+                    <dd>
+                        <span> @item.OrderAmount</span>
                     </dd>
                     <dt>
                         Inscoo确认时间
@@ -224,63 +233,66 @@
                             <span>@item.InscooConfirmDate</span>
                         }
                     </dd>
-                    <dt>
-                        财务确认时间
-                    </dt>
-                    <dd>
-                        @if (item.FinanceDate != DateTime.MinValue)
+                    @if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
+                    {
+                        <dt>
+                            财务确认时间
+                        </dt>
+                        <dd>
+                            @if (item.FinanceDate != DateTime.MinValue)
                         {
-                            <span>@item.FinanceDate</span>
-                        }
-                    </dd>
-                    <dt>
-                        财务收款时间
-                    </dt>
-                    <dd>
-                        @if (item.CollectionDate != DateTime.MinValue)
+                                <span>@item.FinanceDate</span>
+                            }
+                        </dd>
+                        <dt>
+                            财务收款时间
+                        </dt>
+                        <dd>
+                            @if (item.CollectionDate != DateTime.MinValue)
                         {
-                            <span>@item.CollectionDate</span>
-                        }
-                    </dd>
-                    <dt>
-                        收款金额
-                    </dt>
-                    <dd>
-                        @item.AmountCollected
-                    </dd>
-                    <dt>
-                        财务审核意见
-                    </dt>
-                    <dd>
-                        @item.FinanceMemo
-                    </dd>
-                    <dt>
-                        转账凭证
-                    </dt>
-                    <dd>
-                        @item.TransferVoucher
-                    </dd>
-                    <dt>
-                        保险公司确认时间
-                    </dt>
-                    <dd>
-                        @if (item.InsurerConfirmDate != DateTime.MinValue)
+                                <span>@item.CollectionDate</span>
+                            }
+                        </dd>
+                        <dt>
+                            收款金额
+                        </dt>
+                        <dd>
+                            @item.AmountCollected
+                        </dd>
+                        <dt>
+                            财务审核意见
+                        </dt>
+                        <dd>
+                            @item.FinanceMemo
+                        </dd>
+                        <dt>
+                            转账凭证
+                        </dt>
+                        <dd>
+                            @item.TransferVoucher
+                        </dd>
+                        <dt>
+                            保险公司确认时间
+                        </dt>
+                        <dd>
+                            @if (item.InsurerConfirmDate != DateTime.MinValue)
                         {
-                            <span>@item.InsurerConfirmDate</span>
-                        }
-                    </dd>
-                    <dt>
-                        快递单号
-                    </dt>
-                    <dd>
-                        @item.CourierNumber
-                    </dd>
-                    <dt>
-                        保险公司审核意见
-                    </dt>
-                    <dd>
-                        @item.InsurerMemo
-                    </dd>
+                                <span>@item.InsurerConfirmDate</span>
+                            }
+                        </dd>
+                        <dt>
+                            快递单号
+                        </dt>
+                        <dd>
+                            @item.CourierNumber
+                        </dd>
+                        <dt>
+                            保险公司审核意见
+                        </dt>
+                        <dd>
+                            @item.InsurerMemo
+                        </dd>
+                    }
                 </dl>
             }
         }
@@ -295,5 +307,156 @@
         </div>
     }
     <div class="clearfix"></div>
-    @Html.Action("AuditOrder",new { id=Model.Id})
+    <h4 class="text-primary">投保人员变更信息</h4>
+    @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
+    {
+        <input type="hidden" name="Id" value=@Model.Id />
+        <div id="empTempData">
+            @Html.Action("EmpChanges", new { id = Model.Id })
+        </div>
+    }
+    <div class="clearfix"></div>
+    @Html.Action("AuditOrder", new { id = Model.Id })
 </div>
+
+<!-- 重新上传人员盖章文件 -->
+<div class="modal fade" id="EmpInfoFileSealUpload" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    @using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
+    {
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        替换人员盖章文件
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="unloadFile">
+                        <li>
+                            <label>
+                                员工名单(加盖公章)
+                            </label>
+                        </li>
+                        <li>
+                            <input type="hidden" value=@Model.Id name="Id" />
+                            <input type="hidden" name="uType" value="1" />
+                            <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />
+                        </li>
+                        <li>
+                            请将文件压缩后上传
+                        </li>
+                    </ul>
+                    <span style="text-align:center;line-height:2em;color:red;height:2em;display:block;" id="UploadEmpInfoPdfError"></span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        上传
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    }
+</div><!-- /.modal -->
+<!-- 重新上传投保盖章文件 -->
+<div class="modal fade" id="PolicySealUpload" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    @using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
+    {
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        替换投保盖章文件
+                    </h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <ul class="unloadFile">
+                        <li>
+                            <label>
+                                投保单(加盖公章)
+                            </label>
+                        </li>
+                        <li>
+                            <input type="hidden" value=@Model.Id name="Id" />
+                            <input type="hidden" name="uType" value="1" />
+                            <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />
+                        </li>
+                        <li>
+                            请将文件压缩后上传
+                        </li>
+                    </ul>
+                    <span style="text-align:center;line-height:2em;color:red;height:2em;display:block;" id="UploadPolicyPdfSealError"></span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        上传
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    }
+</div><!-- /.modal -->
+@section Scripts {
+    <script>
+        $(function () {
+            $("#CollectionDate")
+                .datepicker({
+                    endDate: '@DateTime.Now.ToShortDateString()'
+                });
+        });
+        function checkFile(e) {
+            var UploadEmpInfoPdf = $("#UploadEmpInfoPdfError");
+            var UploadPolicyPdfSealError = $("#UploadPolicyPdfSealError");
+            var empFile = $("#EmpInfoPdfSeal").val();
+            var ppFile = $("#PolicyPdfSeal").val();
+            var s = parseInt(e);
+            if (e == 1) {
+                console.log(empFile);
+                if (empFile == '') {
+                    UploadEmpInfoPdf.text("未选择任何文件！");
+                    return false;
+                }
+                pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
+                if (pf == 'zip' || pf == 'rar') {
+                    return true;
+                } else {
+                    UploadEmpInfoPdf.text("员工名单只能上传压缩文件，请压缩后再重新上传！");
+                }
+            }
+            if (e == 2) {
+                if (ppFile == '') {
+                    UploadPolicyPdfSealError.text("未选择任何文件！");
+                    return false;
+                }
+                pf = (ppFile.substring(ppFile.lastIndexOf(".") + 1, ppFile.length)).toLowerCase();
+                if (pf == 'zip' || pf == 'rar') {
+                    return true;
+                } else {
+                    UploadPolicyPdfSealError.text("投保单只能上传压缩文件，请压缩后再重新上传！");
+                }
+            }
+            return false;
+        }
+    </script>
+}

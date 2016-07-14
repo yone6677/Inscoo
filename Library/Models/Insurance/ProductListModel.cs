@@ -26,5 +26,10 @@ namespace Models.Insurance
         public string Price { get; set; }
         public List<SelectListItem> CoverageSumList { get; set; }
         public List<SelectListItem> PayoutRatioList { get; set; }
+
+        public string ProdInsuredName { set; get; }
+
+        public string ProdMemo { set; get; }
+        public string ProvisionPath { get; set; }
     }
 }

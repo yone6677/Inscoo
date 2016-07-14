@@ -13,7 +13,7 @@ namespace Core.Mapping
             Property(c => c.isShow).IsRequired();
             Property(c => c.level).IsRequired();
             Property(c => c.memo).IsOptional().HasMaxLength(256);
-            Property(c => c.name).IsRequired().HasMaxLength(16);
+            Property(c => c.name).IsRequired().HasMaxLength(50);
             Property(c => c.pId).IsOptional();
             Property(c => c.url).IsOptional().HasMaxLength(128);
             Property(c => c.htmlAtt).IsOptional().HasMaxLength(256);

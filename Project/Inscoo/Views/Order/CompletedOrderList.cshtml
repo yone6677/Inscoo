@@ -60,7 +60,7 @@
                 @{
                     if (item.State == 7)
                     {
-                        @Html.ActionLink("删除订单", "Delete", new { id = item.Id });
+                        @Ajax.ActionLink("删除订单", "Delete", new { id = item.Id, oType = 3 }, new AjaxOptions { HttpMethod = "post", Confirm = "确定要删除该数据？", UpdateTargetId = "dadaGrid" }, new { @style = "color:green" })
                     }
                     if (item.State == 6 && !item.BatchState)
                     {

@@ -6,7 +6,7 @@ namespace Models.Order
     public class OrderBatchModel : BaseViewModel
     {
         [DisplayName("批次编号")]
-        public int BId { get; set; }
+        public string BNum { get; set; }
         [DisplayName("状态")]
         public string BState { get; set; }
         [DisplayName("人员资料")]

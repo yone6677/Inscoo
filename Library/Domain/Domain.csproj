@@ -60,7 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Claim\ClaimManagementDetail.cs" />
-    <Compile Include="File\CarInsuranceExcel.cs" />
+    <Compile Include="File\CarInsurance.cs" />
+    <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\BusinessLicense.cs" />
     <Compile Include="File\Archive.cs" />
     <Compile Include="File\BaseFile.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Orders\Order.cs" />
     <Compile Include="Orders\OrderBatch.cs" />
     <Compile Include="Orders\OrderEmployee.cs" />
+    <Compile Include="Orders\OrderEmpTemp.cs" />
     <Compile Include="Orders\OrderItem.cs" />
     <Compile Include="Permission\Permission.cs" />
     <Compile Include="Products\Product.cs" />

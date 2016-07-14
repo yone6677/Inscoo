@@ -80,7 +80,8 @@ namespace Inscoo.Infrastructure
         bool CommonAuthorizationCheck(string controllerName, string actionName, string userId)
         {
             var roles = _appUserService.GetRolesByUserId(userId);
-            var onlyIsInscooOperator = roles.Count == 1 && (roles.Contains("InscooOperator") || roles.Contains("Admin"));
+            if (roles.Contains("Admin")) return true;
+            var onlyIsInscooOperator = roles.Count == 1 && (roles.Contains("InscooOperator"));
             if (onlyIsInscooOperator)
             {
                 if (controllerName == "RoleController" || controllerName == "NavController" || controllerName == "PermissionController" || controllerName == "GenericattributeController") return false;

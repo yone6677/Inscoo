@@ -10,6 +10,10 @@ namespace Domain.Orders
         /// </summary>
         public string Name { get; set; }
         /// <summary>
+        /// 订单号
+        /// </summary>
+        public string OrderNum { get; set; }
+        /// <summary>
         /// 产品备注
         /// </summary>
         public string Memo { get; set; }

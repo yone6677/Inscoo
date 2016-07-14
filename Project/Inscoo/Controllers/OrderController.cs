@@ -639,8 +639,14 @@ namespace Inscoo.Controllers
                     item.Sex = Cells["E" + i].Value.ToString().Trim();
                     item.BankCard = Cells["F" + i].Value.ToString().Trim();
                     item.BankName = Cells["G" + i].Value.ToString().Trim();
-                    item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
-                    item.Email = Cells["I" + i].Value.ToString().Trim();
+                    if (Cells["H" + i].Value != null)
+                    {
+                        item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
+                    }
+                    if (Cells["I" + i].Value != null)
+                    {
+                        item.Email = Cells["I" + i].Value.ToString().Trim();
+                    }
                     item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
                     item.StartDate = order.StartDate;
                     item.EndDate = order.EndDate;
@@ -1344,7 +1350,7 @@ namespace Inscoo.Controllers
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
                             item.StartDate = changeDate;
                             item.EndDate = order.EndDate;
-                            if (!string.IsNullOrEmpty(Cells["H" + i].Value.ToString()))
+                            if (Cells["H" + i].Value!=null)
                             {
                                 item.BankCard = Cells["H" + i].Value.ToString().Trim();
                             }
@@ -1352,7 +1358,7 @@ namespace Inscoo.Controllers
                             {
                                 throw new Exception("人员" + Cells["A" + i].Value.ToString() + "开户行未填写");
                             }
-                            if (!string.IsNullOrEmpty(Cells["I" + i].Value.ToString()))
+                            if (Cells["I" + i].Value != null)
                             {
                                 item.BankName = Cells["I" + i].Value.ToString().Trim();
                             }
@@ -1371,11 +1377,11 @@ namespace Inscoo.Controllers
                             item.Premium = useAmount - order.AnnualExpense;//未使用金额
                             item.StartDate = order.StartDate;
                             item.EndDate = changeDate;
-                            if (!string.IsNullOrEmpty(Cells["H" + i].Value.ToString()))
+                            if (Cells["H" + i].Value != null)
                             {
                                 item.BankCard = Cells["H" + i].Value.ToString().Trim();
                             }
-                            if (!string.IsNullOrEmpty(Cells["I" + i].Value.ToString()))
+                            if (Cells["I" + i].Value != null)
                             {
                                 item.BankName = Cells["I" + i].Value.ToString().Trim();
                             }
@@ -1386,11 +1392,11 @@ namespace Inscoo.Controllers
                         item.IDNumber = Cells["C" + i].Value.ToString().Trim();
                         item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
                         item.Sex = Cells["G" + i].Value.ToString().Trim();
-                        if (!string.IsNullOrEmpty(Cells["J" + i].Value.ToString()))
+                        if (Cells["J" + i].Value != null)
                         {
                             item.PhoneNumber = Cells["J" + i].Value.ToString().Trim();
                         }
-                        if (!string.IsNullOrEmpty(Cells["K" + i].Value.ToString()))
+                        if (Cells["K" + i].Value != null)
                         {
                             item.Email = Cells["K" + i].Value.ToString().Trim();
                         }

@@ -71,7 +71,11 @@
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @if (item.StartDate != DateTime.MinValue)
+                {
+                    var dt = item.StartDate.ToShortDateString();
+                   <span>@dt</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateDate)

@@ -176,20 +176,47 @@ namespace Services.Orders
                 var query = GetList(name, state, companyName, beginDate, endDate);
                 if (query.Count > 0)
                 {
-                    return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
+                    var listModel = new List<OrderListModel>();
+                    foreach (var s in query)
                     {
-                        Amount = GetPrice(s),//s.AnnualExpense * s.InsuranceNumber,
-                        AnnualExpense = s.AnnualExpense,
-                        CompanyName = s.CompanyName,
-                        CreateDate = s.CreateTime,
-                        Id = s.Id,
-                        InsuranceNumber = s.InsuranceNumber,
-                        Name = s.Name,
-                        StartDate = s.StartDate,
-                        StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
-                        State = s.State,
-                        BatchState = _orderBatchService.GetById(s.orderBatch.Max(b => b.Id)).BState
-                    }).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
+                        if (s.orderBatch.Any())
+                        {
+                            var item = new OrderListModel()
+                            {
+                                Amount = GetPrice(s),//s.AnnualExpense * s.InsuranceNumber,
+                                AnnualExpense = s.AnnualExpense,
+                                CompanyName = s.CompanyName,
+                                CreateDate = s.CreateTime,
+                                Id = s.Id,
+                                InsuranceNumber = s.InsuranceNumber,
+                                Name = s.Name,
+                                StartDate = s.StartDate,
+                                StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
+                                State = s.State
+                            };
+                            var batch = s.orderBatch.OrderByDescending(b => b.Id).FirstOrDefault();
+                            if (batch != null)
+                            {
+                                item.BatchState = batch.BState;
+                            }
+                            listModel.Add(item);
+                        }
+                    }
+                    return new PagedList<OrderListModel>(listModel.OrderByDescending(a => a.CreateDate).ToList(), pageIndex, pageSize);
+                    //return new PagedList<OrderListModel>(query.Select(s => new OrderListModel()
+                    //{
+                    //    Amount = GetPrice(s),//s.AnnualExpense * s.InsuranceNumber,
+                    //    AnnualExpense = s.AnnualExpense,
+                    //    CompanyName = s.CompanyName,
+                    //    CreateDate = s.CreateTime,
+                    //    Id = s.Id,
+                    //    InsuranceNumber = s.InsuranceNumber,
+                    //    Name = s.Name,
+                    //    StartDate = s.StartDate,
+                    //    StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
+                    //    State = s.State
+                    //    //BatchState = _orderBatchService.GetById(.Id).BState
+                    //}).OrderByDescending(s => s.CreateDate).ToList(), pageIndex, pageSize);
                 }
             }
             catch (Exception e)

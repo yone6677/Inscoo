@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201607131145410_order_orderNum.Designer.cs">
       <DependentUpon>201607131145410_order_orderNum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607140627408_AlterTableProductsSetClaimcode_10.cs" />
+    <Compile Include="Migrations\201607140627408_AlterTableProductsSetClaimcode_10.Designer.cs">
+      <DependentUpon>201607140627408_AlterTableProductsSetClaimcode_10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -170,6 +174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607131246360_AddTableFileInfoAndCarInsurance.resx">
       <DependentUpon>201607131246360_AddTableFileInfoAndCarInsurance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607140627408_AlterTableProductsSetClaimcode_10.resx">
+      <DependentUpon>201607140627408_AlterTableProductsSetClaimcode_10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

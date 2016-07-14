@@ -51,7 +51,10 @@
                 @Html.DisplayFor(modelItem => item.StateDesc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @if (item.StartDate != DateTime.MinValue)
+                {
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreateDate)

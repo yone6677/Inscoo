@@ -9,6 +9,7 @@ using Innscoo.Infrastructure;
 using System;
 using System.Web.UI;
 using System.ComponentModel.DataAnnotations;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -81,10 +82,27 @@ namespace Inscoo.Controllers
         public ActionResult Create()
         {
             var uId = User.Identity.GetUserId();
+            var isAdmin = _appUserService.GetRolesByUserId(uId).Contains("Admin");
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name");
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
-            var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
+            var model = new RegisterModel() { RoleSelects = roles, };
+            if (!isAdmin)
+            {
+                if (user.CommissionMethod != "Nothing")
+                {
+                    model.CommissionMethods = null;
+                    ViewBag.CommissionMethod = _svGenericAttribute.GetByKey(value: user.CommissionMethod).Key;
+                }
+                else
+                {
+                    model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "");
+                }
+            }
+            else
+            {
+                model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "");
+            }
 
             ViewBag.ProdSeriesList = _appUserService.GetProdSeries(uId);
             ViewBag.ProdInsurancesList = _appUserService.GetProdInsurances(uId);
@@ -118,6 +136,12 @@ namespace Inscoo.Controllers
                     {
                         ProdInsurance += item + ';';
                     }
+                }
+
+                if (model.CommissionMethod == null)
+                {
+                    var u = _appUserService.FindById(User.Identity.GetUserId());
+                    model.CommissionMethod = _svGenericAttribute.GetByKey(value: u.CommissionMethod).Value;
                 }
                 var user = new AppUser()
                 {
@@ -179,8 +203,27 @@ namespace Inscoo.Controllers
         public ActionResult Edit(string id)
         {
             var uId = User.Identity.GetUserId();
+            var isAdmin = _appUserService.GetRolesByUserId(uId).Contains("Admin");
             var model = _appUserService.Get_RegisterModel_ById(id);
-            model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", model.CommissionMethod);
+
+            if (!isAdmin)
+            {
+                var user = _appUserService.FindById(User.Identity.GetUserId());
+                if (user.CommissionMethod != "Nothing")
+                {
+                    model.CommissionMethods = null;
+                    ViewBag.CommissionMethod = _svGenericAttribute.GetByKey(value: user.CommissionMethod).Key;
+                }
+                else
+                {
+                    model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "");
+                }
+            }
+            else
+            {
+                model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "");
+            }
+
 
             var roles = _appUserService.GetRolesManagerPermissionByUserId(uId, "Name", model.Roles);
 
@@ -193,7 +236,7 @@ namespace Inscoo.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(RegisterModel model)
         {
             try
@@ -218,6 +261,11 @@ namespace Inscoo.Controllers
                         }
                     }
 
+                    if (model.CommissionMethod == null)
+                    {
+                        var u = _appUserService.FindById(User.Identity.GetUserId());
+                        model.CommissionMethod = _svGenericAttribute.GetByKey(value: u.CommissionMethod).Value;
+                    }
                     var user = _appUserService.FindById(model.Id);
                     user.UserName = model.UserName;
                     user.CompanyName = model.CompanyName;

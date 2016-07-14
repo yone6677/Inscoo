@@ -198,6 +198,7 @@
     <Content Include="Content\imgIndex\bg5.jpg" />
     <Content Include="Content\imgIndex\bg6.jpg" />
     <Content Include="Content\imgIndex\bg6.png" />
+    <Content Include="Content\imgIndex\enjoy.png" />
     <Content Include="Content\imgIndex\health_img_1.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
     <Content Include="Content\imgIndex\img01.jpg" />
@@ -205,6 +206,7 @@
     <Content Include="Content\imgIndex\img03.jpg" />
     <Content Include="Content\imgIndex\img04.jpg" />
     <Content Include="Content\imgIndex\logo.png" />
+    <Content Include="Content\imgIndex\logo_sm.png" />
     <Content Include="Content\imgIndex\n1.png" />
     <Content Include="Content\imgIndex\n2.png" />
     <Content Include="Content\imgIndex\n3.png" />
@@ -221,6 +223,7 @@
     <Content Include="Content\imgIndex\polygon.png" />
     <Content Include="Content\imgIndex\question.png" />
     <Content Include="Content\imgIndex\question_1.png" />
+    <Content Include="Content\imgIndex\ruzhi_02.png" />
     <Content Include="Content\imgIndex\v1.jpg" />
     <Content Include="Content\imgIndex\v2.jpg" />
     <Content Include="Content\imgIndex\新建文件夹\i1.png" />

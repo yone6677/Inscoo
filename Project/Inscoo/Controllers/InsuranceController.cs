@@ -97,7 +97,8 @@ namespace Inscoo.Controllers
                             var item = new GenericAttributeModel()
                             {
                                 Key = company.Key,
-                                Value = company.Value
+                                Value = company.Value,
+                                Sequence = company.Sequence
                             };
                             model.CompanyList.Add(item);
                         }

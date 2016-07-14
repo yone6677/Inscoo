@@ -141,6 +141,14 @@
     <Compile Include="Migrations\201607140627408_AlterTableProductsSetClaimcode_10.Designer.cs">
       <DependentUpon>201607140627408_AlterTableProductsSetClaimcode_10.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607140929158_PolicyPDF.cs" />
+    <Compile Include="Migrations\201607140929158_PolicyPDF.Designer.cs">
+      <DependentUpon>201607140929158_PolicyPDF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607141104254_GenericAttribute  sequence.cs" />
+    <Compile Include="Migrations\201607141104254_GenericAttribute  sequence.Designer.cs">
+      <DependentUpon>201607141104254_GenericAttribute  sequence.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -177,6 +185,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607140627408_AlterTableProductsSetClaimcode_10.resx">
       <DependentUpon>201607140627408_AlterTableProductsSetClaimcode_10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607140929158_PolicyPDF.resx">
+      <DependentUpon>201607140929158_PolicyPDF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607141104254_GenericAttribute  sequence.resx">
+      <DependentUpon>201607141104254_GenericAttribute  sequence.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

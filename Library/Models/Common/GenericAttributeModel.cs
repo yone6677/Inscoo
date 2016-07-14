@@ -12,6 +12,7 @@ namespace Models.Common
         [Required]
         public string Value { get; set; }
         public string Description { get; set; }
+        public int Sequence { get; set; }
         public string Author { get; set; }
         public DateTime CreateTime { get; set; }
     }

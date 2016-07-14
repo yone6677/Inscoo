@@ -261,7 +261,6 @@
     <Content Include="Content\index.css" />
     <Content Include="Content\js\bootstrap-datepicker.js" />
     <Content Include="Content\js\bootstrap-datepicker.zh-CN.js" />
-    <Content Include="Content\js\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -317,7 +316,7 @@
     <Content Include="Views\About\_footer.cshtml" />
     <Content Include="Views\About\Question.cshtml" />
     <Content Include="Views\About\cooperation.cshtml" />
-    <None Include="Views\About\_menu.cshtml" />
+    <Content Include="Views\About\_menu.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

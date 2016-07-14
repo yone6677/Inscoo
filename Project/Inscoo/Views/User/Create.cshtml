@@ -170,8 +170,9 @@
             });
 
         function TongleWhenRoleChange() {
-            var value = event.target.value;;
+            var value = jQuery("#Roles").val();
             //console.log(value);
+            //console.log(value == "PartnerChannel");
             if (value == "PartnerChannel") {
                 jQuery("#roleChange").show();
             } else {

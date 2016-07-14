@@ -22,6 +22,6 @@ namespace Models.Order
         public DateTime StartDate { get; set; }
         [DisplayName("创建日期")]
         public DateTime CreateDate { get; set; }
-        public bool BatchState { get; set; }
+        public int BatchState { get; set; }       
     }
 }

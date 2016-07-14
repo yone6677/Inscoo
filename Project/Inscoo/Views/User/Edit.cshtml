@@ -151,7 +151,7 @@
         <div class="form-group">
             <div class="col-md-offset-3 col-md-8">
                 <input type="submit" value="保存" class="btn btn-success" />
-                @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-default" })
+                @Html.ActionLink("返回列表", "Index", new { }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
@@ -172,7 +172,7 @@
 
         function TongleWhenRoleChange() {
             var value = jQuery("#Roles").val();
-            //console.log(value);
+            //console.log(value == "PartnerChannel");
             if (value == "PartnerChannel") {
                 jQuery("#roleChange").show();
             } else {

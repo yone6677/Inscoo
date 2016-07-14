@@ -86,7 +86,7 @@ namespace Services
         {
             try
             {
-                return _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
+                return _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).OrderBy(a => a.Sequence).ToList();
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace Services
         {
             try
             {
-                var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
+                var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).OrderBy(a => a.Sequence).ToList();
                 return new SelectList(list, "Value", "Key", selectedValue);
             }
             catch (Exception e)
@@ -110,7 +110,7 @@ namespace Services
             try
             {
                 var list = _genericAttributeRepository.TableFromBuffer(72).Where(a => a.KeyGroup == keyGroup).ToList();
-                var listBox= new ListBox();
+                var listBox = new ListBox();
                 //listBox.
 
                 return new ListBox();
@@ -163,6 +163,7 @@ namespace Services
                     query = query.Where(s => s.KeyGroup == keyGroup && s.IsDeleted == IsDeleted);
                     if (query.Any())
                     {
+                        query = query.OrderBy(a => a.Sequence);
                         foreach (var s in query)
                         {
                             var item = new SelectListItem();
@@ -182,14 +183,14 @@ namespace Services
                 var query = _genericAttributeRepository.TableFromBuffer(72);
                 if (query != null)
                 {
-                    query = query.Where(s => s.IsDeleted == IsDeleted);
+                    query = query.OrderBy(a => a.Sequence).Where(s => s.IsDeleted == IsDeleted);
                     if (!string.IsNullOrEmpty(keyGroup))
                     {
                         query = query.Where(s => s.KeyGroup.Contains(keyGroup.Trim()));
                     }
                     if (query.Any())
                     {
-                        return query.OrderByDescending(c => c.Id).Select(s => new GenericAttributeModel()
+                        return query.OrderBy(a => a.Sequence).OrderByDescending(c => c.Id).Select(s => new GenericAttributeModel()
                         {
                             Author = s.Author,
                             CreateTime = s.CreateTime,
@@ -197,7 +198,8 @@ namespace Services
                             Id = s.Id,
                             Key = s.Key,
                             KeyGroup = s.KeyGroup,
-                            Value = s.Value
+                            Value = s.Value,
+                            Sequence = s.Sequence
                         }
                         ).ToList();
                     }

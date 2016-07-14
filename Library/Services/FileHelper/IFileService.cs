@@ -9,8 +9,12 @@ namespace Services
     public interface IFileService
     {
         List<string> GenerateFilePathBySuffix(string postfix);
-        
-
+        /// <summary>
+        /// 复制文件
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        List<string> CopyFileByUrl(string url);
         // string MakeHtmlFile(string TempName, ArticleModel model);
         /// <summary>
         /// 导出Excel

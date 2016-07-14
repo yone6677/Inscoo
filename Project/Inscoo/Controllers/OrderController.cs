@@ -334,7 +334,46 @@ namespace Inscoo.Controllers
         public ActionResult Buy()
         {
             var model = new ConfirmOrderModel();
-            return View(model);
+            //if (id > 0)
+            //{
+            //    var order = _orderService.GetById(id);
+            //    if (order != null)
+            //    {
+            //        model.OrderName = order.Name;
+            //        model.Memo = order.Memo;
+            //        model.StaffRange = order.StaffRange;
+            //        model.UserRebate = order.Rebate;
+            //        model.pretium = order.Pretium;
+            //        model.Id = order.Id;
+            //        var prodItem = _orderItemService.GetList(id);
+            //        if (prodItem.Count > 0)
+            //        {
+            //            for (var i = 0; i < prodItem.Count; i++)
+            //            {
+            //                if (i == 0)
+            //                {
+            //                    model.ids += prodItem[i].Id;
+            //                }
+            //                else
+            //                {
+            //                    model.ids += "," + prodItem[i].Id;
+            //                }
+            //            }
+            //        }
+            //        if (order.FanBao > 0)
+            //        {
+            //            model.HasFanBao = true;
+            //        }
+            //        if (order.TiYong > 0)
+            //        {
+            //            model.HasTiYong = true;
+            //        }
+            //        model.AgeRange = order.AgeRange;
+            //        model.AnnualExpense = order.AnnualExpense;
+            //        model.ProdItem = _orderItemService.GetList(id).Select(new);
+            //    }
+            //}
+            return View();
         }
 
         [HttpPost]
@@ -738,7 +777,7 @@ namespace Inscoo.Controllers
             {
                 var model = new UploadInfoModel();
                 model.Id = id;
-                model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                // model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
                 var order = _orderService.GetById(id);
                 if (order.State > 1)
                 {
@@ -748,7 +787,7 @@ namespace Inscoo.Controllers
                         if (orderBatch.EmpInfoFilePDF == 0)//还未生成PDF
                         {
                             var virpath = _orderEmpService.GetPdf(id);//产生PDF文件
-                            if (virpath.Count > 0)
+                            if (virpath != null)
                             {
                                 var fid = _archiveService.InsertByUrl(virpath, FileType.EmployeeInfoSeal.ToString(), id, "人员信息PDF");
                                 orderBatch.EmpInfoFilePDF = fid;
@@ -762,21 +801,39 @@ namespace Inscoo.Controllers
                         {
                             var archive = _archiveService.GetById(orderBatch.EmpInfoFilePDF);
                             model.EmpInfoFilePDFUrl = archive.Url;
-                            if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
+                        }
+                        if (orderBatch.PolicyPDF == 0)
+                        {
+                            var virpath = _orderEmpService.GetPolicyPdf(id);//产生投保单PDF文件
+                            if (virpath != null)
                             {
-                                model.HasEmpInfoFilePDFSeal = true;
-                                model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
+                                var fid = _archiveService.InsertByUrl(virpath, FileType.PolicySeal.ToString(), id, "投保单PDF");
+                                orderBatch.PolicyPDF = fid;
+                                if (_orderBatchService.Update(orderBatch))
+                                {
+                                    model.InsurancePolicyTemp = virpath[1];
+                                }
                             }
-                            if (order.BusinessLicense > 0)//已上传营业执照
-                            {
-                                model.HasBusinessLicense = true;
-                                model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
-                            }
-                            if (orderBatch.PolicySeal > 0)//已上传投保单
-                            {
-                                model.HasInsurancePolicy = true;
-                                model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
-                            }
+                        }
+                        else//已生成投保单PDF文件
+                        {
+                            var archive = _archiveService.GetById(orderBatch.PolicyPDF);
+                            model.InsurancePolicyTemp = archive.Url;
+                        }
+                        if (orderBatch.EmpInfoFileSeal > 0)//已上传人员信息PDF加盖公章
+                        {
+                            model.HasEmpInfoFilePDFSeal = true;
+                            model.EmpInfoFilePDFSealUrl = _archiveService.GetById(orderBatch.EmpInfoFileSeal).Url;
+                        }
+                        if (order.BusinessLicense > 0)//已上传营业执照
+                        {
+                            model.HasBusinessLicense = true;
+                            model.BusinessLicenseSealUrl = _archiveService.GetById(order.BusinessLicense).Url;
+                        }
+                        if (orderBatch.PolicySeal > 0)//已上传投保单
+                        {
+                            model.HasInsurancePolicy = true;
+                            model.InsurancePolicySealUrl = _archiveService.GetById(orderBatch.PolicySeal).Url;
                         }
                         return View(model);
                     }
@@ -992,6 +1049,7 @@ namespace Inscoo.Controllers
                         {
                             batchItem.EmpInfoFileSeal = EmpInfoFileSeal.Url;
                         }
+                        batchItem.State = b.BState;
                         switch (b.BState)
                         {
                             case 0:

@@ -63,7 +63,8 @@ namespace Inscoo.Controllers
                     Description = model.Description,
                     Key = model.Key,
                     KeyGroup = model.KeyGroup,
-                    Value = model.Value
+                    Value = model.Value,
+                    Sequence = model.Sequence
                 };
                 if (_genericAttributeService.Insert(item))
                 {
@@ -86,7 +87,8 @@ namespace Inscoo.Controllers
                         Description = item.Description,
                         Key = item.Key,
                         KeyGroup = item.KeyGroup,
-                        Value = item.Value
+                        Value = item.Value,
+                        Sequence = item.Sequence
                     };
                     return View(model);
                 }
@@ -106,6 +108,7 @@ namespace Inscoo.Controllers
                     item.Key = model.Key;
                     item.KeyGroup = model.KeyGroup;
                     item.Value = model.Value;
+                    item.Sequence = model.Sequence;
                     if (_genericAttributeService.Update(item))
                     {
                         return RedirectToAction("Index");
@@ -127,7 +130,8 @@ namespace Inscoo.Controllers
                         Description = item.Description,
                         Key = item.Key,
                         KeyGroup = item.KeyGroup,
-                        Value = item.Value
+                        Value = item.Value,
+                        Sequence = item.Sequence
                     };
                     return View(model);
                 }
@@ -149,7 +153,8 @@ namespace Inscoo.Controllers
                         KeyGroup = item.KeyGroup,
                         Value = item.Value,
                         Author = item.Author,
-                        CreateTime = item.CreateTime
+                        CreateTime = item.CreateTime,
+                        Sequence = item.Sequence
                     };
                     return View(model);
                 }

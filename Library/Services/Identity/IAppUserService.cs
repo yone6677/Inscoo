@@ -50,7 +50,8 @@ namespace Services
         SelectList GetRolesManagerPermissionByUserId(string uId, string valueField, string selectedValue = "");
         IPagedList<UserModel> GetUserList(int pageIndex = 1, int pageSize = 15, string userName = null, string email = null, string role = "", string roleId = "", string createUserId = "-1");
         List<UserRoleModel> GetUserRoles();
-
+        SelectList GetProdInsurances(string uId);
+        SelectList GetProdSeries(string uId);
         /// <summary>
         /// 判断是否用户名已使用。用户名和邮箱都不能存在
         /// </summary>

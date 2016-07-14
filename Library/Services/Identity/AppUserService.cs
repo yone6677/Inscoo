@@ -14,6 +14,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Core.Data;
+using Domain.Common;
 
 namespace Services
 {
@@ -23,13 +25,15 @@ namespace Services
         private readonly AppRoleManager _appRoleManager;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
+        private readonly IRepository<GenericAttribute> _rpGenericAttribute;
         public AppUserService(ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
-            IAuthenticationManager authenticationManager)
+            IAuthenticationManager authenticationManager, IRepository<GenericAttribute> rpGenericAttribute)
         {
             _userManager = userManager;
             _appRoleManager = appRoleManager;
             _loggerService = loggerService;
             _authenticationManager = authenticationManager;
+            _rpGenericAttribute = rpGenericAttribute;
         }
 
 
@@ -433,6 +437,34 @@ namespace Services
             {
                 throw e;
             }
+        }
+        public SelectList GetProdInsurances(string uId)
+        {
+            var isAdmin = _userManager.GetRoles(uId).Contains("Admin");
+            var list =
+                   _rpGenericAttribute.TableNoTracking.Where(s => s.KeyGroup == "InsuranceCompany")
+                       .Select(s => new { s.Key, s.Value })
+                       .ToList();
+            if (!isAdmin)
+            {
+                var items = _userManager.FindByIdAsync(uId).Result.ProdInsurance.Split(';');
+                list = list.Where(l => items.Contains(l.Value)).ToList();
+            }
+            return new SelectList(list, "Value", "Key");
+        }
+        public SelectList GetProdSeries(string uId)
+        {
+            var isAdmin = _userManager.GetRoles(uId).Contains("Admin");
+            var list =
+                   _rpGenericAttribute.TableNoTracking.Where(s => s.KeyGroup == "ProductSeries")
+                       .Select(s => new { s.Key, s.Value })
+                       .ToList();
+            if (!isAdmin)
+            {
+                var items = _userManager.FindByIdAsync(uId).Result.ProdSeries.Split(';');
+                list = list.Where(l => items.Contains(l.Value)).ToList();
+            }
+            return new SelectList(list, "Value", "Key");
         }
 
         public bool IsUserExist(string key)

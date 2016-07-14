@@ -80,13 +80,14 @@ namespace Inscoo.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
+            var uId = User.Identity.GetUserId();
             var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name");
             var user = _appUserService.FindById(User.Identity.GetUserId());
             ViewBag.maxRebate = user.Rebate;
             var model = new RegisterModel() { RoleSelects = roles, CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "") };
 
-            ViewBag.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
-            ViewBag.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
+            ViewBag.ProdSeriesList = _appUserService.GetProdSeries(uId);
+            ViewBag.ProdInsurancesList = _appUserService.GetProdInsurances(uId);
             //model.ProdSeries = user.ProdSeries.Split(';');
             //model.ProdInsurances = user.ProdInsurance.Split(';');
 
@@ -177,14 +178,15 @@ namespace Inscoo.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(string id)
         {
+            var uId = User.Identity.GetUserId();
             var model = _appUserService.Get_RegisterModel_ById(id);
             model.CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", model.CommissionMethod);
 
-            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name", model.Roles);
+            var roles = _appUserService.GetRolesManagerPermissionByUserId(uId, "Name", model.Roles);
 
             model.RoleSelects = roles;
-            ViewBag.ProdSeriesList = _svGenericAttribute.GetSelectList("ProductSeries");
-            ViewBag.ProdInsurancesList = _svGenericAttribute.GetSelectList("InsuranceCompany");
+            ViewBag.ProdSeriesList = _appUserService.GetProdSeries(uId);
+            ViewBag.ProdInsurancesList = _appUserService.GetProdInsurances(uId);
             ViewBag.maxRebate = _appUserService.FindById(User.Identity.GetUserId()).Rebate;
             return View(model);
         }

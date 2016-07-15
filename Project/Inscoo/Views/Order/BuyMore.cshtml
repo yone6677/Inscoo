@@ -9,22 +9,26 @@
     <ul>
         <li>
             <label>
-                上传员工名单
+                上传员工名单：
             </label>
         </li>
         <li>
-            <input type="file" id="empinfo" name="empinfo" />
+            
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="empinfo" name="empinfo" />选择文件
+            </a>
+            <span class="lab">未选择上传文件</span>
         </li>
         <li>
             <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载投保变更模板</a>
         </li>
     </ul>
-    <p style="text-align:center;margin-top:2em">
+    <p style="text-align:center;float:left">
         <input type="submit" value="确认提交" class="btn btn-default" />
     </p>
 }
 <div style="line-height:2em;width:100%;text-align:center;">
-    <span>@Model.Result</span>
+    <span style="color:#f00">@Model.Result</span>
     <span class="text-danger" style="color:red;" id="error"></span>
 </div>
 

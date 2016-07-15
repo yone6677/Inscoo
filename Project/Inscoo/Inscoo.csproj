@@ -171,12 +171,10 @@
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
     <Content Include="Archive\Template\gongzhang.jpg" />
+    <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
-    </Content>
-    <Content Include="Content\base.min.css">
-      <DependentUpon>base.css</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -330,24 +328,24 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
-    <Compile Include="Controllers\AboutController.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
-    <Compile Include="Controllers\GenericAttributeController.cs" />
-    <Compile Include="Controllers\HealthController.cs" />
-    <Compile Include="Controllers\HealthProductController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InsuranceController.cs" />
-    <Compile Include="Controllers\MixProductController.cs" />
-    <Compile Include="Controllers\NavController.cs" />
-    <Compile Include="Controllers\OrderController.cs" />
-    <Compile Include="Controllers\PermissionController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="Controllers\CompanyController.cs" />
-    <Compile Include="Controllers\ClaimController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="info\Controllers\AboutController.cs" />
+    <Compile Include="info\Controllers\AccountController.cs" />
+    <Compile Include="info\Controllers\BaseController.cs" />
+    <Compile Include="info\Controllers\ErrorController.cs" />
+    <Compile Include="info\Controllers\FileController.cs" />
+    <Compile Include="info\Controllers\GenericAttributeController.cs" />
+    <Compile Include="info\Controllers\HealthController.cs" />
+    <Compile Include="info\Controllers\HealthProductController.cs" />
+    <Compile Include="info\Controllers\HomeController.cs" />
+    <Compile Include="info\Controllers\InsuranceController.cs" />
+    <Compile Include="info\Controllers\MixProductController.cs" />
+    <Compile Include="info\Controllers\NavController.cs" />
+    <Compile Include="info\Controllers\OrderController.cs" />
+    <Compile Include="info\Controllers\PermissionController.cs" />
+    <Compile Include="info\Controllers\RoleController.cs" />
+    <Compile Include="info\Controllers\CompanyController.cs" />
+    <Compile Include="info\Controllers\ClaimController.cs" />
+    <Compile Include="info\Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -434,6 +432,7 @@
     <Content Include="Views\HealthProduct\ProDetail.cshtml" />
     <Content Include="Views\Order\EmpChanges.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceUploadEinsurance.cshtml" />
+    <Content Include="Views\Account\Login - 复制.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

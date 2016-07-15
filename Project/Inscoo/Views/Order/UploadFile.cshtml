@@ -29,32 +29,31 @@
     <ul class="unloadFile">
         <li>
             <label>
-                营业执照(加盖公章)
+                营业执照(加盖公章)：
             </label>
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="BusinessLicensePdfSeal" name="BusinessLicensePdfSeal" />
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="BusinessLicensePdfSeal" name="BusinessLicensePdfSeal" />选择文件
+            </a>
+            <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
         </li>
         <li>
+            @*<div class="uploadInfo uploadInfo-hide">dasfsd</div>*@
             @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
             {
                 <div class="uploadInfo">
                     @if (Model.HasBusinessLicense)
                     {
                         <div>
-                            <ul>
-
-                                <li>
-                                    <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.BusinessLicenseSealUrl>查看</a>
-                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
-                                </li>
-                            </ul>
+                            <span><i class="fa fa-check"></i>已上传</span>
+                            <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
                         </div>
                     }
                 </div>
@@ -67,16 +66,20 @@
     <ul class="unloadFile">
         <li>
             <label>
-                员工名单(加盖公章)
+                员工名单(加盖公章)：
             </label>
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />选择文件
+            </a>
+            <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
         </li>
+        
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
+            <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a> 
         </li>
         <li>
             @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
@@ -85,13 +88,9 @@
                     @if (Model.HasEmpInfoFilePDFSeal)
                     {
                         <div>
-                            <ul>
-                                <li>
-                                    <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
-                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
-                                </li>
-                            </ul>
+                            <span><i class="fa fa-check"></i>已上传</span>
+                            <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                         </div>
                     }
                 </div>
@@ -105,12 +104,15 @@
     <ul class="unloadFile">
         <li>
             <label>
-                投保单(加盖公章)
+                投保单(加盖公章)：
             </label>
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />选择文件
+            </a>
+            <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
@@ -123,13 +125,9 @@
                     @if (Model.HasInsurancePolicy)
                     {
                         <div>
-                            <ul>
-                                <li>
-                                    <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.InsurancePolicySealUrl>查看</a>
-                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
-                                </li>
-                            </ul>
+                            <span><i class="fa fa-check"></i>已上传</span>
+                            <a href=@Model.InsurancePolicySealUrl>查看</a>
+                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
                         </div>
                     }
                 </div>
@@ -140,9 +138,8 @@
 <div style="height:5em;width:100%;height:auto;">
     <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
-        <span style="color:gray">1.营业执照只能上传JPG/PNG/PDF/Doc或者压缩文件</span><br />
-        <span style="color:gray">2.员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
-        <span style="color:gray">3.如果文件超过2M,请将文件压缩后上传</span><br />
+        <span style="color:gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
+        <span style="color:gray">2.如果文件超过2M,请将文件压缩后上传</span><br />
         <span class="text-danger" id="errorInfo"></span>
     </div>
 </div>
@@ -169,6 +166,7 @@
 <form onsubmit=""></form>
 @section Scripts {
     <script>
+        
         function msg() {
             $("#errorInfo").text("请先上传所有资料！");
         }
@@ -176,6 +174,7 @@
             var errorInfo = $("#errorInfo");
             var empFile = $("#EmpInfoPdfSeal").val();
             var blFile = $("#BusinessLicensePdfSeal").val();
+
             var ppFile = $("#PolicyPdfSeal").val();
             var s = parseInt(e);
             var pf = '';

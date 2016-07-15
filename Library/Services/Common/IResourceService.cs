@@ -44,5 +44,7 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         string GetEmpInfoBuyMoreTemp();
+
+        string GetBusinessLicenseTemp();
     }
 }

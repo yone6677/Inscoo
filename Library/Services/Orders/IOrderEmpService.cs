@@ -21,8 +21,9 @@ namespace Services.Orders
         List<OrderEmployee> GetListByOid(int oid);
         OrderEmployee GetByInfo(string idNumber, string name, int oid);
         IPagedList<OrderEmployeeModel> GetListOfPager(int pageIndex, int pageSize, int oid = 0);
+        List<string> GetPdfOfEmpTemp(int bid);
         List<string> GetPdf(int oid);
-        List<string> GetPaymentNoticePdf(int oid);
+        List<string> GetPaymentNoticePdf(int oid, int bid = 0);
         /// <summary>
         /// 产生投保单
         /// </summary>

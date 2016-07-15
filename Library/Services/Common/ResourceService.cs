@@ -44,5 +44,9 @@ namespace Services
         {
             return "/Archive/Template/人员信息变更模板.xlsx";
         }
+        public string GetBusinessLicenseTemp()
+        {
+            return "/Archive/Template/营业执照模版.jpg";
+        }
     }
 }

@@ -52,11 +52,8 @@ namespace Services.Orders
         {
             try
             {
-                var list = GetList(oid);
-                if (list.Count > 0)
-                {
-                    return list.FirstOrDefault();
-                }
+                var maxId = GetList(oid).Max(o => o.Id);
+                return GetById(maxId);
             }
             catch (Exception e)
             {

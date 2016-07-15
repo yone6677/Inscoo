@@ -695,7 +695,16 @@ namespace Inscoo.Controllers
             try
             {
                 var userName = User.Identity.Name;
-                var order = _orderService.GetById(id);
+                var order = new Order();
+                if (fType < 4)
+                {
+                    order = _orderService.GetById(id);
+                }
+                if (fType == 4 || fType == 5)
+                {
+                    var batch = _orderBatchService.GetById(id);
+                    order = _orderService.GetById(batch.order_Id);
+                }
                 if (userName == order.Author)//只有用户自己能删除资料
                 {
                     if (fType == 1)
@@ -746,6 +755,40 @@ namespace Inscoo.Controllers
                                 }
                             }
                         }
+                        if (fType == 4)//加减保删除人员资料
+                        {
+                            var orderBatch = _orderBatchService.GetById(id);
+                            var file = _archiveService.GetById(batch.EmpInfoFile);
+                            if (file != null)
+                            {
+                                _archiveService.Delete(file);
+                                var empTemp = _orderEmpTempService.GetListByBid(id);
+                                if (empTemp.Count > 0)
+                                {
+                                    foreach (var e in empTemp)
+                                    {
+                                        _orderEmpTempService.Delete(e);
+                                    }
+                                }
+                                if (orderBatch.BState == 0)
+                                {
+                                    _orderBatchService.DeleteById(orderBatch.Id);
+                                }
+                                return RedirectToAction("BuyMore", new { id = orderBatch.order_Id });
+                            }
+                        }
+                        if (fType == 5)//加减保删除人员资料
+                        {
+                            var orderBatch = _orderBatchService.GetById(id);
+                            var file = _archiveService.GetById(batch.EmpInfoFileSeal);
+                            if (file != null)
+                            {
+                                _archiveService.Delete(file);
+                                orderBatch.EmpInfoFileSeal = 0;
+                                _orderBatchService.Update(orderBatch);
+                                return RedirectToAction("BuyMore", new { id = orderBatch.order_Id });
+                            }
+                        }
                     }
                 }
             }
@@ -784,7 +827,7 @@ namespace Inscoo.Controllers
             {
                 var model = new UploadInfoModel();
                 model.Id = id;
-                // model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                model.BusinessLicenseTemp = _resourceService.GetBusinessLicenseTemp();
                 var order = _orderService.GetById(id);
                 if (order.State > 1)
                 {
@@ -863,13 +906,17 @@ namespace Inscoo.Controllers
                         orderBatch.EmpInfoFileSeal = fileId;
                         if (_orderBatchService.Update(orderBatch))
                         {
-                            if (uType > 0)
+                            if (uType == 1)
                             {
                                 return RedirectToAction("Details", new { id = Id });
                             }
-                            else
+                            if (uType == 0)
                             {
                                 return RedirectToAction("UploadFile", new { id = Id });
+                            }
+                            if (uType == 2)
+                            {
+                                return RedirectToAction("BuyMore", new { id = Id });
                             }
                         }
                     }
@@ -1288,9 +1335,69 @@ namespace Inscoo.Controllers
             var model = new BuyMoreModel()
             {
                 Id = id,
-                EmpInfoFileUrl = _resourceService.GetEmpInfoBuyMoreTemp(),
-                StartDate = DateTime.Now.AddDays(4)
+                EmpInfoFileUrl = _resourceService.GetEmpInfoBuyMoreTemp()
             };
+            var order = _orderService.GetById(id);
+            var obid = order.orderBatch.Max(q => q.Id);
+            var batch = _orderBatchService.GetById(obid);
+            model.BId = batch.Id;
+            model.Disable = true;
+            if (batch.BState == 0 || batch.BState == 5)
+            {
+                model.Disable = false;
+
+                if (batch.EmpInfoFile > 0 && batch.BState == 0)
+                {
+                    model.HasEmpInfoExcel = true;
+                    model.EmpInfoExcel = _archiveService.GetById(batch.EmpInfoFile).Url;
+                    if (batch.EmpInfoFilePDF == 0)//已上传excel,需要生成pdf
+                    {
+                        var virpath = _orderEmpService.GetPdfOfEmpTemp(batch.Id);//产生PDF文件
+                        if (virpath != null)
+                        {
+                            var fid = _archiveService.InsertByUrl(virpath, FileType.EmployeeInfoSeal.ToString(), id, "人员信息PDF");
+                            batch.EmpInfoFilePDF = fid;
+                            if (_orderBatchService.Update(batch))
+                            {
+                                model.HasEmpInfoFilePDF = true;
+                                model.EmpInfoFilePDF = virpath[1];
+                            }
+                        }
+                    }
+                }
+                if (!model.HasEmpInfoFilePDF)
+                {
+                    if (batch.EmpInfoFilePDF > 0 && batch.BState == 0)
+                    {
+                        model.HasEmpInfoFilePDF = true;
+                        model.EmpInfoFilePDF = _archiveService.GetById(batch.EmpInfoFilePDF).Url;
+                    }
+                }
+                if (batch.EmpInfoFileSeal > 0 && batch.BState == 0)
+                {
+                    model.HasEmpInfoFilePDFSeal = true;
+                    model.EmpInfoFilePDFSealUrl = _archiveService.GetById(batch.EmpInfoFileSeal).Url;
+                }
+                if (model.HasEmpInfoFilePDF)
+                {
+                    if (batch.PaymentNoticePDF == 0)//已经产生人员信息PDF,需要生成pdf
+                    {
+                        var ls = _orderEmpService.GetPaymentNoticePdf(id, batch.Id);
+                        var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "加减保付款通知书");
+                        batch.PaymentNoticePDF = fid;
+                        if (_orderBatchService.Update(batch))
+                        {
+                            model.HasPaymentNotice = true;
+                            model.PaymentNotice = _archiveService.GetById(batch.PaymentNoticePDF).Url;
+                        }
+                    }
+                }
+                if (batch.PaymentNoticePDF > 0 && batch.BState == 0)
+                {
+                    model.HasPaymentNotice = true;
+                    model.PaymentNotice = _archiveService.GetById(batch.PaymentNoticePDF).Url;
+                }
+            }
             return View(model);
         }
         [HttpPost]
@@ -1350,7 +1457,7 @@ namespace Inscoo.Controllers
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
                             item.StartDate = changeDate;
                             item.EndDate = order.EndDate;
-                            if (Cells["H" + i].Value!=null)
+                            if (Cells["H" + i].Value != null)
                             {
                                 item.BankCard = Cells["H" + i].Value.ToString().Trim();
                             }
@@ -1409,7 +1516,7 @@ namespace Inscoo.Controllers
                         var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), model.Id);
                         var obid = order.orderBatch.Max(q => q.Id);
                         var batch = _orderBatchService.GetById(obid);
-                        if (batch.BState == 1 && batch.BState == 3)
+                        if (batch.BState == 1 || batch.BState == 3)//如果初审或者财务已经审核，则不能再上传
                         {
                             throw new Exception("抱歉，订单已经在审核当中，无法更改人员信息，请耐心等待。");
                         }
@@ -1419,6 +1526,16 @@ namespace Inscoo.Controllers
                         {
                             bnum = int.Parse(batch.BNum);
                             bid = batch.Id;
+                            var oet = _orderEmpTempService.GetListByBid(batch.Id);
+                            if (oet.Count > 0)//若批次未审核
+                            {
+                                foreach (var t in oet)
+                                {
+                                    _orderEmpTempService.Delete(t);//重新上传时删掉已有信息
+                                }
+                            }
+                            batch.EmpInfoFile = fileModel;
+                            _orderBatchService.Update(batch);
                         }
                         else
                         {

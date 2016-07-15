@@ -98,4 +98,9 @@ $(function () {
     });
 })
 
-
+/*type=file*/
+$("[type='file']").on('change', function () {
+    var empFile = $(this).val();
+    var pf = (empFile.substring(empFile.lastIndexOf("\\") + 1, empFile.length));
+    $(this).parent().next().text(pf);
+});

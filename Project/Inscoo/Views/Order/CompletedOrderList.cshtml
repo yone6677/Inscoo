@@ -71,6 +71,14 @@
                     {
                         @Html.ActionLink("加减保", "BuyMore", new { id = item.Id });
                     }
+                    if (item.State == 6 && item.BatchState == 0)
+                    {
+                        @Html.ActionLink("加减保信息", "BuyMore", new { id = item.Id });
+                    }
+                    if (item.State == 6 && item.BatchState == 1 || item.BatchState == 3)
+                    {
+                        <span>正在审核</span>
+                    }
                 }
             </td>
         </tr>

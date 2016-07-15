@@ -62,8 +62,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BusinessLicenseFilePath, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                <input type="file" id="file" name="file" class="form-control" style="width:80%;float:left" />
-                <div style="width:20%;float:right;line-height:34px;text-align:center" >
+                <a href="javascript:;" class="a-upload" >
+                    <input type="file" id="file" name="file" class="form-control" />选择文件
+                </a>
+                <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
+                <div style="width:60%;float:right;line-height:34px;text-align:left" >
                     <a target="_blank" href="@Model.BusinessLicenseFilePath">查看</a>
                 </div>
             </div>

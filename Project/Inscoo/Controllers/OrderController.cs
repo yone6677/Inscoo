@@ -827,7 +827,7 @@ namespace Inscoo.Controllers
             {
                 var model = new UploadInfoModel();
                 model.Id = id;
-                // model.InsurancePolicyTemp = _resourceService.GetInsurancePolicyTemp();
+                model.BusinessLicenseTemp = _resourceService.GetBusinessLicenseTemp();
                 var order = _orderService.GetById(id);
                 if (order.State > 1)
                 {

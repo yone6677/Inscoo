@@ -15,6 +15,23 @@ namespace Core
         public AppUserManager(IUserStore<AppUser> store)
             : base(store)
         {
+            // 配置用户名的验证逻辑
+            this.UserValidator = new UserValidator<AppUser>(this)
+            {
+                AllowOnlyAlphanumericUserNames = true,
+                RequireUniqueEmail = true,
+
+            };
+
+            // 配置密码的验证逻辑
+            this.PasswordValidator = new PasswordValidator
+            {
+                //RequiredLength = 8,
+                //RequireDigit = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
+            };
+
         }
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
@@ -23,7 +40,7 @@ namespace Core
             manager.UserValidator = new UserValidator<AppUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = true,
-                RequireUniqueEmail = false,
+                RequireUniqueEmail = true,
 
             };
 

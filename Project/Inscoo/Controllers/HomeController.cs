@@ -112,6 +112,7 @@ namespace Inscoo.Controllers
         [AllowAnonymous]
         public ActionResult Portrait()
         {
+            if (!User.Identity.IsAuthenticated) return PartialView();
             ViewBag.UserName = User.Identity.Name;
             var portraitPath = Request.Cookies.Get("PortraitPath");
             if (portraitPath == null)

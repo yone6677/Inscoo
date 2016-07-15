@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using Core;
 
 namespace Inscoo
 {

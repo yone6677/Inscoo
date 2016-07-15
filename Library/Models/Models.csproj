@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\LoginModel.cs" />
+    <Compile Include="Account\ResetPasswordModel.cs" />
     <Compile Include="Account\RegisterModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />

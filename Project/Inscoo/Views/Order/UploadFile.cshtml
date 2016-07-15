@@ -34,10 +34,10 @@
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="BusinessLicensePdfSeal" name="BusinessLicensePdfSeal" />
+            <input type="file" id="BusinessLicensePdfSeal" required="" name="BusinessLicensePdfSeal" />
         </li>
         <li>
-            <input type="submit" value="上传"  required="" class="btn btn-default" />
+            <input type="submit" value="上传" required="" class="btn btn-default" />
             <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
         </li>
         <li>
@@ -51,14 +51,14 @@
 
                                 <li>
                                     <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.BusinessLicenseSealUrl>查看</a>
-                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
+                                    <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
+                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red; " })
                                 </li>
                             </ul>
                         </div>
                     }
                 </div>
-             }
+            }
         </li>
     </ul>
 }
@@ -88,14 +88,14 @@
                             <ul>
                                 <li>
                                     <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                                    <a href=@Model.EmpInfoFilePDFSealUrl target="_blank">查看</a>
                                     @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                                 </li>
                             </ul>
                         </div>
                     }
                 </div>
-             }
+            }
         </li>
 
     </ul>
@@ -126,7 +126,7 @@
                             <ul>
                                 <li>
                                     <span><i class="fa fa-check"></i>已上传</span>
-                                    <a href=@Model.InsurancePolicySealUrl>查看</a>
+                                    <a href=@Model.InsurancePolicySealUrl target="_blank">查看</a>
                                     @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
                                 </li>
                             </ul>
@@ -190,7 +190,7 @@
                     if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
-                        errorInfo.text("员工名单只能上传压缩文件，请压缩后再重新上传！");
+                        errorInfo.text("员工名单格式不正确！");
                     }
                     break;
                 case 2:
@@ -202,7 +202,7 @@
                     if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
-                        errorInfo.text("营业执照只能上传PDF/WORLD，或者压缩文件，请重新上传！");
+                        errorInfo.text("营业执照格式不正确！");
                     }
                     break;
                 case 3:
@@ -214,7 +214,7 @@
                     if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
-                        errorInfo.text("投保单只能上传压缩文件，请压缩后再重新上传！");
+                        errorInfo.text("投保单格式不正确");
                     }
                     break;
             }

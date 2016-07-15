@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Models.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Services
 {
@@ -157,6 +161,53 @@ namespace Services
             }
         }
 
+        public List<SelectListItem> GetCovSumOrder(List<SelectListItem> list)
+        {
+            try
+            {
+                if (list.Count > 0)
+                {
+                    var nList = new List<SelectListItem>();
+                    var tList = new List<GenericAttributeModel>();
+                    foreach (var s in list)
+                    {
+                        var item = new GenericAttributeModel();
+                        if (s.Text.Contains("万"))
+                        {
+                            s.Text = s.Text.Split('万')[0];
+                            item.Description = "万";
+                        }
+                        if (s.Text.Contains("元/天"))
+                        {
+                            s.Text = s.Text.Split('元')[0];
+                            item.Description = "元/天";
+                        }
+                        item.Sequence = int.Parse(s.Text);
+                        item.Value = s.Value;
+                        tList.Add(item);
+                    }
+                    if (tList.Count > 0)
+                    {
+                        var ga = tList.OrderBy(t => t.Sequence);
+                        foreach (var g in ga)
+                        {
+                            var item = new SelectListItem()
+                            {
+                                Text = g.Sequence + g.Description,
+                                Value = g.Value
+                            };
+                            nList.Add(item);
+                        }
+                        return nList;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return new List<SelectListItem>();
+        }
         #region 金额转换大写
         public string CmycurD(decimal num)
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Services
 {
@@ -68,6 +70,8 @@ namespace Services
         /// <param name="url">URL</param>
         /// <param name="fileType">文件类型</param>
         void DownloadFile(string url, string fileType = null);
+
+        List<SelectListItem> GetCovSumOrder(List<SelectListItem> list);
         /// <summary>
         /// 金额转换汉字大写
         /// </summary>

@@ -24,8 +24,10 @@ namespace Services.Orders
         private readonly IOrderItemService _orderitemService;
         private readonly HttpContextBase _httpContext;
         private readonly IWebHelper _webHelper;
+        private readonly IOrderEmpTempService _orderEmpTempService;
+        private readonly IOrderBatchService _orderBatchService;
         public OrderEmpService(ILoggerService loggerService, IRepository<OrderEmployee> orderEmpRepository, IAuthenticationManager authenticationManager, IFileService fileService,
-            IOrderService orderService, IOrderItemService orderitemService, HttpContextBase httpContext, IWebHelper webHelper)
+            IOrderService orderService, IOrderItemService orderitemService, HttpContextBase httpContext, IWebHelper webHelper, IOrderEmpTempService orderEmpTempService, IOrderBatchService orderBatchService)
         {
             _loggerService = loggerService;
             _orderEmpRepository = orderEmpRepository;
@@ -35,6 +37,9 @@ namespace Services.Orders
             _orderitemService = orderitemService;
             _httpContext = httpContext;
             _webHelper = webHelper;
+            _orderEmpTempService = orderEmpTempService;
+            _orderBatchService = orderBatchService;
+
         }
         public bool DeleteById(int id)
         {
@@ -229,6 +234,75 @@ namespace Services.Orders
             }
             return new PagedList<OrderEmployeeModel>(new List<OrderEmployeeModel>(), pageIndex, pageSize);
         }
+        public List<string> GetPdfOfEmpTemp(int bid)
+        {
+            try
+            {
+                var list = _orderEmpTempService.GetListByBid(bid);
+                if (list.Count > 0)
+                {
+                    var batch = _orderBatchService.GetById(bid);
+                    var order = _orderService.GetById(batch.order_Id);
+                    var paths = _fileService.GenerateFilePathBySuffix(".pdf");
+                    var stream = new FileStream(paths[0], FileMode.Create);
+                    var font = OperationPDF.GetFont();
+                    var document = new Document();
+                    document.SetPageSize(PageSize.A4.Rotate());
+                    document.SetMargins(10, 10, 10, 10);
+                    PdfWriter.GetInstance(document, stream);
+                    document.Open();
+
+                    PdfPTable table = new PdfPTable(10);
+                    table.SetWidths(new float[] { 4, 6, 3, 5, 14, 10, 9, 9, 4, 6 });
+
+                    //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
+                    //table.SetTotalWidth(100);
+                    PdfPCell cell;
+                    cell = new PdfPHeaderCell() { Colspan = 10, Phrase = new Phrase(order.CompanyName, font), HorizontalAlignment = Element.ALIGN_CENTER };
+                    table.AddCell(cell);
+                    table.AddCell(new Phrase("序号", font));
+                    table.AddCell(new Phrase("姓名", font));
+                    table.AddCell(new Phrase("性别", font));
+                    table.AddCell(new Phrase("证件类型", font));
+                    table.AddCell(new Phrase("证件号码", font));
+                    table.AddCell(new Phrase("生日", font));
+                    table.AddCell(new Phrase("生效日", font));
+                    table.AddCell(new Phrase("结束日", font));
+                    table.AddCell(new Phrase("有无社保", font));
+                    table.AddCell(new Phrase("投保类型", font));
+                    var index = 1;
+                    foreach (var item in list)
+                    {
+                        table.AddCell(new Phrase(index.ToString(), font));
+                        table.AddCell(new Phrase(item.Name, font));
+                        table.AddCell(new Phrase(item.Sex, font));
+                        table.AddCell(new Phrase(item.IDType, font));
+                        table.AddCell(new Phrase(item.IDNumber, font));
+                        table.AddCell(new Phrase(item.BirBirthday.ToLongDateString(), font));
+                        table.AddCell(new Phrase(item.StartDate.ToLongDateString(), font));
+                        table.AddCell(new Phrase(item.EndDate.ToLongDateString(), font));
+                        table.AddCell(new Phrase(item.HasSocialSecurity, font));
+                        if (item.BuyType == 1)
+                        {
+                            table.AddCell(new Phrase("加保", font));
+                        }
+                        else
+                        {
+                            table.AddCell(new Phrase("减保", font));
+                        }
+                        index++;
+                    }
+                    document.Add(table);
+                    document.Close();
+                    return paths;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderItem：GetPdfOfEmpTemp");
+            }
+            return null;
+        }
         public List<string> GetPdf(int oid)
         {
             try
@@ -288,7 +362,7 @@ namespace Services.Orders
             }
             return null;
         }
-        public List<string> GetPaymentNoticePdf(int oid)
+        public List<string> GetPaymentNoticePdf(int oid, int bid = 0)
         {
             try
             {
@@ -326,13 +400,31 @@ namespace Services.Orders
                         table.AddCell(new Phrase(p.CoverageSum, font));
                         table.AddCell(new Phrase(p.PayoutRatio, font));
                     }
+
+                    decimal totalAmount = 0;
+                    int InsuranceNumber = 0;
+                    if (bid == 0)
+                    {
+                        totalAmount = GetOrderTotalAmount(oid);//订单总额 包括已减保
+                        InsuranceNumber = order.InsuranceNumber;
+                    }
+                    else//计算某个批次金额
+                    {
+                        var empTemp = _orderEmpTempService.GetListByBid(bid);
+                        if (empTemp.Count > 0)
+                        {
+                            totalAmount = empTemp.Sum(e => e.Premium);
+                        }
+                        InsuranceNumber = empTemp.Count;
+                    }
+
                     table.AddCell(new Phrase("每人保费总计", font));
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(order.AnnualExpense + "元/人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.AddCell(new Phrase("保障人数", font));
-                    table.AddCell(new PdfPCell() { Phrase = new Phrase(order.InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
-
+                    table.AddCell(new PdfPCell() { Phrase = new Phrase(InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.AddCell(new Phrase("金额合计", font));
-                    decimal totalAmount = GetOrderTotalAmount(oid);//订单总额 包括已减保
+           
+
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(totalAmount + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
                     table.AddCell(new Phrase("保险期间", font));
@@ -340,8 +432,15 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(yearRange, font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.SpacingAfter = 30;
                     document.Add(table);
-                    document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
-                    document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
+                    if (bid == 0)
+                    {
+                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                    }
+                    else
+                    {
+                        document.Add(new Paragraph("请将保险金按约定转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                    }
+                        document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
                     document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
                     var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
                     Image gif = Image.GetInstance(img + "gongzhang.jpg");
@@ -489,9 +588,9 @@ namespace Services.Orders
                     decimal totalAmount = GetOrderTotalAmount(oid);//订单总额 包括已减保
                     document.Add(new Phrase("C 险种保障信息", OperationPDF.GetFont("STSONG.ttf", 14, 1)));
                     document.Add(new Phrase(string.Format("（可附详细清单）"), font));
-                    PdfPTable table2 = new PdfPTable(4);
+                    PdfPTable table2 = new PdfPTable(5);
                     table2.WidthPercentage = 100;
-                    table2.SetWidths(new int[] { 40, 20, 20, 20 });
+                    table2.SetWidths(new int[] { 36, 16, 16, 16, 16 });
                     PdfPCell cell2 = new PdfPCell();
                     cell2.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell2.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -502,10 +601,12 @@ namespace Services.Orders
                     table2.AddCell(cell2);
                     cell2.Rowspan = 1;
                     cell2.Phrase = new Phrase("*每个被保险人保额及分类", font);
-                    cell2.Colspan = 3;
+                    cell2.Colspan = 4;
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("费用", font);
                     cell2.Colspan = 1;
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("I", font);
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("免赔", font);
                     table2.AddCell(cell2);
@@ -519,12 +620,16 @@ namespace Services.Orders
                         table2.AddCell(cell2);
                         cell2.Phrase = new Phrase(p.CoverageSum, font);
                         table2.AddCell(cell2);
+                        cell2.Phrase = new Phrase("无", font);//免赔
+                        table2.AddCell(cell2);
                         cell2.Phrase = new Phrase(p.PayoutRatio, font);
                         table2.AddCell(cell2);
                     }
                     cell2.Phrase = new Phrase("每人保费", font);
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase(order.AnnualExpense.ToString() + " 元", font);
+                    table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("", font);
                     table2.AddCell(cell2);
@@ -538,6 +643,8 @@ namespace Services.Orders
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("", font);
                     table2.AddCell(cell2);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("小计", font);
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase(totalAmount.ToString() + " 元", font);
@@ -545,6 +652,8 @@ namespace Services.Orders
                     cell2.Phrase = new Phrase("", font);
                     table2.AddCell(cell2);
                     cell2.Phrase = new Phrase("", font);
+                    cell2.Phrase = new Phrase("", font);
+                    table2.AddCell(cell2);
                     table2.AddCell(cell2);
                     document.Add(table2);
                     PdfPTable table3 = new PdfPTable(4);

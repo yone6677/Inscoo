@@ -16,11 +16,14 @@ namespace Services.Products
         private readonly IRepository<Product> _productRepository;
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
-        public ProductService(IRepository<Product> productRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService)
+        private readonly IWebHelper _webHelper;
+        public ProductService(IRepository<Product> productRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService,
+            IWebHelper webHelper)
         {
             _productRepository = productRepository;
             _loggerService = loggerService;
             _authenticationManager = authenticationManager;
+            _webHelper = webHelper;
         }
 
         public bool Delete(int id, bool disable)
@@ -286,6 +289,7 @@ namespace Services.Products
                         }
                         if (productItem.CoverageSumList.Count > 0)
                         {
+                            productItem.CoverageSumList = _webHelper.GetCovSumOrder(productItem.CoverageSumList);
                             model.Add(productItem);
                         }
                     }

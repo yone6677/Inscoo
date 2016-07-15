@@ -2,30 +2,94 @@
 @{
     ViewBag.Title = "保全操作";
 }
-@using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "buyMore", enctype = "multipart/form-data", onsubmit = "return checkDate()" }))
+@if (!Model.Disable)
 {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    <ul>
-        <li>
-            <label>
-                上传员工名单
-            </label>
-        </li>
-        <li>
-            <input type="file" id="empinfo" name="empinfo" />
-        </li>
-        <li>
-            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载投保变更模板</a>
-        </li>
-    </ul>
-    <p style="text-align:center;margin-top:2em">
-        <input type="submit" value="确认提交" class="btn btn-default" />
-    </p>
+    <h4 class="text-primary">补充资料</h4>
+    using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile(1)") }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        <ul class="unloadFile">
+            <li>
+                <label>
+                    上传员工名单
+                </label>
+            </li>
+            <li>
+                <input type="file" id="empinfo" name="empinfo" />
+            </li>
+            <li>
+                <input type="submit" value="上传" class="btn btn-default" />
+                <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">模版下载</a>
+            </li>
+            <li>
+                @if (Model.HasEmpInfoExcel)
+                {
+                    <div class="uploadInfo">
+
+                        <div>
+                            <ul>
+                                <li>
+                                    <span><i class="fa fa-check"></i>已上传</span>
+                                    <a href="@Model.EmpInfoExcel">查看</a>
+                                    @Html.ActionLink("删除", "DeleteFile", new { id = Model.BId, fType = 4 }, new { @style = "color:red;" })
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </li>
+        </ul>
+    }
+    if (Model.HasEmpInfoExcel)
+    {
+        <div class="clearfix"></div>
+        using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
+        {
+            <ul class="unloadFile">
+                <li>
+                    <label>
+                        加减保员工名单(加盖公章)
+                    </label>
+                </li>
+                <li>
+                    <input type="hidden" name="Id" value=@Model.Id />
+                    <input type="hidden" name="uType" value="2" />
+                    <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />
+                </li>
+                <li>
+                    <input type="submit" value="上传" class="btn btn-default" />
+                    <a href="@Model.EmpInfoFilePDF" target="_blank" class="btn btn-default">名单下载</a>
+                </li>
+                <li>
+                    @if (Model.HasEmpInfoFilePDFSeal)
+                    {
+                        <div class="uploadInfo">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <span><i class="fa fa-check"></i>已上传</span>
+                                        <a href="@Model.EmpInfoFilePDFSealUrl">查看</a>
+                                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.BId, fType = 5 }, new { @style = "color:red;" })
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </li>
+            </ul>
+        }
+        if (Model.HasPaymentNotice)
+        {
+            <div class="clearfix"></div>
+            <div style="line-height:2em;width:100%;text-align:center;">
+                <a href="@Model.PaymentNotice" target="_blank">下载付款通知书</a>
+            </div>
+        }
+    }
 }
 <div style="line-height:2em;width:100%;text-align:center;">
-    <span>@Model.Result</span>
-    <span class="text-danger" style="color:red;" id="error"></span>
+    <span class="text-danger" style="color:red;" id="error">@Model.Result</span>
 </div>
 <div class="clearfix"></div>
 <h4 class="text-primary">投保变更详细</h4>
@@ -50,28 +114,38 @@
 @section Scripts
     {
     <script>
-        function checkDate(){
-            var startDate = $("#StartDate").val();
-            if(dateCompare(startDate)){
-                return true;
-            }else{
-                $("#error").text("生效时间最早为三日之后，请重新选择");
-                return false;
+        function checkFile(e) {
+            var s = parseInt(e);
+            var errorInfo = $("#error");
+            if (e == 1) {
+                var empFile = $("#empinfo").val();
+                if (empFile == '') {
+                    errorInfo.text("未选择任何文件！");
+                    return false;
+                }
+                pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
+                if (pf == 'xlsx' || pf == 'xls') {
+                    return true;
+                } else {
+                    errorInfo.text("员工名单只能上传Excel文件！");
+                    return false;
+                }
             }
-        }
-        function dateCompare(startdate) {
-            @{
-               var ts = DateTime.Now.AddDays(3).ToUniversalTime() - DateTime.Parse("1970-1-1");
-           }
-            var nowDate=@ts.TotalMilliseconds.ToString("0");
-            var arr = startdate.split("-");
-            var starttime = new Date(arr[0], arr[1]-1, arr[2]);
-            var starttimes = starttime.getTime();
-            if(nowDate <= starttimes && !isNaN(starttimes)){
-                return true;
+            if (e == 2) {
+                var EmpInfoPdfSeal = $("#EmpInfoPdfSeal").val();
+                if (EmpInfoPdfSeal == '') {
+                    errorInfo.text("未选择任何文件！");
+                    return false;
+                }
+                pf = (EmpInfoPdfSeal.substring(EmpInfoPdfSeal.lastIndexOf(".") + 1, EmpInfoPdfSeal.length)).toLowerCase();
+                if (pf == 'zip' || pf == 'rar') {
+                    return true;
+                } else {
+                    errorInfo.text("员工名单盖章文件请压缩后再上传！");
+                    return false;
+                }
             }
-            else
-                return false;
+            return false;
         }
     </script>
 }

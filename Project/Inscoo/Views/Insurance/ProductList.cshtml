@@ -36,7 +36,7 @@
                             var idname = "id" + item.InsuredCom + "_" + i;
                             var onchangeFun = "getPriceAndIds(c='" + item.InsuredCom + "',e=" + i + ")";
 
-                            if (item.SafeguardName == "人身意外保险" || item.SafeguardName == "死亡伤残责任")
+                            if (item.SafeguardName.Contains("人身意外保险") || item.SafeguardName.Contains("死亡伤残责任"))
                             {
                                 <input type="checkbox" checked="checked" disabled="disabled" class="check_product" name=@checkName id=@checkName value=@item.SafeguardCode onchange=@Html.Raw(onchangeFun) />
                             }
@@ -95,7 +95,7 @@
                 }
             </li>
             <li style="text-align:left;">
-                <a href="#">职业类别分类</a>
+                <a href="http://www.inscoo.com/Archive/InsuranceFiles/A0.pdf">职业类别分类</a>
             </li>
         </ul>
     </div>

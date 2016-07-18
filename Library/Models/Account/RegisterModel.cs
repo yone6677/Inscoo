@@ -56,10 +56,10 @@ namespace Models
         public SelectList RoleSelects { get; set; }
         public SelectList CommissionMethods { get; set; }
 
-        [Display(Name = "保险公司")]
+        [Display(Name = "自选产品权限(保险公司)")]
         public string[] ProdInsurances { get; set; }
 
-        [Display(Name = "保险系列")]
+        [Display(Name = "专属产品权限")]
         public string[] ProdSeries { get; set; }
 
         [Display(Name = "佣金计算方法")]

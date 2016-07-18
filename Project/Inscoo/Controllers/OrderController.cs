@@ -1240,6 +1240,10 @@ namespace Inscoo.Controllers
                     if (model.FinanceAudit)
                     {
                         batch.BState = 3;//通过
+                        if (order.State != 6)
+                        {
+                            order.State = 9;//已支付
+                        }
                     }
                     else
                     {

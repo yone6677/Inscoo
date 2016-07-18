@@ -74,7 +74,7 @@
                 @if (item.StartDate != DateTime.MinValue)
                 {
                     var dt = item.StartDate.ToShortDateString();
-                   <span>@dt</span>
+                    <span>@dt</span>
                 }
             </td>
             <td>
@@ -94,7 +94,7 @@
                     {
                         @Html.ActionLink("继续", "ConfirmPayment", new { id = item.Id }) <span>|</span>
                     }
-                    if (item.State < 6)
+                    if (item.State < 5)
                     {
                         @Ajax.ActionLink("删除", "Delete", new { id = item.Id, oType = 1 }, new AjaxOptions { HttpMethod = "post", Confirm = "确定要删除该数据？", UpdateTargetId = "dadaGrid" }, new { @style = "color:green" })
                     }

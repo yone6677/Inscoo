@@ -69,7 +69,10 @@
                         @*<span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
                             <a class="">请查看保险条款</a>*@
                         <span>@item.ProdMemo</span>&nbsp;&nbsp;
-                        <a href="@item.ProvisionPath" target="_blank">请查看保险条款</a>
+                        @if (!string.IsNullOrEmpty(item.ProvisionPath))
+                        {
+                            <a href="@item.ProvisionPath" target="_blank">请查看保险条款</a>
+                        }
                     </td>
                 </tr>
                                     i++;

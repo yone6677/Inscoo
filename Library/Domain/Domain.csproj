@@ -68,6 +68,9 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Common\GenericAttribute.cs" />
     <Compile Include="Company\Company.cs" />
+    <Compile Include="Health\HealthOrderDetail.cs" />
+    <Compile Include="Health\HealthOrderMaster.cs" />
+    <Compile Include="Health\HealthCheckProduct.cs" />
     <Compile Include="Identity\AppRole.cs" />
     <Compile Include="Identity\AppRoleManager.cs" />
     <Compile Include="Identity\AppUser.cs" />

@@ -103,6 +103,8 @@
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />
     <Compile Include="Mapping\GenericAttributeMap.cs" />
+    <Compile Include="Mapping\HealthOrderMasterMap.cs" />
+    <Compile Include="Mapping\HealthOrderDetailMap.cs" />
     <Compile Include="Mapping\NavigationMap.cs" />
     <Compile Include="Mapping\OrderBatchMap.cs" />
     <Compile Include="Mapping\OrderEmployeeMap.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Mapping\ProductMixItemMap.cs" />
     <Compile Include="Mapping\ProductMixMap.cs" />
     <Compile Include="Mapping\ClaimManagementDetailMap.cs" />
+    <Compile Include="Mapping\HealthCheckProductMap.cs" />
     <Compile Include="Mapping\ProductsMap.cs" />
     <Compile Include="Migrations\201607070702246_InitialCreate.cs" />
     <Compile Include="Migrations\201607070702246_InitialCreate.Designer.cs">
@@ -149,6 +152,10 @@
     <Compile Include="Migrations\201607141104254_GenericAttribute  sequence.cs" />
     <Compile Include="Migrations\201607141104254_GenericAttribute  sequence.Designer.cs">
       <DependentUpon>201607141104254_GenericAttribute  sequence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607180926392_AddTablesAboutHealth.cs" />
+    <Compile Include="Migrations\201607180926392_AddTablesAboutHealth.Designer.cs">
+      <DependentUpon>201607180926392_AddTablesAboutHealth.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
@@ -192,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607141104254_GenericAttribute  sequence.resx">
       <DependentUpon>201607141104254_GenericAttribute  sequence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607180926392_AddTablesAboutHealth.resx">
+      <DependentUpon>201607180926392_AddTablesAboutHealth.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -80,7 +80,7 @@ namespace Services.Orders
         public bool Update(Order item)
         {
             try
-            {              
+            {
                 item.Changer = item.Author;
                 item.ChangeDate = DateTime.Now;
                 _orderRepository.Update(item);
@@ -137,9 +137,9 @@ namespace Services.Orders
                 {
                     query = query.Where(q => q.State > 3);//默认返回已输完信息的所有订单
                 }
-                else if (state == 10)
+                else if (state == 10)//未完成订单列表
                 {
-                    query = query.Where(q => q.State <= 5);//信息缺失的订单
+                    query = query.Where(q => q.State <= 5 || q.State == 9);//9 已支付
                 }
                 else
                 {

@@ -45,7 +45,7 @@
         </li>
         <li>
             @*<div class="uploadInfo uploadInfo-hide">dasfsd</div>*@
-            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            @if (Model.HasBusinessLicense)
             {
                 <div class="uploadInfo">
                     @if (Model.HasBusinessLicense)
@@ -57,6 +57,10 @@
                         </div>
                     }
                 </div>
+            }
+            else
+            {
+                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
             }
         </li>
     </ul>
@@ -82,7 +86,7 @@
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a> 
         </li>
         <li>
-            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            @if (Model.HasEmpInfoFilePDFSeal)
             {
                 <div class="uploadInfo">
                     @if (Model.HasEmpInfoFilePDFSeal)
@@ -94,6 +98,10 @@
                         </div>
                     }
                 </div>
+            }
+            else
+            {
+                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
             }
         </li>
 
@@ -119,7 +127,7 @@
             <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">下载模板</a>
         </li>
         <li>
-            @if (Model.HasBusinessLicense || Model.HasEmpInfoFilePDFSeal || Model.HasInsurancePolicy)
+            @if (Model.HasInsurancePolicy)
             {
                 <div class="uploadInfo">
                     @if (Model.HasInsurancePolicy)
@@ -132,6 +140,10 @@
                     }
                 </div>
             }
+            else
+            {
+                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
+            }
         </li>
     </ul>
 }
@@ -140,7 +152,7 @@
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
         <span style="color:gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
         <span style="color:gray">2.如果文件超过2M,请将文件压缩后上传</span><br />
-        <span class="text-danger" id="errorInfo"></span>
+        
     </div>
 </div>
 

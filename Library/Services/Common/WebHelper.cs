@@ -182,18 +182,18 @@ namespace Services
                             s.Text = s.Text.Split('元')[0];
                             item.Description = "元/天";
                         }
-                        item.Sequence = int.Parse(s.Text);
+                        item.OtherInfo = double.Parse(s.Text);
                         item.Value = s.Value;
                         tList.Add(item);
                     }
                     if (tList.Count > 0)
                     {
-                        var ga = tList.OrderBy(t => t.Sequence);
+                        var ga = tList.OrderBy(t => t.OtherInfo);
                         foreach (var g in ga)
                         {
                             var item = new SelectListItem()
                             {
-                                Text = g.Sequence + g.Description,
+                                Text = g.OtherInfo + g.Description,
                                 Value = g.Value
                             };
                             nList.Add(item);
@@ -202,7 +202,7 @@ namespace Services
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }

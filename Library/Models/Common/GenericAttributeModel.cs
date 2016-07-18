@@ -15,5 +15,6 @@ namespace Models.Common
         public int Sequence { get; set; }
         public string Author { get; set; }
         public DateTime CreateTime { get; set; }
+        public double OtherInfo { get; set; }//
     }
 }

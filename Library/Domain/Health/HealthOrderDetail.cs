@@ -14,7 +14,7 @@ namespace Domain
         public int HealthOrderMasterId { set; get; }
         public string Name { set; get; }
         public bool Sex { set; get; }
-        public DateTime Birthday { set; get; }
+        public DateTime? Birthday { set; get; }
 
         /// <summary>
         /// 证件号码
@@ -54,7 +54,7 @@ namespace Domain
         /// <summary>
         /// 登录预约系统密码
         /// </summary>
-        public string OrderPassword{ set; get; }
+        public string OrderPassword { set; get; }
         /// <summary>
         /// 登录预约处理时间
         /// </summary>

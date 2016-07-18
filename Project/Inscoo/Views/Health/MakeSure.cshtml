@@ -22,24 +22,24 @@
         </li>
     </ul>
 </div>
-<div class="orderConfirmBody form-inline ">
+<div class="orderConfirmBody  ">
     <div class="form-horizontal">
         <div class="form-group">
             @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                <strong>@Model.ProductName</strong>
+                <label class = "control-label "  >@Model.ProductName</label>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.PublicPrice, new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                <strong>@Model.PublicPrice</strong>
+                <label class = "control-label "  >@Model.PublicPrice</label>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.PrivilegePrice, new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                <strong>@Model.PrivilegePrice</strong>
+                <label class = "control-label "  >@Model.PrivilegePrice</label>
             </div>
         </div>
         <div class="form-group">

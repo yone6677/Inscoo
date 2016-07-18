@@ -26,10 +26,12 @@ namespace Domain
         /// </summary>
         public string CommissionMethod { set; get; }
 
-
-        public DateTime CheckBeginTime { set; get; }
-        public DateTime CheckEndTime { set; get; }
-        public int CompanyId { set; get; }
+        /// <summary>
+        /// 体检开始日期
+        /// </summary>
+        public DateTime? CheckBeginTime { set; get; }
+        public DateTime? CheckEndTime { set; get; }
+        public int? CompanyId { set; get; }
 
         public string BaokuOrderCode { set; get; }
 
@@ -38,18 +40,34 @@ namespace Domain
         public string PersonExcelPath { set; get; }
 
         public string BaokuConfirmer { set; get; }
+        /// <summary>
+        /// 保酷确定日期
+        /// </summary>
+        public DateTime? BaokuConfirmDate { set; get; }
 
-        public DateTime BaokuConfirmDate { set; get; }
-
-
+        /// <summary>
+        /// 财务确认人
+        /// </summary>
         public string FinanceConfirmer { set; get; }
-
-        public DateTime FinanceConfirmDate { set; get; }
-
-        public DateTime FinancePayDate { set; get; }
+        /// <summary>
+        /// 财务确认日期
+        /// </summary>
+        public DateTime? FinanceConfirmDate { set; get; }
+        /// <summary>
+        /// 财务输入付款日期
+        /// </summary>
+        public DateTime? FinancePayDate { set; get; }
+        /// <summary>
+        /// 财务输入收款金额
+        /// </summary>
         public decimal FinanceAmount { set; get; }
-
+        /// <summary>
+        /// 财务输入银行转账流水号
+        /// </summary>
         public string FinanceBankSerialNumber { set; get; }
+        /// <summary>
+        /// 财务输入其他备注
+        /// </summary>
         public string FinanceMemo { set; get; }
 
         /// <summary>
@@ -63,7 +81,7 @@ namespace Domain
         /// <summary>
         /// 体检公司确认日期
         /// </summary>
-        public string CheckComConfirmDate { set; get; }
+        public DateTime? CheckComConfirmDate { set; get; }
         /// <summary>
         /// 体检公司输入快递公司
         /// </summary>

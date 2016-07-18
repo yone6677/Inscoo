@@ -24,10 +24,10 @@ namespace Services
         private readonly IRepository<HealthCheckProduct> _repHealthProduct;
         private readonly AppUserManager _userManager;
         private readonly AppRoleManager _roleManager;
-        public HealthService(AppRoleManager roleManager, AppUserManager _userManager, IRepository<HealthCheckProduct> repHealthProduct)
+        public HealthService(AppRoleManager roleManager, AppUserManager userManager, IRepository<HealthCheckProduct> repHealthProduct)
         {
             _repHealthProduct = repHealthProduct;
-            _userManager = _userManager;
+            _userManager = userManager;
             _roleManager = roleManager;
         }
 

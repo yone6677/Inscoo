@@ -114,7 +114,7 @@ body {
   border: 1px solid #5E6E7E;
 }
 .firstMenu li a:visited {
-  background-color: #5E6E7E;
+  background-color: #249ED1;
   border-radius: 0;
 }
 .firstMenu li > a:focus {
@@ -125,7 +125,7 @@ body {
   line-height: 10px;
 }
 .nav-background {
-  background-color: #5E6E7E;
+  background-color: #249ED1;
   width: 100%;
 }
 .secondmenu li a {
@@ -414,7 +414,7 @@ body {
 .inscoo-productTable tr td {
   text-align: center;
   line-height: 2.2em;
-  height: 3.5em;
+  height: 3em;
   border-right: 1px dashed #ddd;
   border-bottom: 1px solid #ddd;
 }

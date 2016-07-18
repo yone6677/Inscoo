@@ -441,12 +441,12 @@ namespace Services.Orders
                         document.Add(new Paragraph("请将保险金按约定转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     }
                         document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
-                    document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
-                    var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
-                    Image gif = Image.GetInstance(img + "gongzhang.jpg");
-                    gif.ScalePercent(15f);
-                    gif.Alignment = Element.ALIGN_RIGHT;
-                    document.Add(gif);
+                 //   document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
+                    //var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
+                    //Image gif = Image.GetInstance(img + "gongzhang.jpg");
+                    //gif.ScalePercent(15f);
+                    //gif.Alignment = Element.ALIGN_RIGHT;
+                    //document.Add(gif);
 
                     document.Close();
                     return paths;

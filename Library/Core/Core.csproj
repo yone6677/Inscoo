@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Data\AppDbContextFactory.cs" />
     <Compile Include="Data\AppDbInitializer .cs" />
+    <Compile Include="Data\AppUserManager.cs" />
     <Compile Include="Data\InitializerDatabase.cs" />
     <Compile Include="Data\CachingManagercs.cs" />
     <Compile Include="Data\EfRepository.cs" />

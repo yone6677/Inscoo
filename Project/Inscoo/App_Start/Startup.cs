@@ -5,6 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System.Web.Mvc;
+using Core;
 
 namespace Inscoo
 {
@@ -14,7 +15,7 @@ namespace Inscoo
         public void ConfigureAuth(IAppBuilder app)
         {
             app.CreatePerOwinContext(AppDbContext.Create);
-            app.CreatePerOwinContext(DependencyResolver.Current.GetService<AppUserManager>);
+            app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext(DependencyResolver.Current.GetService<AppRoleManager>);
 
             // 使应用程序可以使用 Cookie 来存储已登录用户的信息

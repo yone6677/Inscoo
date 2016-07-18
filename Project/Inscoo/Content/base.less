@@ -62,9 +62,21 @@ header {
 
     ul li:last-child {
         text-align: right;
-        padding-right: 2em;
         font-size: 1.6em;
         line-height: 60px;
+        a.loginButton{
+	        margin-right: 40px;
+	        display: inline-block;
+	        padding: 0px 20px;
+	        height: 30px;
+	        line-height: 30px;
+	        border-radius: 20px;
+	        background: #2090c8;
+	        font-size: 16px;
+	        color: #fff;
+	        text-align: center;
+	        vertical-align: middle;
+        }
     }
 
     ul li a img {
@@ -808,25 +820,20 @@ body {
             width: 20%;
         }
         li:last-child {
-            text-align: center;
+            text-align: left;
             width: 30%;
-            font-size:16px;
-            ul{
-                width:100%;
-                li{
-                    width:100%
-                }
-            }
-            
+            font-size:16px;        
             span{
 
                 color:#83ba21;
                 height:28px;
                 line-height:28px;
+                margin-right:10px;
             }
             a{
                 height:28px;
                 line-height:28px;
+                margin-right:10px;
             }
         }
         li>.form-control{
@@ -973,7 +980,11 @@ div:after{
 
     dl {
         width: 85%;
-        
+        &:after{
+            content:'';
+            display:block;
+            clear:both;
+        }
         dt {
             width: 15%;
             height: 35px;
@@ -1122,10 +1133,15 @@ div:after{
 
 .buyMore {
     width: 100%;
-    margin: 2em 0;
+    margin: 1em 0;
+    &:after{
+        content:'';
+        display:block;
+        clear:both;
+    }
 
     ul {
-        width: 100%;
+        width: 80%;
 
         li {
             height: 40px;
@@ -1358,4 +1374,39 @@ div:after{
             margin-bottom:-1px;
         }
     }
+}
+.a-upload {
+    padding: 4px 10px;
+    height: 28px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #111;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1
+}
+
+.a-upload  input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
+.lab{
+     height:28px;
+     line-height:28px;
+     margin-left:5px;
 }

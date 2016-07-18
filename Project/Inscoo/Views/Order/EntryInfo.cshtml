@@ -40,7 +40,10 @@
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
-            <input type="file" id="empinfo" required name="empinfo" />
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="empinfo" required name="empinfo" />选择文件
+            </a>
+            <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
@@ -49,7 +52,7 @@
         
     </ul>
     <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
-            <span class="text-danger">如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
+            <span class="text-danger">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
     </div>
     <div style="line-height:2em;width:35%;text-align:left;float:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
@@ -118,7 +121,7 @@
             </li>
             <li>
                 @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                <sapn style="color:#888;">(保单及发票寄送)</sapn>
+                <sapn style="color:#888;">(供保单及发票寄送)</sapn>
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })

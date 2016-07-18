@@ -45,12 +45,12 @@
                                 @Html.PasswordFor(m => m.Password)
                             </div>
                             <input type="submit" class="submitBtn" value="登录">
-                            @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd" })
+                            <a href="javascript:;" class="forgetPwd">忘记密码?</a>
                         }
                     </div>
                 </div>
             </div>
-            <!--<div class="floor floor2">
+            <div class="floor floor2">
                 <div class="box">
                     <div class="title">
                         <h2>保酷专属宝盒</h2>
@@ -125,8 +125,7 @@
                                         <img src="~/Content/imgIndex/p4.jpg" width="220" height="216" alt="">
                                         <div class="bgGray">50万保额</div>
                                         <div class="bgWhite">
-                                            意外医疗
-                                        </div>
+                                            意外医疗                                        </div>
                                     </div>
                                 </li>
                                 <li>
@@ -223,10 +222,7 @@
                             <span class="pattern"></span>
                             <span class="wz">重大疾病</span>
                         </div>
-                        <div class="options option2">
-                            <span class="pattern"></span>
-                            <span class="wz">疾病身故</span>
-                        </div>
+                        
                         <div class="options option3">
                             <span class="pattern"></span>
                             <span class="wz">意外医疗</span>
@@ -241,13 +237,13 @@
                         </div>
                         <div class="options option6">
                             <span class="pattern"></span>
-                            <span class="wz">中高端医疗</span>
+                            <span class="wz">疾病身故</span>
                         </div>
                         <div class="options option7">
                             <span class="pattern"></span>
                             <span class="wz">中高端医疗</span>
                         </div>
-                        <a href="javascript:;" class="button">想怎么选 就怎么选<span>>></span></a>
+                        <!--<a href="javascript:;" class="button">想怎么选 就怎么选<span>>></span></a>-->
                     </div>
                 </div>
             </div>
@@ -305,7 +301,7 @@
                     </div>
                     <div class="line"></div>
                 </div>
-            </div>
+            </div>*@
             <div class="floor floor5">
                 <div class="box">
                     <div class="title">
@@ -354,7 +350,7 @@
                         </div>
                         <div class="partners">
                             <div class="partner">
-                                @*<img src="" width="146" height="80" alt="">*@
+                                <!-- <img src="" width="146" height="80" alt=""> -->
                             </div>
                             <div class="partner"></div>
                             <div class="partner"></div>
@@ -368,7 +364,7 @@
                             <div class="partner"></div>
                         </div>
                     </div>
-                </div>-->
+                </div>
             <div class="floor floor7">
                 <div class="box">
                     <div class="title">
@@ -419,13 +415,13 @@
             </div>
         </div>
     </div>
-    @*<div class="floor_points"></div>
+    <div class="floor_points"></div>
     <ul class="sitebar">
         <li class="list1"><a href="javascript:;"></a></li>
         <li class="list2"><a href="javascript:;"></a></li>
         <li class="list3"><a href="javascript:;"></a></li>
         <li class="list4"><a href="javascript:;"></a></li>
-    </ul>*@
+    </ul>
     @Scripts.Render("~/bundles/index")
 </body>
 </html>

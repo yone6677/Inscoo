@@ -1,6 +1,12 @@
-﻿using Models;
+﻿using System;
+using System.Web;
+using Models;
 using Services;
 using System.Web.Mvc;
+using Core;
+using Domain;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Inscoo.Controllers
 {
@@ -26,6 +32,7 @@ namespace Inscoo.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        [AllowAnonymous]
         public ActionResult Login(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(returnUrl))
@@ -37,6 +44,7 @@ namespace Inscoo.Controllers
         //
         // POST: /Account/Login
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
@@ -61,6 +69,85 @@ namespace Inscoo.Controllers
         {
             _appUserService.SignOut();
             return RedirectToAction("Login", "Account");
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgetPassword(string email)
+        {
+            //var appUser = _appUserService.GetAppUserManagerCore(HttpContext);
+            var appUser = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+            var user = appUser.FindByEmail(email);
+            //if (user == null) return false;
+            var token = appUser.GeneratePasswordResetToken(user.Id);
+            var route = new { code = token };
+            var callbackUrl = Url.Action("ResetPassword", "Account", route, Request.Url.Scheme);
+
+            MailService.SendMail(new MailQueue()
+            {
+                MQTYPE = "ResetPassword",
+                MQSUBJECT = "重设密码",
+                MQMAILCONTENT = "点击<a href=\"" + callbackUrl + "\">链接</a>重设密码",
+                MQMAILFRM = "redy.yone@inscoo.com",
+                MQMAILTO = user.Email,
+            });
+            return RedirectToAction("ForgotPasswordConfirmation", "Account");
+        }
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var appUser = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
+                var user = appUser.FindByEmail(model.Email);
+                if (user == null)
+                {
+                    // 请不要显示该用户不存在
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                var result = appUser.ResetPassword(user.Id, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
     }
 }

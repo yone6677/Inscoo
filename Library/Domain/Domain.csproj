@@ -71,7 +71,6 @@
     <Compile Include="Identity\AppRole.cs" />
     <Compile Include="Identity\AppRoleManager.cs" />
     <Compile Include="Identity\AppUser.cs" />
-    <Compile Include="Identity\AppUserManager.cs" />
     <Compile Include="Identity\AppUserRole.cs" />
     <Compile Include="Identity\EmailService.cs" />
     <Compile Include="Navigation\Navigation.cs" />

@@ -47,9 +47,21 @@ header ul li {
 }
 header ul li:last-child {
   text-align: right;
-  padding-right: 2em;
   font-size: 1.6em;
   line-height: 60px;
+}
+header ul li:last-child a.loginButton {
+  margin-right: 40px;
+  display: inline-block;
+  padding: 0px 20px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 20px;
+  background: #2090c8;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
 }
 header ul li a img {
   margin-top: 5px;
@@ -691,24 +703,20 @@ body {
   width: 20%;
 }
 .orderEntryInfoBody-loadfile ul li:last-child {
-  text-align: center;
+  text-align: left;
   width: 30%;
   font-size: 16px;
-}
-.orderEntryInfoBody-loadfile ul li:last-child ul {
-  width: 100%;
-}
-.orderEntryInfoBody-loadfile ul li:last-child ul li {
-  width: 100%;
 }
 .orderEntryInfoBody-loadfile ul li:last-child span {
   color: #83ba21;
   height: 28px;
   line-height: 28px;
+  margin-right: 10px;
 }
 .orderEntryInfoBody-loadfile ul li:last-child a {
   height: 28px;
   line-height: 28px;
+  margin-right: 10px;
 }
 .orderEntryInfoBody-loadfile ul li > .form-control {
   height: 28px;
@@ -829,6 +837,11 @@ div:after {
 }
 .Search dl {
   width: 85%;
+}
+.Search dl:after {
+  content: '';
+  display: block;
+  clear: both;
 }
 .Search dl dt {
   width: 15%;
@@ -952,10 +965,15 @@ div:after {
 }
 .buyMore {
   width: 100%;
-  margin: 2em 0;
+  margin: 1em 0;
+}
+.buyMore:after {
+  content: '';
+  display: block;
+  clear: both;
 }
 .buyMore ul {
-  width: 100%;
+  width: 80%;
 }
 .buyMore ul li {
   height: 40px;
@@ -1171,4 +1189,37 @@ div:after {
   border: 1px solid #ddd;
   height: 41px;
   margin-bottom: -1px;
+}
+.a-upload {
+  padding: 4px 10px;
+  height: 28px;
+  line-height: 20px;
+  position: relative;
+  cursor: pointer;
+  color: #111;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+.a-upload input {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  cursor: pointer;
+}
+.a-upload:hover {
+  color: #444;
+  background: #eee;
+  border-color: #ccc;
+  text-decoration: none;
+}
+.lab {
+  height: 28px;
+  line-height: 28px;
+  margin-left: 5px;
 }

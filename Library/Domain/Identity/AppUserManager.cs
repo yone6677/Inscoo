@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.DataProtection;
 using System;
 using System.Linq;
+using Microsoft.Owin;
 
 namespace Domain
 {

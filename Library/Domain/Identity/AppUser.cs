@@ -13,6 +13,9 @@ namespace Domain
             IsDelete = false;
             TiYong = false;
             FanBao = false;
+            base.TwoFactorEnabled = true;
+            base.EmailConfirmed = true;
+            base.PhoneNumberConfirmed = true;
         }
         public bool IsDelete { set; get; }
         public DateTime CreateTime { set; get; }

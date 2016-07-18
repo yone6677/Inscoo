@@ -1,0 +1,57 @@
+﻿@model Models.vCheckProductDetail
+@{
+    ViewBag.Title = "方案确认";
+}
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li class="orderConfirmLiActive">
+            <i class="fa fa-save fa-2x"></i>
+            <span>方案确认</span>
+        </li>
+        <li>
+            <i class="fa fa-edit fa-2x"></i>
+            信息填写
+        </li>
+        <li>
+            <i class="fa fa-cloud-upload fa-2x"></i>
+            上传文件
+        </li>
+        <li>
+            <i class="fa fa-usd fa-2x"></i>
+            确认付款
+        </li>
+    </ul>
+</div>
+<div class="orderConfirmBody form-inline ">
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <strong>@Model.ProductName</strong>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublicPrice, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <strong>@Model.PublicPrice</strong>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PrivilegePrice, new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <strong>@Model.PrivilegePrice</strong>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class=" col-lg-offset-4 col-md-8 ">
+                @Html.ActionLink("下一步", "EntryInfo", new { id = @Model.Id }, new { @class = "btn btn-success" })
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+    </script>
+}

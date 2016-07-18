@@ -179,6 +179,9 @@
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>
     </Content>
+    <Content Include="Content\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />

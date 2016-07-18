@@ -107,7 +107,7 @@ function menuNav(name, csskey, cssvalue) {
                 url = bgColor;
             }
             if (urlNow == '/order/BuyMore/') {
-                url = bgColor;
+                url = '/order/CompletedOrder';
             }
         }
         if (bgColor == '/user/index') {

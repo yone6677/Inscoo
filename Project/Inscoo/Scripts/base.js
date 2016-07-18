@@ -89,27 +89,27 @@ function menuNav(name, csskey, cssvalue) {
                 url = '/Insurance/CustomizeProduct';
             }
         }
-        if (bgColor == '/order/index') {
-            if (urlNow == '/Order/Details/') {
-                url = bgColor;
-            }
-        }
-        if (bgColor == '/order/ordertopay') {
-            if (urlNow == '/order/EntryInfo/') {
-                url = bgColor;
-            }
-            if (urlNow == '/order/UploadFile/') {
-                url = bgColor;
-            }
-        }
-        if (bgColor == '/order/CompletedOrder') {
-            if (urlNow == '/Order/Details/') {
-                url = bgColor;
-            }
-            if (urlNow == '/order/BuyMore/') {
-                url = '/order/CompletedOrder';
-            }
-        }
+        //if (bgColor == '/order/index') {
+        //    if (urlNow == '/Order/Details/') {
+        //        url = bgColor;
+        //    }
+        //}
+        //if (bgColor == '/order/ordertopay') {
+        //    if (urlNow == '/order/EntryInfo/') {
+        //        url = bgColor;
+        //    }
+        //    if (urlNow == '/order/UploadFile/') {
+        //        url = bgColor;
+        //    }
+        //}
+        //if (bgColor == '/order/CompletedOrder') {
+        //    if (urlNow == '/Order/Details/') {
+        //        url = bgColor;
+        //    }
+        //    if (urlNow == '/order/BuyMore/') {
+        //        url = '/order/CompletedOrder';
+        //    }
+        //}
         if (bgColor == '/user/index') {
             if (urlNow == '/user/Edit/') {
                 url = bgColor;

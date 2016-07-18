@@ -82,6 +82,8 @@
     <Compile Include="Company\vCompanySearch.cs" />
     <Compile Include="Company\vCompanyEdit.cs" />
     <Compile Include="Company\vCompanyAdd.cs" />
+    <Compile Include="Health\vCheckProductDetail.cs" />
+    <Compile Include="Health\vCheckProductList.cs" />
     <Compile Include="Infrastructure\ExcelModel.cs" />
     <Compile Include="Infrastructure\FileType.cs" />
     <Compile Include="Infrastructure\LogLevel.cs" />

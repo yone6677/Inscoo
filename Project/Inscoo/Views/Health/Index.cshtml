@@ -1,10 +1,42 @@
-﻿
+﻿@model IEnumerable<Models.vCheckProductList>
 @{
     ViewBag.Title = "健康库";
 }
 
 <div class="health_box">
     <img src="../../Content/imgIndex/health_img_1.png">
+    @foreach (var type in ViewBag.ProductType)
+    {
+        <div class="health_project">
+            <p>@type</p>
+            @foreach (var p in Model.Where(m => m.ProductType == type))
+            {
+                <ul class="health_detail">
+                    <li>@p.ProductName</li>
+                    <li class="health_content">
+                        <div class="content_left">
+                            <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                            <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                        </div>
+                        <div class="content_right ">
+                            <p>2016</p>
+                            <p>体检卡</p>
+                            <div class="project_name">入职体检卡</div>
+                        </div>
+                    </li>
+                    <li class="project_price">
+                        <p>市场价：<span>￥@p.PublicPrice</span></p>
+                        <div>优惠价：<span>￥@p.PrivilegePrice</span></div>
+                    </li>
+                    <li>
+                        @Html.ActionLink("立即购买", "BuyInfo", new { id = p.Id }, new { @class = "btn btn-buy" })
+
+                    </li>
+                </ul>
+            }
+        </div>
+    }
+
     <div class="health_project">
         <p>入职体检</p>
         <ul class="health_detail">

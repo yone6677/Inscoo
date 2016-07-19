@@ -205,13 +205,23 @@
     <Content Include="Content\imgIndex\bg6.jpg" />
     <Content Include="Content\imgIndex\bg6.png" />
     <Content Include="Content\imgIndex\enjoy.png" />
-    <Content Include="Content\imgIndex\health_1.png" />
+    <Content Include="Content\imgIndex\health-bk.png" />
+    <Content Include="Content\imgIndex\health_1_1.png" />
+    <Content Include="Content\imgIndex\health_1_2.png" />
+    <Content Include="Content\imgIndex\health_1_3.png" />
+    <Content Include="Content\imgIndex\health_1_4.png" />
+    <Content Include="Content\imgIndex\health_1_5.png" />
+    <Content Include="Content\imgIndex\health_1_6.png" />
+    <Content Include="Content\imgIndex\health_1_7.png" />
     <Content Include="Content\imgIndex\health_img_1.png" />
     <Content Include="Content\imgIndex\iconGroup.png" />
     <Content Include="Content\imgIndex\img01.jpg" />
     <Content Include="Content\imgIndex\img02.jpg" />
     <Content Include="Content\imgIndex\img03.jpg" />
     <Content Include="Content\imgIndex\img04.jpg" />
+    <Content Include="Content\imgIndex\index_photo.png" />
+    <Content Include="Content\imgIndex\insurance-1.png" />
+    <Content Include="Content\imgIndex\insurance-2.png" />
     <Content Include="Content\imgIndex\logo.png" />
     <Content Include="Content\imgIndex\logo_sm.png" />
     <Content Include="Content\imgIndex\n1.png" />
@@ -461,7 +471,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\locales\" />
+    <Folder Include="Content\imgIndex\locales\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

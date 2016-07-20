@@ -103,9 +103,10 @@ body {
   width: 100%;
 }
 .firstMenu li a {
-  text-align: center;
+  text-align: left;
   font-weight: bold;
   color: #fff;
+  padding-left: 20%;
 }
 .firstMenu li a i {
   width: 18px;
@@ -139,6 +140,7 @@ body {
   border-radius: 0;
   margin: 0;
   border: 1px solid transparent;
+  padding-left: 35%;
 }
 .secondmenu li a:hover {
   background-color: #333F4D;

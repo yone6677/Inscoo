@@ -140,7 +140,8 @@ body {
   border-radius: 0;
   margin: 0;
   border: 1px solid transparent;
-  padding-left: 30%;
+  padding-left: 36%;
+  font-size: 0.9em;
 }
 .secondmenu li a:hover {
   background-color: #333F4D;
@@ -1034,30 +1035,12 @@ div:after {
   border: 1px solid #aaa;
 }
 .health_box .health_project .health_detail li.health_content .content_left {
-  width: 50%;
+  width: 100%;
   text-align: left;
   float: left;
 }
-.health_box .health_project .health_detail li.health_content .content_left p {
-  margin-top: 20px;
-}
-.health_box .health_project .health_detail li.health_content .content_right {
-  background: #38A6D9;
-  width: 50%;
-  height: 110px;
-  float: right;
-  padding: 10px;
-  text-align: right;
-}
-.health_box .health_project .health_detail li.health_content .content_right p {
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 0px;
-}
-.health_box .health_project .health_detail li.health_content .content_right .project_name {
-  color: #fff;
-  margin-top: 30px;
+.health_box .health_project .health_detail li.health_content .content_left img {
+  width: 100%;
 }
 .health_box .health_project .health_detail li.health_content:after {
   content: "";

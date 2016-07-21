@@ -403,8 +403,9 @@ namespace Services.Orders
                     document.Add(new Phrase(":", font));
                     document.Add(new Paragraph("感谢贵公司在保酷平台上采购员工福利保障，具体采购方案如下：", font) { IndentationLeft = 20 });
                     PdfPTable table = new PdfPTable(4);
+                    table.WidthPercentage = 100;
                     table.SpacingBefore = 30;
-                    table.SetWidths(new int[] { 25, 20, 20, 20 });
+                    table.SetWidths(new int[] { 40, 20, 20, 20 });
                     PdfPCell cell;
                     cell = new PdfPCell() { Rowspan = 2, Phrase = new Phrase("险种名称", font), HorizontalAlignment = Element.ALIGN_LEFT };
                     table.AddCell(cell);
@@ -463,7 +464,7 @@ namespace Services.Orders
                     document.Add(table);
                     if (bid == 0)
                     {
-                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     }
                     else
                     {

@@ -1,0 +1,237 @@
+﻿@model Models.VHealthEntryInfo
+
+@{
+    ViewBag.Title = "信息填写";
+}
+@section head {
+    <style>
+        li {
+            width: 33%;
+        }
+    </style>
+}
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li style="width: 33%">
+            <i class="fa fa-save fa-2x"></i>
+            <span>方案确认</span>
+        </li>
+        <li class="orderConfirmLiActive" style="width: 33%">
+            <i class="fa fa-edit fa-2x"></i>
+            信息填写
+        </li>
+        <li style="width: 33%">
+            <i class="fa fa-usd fa-2x"></i>
+            确认付款
+        </li>
+    </ul>
+</div>
+
+
+
+@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+{
+
+    <p class="basic-information">
+        <i class="fa fa-edit fa-2x"></i>详细信息填写
+    </p>
+    <ul style="width:65%">
+        <li>
+            <label>
+                上传员工名单：
+            </label>
+        </li>
+        <li>
+            <input type="hidden" value=@Model.MasterId name="masterId" />
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="empinfo" required name="empinfo" />选择文件
+            </a>
+            <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
+        </li>
+        <li>
+            <input type="submit" value="上传" class="btn btn-default" />
+            <a href="~/Archive/Template/health/体检上传表格.xlsx" target="_blank" class="btn btn-default">下载模板</a>
+        </li>
+
+    </ul>
+    <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
+        <span class="text-danger">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
+    </div>
+    <div style="line-height: 2em; width: 35%; text-align: left; float: left;">
+        @if (TempData["error"] != null)
+        {
+            <span class="text-danger">@TempData["error"]</span><br />
+        }
+        <span class="text-danger" id="error"></span>
+    </div>
+
+}
+@if (string.IsNullOrEmpty(Model.EmpInfoFileUrl))
+{
+    <div class="orderConfirmBodyNext" style="text-align: center;">
+        @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+    </div>
+}
+else
+{
+    using (Html.BeginForm("EntryInfo", "Health", FormMethod.Post, new { @id = "EntryInfoForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MasterId)
+        @Html.Hidden("isCompanySelect")
+
+
+        <div class="orderEntryInfoBody">
+            <p class="basic-information" style="margin-top: 70px;">
+                <i class="fa fa-edit fa-2x"></i>发票公司信息
+                <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
+            </p>
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                    @if (Model.CompanyNameList != null)
+                    {
+                        @Html.DropDownListFor(m => m.CompanyId, Model.CompanyNameList, null, new { @class = "form-control" })
+                    }
+                </li>
+                <li>
+                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                </li>
+            </ul>
+
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control" } })
+                </li>
+                <li>
+                    @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    <sapn style="color:#888;">(供保单及发票寄送)</sapn>
+                </li>
+                <li>
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
+                </li>
+                <li>
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                </li>
+                <li>
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </li>
+            </ul>
+        </div>
+        <div class="orderConfirmBodyNext" style="text-align:center;">
+            @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+            <input type="submit" value="下一步" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+        </div>
+    }
+
+    using (Ajax.BeginForm("HealthPersons", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
+    {
+        @Html.Hidden("MasterId", Model.MasterId)
+        <div class="employeeInfo" id="dadaGrid">
+            @Html.Action("HealthPersons", new { Model.MasterId })
+        </div>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        jQuery(function () {
+            InitCompanyList();
+
+        });
+
+
+        function InitCompanyList() {
+            var list = document.getElementById("CompanyId");
+            //console.log(list);
+            if (list == null || list == undefined) {
+                jQuery("#companyInfoEdit").hide();
+                jQuery("#isCompanySelect").val(false);
+                return false;
+            } else {
+                jQuery("#CompanyName").hide();
+                jQuery("#isCompanySelect").val(true);
+            }
+            jQuery("#companyInfoEdit")
+                .click(function () {
+                    ChangeButtonValue();
+                    return false;
+                });
+            jQuery("#CompanyId")
+                .change(function () {
+                    GetCompanyInfo();
+                }
+            );
+            GetCompanyInfo();
+            return false;
+        };
+
+        function GetCompanyInfo() {
+            var id = jQuery("#CompanyId").val();
+            //console.log(id);
+            $.ajax({
+                url: "/Order/GetCompanyInfo",
+                type: "post", //数据发送方式
+                async: false,
+                data: { id: id },
+                dataType: "json", //接受数据格式
+                error: function () {
+                    alert("服务器没有返回数据，可能服务器忙，请重试");
+                },
+                success: function (result) {
+                    //console.log(result);
+                    //console.log(event);
+                    if (result != null) {
+                        jQuery("#Linkman").val(result.LinkMan);
+                        jQuery("#Address").val(result.Address);
+                        jQuery("#PhoneNumber").val(result.Phone);
+                        jQuery("#CompanyName").val(result.Name);
+                    }
+                }
+            });
+        }
+
+        function ChangeButtonValue() {
+            jQuery("#Linkman").val("");
+            jQuery("#Address").val("");
+            jQuery("#PhoneNumber").val("");
+            jQuery("#CompanyName").val("");
+            var v = jQuery("#companyInfoEdit").val();
+            if (v === "选择信息") {
+                jQuery("#companyInfoEdit").val("新增信息");
+                jQuery("#CompanyId").show();
+                jQuery("#CompanyName").hide();
+                jQuery("#isCompanySelect").val(true);
+                GetCompanyInfo();
+            } else {
+                jQuery("#companyInfoEdit").val("选择信息");
+
+                jQuery("#CompanyId").hide();
+                jQuery("#CompanyName").show();
+                jQuery("#isCompanySelect").val(false);
+            }
+        }
+    </script>
+}

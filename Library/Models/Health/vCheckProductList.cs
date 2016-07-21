@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 namespace Models
 {
-    public class vCheckProductList
+    public class VCheckProductList
     {
         public int Id { set; get; }
-        public string ProductType { set; get; }
+        public string ProductTypeName { set; get; }
         public string ProductCode { set; get; }
         public string ProductName { set; get; }
         public string ProductMemo { set; get; }

@@ -3,7 +3,7 @@ using System;
 
 namespace Services
 {
-   public interface ILoggerService
+    public interface ILoggerService
     {
         /// <summary>
         /// 程序报错日志
@@ -14,8 +14,9 @@ namespace Services
         /// 低级别日志，程序可以正常运行
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="level"></param>
-        /// <param name="Message"></param>
+        /// <param name="level">错误级别</param>
+        /// <param name="message">错误描述</param>
+        /// <param name="userName">操作人</param>
         void insert(Exception e, LogLevel level, string message = null, string userName = null);
     }
 }

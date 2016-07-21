@@ -10,17 +10,17 @@ namespace Domain
     {
         public int HealthCheckProductId { set; get; }
         /// <summary>
-        /// 体检费成本价（人/次）
+        /// 对外售价
         /// </summary>
         public decimal PublicPrice { set; get; }
         /// <summary>
-        /// 体检费对外售价
+        /// 优惠售价
         /// </summary>
         public decimal SellPrice { set; get; }
         /// <summary>
         /// 佣金比例
         /// </summary>
-        public int CommissionRatio { set; get; }
+        public decimal CommissionRatio { set; get; }
         /// <summary>
         /// 佣金计算方法
         /// </summary>
@@ -31,11 +31,15 @@ namespace Domain
         /// </summary>
         public DateTime? CheckBeginTime { set; get; }
         public DateTime? CheckEndTime { set; get; }
+
+        /// <summary>
+        /// 发票公司id
+        /// </summary>
         public int? CompanyId { set; get; }
 
         public string BaokuOrderCode { set; get; }
 
-        public int Status { set; get; }
+        public decimal Status { set; get; }
 
         public string PersonExcelPath { set; get; }
 
@@ -96,7 +100,16 @@ namespace Domain
         /// </summary>
         public string CheckComMemo { set; get; }
 
+        /// <summary>
+        /// 付款通知书PDF
+        /// </summary>
+        public string PaymentNoticePdf { set; get; }
+
         public virtual HealthCheckProduct HealthCheckProduct { set; get; }
+        /// <summary>
+        /// 发票公司
+        /// </summary>
         public virtual Company Company { set; get; }
+        public virtual IList<HealthOrderDetail> HealthOrderDetails { set; get; }
     }
 }

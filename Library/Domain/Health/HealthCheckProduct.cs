@@ -13,11 +13,20 @@ namespace Domain
         /// </summary>
         public string ProductType { set; get; }
         /// <summary>
+        /// 产品分类名称
+        /// </summary>
+        public string ProductTypeName { set; get; }
+        /// <summary>
         /// 产品编号
         /// </summary>
         public string ProductCode { set; get; }
         public string ProductName { set; get; }
         public string ProductMemo { set; get; }
+
+        /// <summary>
+        /// 产品排序
+        /// </summary>
+        public int ProductOrder { set; get; }
         /// <summary>
         /// 体检公司代码
         /// </summary>
@@ -25,6 +34,10 @@ namespace Domain
         public string CompanyName { set; get; }
         /// <summary>
         /// 体检费成本价
+        /// </summary>
+        public decimal CostPrice { set; get; }
+        /// <summary>
+        /// 对外报价
         /// </summary>
         public decimal PublicPrice { set; get; }
         /// <summary>
@@ -47,6 +60,11 @@ namespace Domain
         /// 佣金计算方法
         /// </summary>
         public string CommissionMethod { set; get; }
+
+        /// <summary>
+        /// 佣金比例
+        /// </summary>
+        public decimal CommissionRatio { set; get; }
         /// <summary>
         /// 产品图片路径
         /// </summary>

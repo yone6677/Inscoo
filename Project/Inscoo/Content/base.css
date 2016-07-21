@@ -1185,20 +1185,7 @@ div:after {
   font-size: 1.8em;
 }
 .health_box .health_box_header ul li.header_right .product-count {
-  margin-top: 40px;
-  overflow: hidden;
-}
-.health_box .health_box_header ul li.header_right .product-count div {
-  float: right;
-  margin-right: 100px;
-  padding: 5px 20px;
-  background: #38A6D9;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.health_box .health_box_header ul li.header_right .product-count div i {
-  margin-right: 10px;
+  margin: 90px 0px 0px 170px;
 }
 .health_box #product_detail {
   position: relative;

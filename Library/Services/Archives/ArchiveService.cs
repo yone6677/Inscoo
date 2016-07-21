@@ -4,9 +4,11 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Core.Pager;
 using Models;
@@ -77,6 +79,52 @@ namespace Services
             }
             return false;
         }
+        public async Task DeleteFileInfo(Domain.FileInfo fileInfo)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _rpFileInfo.DeleteById(fileInfo.Id, true);
+                    _fileService.DeleteFile(fileInfo.Url);
+                });
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
+            }
+        }
+        public async Task DeleteFileInfo(string url)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    var item = _rpFileInfo.Table.First(f => f.Url.Equals(url, StringComparison.CurrentCultureIgnoreCase));
+                    _rpFileInfo.DeleteById(item.Id, true);
+                    _fileService.DeleteFile(url);
+                });
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
+            }
+        }
+        public async Task DeleteFileBuUrl(string url)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _fileService.DeleteFile(url);
+                });
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
+            }
+        }
         public int InsertByUrl(List<string> fileInfo, string type, int pid, string memo)
         {
             try
@@ -124,6 +172,36 @@ namespace Services
                 _loggerService.insert(e, LogLevel.Warning, "Archive：Insert");
             }
             return 0;
+        }
+        public Domain.FileInfo InsertFileInfo(HttpPostedFileBase file, string author, string memo = "")
+        {
+            try
+            {
+                var model = _fileService.SaveFile(file);
+                if (model != null)
+                {
+                    var item = new Domain.FileInfo()
+                    {
+                        Author = author,
+                        Memo = memo,
+                        Name = model.Name + model.Postfix,
+                        Path = model.Path,
+                        Url = model.Path + model.Name + model.Postfix,
+                        EditTime = DateTime.Now
+                    };
+                    _rpFileInfo.InsertGetId(item);
+                    return item;
+                }
+                else
+                {
+                    throw new WarningException("上传失败");
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：Insert");
+                throw new WarningException("上传失败");
+            }
         }
         public int InsertBusinessLicense(HttpPostedFileBase file, string userName, int companyId)
         {
@@ -192,7 +270,6 @@ namespace Services
                     item.Einsurance =
                         new Domain.FileInfo()
                         {
-                            CarInsuranceId = insuranceId,
                             Author = userName,
                             Name = model.Name + model.Postfix,
                             Path = model.Path,

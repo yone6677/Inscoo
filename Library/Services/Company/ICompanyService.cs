@@ -36,7 +36,8 @@ namespace Services
         IPagedList<vCompanyList> GetCompanys(vCompanySearch company, int pageIndex = 1, int pageSize = 15);
         vCompanyEdit GetCompanyById(int id);
 
-        SelectList GetCompanySelectlistByUserId(string uId);
+        SelectList GetCompanySelectlistByUserId(string uId, int selectedId = 0);
+        List<SelectListItem> GetCompanySelectListItemsByUserId(string uId, int selectedId = 0);
         /// <summary>
         /// 初始化企业名称下拉菜单
         /// </summary>

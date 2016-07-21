@@ -3,12 +3,11 @@ using Domain;
 
 namespace Core.Mapping
 {
-    public class HealthOrderDetailMap : EntityTypeConfiguration<HealthOrderDetail>
+    public class HealthCheckProductMap : EntityTypeConfiguration<HealthCheckProduct>
     {
-        public HealthOrderDetailMap()
+        public HealthCheckProductMap()
         {
-            Property(h => h.Birthday).IsOptional();
-            HasRequired(h => h.HealthOrderMaster).WithMany().HasForeignKey(h => h.HealthOrderMasterId);
+           
         }
     }
 }

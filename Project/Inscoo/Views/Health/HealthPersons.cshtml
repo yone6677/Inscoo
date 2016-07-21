@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Domain.HealthOrderDetail>
+@if (Model.Any())
+{
+    <div class="orderConfirmBody form-inline " style="overflow:auto ">
+        <dl style="width:130%">
+            <dt>上传人员信息</dt>
+            <dd>
+                <table class="table">
+                    <tr>
+                        <th>
+                            姓名
+                        </th>
+                        <th>
+                            性别
+                        </th>
+                        <th>
+                            生日
+                        </th>
+                        <th>
+                            证件号码
+                        </th>
+                        <th>
+                            婚姻状况
+                        </th>
+                        <th>
+                            移动电话
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            所在地
+                        </th>
+                        <th>
+                            公司名称
+                        </th>
+                        <th>
+                            部门
+                        </th>
+                        <th>
+                            职位
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @{
+                                    var sex = item.Sex ? "男" : "女";
+                                }
+                                @sex
+                            </td>
+                            <td>
+                                @item.Birthday.Value.ToShortDateString()
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Marriage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepartMent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Chair)
+                            </td>
+                        </tr>
+                                    }
+                </table>
+                @{
+                    PageCommand command = ViewBag.pageCommand;
+                    @Html.Pager(command)
+                }
+            </dd>
+        </dl>
+    </div>}

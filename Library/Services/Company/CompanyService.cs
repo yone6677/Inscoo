@@ -177,13 +177,27 @@ namespace Services
                 return null;
             }
         }
-        public SelectList GetCompanySelectlistByUserId(string uId)
+        public SelectList GetCompanySelectlistByUserId(string uId, int selectedId)
         {
             try
             {
                 var list = _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c => c.UserId == uId).Select(c => new { c.Id, c.Name });
                 if (!list.Any()) return null;
-                return new SelectList(list, "Id", "Name");
+                if (selectedId == 0) return new SelectList(list, "Id", "Name");
+                return new SelectList(list, "Id", "Name", selectedId);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public List<SelectListItem> GetCompanySelectListItemsByUserId(string uId, int selectedId)
+        {
+            try
+            {
+                var list = _repCompany.Table.Include(c => c.BusinessLicenses).AsNoTracking().Where(c => c.UserId == uId);
+                if (!list.Any()) return null;
+                return list.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Name, Selected = selectedId == c.Id }).ToList();
             }
             catch (Exception e)
             {

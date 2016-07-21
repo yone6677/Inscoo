@@ -9,9 +9,10 @@ using System.Diagnostics.Contracts;
 
 namespace Models
 {
-    public class vCheckProductDetail
+    public class VCheckProductDetail
     {
         public int Id { set; get; }
+        public int MasterId { set; get; }
         [DisplayName("产品类型")]
         public string ProductType { set; get; }
         public string ProductCode { set; get; }

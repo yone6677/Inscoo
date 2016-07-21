@@ -98,7 +98,7 @@ namespace Inscoo.Controllers
                 }
                 if (!string.IsNullOrEmpty(model.controller))
                 {
-                    item.controller = model.controller.Trim().ToLower();
+                    item.controller = model.controller.Trim().ToLower() + "Controller";
                 }
                 item.isShow = model.isShow;
                 item.level = model.level;
@@ -155,7 +155,7 @@ namespace Inscoo.Controllers
                     }
                     item.action = model.action;
                     item.controller = model.controller;
-                    item.url = model.controller + "/" + model.action;
+                    item.url = model.controller.Substring(0, (model.controller.Length - 10)) + "/" + model.action;
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;

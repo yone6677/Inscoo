@@ -1,22 +1,21 @@
-﻿@model IEnumerable<Models.VCheckProductList>
+﻿@model IEnumerable<Models.vCheckProductList>
 @{
     ViewBag.Title = "健康库";
 }
 
 <div class="health_box">
     <img src="../../Content/imgIndex/health_img_1.png">
-    @foreach (var type in ViewBag.ProductTypeName)
+    @foreach (var type in ViewBag.ProductType)
     {
         <div class="health_project">
             <p>@type</p>
-            @foreach (var p in Model.Where(m => m.ProductTypeName == type))
+            @foreach (var p in Model.Where(m => m.ProductType == type))
             {
                 <ul class="health_detail">
                     <li>@p.ProductName</li>
                     <li class="health_content">
                         <div class="content_left">
-                            @*<img src="~/Content/img/health/health_1_1.png" />*@
-                            <img src="@p.CheckProductPic" alt="Alternate Text" />
+                            <img src="../../Content/imgIndex/health_1_1.png" alt="Alternate Text" />
                         </div>
                     </li>
                     <li class="project_price">
@@ -31,4 +30,203 @@
             }
         </div>
     }
+
+    <div class="health_project">
+        <p>入职体检</p>
+        <ul class="health_detail">
+            <li>基础型(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">入职体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥300</span></p>
+                <div>优惠价：<span>￥150</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>经典标准(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">入职体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥400</span></p>
+                <div>优惠价：<span>￥200</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>基础型(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">入职体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥800</span></p>
+                <div>优惠价：<span>￥400</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+    </div>
+    <div class="health_project">
+        <p>年度体检</p>
+        <ul class="health_detail">
+            <li>保酷定制(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">年度体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥800</span></p>
+                <div>优惠价：<span>￥400</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>经典标准(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">年度体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥560</span></p>
+                <div>优惠价：<span>￥280</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>精英酷享(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">年度体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥1980</span></p>
+                <div>优惠价：<span>￥990</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+    </div>
+    <div class="health_project">
+        <p>高端定制</p>
+        <ul class="health_detail">
+            <li>精英酷享套餐(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">高端体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥1980</span></p>
+                <div>优惠价：<span>￥990</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>高端vip套餐(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">高端体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥3980</span></p>
+                <div>优惠价：<span>￥1990</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+        <ul class="health_detail">
+            <li>超级vip套餐(全国版)</li>
+            <li class="health_content">
+                <div class="content_left">
+                    <img src="../../Content/imgIndex/logo_sm.png" alt="Alternate Text" />
+                    <p><img src="../../Content/imgIndex/enjoy.png" alt="Alternate Text" /></p>
+                </div>
+                <div class="content_right">
+                    <p>2016</p>
+                    <p>体检卡</p>
+                    <div class="project_name">高端体检卡</div>
+                </div>
+            </li>
+            <li class="project_price">
+                <p>市场价：<span>￥5880</span></p>
+                <div>优惠价：<span>￥2880</span></div>
+            </li>
+            <li>
+                <a href="../HealthProduct/ProDetail" class="btn btn-buy">立即购买</a>
+            </li>
+        </ul>
+    </div>
 </div>

@@ -88,16 +88,17 @@
     }
     <div class="customProduct_purchase">
         <ul class="customProduct_purchaseul">
-            <li>
+            <li style="width:30%">
                 总保费：<b id=@totalName>0.00</b>
             </li>
-            <li>
+            <li style="width:30%">
                 @if (Model != null)
                 {
                     @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
                 }
             </li>
-            <li style="text-align:left;">
+            <li style="text-align:center;width:40%;line-height:2.5em">
+                <p style="margin:0">此报价适用于有社保的1-4类职业</p>
                 <a href="http://www.inscoo.com/Archive/InsuranceFiles/A0.pdf" target="_blank">职业类别分类</a>
             </li>
         </ul>

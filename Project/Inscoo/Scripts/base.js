@@ -34,21 +34,46 @@ $(document).on('click', ".toggle_color", function () {
 })
 
 /*体检详情*/
-$(".health_box_body>.health_nav").on("click", "li", showTab);
+//$(".health_box_body>.health_nav").on("click", "li", showTab);
+//function showTab(e) {
+//    var target = e.target || e.srcElement;
+//    if (target.nodeName == "A") {
+//        target = target.parentNode;
+//    }
+//    if (target.nodeName == "LI") {
+//        $(this).siblings().removeClass('active');
+//        $(this).addClass('active');
+
+//        var link = $(this).children().attr('href');
+//        $(link).addClass('show').siblings().removeClass('show');
+//    }
+//}
+
+$(function(){
+    $("#product_detail>.main_tabs").on('mouseover', showTab);
+});
+
 function showTab(e) {
     var target = e.target || e.srcElement;
-    if (target.nodeName == "A") {
+    if (target.nodeName == "A"){
         target = target.parentNode;
     }
-    if (target.nodeName == "LI") {
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
+    if (target.nodeName == "LI" && target.className != "current") {
+        $(this).children(".current").removeClass('current');
+        $(target).addClass('current');
 
-        var link = $(this).children().attr('href');
-        $(link).addClass('show').siblings().removeClass('show');
+        var containers = $("#product_detail>[id^='product_']");
+        for (var i = 0; i < containers.length; i++){
+            $(containers[i]).css('display','none');
+        }
+        var tar = target.dataset.tar;
+        console.log(tar);
+        if (tar != "comment"){
+            $("#product_" + tar).css('display','block');
+        }
     }
-}
 
+}
 /*导航*/
 function nav(name, csskey, cssvalue) {
     var url = window.location.pathname + window.location.search;

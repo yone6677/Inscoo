@@ -21,7 +21,7 @@
             </li>
         </ul>
     </div>
-    <div class=health_box_body>
+    @*<div class=health_box_body>
         <ul class="health_nav">
             <li class="active"><a href="#product_detail">项目详情</a></li>
             <li><a href="#product_shop">支持门店</a></li>
@@ -32,6 +32,61 @@
         <div id="product_shop" class="content_style">支持门店</div>
         <div id="product_order" class="content_style">预约流程</div>
         <div id="product_rule" class="content_style">体检须知</div>
+    </div>*@
+    <div id="product_detail">
+        <ul class="main_tabs">
+            <li class="current" data-tar="info"><a>商品介绍</a></li>
+            <li data-tar="shop"><a>支持门店</a></li>
+            <li data-tar="order"><a>预约流程</a></li>
+            <li data-tar="rule"><a>体检须知</a></li>
+            <li data-tar="comment"><a>商品评价</a></li>
+        </ul>
+        <!--商品介绍-->
+        <div id="product_info" class="clear">
+            <ul class="detail_list">
+                <li>商品名称：</li>
+                <li>商品编号：</li>
+                <li>品牌：<a href="#" target="_blank"></a></li>
+                <li>上架时间：</li> 
+            </ul>
+            <div class="detail_content">
+                商品介绍内容
+            </div>
+        </div>
+        <!--支持门店-->
+        <div id="product_shop">
+            支持门店
+        </div>
+
+        <!--预约流程-->
+        <div id="product_order">
+            预约流程
+        </div>
+       
+        <!--体检须知-->
+        <div id="product_rule">
+            体检须知
+        </div>
+
+        <!--服务承诺-->
+        <div id="promise">
+            <b>服务至上：</b>
+            <p>
+                保酷体检网始终坚持客户至上待客如亲的服务理念，坚持为客户创造价值。我们为客户提供专业贴心的检前咨询与指导服务，为客户提供优于医院门市价的体检价格体系，为客户提供更为详细的体检医院与体检套餐信息。
+            </p>
+        </div>
+        <!--权力声明-->
+        <div id="state">
+            <span>权利声明：</span>
+            <p>保酷上的所有商品信息、客户评价、商品咨询、网友讨论等内容，是保酷重要的经营资源，未经许可，禁止非法转载使用。</p>
+            <p><b>注：</b>本站商品信息均来自于合作方，其真实性、准确性和合法性由信息拥有者（合作方）负责。本站不提供任何保证，并不承担任何法律责任。</p>
+        </div> 
+
+        <!--商品评价-->
+        <div id="comment">
+            <p class="main_tabs">商品评价</p>
+            <div class="m_content">商品评价</div>
+        </div>
     </div>
 </div>
 

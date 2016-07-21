@@ -92,7 +92,26 @@ namespace Services.Orders
             }
             return false;
         }
-
+        public Order GetByBId(int bid)
+        {
+            try
+            {
+                var batch = _orderBatchService.GetById(bid);
+                if (batch != null && !batch.IsDeleted)
+                {
+                    var order = GetById(batch.order_Id);
+                    if (order != null && !order.IsDeleted)
+                    {
+                        return order;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderService：GetById");
+            }
+            return null;
+        }
         public Order GetById(int id)
         {
             try

@@ -16,6 +16,7 @@ using System.Web;
 using Core.Pager;
 using Microsoft.Ajax.Utilities;
 using OfficeOpenXml.FormulaParsing.Utilities;
+using System.Configuration;
 
 namespace Inscoo.Controllers
 {
@@ -164,7 +165,8 @@ namespace Inscoo.Controllers
                     ProdInsurance = ProdInsurance
 
                 };
-                var result = await _appUserService.CreateAsync(user, model.UserName, "inscoo");
+                var defaultPwd = ConfigurationManager.AppSettings["newPwd"];
+                var result = await _appUserService.CreateAsync(user, model.UserName, defaultPwd);
                 if (result.Succeeded)
                 {
                     if (ForRole(user, model.Roles))

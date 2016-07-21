@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Models.Order;
 using Services.FileHelper;
+using Services.Products;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,8 @@ namespace Services.Orders
         private readonly IWebHelper _webHelper;
         private readonly IOrderEmpTempService _orderEmpTempService;
         private readonly IOrderBatchService _orderBatchService;
-        public OrderEmpService(ILoggerService loggerService, IRepository<OrderEmployee> orderEmpRepository, IAuthenticationManager authenticationManager, IFileService fileService,
+        private readonly IProductService _productService;
+        public OrderEmpService(ILoggerService loggerService, IRepository<OrderEmployee> orderEmpRepository, IAuthenticationManager authenticationManager, IFileService fileService, IProductService productService,
             IOrderService orderService, IOrderItemService orderitemService, HttpContextBase httpContext, IWebHelper webHelper, IOrderEmpTempService orderEmpTempService, IOrderBatchService orderBatchService)
         {
             _loggerService = loggerService;
@@ -39,7 +41,7 @@ namespace Services.Orders
             _webHelper = webHelper;
             _orderEmpTempService = orderEmpTempService;
             _orderBatchService = orderBatchService;
-
+            _productService = productService;
         }
         public bool DeleteById(int id)
         {
@@ -53,6 +55,24 @@ namespace Services.Orders
                 _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：DeleteById");
                 return false;
             }
+        }
+        public List<OrderEmployee> GetByInfo(string idNumber, string name)
+        {
+            try
+            {
+                var query = _orderEmpRepository.Table;
+                if (!string.IsNullOrEmpty(idNumber) && !string.IsNullOrEmpty(name))
+                {
+                    return query.Where(q => q.Name == name.Trim() && q.IDNumber.ToUpper().Trim() == idNumber.ToUpper().Trim()).ToList();
+                }
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetByInfo");
+
+            }
+            return new List<OrderEmployee>();
         }
         public OrderEmployee GetByInfo(string idNumber, string name, int oid)
         {
@@ -383,19 +403,29 @@ namespace Services.Orders
                     document.Add(new Phrase(":", font));
                     document.Add(new Paragraph("感谢贵公司在保酷平台上采购员工福利保障，具体采购方案如下：", font) { IndentationLeft = 20 });
                     PdfPTable table = new PdfPTable(4);
+                    table.WidthPercentage = 100;
                     table.SpacingBefore = 30;
-                    table.SetWidths(new int[] { 25, 20, 20, 20 });
+                    table.SetWidths(new int[] { 40, 20, 20, 20 });
                     PdfPCell cell;
-                    cell = new PdfPCell() { Rowspan = 2, Phrase = new Phrase("险种名称", font), HorizontalAlignment = PdfPCell.ALIGN_LEFT };
+                    cell = new PdfPCell() { Rowspan = 2, Phrase = new Phrase("险种名称", font), HorizontalAlignment = Element.ALIGN_LEFT };
                     table.AddCell(cell);
-                    cell = new PdfPCell() { Colspan = 3, Phrase = new Phrase("保费，保额及分类", font), HorizontalAlignment = PdfPCell.ALIGN_CENTER };
+                    cell = new PdfPCell() { Colspan = 3, Phrase = new Phrase("保费，保额及分类", font), HorizontalAlignment = Element.ALIGN_CENTER };
                     table.AddCell(cell);
                     table.AddCell(new Phrase("保险金", font));
                     table.AddCell(new Phrase("保额", font));
                     table.AddCell(new Phrase("给付比例", font));
                     foreach (var p in products)
                     {
-                        table.AddCell(new Phrase(p.SafeguardName, font));
+                        //table.AddCell(new Phrase(p.SafeguardName, font));
+                        var prod = _productService.GetById(p.pid);
+                        if (prod != null)
+                        {
+                            table.AddCell(new Phrase(prod.ProdInsuredName, font));
+                        }
+                        else
+                        {
+                            table.AddCell(new Phrase(p.SafeguardName, font));
+                        }
                         table.AddCell(new Phrase(p.Price.ToString(), font));
                         table.AddCell(new Phrase(p.CoverageSum, font));
                         table.AddCell(new Phrase(p.PayoutRatio, font));
@@ -423,7 +453,7 @@ namespace Services.Orders
                     table.AddCell(new Phrase("保障人数", font));
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(InsuranceNumber + "人", font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.AddCell(new Phrase("金额合计", font));
-           
+
 
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(totalAmount + "元", new Font(baseFont, 12, 1)), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
 
@@ -434,14 +464,14 @@ namespace Services.Orders
                     document.Add(table);
                     if (bid == 0)
                     {
-                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     }
                     else
                     {
-                        document.Add(new Paragraph("请将保险金按约定转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.CompanyName + " - 保单号 :" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
+                        document.Add(new Paragraph("请将保险金按约定转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
                     }
-                        document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
-                 //   document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
+                    document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
+                    //   document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
                     //var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
                     //Image gif = Image.GetInstance(img + "gongzhang.jpg");
                     //gif.ScalePercent(15f);
@@ -614,7 +644,15 @@ namespace Services.Orders
                     table2.AddCell(cell2);
                     foreach (var p in products)
                     {
-                        cell2.Phrase = new Phrase(p.SafeguardName, font);
+                        var prod = _productService.GetById(p.pid);
+                        if (prod != null)
+                        {
+                            cell2.Phrase = new Phrase(prod.ProdInsuredName, font);
+                        }
+                        else
+                        {
+                            cell2.Phrase = new Phrase(p.SafeguardName, font);
+                        }
                         table2.AddCell(cell2);
                         cell2.Phrase = new Phrase(p.Price.ToString(), font);
                         table2.AddCell(cell2);

@@ -13,7 +13,7 @@ using Services;
 
 namespace Inscoo.Controllers
 {
-    public class HealthController : Controller
+    public class HealthController : BaseController
     {
         private readonly IHealthService _svHealth;
         private readonly ICompanyService _svCompany;

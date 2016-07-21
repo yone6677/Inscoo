@@ -161,6 +161,10 @@
     <Compile Include="Migrations\201607200258571_AlterTablesAboutHealth.Designer.cs">
       <DependentUpon>201607200258571_AlterTablesAboutHealth.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607210824433_orderItem.cs" />
+    <Compile Include="Migrations\201607210824433_orderItem.Designer.cs">
+      <DependentUpon>201607210824433_orderItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -209,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607200258571_AlterTablesAboutHealth.resx">
       <DependentUpon>201607200258571_AlterTablesAboutHealth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607210824433_orderItem.resx">
+      <DependentUpon>201607210824433_orderItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

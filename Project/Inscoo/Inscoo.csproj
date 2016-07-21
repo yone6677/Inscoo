@@ -465,7 +465,7 @@
     <Content Include="Views\Health\EntryInfo.cshtml" />
     <Content Include="Views\Health\HealthPersons.cshtml" />
     <Content Include="Views\Health\ConfirmPayment.cshtml" />
-    <Content Include="Views\Health\ProDetail.cshtml" />
+    <Content Include="Views\Health\detail\_ProDetail_1.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

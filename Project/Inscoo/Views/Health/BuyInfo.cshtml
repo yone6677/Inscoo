@@ -21,16 +21,5 @@
             </li>
         </ul>
     </div>
-    <div class=health_box_body>
-        <ul class="health_nav">
-            <li class="active"><a href="#product_detail">项目详情</a></li>
-            <li><a href="#product_shop">支持门店</a></li>
-            <li><a href="#product_order">预约流程</a></li>
-            <li><a href="#product_rule">体检须知</a></li>
-        </ul>
-        <div id="product_detail" class="content_style show">项目详情</div>
-        <div id="product_shop" class="content_style">支持门店</div>
-        <div id="product_order" class="content_style">预约流程</div>
-        <div id="product_rule" class="content_style">体检须知</div>
-    </div>
+    @Html.Partial("detail/_ProDetail_" + Model.Id)
 </div>

@@ -25,7 +25,6 @@ namespace Domain
         public string Memo { get; set; }
         public string Url { get; set; }
 
-        public int CarInsuranceId { set; get; }
         public DateTime EditTime { set; get; }
     }
 }

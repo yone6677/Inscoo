@@ -276,6 +276,8 @@
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\img\health\health_1_8.png" />
+    <Content Include="Content\img\health\health_1_9.png" />
     <Content Include="Content\img\inscoo.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\p1.jpg" />
@@ -283,6 +285,13 @@
     <Content Include="Content\img\p3.jpg" />
     <Content Include="Content\img\p4.jpg" />
     <Content Include="Content\img\tt.png" />
+    <Content Include="Content\img\health\health_1_1.png" />
+    <Content Include="Content\img\health\health_1_2.png" />
+    <Content Include="Content\img\health\health_1_3.png" />
+    <Content Include="Content\img\health\health_1_4.png" />
+    <Content Include="Content\img\health\health_1_5.png" />
+    <Content Include="Content\img\health\health_1_6.png" />
+    <Content Include="Content\img\health\health_1_7.png" />
     <Content Include="Content\index.css" />
     <Content Include="Content\js\bootstrap-datepicker.js" />
     <Content Include="Content\js\bootstrap-datepicker.zh-CN.js" />
@@ -293,6 +302,7 @@
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\投保单1.pdf" />
     <Content Include="Archive\Template\投保单2.pdf" />
+    <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -361,7 +371,6 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
-    <Compile Include="Controllers\HealthProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\MixProductController.cs" />
@@ -456,7 +465,6 @@
     <Content Include="Views\Claim\ListSearch.cshtml" />
     <Content Include="Views\Claim\ListData.cshtml" />
     <Content Include="Views\Health\Index.cshtml" />
-    <Content Include="Views\HealthProduct\ProDetail.cshtml" />
     <Content Include="Views\Order\EmpChanges.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceUploadEinsurance.cshtml" />
     <Content Include="Views\Account\ForgetPassword.cshtml" />
@@ -466,6 +474,10 @@
     <Content Include="Views\Account\Login - 复制.cshtml" />
     <Content Include="Views\Health\BuyInfo.cshtml" />
     <Content Include="Views\Health\MakeSure.cshtml" />
+    <Content Include="Views\Health\EntryInfo.cshtml" />
+    <Content Include="Views\Health\HealthPersons.cshtml" />
+    <Content Include="Views\Health\ConfirmPayment.cshtml" />
+    <Content Include="Views\Health\detail\_ProDetail_1.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

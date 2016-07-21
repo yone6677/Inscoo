@@ -69,7 +69,7 @@ namespace Services
             try
             {
                 var path = AppDomain.CurrentDomain.BaseDirectory;
-                File.Delete(path + url);
+                File.Delete(path + url.Substring(1));
             }
             catch (Exception e)
             {

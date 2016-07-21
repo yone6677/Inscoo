@@ -1,0 +1,86 @@
+﻿@model Models.VHealthConfirmPayment
+
+@{
+    ViewBag.Title = "确认付款";
+}
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li style="width: 33%">
+            <i class="fa fa-save fa-2x"></i>
+            <span>方案确认</span>
+        </li>
+        <li style="width: 33%">
+            <i class="fa fa-edit fa-2x"></i>
+            信息填写
+        </li>
+        <li class="orderConfirmLiActive" style="width: 33%">
+            <i class="fa fa-usd fa-2x"></i>
+            确认付款
+        </li>
+    </ul>
+</div>
+<div class="confirmPayment">
+    <ul>
+        <li></li>
+        <li>保费信息</li>
+    </ul>
+    <dl style="height:auto;">
+        <dt>
+            @Html.DisplayNameFor(model => model.Price) :
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price) 元/人
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Count) :
+        </dt>
+        <dd>
+            @Model.Count 份
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount) :
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount) 元
+        </dd>
+    </dl>
+</div>
+<div class="confirmPayment">
+    <ul>
+        <li></li>
+        <li>支付信息</li>
+    </ul>
+    <dl>
+        <dt>
+            账户名 :
+        </dt>
+        <dd>
+            金联安保险经纪（北京）有限公司苏州分公司
+        </dd>
+        <dt>
+            银行账号 :
+        </dt>
+        <dd>
+            32201986488052500161
+        </dd>
+        <dt>
+            开户行 :
+        </dt>
+        <dd>
+            中国建设银行昆山太湖路支行
+        </dd>
+        <dt>
+            营业执照 :
+        </dt>
+        <dd>
+            <a href="~/Archive/Template/yyzz.jpg" target="_blank">查看</a>
+        </dd>
+    </dl>
+    <p>
+        <span style="margin-left:18%;margin-bottom:10px;font-size:1.5em">投保结束，请下载付款通知书</span>
+        <a href=@Model.PaymentNoticePdf target="_blank">下载付款通知书</a>
+    </p>
+</div>
+<div class="orderConfirmBodyNext" style="text-align:center;">
+    @Html.ActionLink("上一步", "EntryInfo", new { Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+</div>

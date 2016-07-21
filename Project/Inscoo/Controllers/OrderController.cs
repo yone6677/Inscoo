@@ -442,6 +442,7 @@ namespace Inscoo.Controllers
                         {
                             var orderItem = new OrderItem()
                             {
+                                pid = item.Id,
                                 CommissionRate = _productService.GetById(item.Id).CommissionRate,//佣金比率
                                 CoverageSum = item.CoverageSum,
                                 InsuredWho = item.InsuredWho,

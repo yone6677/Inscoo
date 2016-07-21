@@ -2,7 +2,6 @@
 using Autofac.Integration.WebApi;
 using Core.Data;
 using Domain;
-using Inscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
@@ -13,7 +12,6 @@ using Services.Products;
 using System.Configuration;
 using System.Reflection;
 using System.Web;
-using System.Web.Mvc;
 using Core;
 using System.Web.Http;
 

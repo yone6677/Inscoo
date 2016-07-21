@@ -571,108 +571,119 @@ namespace Inscoo.Controllers
             var result = "";
             if (empinfo != null && Id > 0)
             {
-                var order = _orderService.GetById(Id);
-                //打开excel
-                var ep = new ExcelPackage(empinfo.InputStream);
-                var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
-                if (worksheet == null)
-                    result = "上传的文件内容不能为空";
-                var rowNumber = worksheet.Dimension.Rows;
-                var minInsuranceNumber = 0;
-                var StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
-                switch (StaffRange)
+                try
                 {
-                    case 1:
-                        minInsuranceNumber = 3;
-                        break;
-                    case 2:
-                        minInsuranceNumber = 5;
-                        break;
-                    case 3:
-                        minInsuranceNumber = 11;
-                        break;
-                    case 4:
-                        minInsuranceNumber = 31;
-                        break;
-                    case 5:
-                        minInsuranceNumber = 51;
-                        break;
-                    case 6:
-                        minInsuranceNumber = 100;
-                        break;
-                }
-                if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
-                {
-                    TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
-                    return RedirectToAction("EntryInfo", new { id = order.Id });
-                }
-                var batch = _orderBatchService.GetByOrderId(Id);
-                //若有旧数据先删除
-                var oldInfo = _orderEmpService.GetListByOid(Id);
-                if (oldInfo != null && oldInfo.Any())
-                {
-                    foreach (var s in oldInfo)
+                    var order = _orderService.GetById(Id);
+                    //打开excel
+                    var ep = new ExcelPackage(empinfo.InputStream);
+                    var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
+                    if (worksheet == null)
+                        result = "上传的文件内容不能为空";
+                    var rowNumber = worksheet.Dimension.Rows;
+                    var minInsuranceNumber = 0;
+                    var StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
+                    switch (StaffRange)
                     {
-                        _orderEmpService.DeleteById(s.Id);
+                        case 1:
+                            minInsuranceNumber = 3;
+                            break;
+                        case 2:
+                            minInsuranceNumber = 5;
+                            break;
+                        case 3:
+                            minInsuranceNumber = 11;
+                            break;
+                        case 4:
+                            minInsuranceNumber = 31;
+                            break;
+                        case 5:
+                            minInsuranceNumber = 51;
+                            break;
+                        case 6:
+                            minInsuranceNumber = 100;
+                            break;
                     }
-                }
-                var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
+                    if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
+                    {
+                        TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
+                        return RedirectToAction("EntryInfo", new { id = order.Id });
+                    }
+                    var batch = _orderBatchService.GetByOrderId(Id);
+                    //若有旧数据先删除
+                    var oldInfo = _orderEmpService.GetListByOid(Id);
+                    if (oldInfo != null && oldInfo.Any())
+                    {
+                        foreach (var s in oldInfo)
+                        {
+                            _orderEmpService.DeleteById(s.Id);
+                        }
+                    }
+                    var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
 
-                //读取excel数据
-                var Cells = worksheet.Cells;
-                if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
-                    result = "上传的文件不正确";
-                var eList = new List<OrderEmployeeModel>();
-                for (var i = 2; i <= rowNumber; i++)
-                {
-                    if (Cells["A" + i].Value == null)
-                        break;
-                    var item = new OrderEmployee();
-                    item.batch_Id = batch.Id;//批次号
-                    item.Premium = order.AnnualExpense;
-                    item.PMCode = PMType.PM00.ToString();
-                    item.Relationship = "本人";
-                    item.Name = Cells["A" + i].Value.ToString().Trim();
-                    item.IDType = Cells["B" + i].Value.ToString().Trim();
-                    item.IDNumber = Cells["C" + i].Value.ToString().Trim();
-                    item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
-                    item.Sex = Cells["E" + i].Value.ToString().Trim();
-                    item.BankCard = Cells["F" + i].Value.ToString().Trim();
-                    item.BankName = Cells["G" + i].Value.ToString().Trim();
-                    if (Cells["H" + i].Value != null)
+                    //读取excel数据
+                    var Cells = worksheet.Cells;
+                    if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
+                        result = "上传的文件不正确";
+                    var eList = new List<OrderEmployeeModel>();
+                    for (var i = 2; i <= rowNumber; i++)
                     {
-                        item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
+                        if (Cells["A" + i].Value == null)
+                            break;
+                        var item = new OrderEmployee();
+                        item.batch_Id = batch.Id;//批次号
+                        item.Premium = order.AnnualExpense;
+                        item.PMCode = PMType.PM00.ToString();
+                        item.Relationship = "本人";
+                        item.Name = Cells["A" + i].Value.ToString().Trim();
+                        item.IDType = Cells["B" + i].Value.ToString().Trim();
+                        item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                        try
+                        {
+                            item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                        }
+                        catch
+                        {
+                            throw new Exception("请检查第 " + i + " 行资料,出生日期填写有误,示例 :2008/7/15 或者 2008-7-15");
+                        }
+                        item.Sex = Cells["E" + i].Value.ToString().Trim();
+                        item.BankCard = Cells["F" + i].Value.ToString().Trim();
+                        item.BankName = Cells["G" + i].Value.ToString().Trim();
+                        if (Cells["H" + i].Value != null)
+                        {
+                            item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
+                        }
+                        if (Cells["I" + i].Value != null)
+                        {
+                            item.Email = Cells["I" + i].Value.ToString().Trim();
+                        }
+                        item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                        item.StartDate = order.StartDate;
+                        item.EndDate = order.EndDate;
+                        if (!_orderEmpService.Insert(item))
+                        {
+                            result = "上传失败";
+                        }
                     }
-                    if (Cells["I" + i].Value != null)
+                    var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
+                    order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
+                    _orderService.Update(order);
+                    //定单批次
+                    var orderBatch = _orderBatchService.GetByOrderId(Id);
+                    if (orderBatch != null)
                     {
-                        item.Email = Cells["I" + i].Value.ToString().Trim();
+                        orderBatch.EmpInfoFile = fileModel;
+                        _orderBatchService.Update(orderBatch);
                     }
-                    item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
-                    item.StartDate = order.StartDate;
-                    item.EndDate = order.EndDate;
-                    if (!_orderEmpService.Insert(item))
-                    {
-                        result = "上传失败";
-                    }
+                    return RedirectToAction("EntryInfo", new { id = Id });
+                    /****/
                 }
-                var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
-                order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
-                _orderService.Update(order);
-                //定单批次
-                var orderBatch = _orderBatchService.GetByOrderId(Id);
-                if (orderBatch != null)
+                catch (Exception e)
                 {
-                    orderBatch.EmpInfoFile = fileModel;
-                    _orderBatchService.Update(orderBatch);
+                    result = e.Message;
                 }
-                return RedirectToAction("EntryInfo", new { id = Id });
-                /****/
             }
-            else
-            {
-                result = "上传失败";
-            }
-            return Content(result);
+            TempData["error"] = result;
+            return RedirectToAction("EntryInfo", new { id = Id });
         }
 
         [AllowAnonymous]

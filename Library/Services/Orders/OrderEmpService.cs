@@ -54,6 +54,24 @@ namespace Services.Orders
                 return false;
             }
         }
+        public List<OrderEmployee> GetByInfo(string idNumber, string name)
+        {
+            try
+            {
+                var query = _orderEmpRepository.Table;
+                if (!string.IsNullOrEmpty(idNumber)&&!string.IsNullOrEmpty(name))
+                {
+                    return query.Where(q => q.Name == name.Trim() && q.IDNumber.ToUpper().Trim() == idNumber.ToUpper().Trim()).ToList();
+                }                
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：GetByInfo");
+
+            }
+            return new List<OrderEmployee>();
+        }
         public OrderEmployee GetByInfo(string idNumber, string name, int oid)
         {
             try

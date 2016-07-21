@@ -13,6 +13,7 @@ namespace Services.Orders
         bool Delete(Order item);
         bool DeleteById(int id);
         Order GetById(int id);
+        Order GetByBId(int bid);
         List<Order> GetList(string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null);
         IPagedList<OrderListModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, string name = null, int state = 0, string companyName = null, DateTime? beginDate = null, DateTime? endDate = null);
     }

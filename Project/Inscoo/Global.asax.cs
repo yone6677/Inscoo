@@ -1,9 +1,9 @@
 ﻿using System;
-using Services;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Configuration;
+using System.Web.Http;
 namespace Inscoo
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -11,7 +11,9 @@ namespace Inscoo
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            DependencyRegistrarWebApi.RegisterDependency();
             DependencyRegistrar.RegisterDependency();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
@@ -74,7 +76,7 @@ namespace Inscoo
                     #endregion
                 }
             }
-            catch (Exception exc)
+            catch (Exception)
             {
 
                 //注意这里可以跳转，可以直接终止；在VS里调试时候得不到想要的结果，通过IIS才能得到想要的结果；FW4.0经典或集成都没问题

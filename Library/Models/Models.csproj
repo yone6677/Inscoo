@@ -74,6 +74,7 @@
     <Compile Include="Account\ResetPasswordModel.cs" />
     <Compile Include="Account\RegisterModel.cs" />
     <Compile Include="Api\Order\GetOrderListApi.cs" />
+    <Compile Include="Api\Order\OrderItemApi.cs" />
     <Compile Include="Api\Order\OrderListApi.cs" />
     <Compile Include="BaseApiModel.cs" />
     <Compile Include="BaseViewModel.cs" />

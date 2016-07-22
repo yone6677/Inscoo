@@ -85,7 +85,11 @@ namespace Inscoo.Controllers
             //var appUser = _appUserService.GetAppUserManagerCore(HttpContext);
             var appUser = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
             var user = appUser.FindByEmail(email);
-            //if (user == null) return false;
+            if (user == null)
+            {
+                ViewBag.Error = "未找到该用户";
+                return View();
+            }
             var token = appUser.GeneratePasswordResetToken(user.Id);
             var route = new { code = token };
             var callbackUrl = Url.Action("ResetPassword", "Account", route, Request.Url.Scheme);

@@ -26,6 +26,8 @@ namespace Models
         public int MasterId { set; get; }
         public string EmpInfoFileUrl { get; set; }
 
+        [Display(Name = "返点信息")]
+        public decimal CommentionRatio { get; set; }
         public SelectList CompanyNameList { set; get; }
     }
 }

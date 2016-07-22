@@ -1,5 +1,6 @@
 ﻿using Models.Infrastructure;
 using System;
+using System.Threading.Tasks;
 
 namespace Services
 {
@@ -18,5 +19,7 @@ namespace Services
         /// <param name="message">错误描述</param>
         /// <param name="userName">操作人</param>
         void insert(Exception e, LogLevel level, string message = null, string userName = null);
+
+        Task InsertAsync(Exception e, LogLevel level, string message = null, string userName = null);
     }
 }

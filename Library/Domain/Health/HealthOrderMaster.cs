@@ -42,10 +42,12 @@ namespace Domain
         public decimal Status { set; get; }
 
         public string PersonExcelPath { set; get; }
-
+        /// <summary>
+        /// 保酷审核人
+        /// </summary>
         public string BaokuConfirmer { set; get; }
         /// <summary>
-        /// 保酷确定日期
+        /// 保酷审核确定日期
         /// </summary>
         public DateTime? BaokuConfirmDate { set; get; }
 

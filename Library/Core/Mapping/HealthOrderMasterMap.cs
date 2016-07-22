@@ -7,6 +7,7 @@ namespace Core.Mapping
     {
         public HealthOrderMasterMap()
         {
+            Property(h => h.Author).IsRequired();
             Property(h => h.CheckBeginTime).IsOptional();
             Property(h => h.CheckEndTime).IsOptional();
             Property(h => h.BaokuConfirmDate).IsOptional();

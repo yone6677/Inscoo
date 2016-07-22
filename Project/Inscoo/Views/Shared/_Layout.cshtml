@@ -48,9 +48,12 @@
     @RenderSection("scripts", required: false)
     <script>
         jQuery(function () {
-            $('.inputDate').each(function () {
-                $(this).datepicker();
-            });
+            $('.inputDate')
+                .each(function () {
+                    var date = $(this).val().substring(0, 10);
+                    $(this).val(date);
+                    $(this).datepicker();
+                });
         });
     </script>
 </body>

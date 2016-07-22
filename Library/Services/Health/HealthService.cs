@@ -77,7 +77,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, userName: author);
+                _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
             }
         }
         public int AddHealthMaster(int productId, string author)
@@ -100,7 +100,7 @@ namespace Services
 
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, userName: author);
+                _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
                 throw new WarningException("操作失败");
             }
         }
@@ -108,7 +108,7 @@ namespace Services
         {
             var role = _roleManager.FindById(_userManager.FindById(uId).Roles.First().RoleId);
 
-            var products = _repHealthProduct.Table.AsNoTracking().ToList();
+            var products = _repHealthProduct.Table.AsNoTracking().OrderBy(h => h.ProductOrder).ToList();
 
             var list = from p in products
                        select (new VCheckProductList
@@ -134,7 +134,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
                 throw new WarningException("操作有误");
             }
         }
@@ -146,7 +146,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
                 throw new WarningException("操作有误");
             }
         }
@@ -176,7 +176,36 @@ namespace Services
             }
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                throw new WarningException("操作有误");
+            }
+        }
+        public VHealthAuditOrder GetHealthAuditOrder(int matserId)
+        {
+            try
+            {
+                var master =
+                    _repHealthOrderMaster.Table.Include(h => h.HealthOrderDetails).Include(h => h.Company).AsNoTracking().FirstOrDefault(h => h.Id == matserId);
+                if (master == null) { throw new WarningException("操作失败"); }
+                else
+                {
+                    var company = master.Company;
+                    return new VHealthAuditOrder()
+                    {
+                        MasterId = matserId,
+                        CompanyName = company.Name,
+                        Linkman = company.LinkMan,
+                        PhoneNumber = company.Phone,
+                        Address = company.Address,
+                        Price = master.SellPrice,
+                        Count = master.HealthOrderDetails.Count,
+                        Amount = master.SellPrice * master.HealthOrderDetails.Count,
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
                 throw new WarningException("操作有误");
             }
         }
@@ -190,8 +219,123 @@ namespace Services
             }
             catch (Exception e)
             {
-                _svLogger.insert(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
                 return new PagedList<HealthOrderDetail>(new List<HealthOrderDetail>(), pageIndex, pageSize);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="uName"></param>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        public IPagedList<VHealthAuditList> GetHealthAuditList(int pageIndex, int pageSize, string uName, VHealthSearch search)
+        {
+            try
+            {
+                IQueryable<HealthOrderMaster> list;
+                if (search.IsInscooOperator)//如果是operator，查询所有已填写信息的订单
+                {
+                    if (search.ListType == 2)// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
+                    {
+                        list =
+                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 4)
+                            .AsNoTracking();
+                    }
+                    else if (search.ListType == 3)
+                    {
+                        list =
+                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11 || h.Status == 14)
+                                .AsNoTracking();
+                    }
+                    else
+                    {
+                        throw new WarningException("无效的请求");
+                    }
+                    if (!string.IsNullOrEmpty(search.UserName))
+                    {
+                        list = list.Where(h => h.Author.Contains(search.UserName));
+                    }
+                }
+                else if (search.IsFinance)//如果是财务，查询所有已审核的订单
+                {
+                    if (search.ListType == 6)// 6已确认 5 未确认
+                    {
+                        list =
+                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 17)
+                            .AsNoTracking();
+                    }
+                    else if (search.ListType == 5)
+                    {
+                        list =
+                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11)
+                                .AsNoTracking();
+                    }
+                    else
+                    {
+                        throw new WarningException("无效的请求");
+                    }
+                    if (!string.IsNullOrEmpty(search.UserName))
+                    {
+                        list = list.Where(h => h.Author.Contains(search.UserName));
+                    }
+                }
+                else//如果不是operator，查询所有当前用户已填写信息的订单
+                {
+
+                    if (search.ListType == 1)
+                    {
+                        list =
+                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                               .AsNoTracking()
+                               .Where(h => h.Author == uName && h.Status < 4);
+                    }
+                    else if (search.ListType == 4)
+                    {
+                        list =
+                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                               .AsNoTracking()
+                               .Where(h => h.Author == uName && h.Status >= 4);
+                    }
+                    else
+                    {
+                        throw new WarningException("无效的请求");
+                    }
+                }
+                if (!string.IsNullOrEmpty(search.ProductName))
+                {
+                    list = list.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
+                }
+
+                if (!list.Any()) throw new Exception();
+                var totalCount = list.Count();
+                var pList = from h in list.OrderBy(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
+                            let p = h.HealthCheckProduct
+                            select (new VHealthAuditList()
+                            {
+                                MasterId = h.Id,
+                                ProductTypeName = p.ProductTypeName,
+                                ProductName = p.ProductName,
+                                ProductCode = p.ProductCode,
+                                PrivilegePrice = h.SellPrice,
+                                StatusDes = GetHealthOrderStatus(h.Status),
+                                Status = h.Status,
+                                Author = h.Author
+                            });
+
+                return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
+
+            }
+            catch (WarningException e)
+            {
+                return new PagedList<VHealthAuditList>(new List<VHealthAuditList>(), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                return new PagedList<VHealthAuditList>(new List<VHealthAuditList>(), pageIndex, pageSize);
             }
         }
         public VCheckProductDetail GetHealthProductById(int id, string uId)
@@ -237,7 +381,30 @@ namespace Services
                 return null;
             }
         }
-
+       
+        public SelectList GetListType(string uId)
+        {
+            var roles = _userManager.GetRoles(uId).First();
+            var list = new List<SelectListItem>();
+            if (roles == "InscooOperator")
+            {
+                list.Add(new SelectListItem() { Value = "2", Text = "未审核" });
+                list.Add(new SelectListItem() { Value = "3", Text = "已审核" });
+                return new SelectList(list, "Value", "Text", 2);
+            }
+            else if (roles == "InscooFinance")
+            {
+                list.Add(new SelectListItem() { Value = "5", Text = "未确认" });
+                list.Add(new SelectListItem() { Value = "6", Text = "已确认" });
+                return new SelectList(list, "Value", "Text", 5);
+            }
+            else
+            {
+                list.Add(new SelectListItem() { Value = "1", Text = "未填写" });
+                list.Add(new SelectListItem() { Value = "4", Text = "已填写" });
+                return new SelectList(list, "Value", "Text", 1);
+            }
+        }
         public int UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author)
         {
             try
@@ -314,7 +481,7 @@ namespace Services
             }
             catch (Exception exe)
             {
-                _svLogger.insert(exe, LogLevel.Error, exe.Message, author);
+                _svLogger.InsertAsync(exe, LogLevel.Error, exe.Message, author);
                 throw new WarningException("上传失败");
 
             }
@@ -324,6 +491,8 @@ namespace Services
         {
             _repHealthOrderMaster.Update(master);
         }
+
+
         #region private
 
         decimal GetPrivilegePrice(AppRole role, HealthCheckProduct product)
@@ -369,6 +538,21 @@ namespace Services
                 throw new WarningException("请检查生日是否正确");
             }
         }
+
+        string GetHealthOrderStatus(decimal status)
+        {
+            switch (status.ToString())
+            {
+                case "1.00":
+                    return "订单已确认";
+                case "4.00": return "信息已填写";
+                case "11.00": return "审核已通过";
+                case "14.00": return "审核未通过";
+                case "17.00": return "已确认收款";
+                default: return "未知状态";
+            }
+        }
+
         #endregion
     }
 }

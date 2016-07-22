@@ -479,6 +479,10 @@
     <Content Include="Views\Health\HealthPersons.cshtml" />
     <Content Include="Views\Health\ConfirmPayment.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_1.cshtml" />
+    <Content Include="Views\Health\AuditListSearch.cshtml" />
+    <Content Include="Views\Health\AuditListData.cshtml" />
+    <Content Include="Views\Health\AuditOrder.cshtml" />
+    <Content Include="Views\Health\FnComfirm.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

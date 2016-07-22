@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using Core.Pager;
 using Domain;
 using Models;
@@ -36,9 +37,20 @@ namespace Services
 
         HealthOrderMaster GetHealthMaster(int id, string author);
         VHealthEntryInfo GetHealthEntryInfo(int matserId, string author);
+        VHealthAuditOrder GetHealthAuditOrder(int matserId);
         IPagedList<HealthOrderDetail> GetHealthOrderDetails(int pageIndex, int pageSize, int masterId);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="uName"></param>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        IPagedList<VHealthAuditList> GetHealthAuditList(int pageIndex, int pageSize, string uName, VHealthSearch search);
         VHealthConfirmPayment GetConfirmPayment(int masterId);
+        SelectList GetListType(string uId);
         int UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author);
         void UpdateMaster(HealthOrderMaster master);
     }

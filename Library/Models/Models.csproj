@@ -86,7 +86,11 @@
     <Compile Include="Company\vCompanySearch.cs" />
     <Compile Include="Company\vCompanyEdit.cs" />
     <Compile Include="Company\vCompanyAdd.cs" />
+    <Compile Include="Health\VHealthAuditList.cs" />
     <Compile Include="Health\VHealthConfirmPayment.cs" />
+    <Compile Include="Health\VFNConfirm.cs" />
+    <Compile Include="Health\VHealthAuditOrder.cs" />
+    <Compile Include="Health\VHealthSearch.cs" />
     <Compile Include="Health\VHealthOrderDetail.cs" />
     <Compile Include="Health\VHealthEntryInfo.cs" />
     <Compile Include="Health\VCheckProductDetail.cs" />

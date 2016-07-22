@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Models.VHealthAuditList>
+
+
+@{
+    PageCommand pageCommand = ViewBag.pageCommand as PageCommand;
+}
+
+<table class="table table-bordered table-style-control">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            @Html.DisplayNameFor(model => model.ProductTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusDes)
+            </td>
+            <td>
+                @if (ViewBag.IsInscooOperator)
+                {
+                    if (item.Status == 4)
+                    {
+                        @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize })
+                    }
+                    else if (item.Status == 11)
+                    {
+                        <span class="text-success">审核通过</span>
+                    }
+                    else if (item.Status == 14)
+                    {
+                        <span class="text-warning">审核未通过</span>
+                    }
+                }
+                else if (ViewBag.IsFinance)
+                {
+                    if (item.Status == 11)
+                    {
+                        @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize })
+                    }
+                    else if (item.Status == 17)
+                    {
+                        <span class="text-success">已确认</span>
+                    }
+                }
+                else
+                {
+                    if (item.Status == 1)
+                    {
+                        @Html.ActionLink("信息填写", "EntryInfo", new { item.MasterId })
+                    }
+                    else if (item.Status == 4)
+                    {
+                        @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId })
+                    }
+                    else if (item.Status == 17)
+                    {
+                        <span>已付款</span>
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.Pager(pageCommand)
+

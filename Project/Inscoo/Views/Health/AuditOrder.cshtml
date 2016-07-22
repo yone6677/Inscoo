@@ -1,0 +1,109 @@
+﻿@model Models.VHealthAuditOrder
+
+@{
+    ViewBag.Title = "审核";
+}
+@section head {
+    <style>
+        li {
+            width: 33%;
+        }
+    </style>
+}
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li class="orderConfirmLiActive" style="width: 100%">
+            <i class="fa fa-edit fa-2x"></i>
+            审核
+        </li>
+    </ul>
+</div>
+
+@using (Html.BeginForm("AuditOrder", "Health", FormMethod.Post, new { @id = "EntryInfoForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MasterId)
+    @Html.HiddenFor(model => model.PageIndex)
+    @Html.HiddenFor(model => model.PageSize)
+    <input type="hidden" name="result" id="result" value="1" />
+    <div class="orderEntryInfoBody">
+        <p class="basic-information" style="margin-top: 70px;">
+            <i class="fa fa-edit fa-2x"></i>订单信息
+        </p>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.Address, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+        <ul>
+            <li>
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })：
+            </li>
+            <li>
+                @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control  control-label" } })
+            </li>
+        </ul>
+    </div>
+    <div class="orderConfirmBodyNext" style="text-align:center;">
+        <input type="submit" value="审核通过" class="btn btn-primary" style="background-color: #38A6D9; border-color: #38A6D9" />
+        <input type="submit" id="notPass" value="审核不通过" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+    </div>
+}
+
+<div class="employeeInfo" id="dadaGrid">
+    @Html.Action("HealthPersons", new { Model.MasterId })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        jQuery(function () {
+            jQuery("#notPass").click(function () {
+                jQuery("#result").val(0);
+            });
+        })
+    </script>
+}

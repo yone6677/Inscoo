@@ -2,6 +2,7 @@
 using Models.Infrastructure;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Services
@@ -77,6 +78,53 @@ namespace Services
                     return;
                 }
             }
+        }
+        public async Task InsertAsync(Exception e, LogLevel level, string message, string userName)
+        {
+            await Task.Run(() =>
+            {
+                if (_resourceService.LogEnable())
+                {
+                    try
+                    {
+                        var model = new LogsModel();
+                        if (!string.IsNullOrEmpty(message))
+                        {
+                            model.Message = message;
+                        }
+                        if (e.InnerException != null)
+                        {
+                            model.Memo = e.InnerException.Message;
+                            model.HResult = e.InnerException.HResult;
+                        }
+                        else
+                        {
+                            model.HResult = e.HResult;
+                            model.Memo = e.Message;
+                        }
+                        if (!string.IsNullOrEmpty(userName))
+                        {
+                            model.Uid = _authenticationManager.User.Identity.Name;
+                        }
+                        else
+                        {
+                            model.Uid = userName;
+                        }
+                        model.Level = (int)level;
+                        model.Browser = HttpContext.Current.Request.Browser.Browser;
+                        model.CreateDate = DateTime.Now;
+                        model.Ip = _webHelper.GetCurrentIpAddress();
+                        model.Url = _webHelper.GetCurrentUrl();
+
+                        string sendData = JsonConvert.SerializeObject(model);
+                        var respStr = _webHelper.PostData(_resourceService.GetLogger() + "logs", sendData, "post", "json");
+                    }
+                    catch (Exception)//日志服务器若返回异常不能抛至当前程序
+                    {
+                        return;
+                    }
+                }
+            });
         }
     }
 }

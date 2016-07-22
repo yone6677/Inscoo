@@ -1,0 +1,48 @@
+﻿@model Models.VHealthSearch
+
+@{
+    ViewBag.Title = "审核";
+}
+
+@using (Ajax.BeginForm("AuditListData", null, new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.IsInscooOperator)
+    @Html.HiddenFor(m => m.IsFinance)
+    <div class="Search">
+        <dl>
+            @if (Model.IsInscooOperator || Model.IsFinance)
+            {
+                <dt>
+                    用户
+                </dt>
+                <dd>
+                    @Html.EditorFor(model => model.UserName)
+                </dd>
+            }
+            <dt>产品名称</dt>
+            <dd>
+                @Html.EditorFor(model => model.ProductName)
+            </dd>
+            <dt>订单状态</dt>
+            <dd>
+                @Html.DropDownListFor(m => m.ListType, Model.ListTypeList, null, new { })
+            </dd>
+            <dt></dt>
+            <dd>
+                <p>
+                    <input type="submit" value="查找" />
+                </p>
+            </dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid">
+        @Html.Action("AuditListData", new { Model.IsInscooOperator, Model.IsFinance, listType = Model.ListTypeList.SelectedValue, Model.PageIndex, Model.PageSize })
+    </div>
+}

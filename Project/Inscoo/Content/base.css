@@ -140,7 +140,8 @@ body {
   border-radius: 0;
   margin: 0;
   border: 1px solid transparent;
-  padding-left: 35%;
+  padding-left: 36%;
+  font-size: 0.9em;
 }
 .secondmenu li a:hover {
   background-color: #333F4D;
@@ -681,7 +682,6 @@ body {
   width: 40%;
 }
 .orderEntryInfoBody ul li > .form-control {
-  height: 28px;
   border-radius: 0px;
 }
 .orderEntryInfoBody-loadfile {
@@ -871,7 +871,7 @@ div:after {
   border-radius: 3px;
   margin-left: .5em;
   width: 90%;
-  height: 30px;
+  /*height: 30px;*/
   line-height: 30px;
   border: 1px solid #ccc;
   margin-top: 2.5px;
@@ -1034,30 +1034,12 @@ div:after {
   border: 1px solid #aaa;
 }
 .health_box .health_project .health_detail li.health_content .content_left {
-  width: 50%;
+  width: 100%;
   text-align: left;
   float: left;
 }
-.health_box .health_project .health_detail li.health_content .content_left p {
-  margin-top: 20px;
-}
-.health_box .health_project .health_detail li.health_content .content_right {
-  background: #38A6D9;
-  width: 50%;
-  height: 110px;
-  float: right;
-  padding: 10px;
-  text-align: right;
-}
-.health_box .health_project .health_detail li.health_content .content_right p {
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 0px;
-}
-.health_box .health_project .health_detail li.health_content .content_right .project_name {
-  color: #fff;
-  margin-top: 30px;
+.health_box .health_project .health_detail li.health_content .content_left img {
+  width: 100%;
 }
 .health_box .health_project .health_detail li.health_content:after {
   content: "";
@@ -1261,6 +1243,16 @@ div:after {
   content: '';
   display: block;
   clear: both;
+}
+@media screen and (min-width: 1321px) {
+  .first_li {
+    height: 20px;
+  }
+}
+@media screen and (max-width: 1320px) {
+  .first_li {
+    height: 40px;
+  }
 }
 .a-upload {
   padding: 4px 10px;

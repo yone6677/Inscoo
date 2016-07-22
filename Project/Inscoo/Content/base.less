@@ -165,7 +165,8 @@ body {
         border-radius: 0;
         margin: 0;
         border: 1px solid transparent;
-        padding-left:35%;
+        padding-left:36%;
+        font-size:0.9em;
     }
 
     li a:hover {
@@ -795,7 +796,6 @@ body {
             width: 40%;
         }
         li>.form-control{
-            height:28px;
             border-radius:0px;
         }
     }
@@ -1014,7 +1014,7 @@ div:after{
                 border-radius: 3px;
                 margin-left: .5em;
                 width: 90%;
-                height: 30px;
+                /*height: 30px;*/
                 line-height: 30px;
                 border: 1px solid #ccc;
                 margin-top: 2.5px;
@@ -1207,38 +1207,22 @@ div:after{
                 margin-top:5px;
                 border:1px solid #aaa;
                 .content_left{
-                    width:50%;
+                    width:100%;
                     text-align:left;
                     float:left;
-                    p{
-                        margin-top:20px;
-                    }
+                    
+                    img{
+                        width:100%;
+                    }   
                 }
-                .content_right{
-                    background:#38A6D9;
-                    width:50%;
-                    height:110px;
-                    float:right;
-                    padding:10px;
-                    text-align:right;
-                    p{
-                        font-size:14px;
-                        font-weight:bold;
-                        color:#fff;
-                        margin-bottom:0px;
-                    }
-                    .project_name{
-                        color:#fff;
-                        margin-top:30px;
-                    }
-                   
-                }
+                
                 &:after{
                     content:"";
                     display:block;
                     clear:both;
                 }
             }
+           
             li.project_price{
                 margin:10px auto;
                 p{
@@ -1330,7 +1314,7 @@ div:after{
             }
         }
     }
-   
+
     /*体检详情页*/
     #product_detail{
         position:relative;
@@ -1448,7 +1432,16 @@ div:after{
         }
     }
 }
-
+@media screen and (min-width: 1321px){
+    .first_li{
+        height:20px;
+    }
+}
+@media screen and (max-width:1320px) {
+    .first_li{
+        height:40px;
+    }
+}
 
 
 .a-upload {

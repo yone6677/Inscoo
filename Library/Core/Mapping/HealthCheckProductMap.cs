@@ -7,7 +7,7 @@ namespace Core.Mapping
     {
         public HealthCheckProductMap()
         {
-           
+            Property(p => p.Author).IsRequired();
         }
     }
 }

@@ -12,7 +12,7 @@
             @foreach (var p in Model.Where(m => m.ProductTypeName == type))
             {
                 <ul class="health_detail">
-                    <li>@p.ProductName</li>
+                    <li class="first_li">@p.ProductName</li>
                     <li class="health_content">
                         <div class="content_left">
                             <img src="@p.CheckProductPic" alt="Alternate Text" />

@@ -3,6 +3,7 @@ namespace Domain.Orders
 {
    public class OrderItem: BaseEntity
     {
+        public int pid { get; set; }
         /// <summary>
         /// 产品类别
         /// </summary>

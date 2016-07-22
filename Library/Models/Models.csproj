@@ -73,6 +73,9 @@
     <Compile Include="Account\LoginModel.cs" />
     <Compile Include="Account\ResetPasswordModel.cs" />
     <Compile Include="Account\RegisterModel.cs" />
+    <Compile Include="Api\Order\GetOrderListApi.cs" />
+    <Compile Include="Api\Order\OrderListApi.cs" />
+    <Compile Include="BaseApiModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />
     <Compile Include="Claim\vClaimManagementDetailList.cs" />

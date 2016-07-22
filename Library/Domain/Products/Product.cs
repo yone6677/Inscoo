@@ -80,5 +80,13 @@ namespace Domain.Products
         public string changer { get; set; }
 
         public string ProvisionPath { get; set; }
+
+        public string ProdTimeLimit { get; set; }
+
+        public bool ProdWithdraw { get; set; }
+        public string ProdAbatement { get; set; }
+        public string ProdQuoteType { get; set; }
+        public string ProdPayType { get; set; }
+        public string ProdCreateType { get; set; }
     }
 }

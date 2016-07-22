@@ -1245,6 +1245,16 @@ div:after {
   display: block;
   clear: both;
 }
+@media screen and (min-width: 1321px) {
+  .first_li {
+    height: 20px;
+  }
+}
+@media screen and (max-width: 1320px) {
+  .first_li {
+    height: 40px;
+  }
+}
 .a-upload {
   padding: 4px 10px;
   height: 28px;

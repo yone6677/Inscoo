@@ -117,6 +117,8 @@ section .main-content .main-right{
   float:right;
   width:85%;
   box-sizing: border-box;
+  margin-bottom:80px;
+  height:100%;
 }
 .main-right .main-right-header{
   padding:10px 70px;
@@ -208,13 +210,11 @@ section .main-content .main-right{
 .main-right-body .serve-http>ol>li>ul>li{
   color:#555;
 }
-.main-bg{
-  width:100%;
+section {
+    background:url("../../../Content/imgIndex/bg1_1.jpg") no-repeat bottom;
+
 }
-.main-bg img{
-  width:100%;
-  margin: 0 auto;
-}
+
 
 
 /*footer部分*/

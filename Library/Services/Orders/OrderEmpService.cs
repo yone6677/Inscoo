@@ -397,6 +397,8 @@ namespace Services.Orders
                     var document = new Document();
                     PdfWriter.GetInstance(document, stream);
                     document.Open();
+                    //document.Add(new Paragraph());
+
                     document.Add(new Paragraph("付款通知书\n", OperationPDF.GetTitleFont()) { Alignment = PdfFormField.Q_CENTER });
                     document.Add(new Phrase(string.Format("致"), font));
                     document.Add(new Phrase(order.CompanyName, OperationPDF.GetUnderLineFont()));

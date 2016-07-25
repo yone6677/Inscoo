@@ -16,6 +16,10 @@ namespace Models.Api.Order
         /// </summary>
         public string OrderNum { get; set; }
         /// <summary>
+        /// 保单号
+        /// </summary>
+        public string PolicyNumber { get; set; }
+        /// <summary>
         /// 公司名称
         /// </summary>
         public string CompanyName { get; set; }

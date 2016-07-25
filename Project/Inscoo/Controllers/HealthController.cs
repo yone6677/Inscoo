@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Core;
 using Innscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Models;
@@ -17,9 +18,11 @@ namespace Inscoo.Controllers
     {
         private readonly IHealthService _svHealth;
         private readonly ICompanyService _svCompany;
+        private readonly AppUserManager _svAppUserManager;
 
-        public HealthController(ICompanyService svCompany, IHealthService svHealth)
+        public HealthController(AppUserManager svAppUserManager, ICompanyService svCompany, IHealthService svHealth)
         {
+            _svAppUserManager = svAppUserManager;
             _svHealth = svHealth;
             _svCompany = svCompany;
         }
@@ -123,6 +126,81 @@ namespace Inscoo.Controllers
             }
             return RedirectToAction("ConfirmPayment", new { model.MasterId });
         }
+
+        /// <summary>
+        /// OP  审核订单
+        /// </summary>
+        /// <param name="masterId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public ActionResult AuditOrder(int masterId, int pageIndex = 1, int pageSize = 15)
+        {
+            try
+            {
+                var model = _svHealth.GetHealthAuditOrder(masterId);
+                model.PageIndex = pageIndex;
+                model.PageSize = pageSize;
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("AuditListSearch", new { masterId });
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuditOrder(VHealthAuditOrder model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var master = _svHealth.GetHealthMaster(model.MasterId);
+                var result = Request.Form["result"] == "1";
+                master.Status = result ? 11 : 14;
+                master.BaokuConfirmDate = DateTime.Now;
+                master.BaokuConfirmer = User.Identity.Name;
+                _svHealth.UpdateMaster(master);
+            }
+            return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
+        }
+
+        //财务确认收款
+        public ActionResult FnComfirm(int masterId, int pageIndex = 1, int pageSize = 15)
+        {
+            try
+            {
+                var model = new VFNConfirm() { MasterId = masterId, PageIndex = pageIndex, PageSize = pageSize, FinancePayDate = DateTime.Now };
+
+                return View(model);
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("AuditListSearch", new { masterId });
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FnComfirm(VFNConfirm model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var master = _svHealth.GetHealthMaster(model.MasterId);
+
+                master.FinanceAmount = model.FinanceAmount;
+                master.FinanceBankSerialNumber = model.FinanceBankSerialNumber;
+                master.FinanceMemo = model.FinanceMemo;
+                master.FinancePayDate = model.FinancePayDate;
+                master.FinanceConfirmDate = DateTime.Now;
+                master.FinanceConfirmer = User.Identity.Name;
+                master.Status = 17;
+                master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
+                _svHealth.UpdateMaster(master);
+            }
+            return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
+        }
         /// <summary>
         /// 上传人员列表
         /// </summary>
@@ -168,7 +246,7 @@ namespace Inscoo.Controllers
             return RedirectToAction("EntryInfo", new { masterId });
         }
         /// <summary>
-        /// 取人付款
+        /// 确认付款
         /// </summary>
         /// <param name="masterId"></param>
         /// <returns></returns>
@@ -203,6 +281,57 @@ namespace Inscoo.Controllers
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        /// <summary>
+        /// 列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AuditListSearch(int pageIndex = 1, int pageSize = 15)
+        {
+            var model = new VHealthSearch();
+            model.ListTypeList = _svHealth.GetListType(User.Identity.GetUserId());// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
+            model.IsInscooOperator = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooOperator");
+            model.IsFinance = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooFinance");
+            model.PageIndex = pageIndex;
+            model.PageSize = pageSize;
+
+            return View(model);
+        }
+        public PartialViewResult AuditListData(bool isInscooOperator, bool isFinance, int listType, int pageIndex = 1, int pageSize = 15)
+        {
+            //var isInscooOperator = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooOperator");
+            ViewBag.IsInscooOperator = isInscooOperator;
+            ViewBag.isFinance = isFinance;
+            var search = new VHealthSearch() { ListType = listType, IsFinance = isFinance, IsInscooOperator = isInscooOperator };
+            //if (isInscooOperator) search.ListType = 4;
+            var list = _svHealth.GetHealthAuditList(pageIndex, pageSize, User.Identity.Name, search);
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(list);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public PartialViewResult AuditListData(VHealthSearch model, int pageIndex = 1, int pageSize = 15)
+        {
+            ViewBag.IsInscooOperator = model.IsInscooOperator;
+            ViewBag.IsFinance = model.IsFinance;
+            var list = _svHealth.GetHealthAuditList(pageIndex, pageSize, User.Identity.Name, model);
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(list);
         }
     }
 }

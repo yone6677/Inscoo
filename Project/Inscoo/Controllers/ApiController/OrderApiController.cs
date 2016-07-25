@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace Inscoo.Controllers
 {
-    public class OrderApiController : ApiController
+    public class OrderApiController : BaseApiController
     {
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
@@ -26,17 +26,21 @@ namespace Inscoo.Controllers
                 foreach (var e in emplist)
                 {
                     var order = _orderService.GetByBId(e.batch_Id);
-                    var item = new OrderListApi()
+                    if (order.State == 6)
                     {
-                        OrderNum = order.OrderNum,
-                        CompanyName = order.CompanyName,
-                        EndDate = order.EndDate,
-                        Id = order.Id,
-                        StartDate = order.StartDate
-                    };
-                    if (!model.Contains(item))
-                    {
-                        model.Add(item);
+                        var item = new OrderListApi()
+                        {
+                            PolicyNumber = order.PolicyNumber,
+                            OrderNum = order.OrderNum,
+                            CompanyName = order.CompanyName,
+                            EndDate = order.EndDate,
+                            Id = order.Id,
+                            StartDate = order.StartDate
+                        };
+                        if (!model.Contains(item))
+                        {
+                            model.Add(item);
+                        }
                     }
                 }
             }

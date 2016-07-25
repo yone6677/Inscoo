@@ -365,7 +365,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\ApiController\BaseApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -375,8 +375,9 @@
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\MixProductController.cs" />
     <Compile Include="Controllers\NavController.cs" />
-    <Compile Include="Controllers\OrderApiController.cs" />
+    <Compile Include="Controllers\ApiController\OrderApiController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\ApiController\OrderItemApiController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -478,6 +479,10 @@
     <Content Include="Views\Health\HealthPersons.cshtml" />
     <Content Include="Views\Health\ConfirmPayment.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_1.cshtml" />
+    <Content Include="Views\Health\AuditListSearch.cshtml" />
+    <Content Include="Views\Health\AuditListData.cshtml" />
+    <Content Include="Views\Health\AuditOrder.cshtml" />
+    <Content Include="Views\Health\FnComfirm.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -515,6 +520,9 @@
       <Project>{1ded2af5-aff7-4676-be82-ba1e4ce36f43}</Project>
       <Name>Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

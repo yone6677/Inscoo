@@ -9,6 +9,10 @@ namespace Core.Mapping
         {
             ToTable("Products");
             Property(p => p.ItemNo).IsOptional().HasMaxLength(10);
+            Property(p => p.changer).IsOptional().HasMaxLength(50);
+            Property(p => p.Author).IsOptional().HasMaxLength(50);
+            Property(p => p.ProvisionPath).IsOptional().HasMaxLength(150);
+            Property(p => p.ProdInsuredName).IsOptional().HasMaxLength(200);
             Property(p => p.ProdType).IsOptional().HasMaxLength(20);
             Property(p => p.SafeguardCode).IsOptional().HasMaxLength(20);
             Property(p => p.SafeguardName).IsOptional().HasMaxLength(50);
@@ -23,7 +27,13 @@ namespace Core.Mapping
             Property(p => p.HeadCount100).IsOptional().HasMaxLength(20);
             Property(p => p.InsuredCom).IsOptional().HasMaxLength(20);
             Property(p => p.ClaimCode).IsOptional().HasMaxLength(10);
-            Property(p => p.CommissionRate).IsOptional();              
+            Property(p => p.CommissionRate).IsOptional();
+            Property(p => p.ProdTimeLimit).IsOptional().HasMaxLength(10);
+            //Property(p => p.ProdWithdraw);
+            Property(p => p.ProdAbatement).IsOptional().HasMaxLength(50);
+            Property(p => p.ProdQuoteType).IsOptional().HasMaxLength(50);
+            Property(p => p.ProdPayType).IsOptional().HasMaxLength(50);
+            Property(p => p.ProdCreateType).IsOptional().HasMaxLength(150);
         }
     }
 }

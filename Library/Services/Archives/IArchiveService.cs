@@ -75,7 +75,7 @@ namespace Services
         /// <returns>路径</returns>
         string InsertUserPortrait(HttpPostedFileBase file);
         Archive GetById(int id);
-
+        int inert(Archive item);
         bool Delete(Archive item, bool disable = false);
         /// <summary>
         /// 

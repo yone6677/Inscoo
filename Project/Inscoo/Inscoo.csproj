@@ -315,7 +315,6 @@
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\投保单1.pdf" />
     <Content Include="Archive\Template\投保单2.pdf" />
-    <Content Include="Archive\Template\health\fffffff.pdf" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

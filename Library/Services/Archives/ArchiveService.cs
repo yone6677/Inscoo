@@ -147,6 +147,18 @@ namespace Services
             }
             return 0;
         }
+        public int inert(Archive item)
+        {
+            try
+            {
+                return _archiveRepository.InsertGetId(item);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：Insert");
+            }
+            return 0;
+        }
         public int Insert(HttpPostedFileBase file, string type, int pid, string memo)
         {
             try

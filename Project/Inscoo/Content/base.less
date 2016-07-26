@@ -1316,7 +1316,7 @@ div:after{
     }
 
     /*体检详情页*/
-    #product_detail{
+    .product_detail{
         position:relative;
         padding-top:2px;
         margin:30px 0;
@@ -1361,7 +1361,7 @@ div:after{
                 }
             }
         }
-        #product_info{
+        .product_info{
             ul.detail_list{
                 padding:8px;
                 border:1px solid #dedfde;
@@ -1382,7 +1382,7 @@ div:after{
             }
         }
 
-        #product_shop{
+        .product_shop{
             margin:0 0 10px;
             padding:10px;
             width:100%;
@@ -1390,17 +1390,17 @@ div:after{
             border-top:none;
         }
 
-        #product_order,#product_rule,#product_shop{
+        .product_order,.product_rule,.product_shop{
             display:none;
         }
-        #product_order,#product_rule{
+        .product_order,.product_rule{
             padding:10px;
             width:100%;
             border:1px solid #DEDEDE;
             border-top:none;
         }
 
-        #promise,#state{
+        .promise,.state{
             padding:10px;
             border-top:1px solid #DEDEDE;
             margin-top:10px;
@@ -1409,7 +1409,7 @@ div:after{
                 margin-bottom:10px;
             }
         }
-        #state span {
+        .state span {
             font-weight:bold;
             color: #e4393c;
         }
@@ -1553,4 +1553,26 @@ div:after{
     li.ln_middle{
         margin:0 2% 20px 2%;
     }
+}
+
+/*项目名词解释*/
+.btn-explain{
+    border:none;
+    background:none;
+    padding:0px;
+    vertical-align:middle;
+    .icon-explain{
+        font-size:1.2em;
+        vertical-align:middle;
+        padding:5px;
+    }
+}
+
+.tooltip-inner{
+    background:#fff;
+    color:#111;
+    border:1px solid #aaa;
+}
+.tooltip.top .tooltip-arrow{
+    border-top-color:#aaa;
 }

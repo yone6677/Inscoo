@@ -99,6 +99,8 @@
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
+    <Compile Include="Mapping\ClaimFileFromWechatMap.cs" />
+    <Compile Include="Mapping\ClaimFromWechatMap.cs" />
     <Compile Include="Mapping\FileInfoMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />

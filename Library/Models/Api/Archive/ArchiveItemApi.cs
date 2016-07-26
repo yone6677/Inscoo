@@ -1,8 +1,22 @@
-﻿
-namespace Domain
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models.Api.Archive
 {
-    public class BaseFile : BaseEntity
+    public class ArchiveItemApi : BaseApiModel
     {
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// 所属单号
+        /// </summary>
+        public int pId { get; set; }
         /// <summary>
         /// 文件名
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using Models.Infrastructure;
+﻿using Models.Api.Archive;
+using Models.Infrastructure;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -8,6 +9,12 @@ namespace Services
 {
     public interface IFileService
     {
+        /// <summary>
+        /// 从微信下载图片
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        SaveResultModel DownloadFileByWechat(DownLoadWechatFileApi model);
         List<string> GenerateFilePathBySuffix(string postfix);
         /// <summary>
         /// 复制文件

@@ -1014,7 +1014,7 @@ div:after{
                 border-radius: 3px;
                 margin-left: .5em;
                 width: 90%;
-                /*height: 30px;*/
+                height: 30px;
                 line-height: 30px;
                 border: 1px solid #ccc;
                 margin-top: 2.5px;
@@ -1285,7 +1285,7 @@ div:after{
                         float:left;
                         line-height:50px;
                         height:50px;
-                        width:45%;
+                        width:50%;
                         text-align:center;
                         background:#24A9E4;
                         font-weight:bold;
@@ -1366,7 +1366,7 @@ div:after{
                 padding:8px;
                 border:1px solid #dedfde;
                 border-width:0 1px 1px;
- 
+                
                 li{
                     float:left;
                     width:33%;
@@ -1374,6 +1374,19 @@ div:after{
                     text-overflow:ellipsis;
                     white-space:nowrap;
                     padding:0 4px;
+                    font-size:12px;
+                    line-height:25px;
+                    &:first-child{
+                        width:100%;
+                        height:35px;
+                        line-height:35px;
+                        font-size:16px;
+                        font-weight:600;
+                        margin-bottom:10px;
+                    }
+                    span,b{
+                        color:#a61c4b;
+                    }
                 }
             }
             .detail_content{
@@ -1401,7 +1414,7 @@ div:after{
         }
 
         .promise,.state{
-            padding:10px;
+            padding:10px 0 10px;
             border-top:1px solid #DEDEDE;
             margin-top:10px;
             p{
@@ -1442,8 +1455,147 @@ div:after{
         height:40px;
     }
 }
+/*体检须知*/
+
+.t{
+    width:100%;
+    height:32px;
+    border-bottom:1px solid #aaa;
+    h2{
+        width:12%;
+        margin:0px;
+        height:32px;
+        line-height:32px;
+        font-size:14px;
+        font-weight:bold;
+        color:#a61c4b;
+        border-bottom:3px solid #a61c4b;
+        text-align:left;
+        i{
+            margin-right:5px;
+        }
+    }
+}
+.fixck{
+    font-family: Arial, Verdana, sans-serif !important;
+    font-size:12px !important;
+    color:#222!important;
+    line-height:normal!important;
+}
+.product_rule{
+    .product_rule_content{
+        width:100%;
+        padding:5px;
+        p{
+            line-height:2em;
+            margin:10px 0;
+            span{
+                font-family: '微软雅黑', 'Microsoft YaHei'; 
+                font-size: 14px;
+            }
+        }
+        ul{
+            margin-left:15px;
+            li{
+                list-style-type:disc;
+                line-height:2em;
+                margin:10px 0;
+            }
+        }
+    }
+}
+/*支持门店,商品详情*/
+.product_shop_content,.detail_content_content{
+    width:100%;
+    margin:10px 0;
+    table{
+        width:100%;
+        border-collapse:collapse;
+        border-spacing:0;
+        border-top:1px solid #222;
+        border-left:1px solid #222;
+        th,td{
+            border-right:1px solid #222;
+            border-bottom:1px solid #222; 
+        }
+        thead tr{
+            height:26px;
+            th{
+                background:#24A9E4;
+                text-align:center;
+                color:#fff;
+            }
+        }
+        tbody{
+            td{
+                padding:7px 5px;
+                text-align:left
+            }
+        }
+    }
+}
+/*支持门店*/
+.product_shop_content{
+    table{
+        tbody{
+            td p{
+                padding:7px 0;
+                line-height:16px;
+                margin:0;
+            }   
+        }
+    }
+}
+/*商品详情*/
+.detail_content_info{
+    p{
+        text-align:left;
+        line-height:20px;
+        font-size:13px;
+        margin:10px 0;
+    }
+}
+.detail_content_content{
+    table tbody tr{
+        td{
+            line-height:20px;
+        }
+        td:first-child{
+            font-weight:600;
+            width:8%;
+        }
+        td:nth-child(2){
+            width:20%;
+        }
+        td:nth-child(3){
+            width:48%;
+        }
+        td:nth-child(4),td:nth-child(5),td:nth-child(6){
+            text-align:center;
+            width:8%;
+        }
+    }
+}
+/*预约流程*/
+.product_order_content{
+    width:100%;
+    text-align:center;
+    margin:10px 0;
+    img{
+        width:80%;
+        margin:0 auto;
+    }
+    li p{
+        text-align:left;
+        font-weight:bold;
+        margin:20px;
+        font-size:16px;
+        color:#f00;
+    }
+}
 
 
+/*IE type=file样式*/
 .a-upload {
     padding: 4px 10px;
     height: 28px;

@@ -551,6 +551,7 @@ namespace Services.Orders
                   
                     document.Close();
                     pdfWrite.Close();
+                    return paths;
                 }
                 //GetPaymentNoticePdf(oid, bid);
             }

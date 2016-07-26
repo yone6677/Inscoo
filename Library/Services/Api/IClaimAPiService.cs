@@ -10,5 +10,6 @@ namespace Services.Api
     public interface IClaimAPiService
     {
         int insert(ClaimFromWechatItem model);
+        ClaimFromWechatItem GetById(int id);
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Inscoo.Controllers
 {
@@ -33,6 +34,17 @@ namespace Inscoo.Controllers
             _archiveService = archiveService;
             _clamFileAPiService = clamFileAPiService;
         }
+        [ResponseType(typeof(ClaimFromWechatItem))]
+        public IHttpActionResult GetById(int id)
+        {
+            var item = _claimApiService.GetById(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
+        }
+
         [HttpPost]
         public int PostClaim(ClaimModel model)
         {

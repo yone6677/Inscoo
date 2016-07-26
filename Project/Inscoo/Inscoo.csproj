@@ -179,7 +179,6 @@
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
     <Content Include="Archive\Template\gongzhang.jpg" />
-    <Content Include="Archive\Template\health\logo.png" />
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Archive\Template\上传人员信息.xlsx" />
@@ -304,7 +303,6 @@
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\投保单1.pdf" />
     <Content Include="Archive\Template\投保单2.pdf" />
-    <Content Include="Archive\Template\health\fffffff.pdf" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

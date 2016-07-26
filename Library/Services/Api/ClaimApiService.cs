@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Services.Api
 {
-    public class ClaimApiService: IClaimAPiService
+    public class ClaimApiService : IClaimAPiService
     {
         private readonly IRepository<ClaimFromWechatItem> _claimRepository;
         private readonly ILoggerService _loggerService;
@@ -25,11 +25,23 @@ namespace Services.Api
             {
                 return _claimRepository.InsertGetId(model);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Error, "ClaimService：insert");
             }
             return 0;
+        }
+        public ClaimFromWechatItem GetById(int id)
+        {
+            try
+            {
+                return _claimRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Error, "ClaimService：GetById");
+            }
+            return null;
         }
     }
 }

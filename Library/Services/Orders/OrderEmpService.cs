@@ -3,6 +3,8 @@ using Core.Pager;
 using Domain.Orders;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.events;
+
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Models.Order;
@@ -13,6 +15,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
+using iTextSharp.text.pdf.draw;
+using Image = iTextSharp.text.Image;
+using ListItem = iTextSharp.text.ListItem;
+
 namespace Services.Orders
 {
     public class OrderEmpService : IOrderEmpService
@@ -395,20 +402,34 @@ namespace Services.Orders
                     var baseFont = OperationPDF.GetBaseFont();
                     var font = OperationPDF.GetFont();
                     var document = new Document();
-                    PdfWriter.GetInstance(document, stream);
-                    document.Open();
-                    //document.Add(new Paragraph());
+                    Paragraph paragraph;
+                    PdfPTable table;
+                    PdfPCell cell;
+                    var pdfWrite = PdfWriter.GetInstance(document, stream);
+                    var eventHd = new PageHeaderHandlerAddLogo();
 
-                    document.Add(new Paragraph("付款通知书\n", OperationPDF.GetTitleFont()) { Alignment = PdfFormField.Q_CENTER });
-                    document.Add(new Phrase(string.Format("致"), font));
-                    document.Add(new Phrase(order.CompanyName, OperationPDF.GetUnderLineFont()));
-                    document.Add(new Phrase(":", font));
-                    document.Add(new Paragraph("感谢贵公司在保酷平台上采购员工福利保障，具体采购方案如下：", font) { IndentationLeft = 20 });
-                    PdfPTable table = new PdfPTable(4);
+                    document.SetMargins(30, 30, 40, 20);
+                    document.Open();
+                    eventHd.AddHead(pdfWrite, document);
+                    pdfWrite.PageEvent = eventHd;
+                    document.Add(new Paragraph("付款通知书/Debit Note\n", OperationPDF.GetTitleFont()) { Alignment = PdfFormField.Q_CENTER, SpacingAfter = 20 });
+
+                    table = new PdfPTable(2) { WidthPercentage = 100 };
+                    table.AddCell(
+                        new PdfPCell(new Phrase(string.Format($"尊贵的 Dear valued member：{order.CompanyName}"), font)) { BorderWidth = 0, HorizontalAlignment = PdfFormField.Q_LEFT });
+                    table.AddCell(
+                      new PdfPCell(new Phrase(string.Format($"日期/Date:{DateTime.Now.ToShortDateString()}"), font)) { BorderWidth = 0, HorizontalAlignment = PdfFormField.Q_RIGHT });
+
+                    document.Add(table);
+                    document.Add(new Paragraph("感谢您选择保酷平台福利计划！敬请及时支付采购费用。", font) { IndentationLeft = 20 });
+                    document.Add(new Paragraph("Thank you for selecting our benefit plan. Please arrange the payment without delay.", font) { IndentationLeft = 20 });
+
+                    #region table
+                    table = new PdfPTable(4);
                     table.WidthPercentage = 100;
                     table.SpacingBefore = 30;
                     table.SetWidths(new int[] { 40, 20, 20, 20 });
-                    PdfPCell cell;
+
                     cell = new PdfPCell() { Rowspan = 2, Phrase = new Phrase("险种名称", font), HorizontalAlignment = Element.ALIGN_LEFT };
                     table.AddCell(cell);
                     cell = new PdfPCell() { Colspan = 3, Phrase = new Phrase("保费，保额及分类", font), HorizontalAlignment = Element.ALIGN_CENTER };
@@ -464,25 +485,75 @@ namespace Services.Orders
                     table.AddCell(new PdfPCell() { Phrase = new Phrase(yearRange, font), Colspan = 3, HorizontalAlignment = PdfPCell.ALIGN_CENTER });
                     table.SpacingAfter = 30;
                     document.Add(table);
-                    if (bid == 0)
-                    {
-                        document.Add(new Paragraph("请与" + order.StartDate.AddDays(5).ToShortDateString() + "之前（这个日期为起保日期之后5个工作日）将约定保险金转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
-                    }
-                    else
-                    {
-                        document.Add(new Paragraph("请将保险金按约定转入下列账户：\n户    名：金联安保险经纪(北京)有限公司苏州分公司\n账    户：32201986488052500161\n开户  行：中国建设银行昆山太湖路支行\n汇款备注：" + order.OrderNum + "\n", font) { IndentationLeft = 20, SpacingAfter = 40 });
-                    }
-                    document.Add(new Paragraph("敬祝商祺！", font) { Alignment = PdfFormField.Q_LEFT });
-                    //   document.Add(new Paragraph("保酷平台", font) { Alignment = PdfFormField.Q_RIGHT });
-                    //var img = _httpContext.Request.MapPath("~" + "/Archive/Template/");
-                    //Image gif = Image.GetInstance(img + "gongzhang.jpg");
-                    //gif.ScalePercent(15f);
-                    //gif.Alignment = Element.ALIGN_RIGHT;
-                    //document.Add(gif);
 
+                    #endregion
+
+                    document.Add(
+                     new Paragraph(@"请将款项总额汇入以下账号/ Please remit the total amount to the following bank account	", font));
+
+                    table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
+                    table.SetWidths(new int[2] { 30, 70 });
+                    var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
+                    table.AddCell(new PdfPCell(new Phrase("开户公司：", font1)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("金联安保险经纪(北京)有限公司苏州分公司", font)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("开户银行：", font1)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("中国建设银行昆山太湖路支行", font)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("32201986488052500161", font)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase(order.OrderNum, font)) { BorderWidth = 0 });
+                    document.Add(table);
+
+                    document.Add(new Paragraph("RMB Bank Account Information：", OperationPDF.GetFont(fontSize: 12, style: Font.BOLD)) { IndentationLeft = 57 });
+                    document.Add(new Paragraph($"Company Name: Jin Lian An Insurance Brokerage Co.,Ltd Suzhou Branch\nBank Name: Construction Bank of China Kunshan Taihu Road Branch \nAccount No.: 32201986488052500161  \nRemark: {order.OrderNum}") { IndentationLeft = 57 });
+                    var fontUnderline = OperationPDF.GetFont(style: Font.UNDERLINE);
+                    if (bid != 0)
+                    {
+                        document.Add(new Phrase("最后付款日期/ Date of payment due:      ", font1));
+                        document.Add(new Phrase(order.StartDate.AddDays(5).ToLongDateString(), fontUnderline));
+                    }
+                    document.Add(new Paragraph() { SpacingAfter = 10 });
+
+                    document.Add(new LineSeparator());
+                    document.Add(new Paragraph("            金联安保险经纪(北京)有限公司苏州分公司                               签章：", font) { });
+                    table = new PdfPTable(1) { SpacingAfter = 20, SpacingBefore = 20, WidthPercentage = 100 };
+                    var fontWhite = OperationPDF.GetFont();
+                    fontWhite.Color = BaseColor.WHITE;
+                    cell.BackgroundColor = BaseColor.BLACK;
+                    table.AddCell(new PdfPCell(
+                            new Phrase(
+                                "请在付款前仔细阅读以下注意事项\nPlease read the following notice carefully before processing the payment",
+                                fontWhite))
+                    { BackgroundColor = BaseColor.BLACK, HorizontalAlignment = Element.ALIGN_CENTER });
+                    document.Add(table);
+
+                    document.Add(new Phrase("注意事项/Notes：", font1));
+                    var list = new List(List.ORDERED);
+                    list.Add(new ListItem(new Phrase("请在最后付款日期之前付款，以便保险公司及时承担相应的保险责任。\nPlease make sure that the premium be finalized before the date of the payment date, so that the insurance company shall undertake the insurance liability accordingly.", font)));
+
+                    list.Add(new ListItem(new Phrase("如遇汇款时汇款金额与付款通知书不符，请及时通知，以免造成不必要的麻烦。\nTo avoid trouble may happens, please inform us when your the amount not in accordance with Debit Note.", font)));
+
+                    list.Add(new ListItem(new Phrase("3.	请在转账时添加上述转账备注，以便更快地确认您的付款。\nPlease add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.", font)));
+
+                    list.Add(new ListItem(new Phrase("若最后付款人与申请表中填写的不同，将以最后付款人名称开具发票。任何情况下发票不能重新开具。\nIf the name of the final payer is different from the one used in your application, please inform us as soon as possible, otherwise the new name will be used for the issue of invoice.Please be noted that the insurance invoice cannot be reissued in any circumstances.", font)));
+
+                    list.Add(new ListItem(new Phrase("请在付款时填写我司账户全称，以免因付款不成功给您带来不便。\nPlease fill out FULL ACCOUNT NAME provided above when arranging the payment to avoid unsuccessful transfer.", font)));
+
+                    document.Add(list);
+                    document.Add(new Paragraph() { SpacingAfter = 100 });
+                    var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
+                    var headImage = Image.GetInstance(imgSrc);
+                    headImage.Alignment = Element.ALIGN_RIGHT;
+                    headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
+                    headImage.SpacingAfter = 10;
+                    //document.Add(headImage);
+                    document.Add(headImage);
+                  
                     document.Close();
+                    pdfWrite.Close();
                     return paths;
                 }
+                //GetPaymentNoticePdf(oid, bid);
             }
             catch (Exception e)
             {
@@ -490,33 +561,6 @@ namespace Services.Orders
             }
             return null;
         }
-
-        //public void ss()
-        //{
-        //    string pdfpath = Server.MapPath("PDFs");
-        //    string imagepath = Server.MapPath("Images");
-        //    Document doc = new Document();
-        //    try {
-        //        PdfWriter.GetInstance(doc, new FileStream(pdfpath + "/Images.pdf", FileMode.Create));
-        //        doc.Open();
-        //        doc.Add(new Paragraph("GIF"));
-        //        Image gif = Image.GetInstance(imagepath + "/mikesdotnetting.gif");
-        //        doc.Add(gif);
-        //    }
-        //    catch (DocumentException dex)
-        //    {
-        //        Response.Write(dex.Message);
-        //    }
-        //    catch (IOException ioex)
-        //    {
-        //        Response.Write(ioex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write(ex.Message);
-        //    }
-        //    finally { doc.Close(); }
-        //}
 
         public List<string> GetPolicyPdf(int oid)
         {

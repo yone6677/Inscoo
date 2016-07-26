@@ -12,6 +12,7 @@ namespace Core.Mapping
             Property(s => s.Memo).IsOptional().HasMaxLength(512);
             Property(s => s.Url).IsOptional().HasMaxLength(256);
             Property(s => s.Author).IsRequired().HasMaxLength(64);
+            Property(s => s.Domain).IsOptional().HasMaxLength(256);
         }
     }
     public class ArchiveMap : EntityTypeConfiguration<Archive>

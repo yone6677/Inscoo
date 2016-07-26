@@ -55,16 +55,13 @@
 
     </ul>
     <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
-        <span class="text-danger">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
-    </div>
-    <div style="line-height: 2em; width: 35%; text-align: left; float: left;">
+        <span class="text-info">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
+        <br />
         @if (TempData["error"] != null)
         {
-            <span class="text-danger">@TempData["error"]</span><br />
+            <span class="text-danger" style="font-size: 1.3em ">错误：@TempData["error"]</span><br />
         }
-        <span class="text-danger" id="error"></span>
     </div>
-
 }
 @if (string.IsNullOrEmpty(Model.EmpInfoFileUrl))
 {

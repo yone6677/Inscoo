@@ -17,7 +17,7 @@ namespace Services
         }
         public string GetFileSystem()
         {
-            return ConfigurationManager.AppSettings["FileSystem"].Trim();
+            return ConfigurationManager.AppSettings["FileApi"].Trim();
         }
 
         public string GetLogger()

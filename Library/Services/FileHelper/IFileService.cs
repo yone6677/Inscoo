@@ -1,4 +1,5 @@
-﻿using Models.Infrastructure;
+﻿using Models.Api.Archive;
+using Models.Infrastructure;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;

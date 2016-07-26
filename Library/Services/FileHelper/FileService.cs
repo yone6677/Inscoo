@@ -1,10 +1,13 @@
-﻿using Models.Infrastructure;
+﻿using Models.Api.Archive;
+using Models.Infrastructure;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
@@ -25,7 +28,6 @@ namespace Services
             _resource = resource;
             _loggerService = loggerService;
         }
-
 
         /// <summary>
         /// 下载文件
@@ -277,7 +279,7 @@ namespace Services
                 result.Add(postfix);//后缀
                 return result;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Fatal, "文件复制失败");
             }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Core.Pager;
 using Models;
+using Models.Api.Archive;
 
 namespace Services
 {
@@ -25,6 +26,7 @@ namespace Services
         Task DeleteFileInfo(string url);
 
         Task DeleteFileBuUrl(string url);
+        int InsertByWechat(DownLoadWechatFileApi model);
         int InsertByUrl(List<string> fileInfo, string type, int pid, string memo = null);
         /// <summary>
         /// 保酷上传
@@ -75,7 +77,7 @@ namespace Services
         /// <returns>路径</returns>
         string InsertUserPortrait(HttpPostedFileBase file);
         Archive GetById(int id);
-
+        int inert(Archive item);
         bool Delete(Archive item, bool disable = false);
         /// <summary>
         /// 

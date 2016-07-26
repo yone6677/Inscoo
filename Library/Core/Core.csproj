@@ -65,8 +65,8 @@
       <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -99,6 +99,8 @@
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
+    <Compile Include="Mapping\ClaimFileFromWechatMap.cs" />
+    <Compile Include="Mapping\ClaimFromWechatMap.cs" />
     <Compile Include="Mapping\FileInfoMap.cs" />
     <Compile Include="Mapping\ArchiveMap.cs" />
     <Compile Include="Mapping\CompanyMapping.cs" />
@@ -169,6 +171,18 @@
     <Compile Include="Migrations\201607220946561_AlterTable.Designer.cs">
       <DependentUpon>201607220946561_AlterTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607260328217_claim and fileApi.cs" />
+    <Compile Include="Migrations\201607260328217_claim and fileApi.Designer.cs">
+      <DependentUpon>201607260328217_claim and fileApi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607260803193_claimFile.cs" />
+    <Compile Include="Migrations\201607260803193_claimFile.Designer.cs">
+      <DependentUpon>201607260803193_claimFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607260818482_claimwechat.cs" />
+    <Compile Include="Migrations\201607260818482_claimwechat.Designer.cs">
+      <DependentUpon>201607260818482_claimwechat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -223,6 +237,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607220946561_AlterTable.resx">
       <DependentUpon>201607220946561_AlterTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607260328217_claim and fileApi.resx">
+      <DependentUpon>201607260328217_claim and fileApi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607260803193_claimFile.resx">
+      <DependentUpon>201607260803193_claimFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607260818482_claimwechat.resx">
+      <DependentUpon>201607260818482_claimwechat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

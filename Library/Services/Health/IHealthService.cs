@@ -51,6 +51,8 @@ namespace Services
         IPagedList<VHealthAuditList> GetHealthAuditList(int pageIndex, int pageSize, string uName, VHealthSearch search);
         VHealthConfirmPayment GetConfirmPayment(int masterId);
         SelectList GetListType(string uId);
+        string GetPaymentNoticePdf(int masterId);
+        Task GetPaymentNoticePdfAsync(int masterId);
         int UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author);
         void UpdateMaster(HealthOrderMaster master);
     }

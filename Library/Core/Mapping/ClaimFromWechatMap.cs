@@ -24,7 +24,7 @@ namespace Core.Mapping
             Property(o => o.ProposerPhone).IsOptional().HasMaxLength(16);
             Property(o => o.ProposerSex).IsOptional().HasMaxLength(8);
             Property(o => o.RecipientBirthday).IsOptional().HasColumnType("datetime2");
-            Property(o => o.RecipientEmail).IsOptional().HasMaxLength(16);
+            Property(o => o.RecipientEmail).IsOptional().HasMaxLength(128);
             Property(o => o.RecipientIdNumber).IsOptional().HasMaxLength(32);
             Property(o => o.RecipientIdType).IsOptional().HasMaxLength(16);
             Property(o => o.RecipientName).IsOptional().HasMaxLength(32);

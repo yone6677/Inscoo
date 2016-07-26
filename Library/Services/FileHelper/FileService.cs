@@ -28,45 +28,6 @@ namespace Services
             _resource = resource;
             _loggerService = loggerService;
         }
-        public SaveResultModel DownloadFileByWechat(DownLoadWechatFileApi model)
-        {
-            try
-            {
-                var client = new WebClient();
-                client.Encoding = Encoding.UTF8;
-                var bit = client.DownloadData(model.Url);
-                var fileCatalog = _resource.GetFileCatalog();//目录
-                var date = DateTime.Now;
-                var virPath = "/" + fileCatalog + "/Wehcat/" + date.Year + "/" + date.Month + "/" + date.Day + "/";
-                //保存路径
-                string phyPath = System.Web.Hosting.HostingEnvironment.MapPath("~" + virPath);
-                //如果不存在,创建文件夹    
-                if (!Directory.Exists(phyPath))
-                {
-                    Directory.CreateDirectory(phyPath);
-                }
-                var fileName = date.Ticks + "." + model.MediaType;
-                string fullPath = phyPath + fileName;
-                using (MemoryStream ms = new MemoryStream(bit)) //打开一个xls文件，如果没有则自行创建，如果存在myxls.xls文件则在创建是不要打开该文件！
-                {
-                    var img = Image.FromStream(ms);
-                    img.Save(fullPath);
-                    img.Dispose();
-                }
-                var result = new SaveResultModel()
-                {
-                    Name = fileName,
-                    Path = virPath,
-                    Postfix = "." + model.MediaType
-                };
-                return result;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Fatal, "下载微信文件失败");
-            }
-            return null;
-        }
 
         /// <summary>
         /// 下载文件

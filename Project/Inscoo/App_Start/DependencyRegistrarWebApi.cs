@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Web;
 using Core;
 using System.Web.Http;
+using Services.Api;
 
 namespace Inscoo
 {
@@ -75,6 +76,11 @@ namespace Inscoo
             builder.RegisterType<ClaimService>().As<IClaimService>().InstancePerDependency();
             builder.RegisterType<OrderEmpTempService>().As<IOrderEmpTempService>().InstancePerDependency();
             builder.RegisterType<HealthService>().As<IHealthService>().InstancePerDependency();
+
+            //Api
+            builder.RegisterType<ClaimApiService>().As<IClaimAPiService>().InstancePerDependency();
+            builder.RegisterType<ClaimFileApiService>().As<IClaimFileApiService>().InstancePerDependency();
+
         }
     }
 }

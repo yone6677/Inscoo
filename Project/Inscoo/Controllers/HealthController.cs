@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,9 +20,11 @@ namespace Inscoo.Controllers
         private readonly IHealthService _svHealth;
         private readonly ICompanyService _svCompany;
         private readonly AppUserManager _svAppUserManager;
+        private readonly IGenericAttributeService _genericAttributeService;
 
-        public HealthController(AppUserManager svAppUserManager, ICompanyService svCompany, IHealthService svHealth)
+        public HealthController(IGenericAttributeService genericAttributeService, AppUserManager svAppUserManager, ICompanyService svCompany, IHealthService svHealth)
         {
+            _genericAttributeService = genericAttributeService;
             _svAppUserManager = svAppUserManager;
             _svHealth = svHealth;
             _svCompany = svCompany;
@@ -198,6 +201,20 @@ namespace Inscoo.Controllers
                 master.Status = 17;
                 master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
                 _svHealth.UpdateMaster(master);
+
+                var mailContent = $"体检订单：{ master.BaokuOrderCode}已确认付款";
+                var mailTo = _genericAttributeService.GetByGroup("HealthFinanceMailTo").Select(c => c.Value);
+                MailService.SendMailAsync(new MailQueue()
+                {
+                    MQTYPE = "HealthOrder",
+                    MQSUBJECT = "体检订单确认付款通知",
+                    MQMAILCONTENT = "",
+                    MQMAILFRM = "redy.yone@inscoo.com",
+                    MQMAILTO = string.Join(";", mailTo),
+                    MQFILE = ""
+
+                });
+
             }
             return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
         }
@@ -237,10 +254,17 @@ namespace Inscoo.Controllers
             try
             {
                 _svHealth.UploadEmpExcel(empinfo, masterId, User.Identity.Name);
+                //todo 付款通知书
+                _svHealth.GetPaymentNoticePdfAsync(masterId);
+            }
+            catch (WarningException e)
+            {
+                TempData["error"] = e.Message;
+
             }
             catch (Exception e)
             {
-                TempData["error"] = e.Message;
+                TempData["error"] = "上传失败！";
 
             }
             return RedirectToAction("EntryInfo", new { masterId });
@@ -259,24 +283,8 @@ namespace Inscoo.Controllers
                 {
                     if (string.IsNullOrEmpty(model.PaymentNoticePdf))//还未产生付款通知书
                     {
-                        //var ls = _orderEmpService.GetPaymentNoticePdf(id);
-                        //var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");
-                        //orderBatch.PaymentNoticePDF = fid;
-                        //if (_orderBatchService.Update(orderBatch))
-                        //{
-                        //    model.PaymentNoticeUrl = ls[1];
-                        //    order.State = 4;//付款通知书已下载
-                        //    _orderService.Update(order);
-                        //}
+                        model.PaymentNoticePdf = _svHealth.GetPaymentNoticePdf(masterId);
                     }
-                    else
-                    {
-                        //model.PaymentNoticeUrl = _archiveService.GetById(orderBatch.PaymentNoticePDF).Url;
-                    }
-                    //model.YearPrice = order.AnnualExpense;
-                    //model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
-                    //model.Quantity = order.InsuranceNumber;
-                    //model.Amount = order.AnnualExpense * order.InsuranceNumber;
                     return View(model);
                 }
             }

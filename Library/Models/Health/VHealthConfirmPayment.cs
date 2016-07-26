@@ -4,6 +4,7 @@ namespace Models
 {
     public class VHealthConfirmPayment
     {
+        public string BaokuOrderCode { set; get; }
         public int MasterId { set; get; }
         [DisplayName("单价")]
         public decimal Price { get; set; }

@@ -1131,12 +1131,12 @@ div:after {
 .health_box .health_box_header ul li.header_right .product-count div i {
   margin-right: 10px;
 }
-.health_box #product_detail {
+.health_box .product_detail {
   position: relative;
   padding-top: 2px;
   margin: 30px 0;
 }
-.health_box #product_detail .main_tabs {
+.health_box .product_detail .main_tabs {
   padding: 0px 8px;
   height: 28px;
   line-height: 28px;
@@ -1144,23 +1144,23 @@ div:after {
   border: 1px solid #ddd;
   border-top: 2px solid #999;
 }
-.health_box #product_detail ul.main_tabs {
+.health_box .product_detail ul.main_tabs {
   padding: 0px;
   margin: 0px;
 }
-.health_box #product_detail ul.main_tabs li {
+.health_box .product_detail ul.main_tabs li {
   float: left;
   text-align: center;
   cursor: pointer;
 }
-.health_box #product_detail ul.main_tabs li a {
+.health_box .product_detail ul.main_tabs li a {
   height: 30px;
   line-height: 28px;
   font: 14px/30px 'microsoft yahei';
   font-weight: 400;
   padding: 0 20px;
 }
-.health_box #product_detail ul.main_tabs li.current {
+.health_box .product_detail ul.main_tabs li.current {
   height: 34px;
   color: #e4393c;
   background-color: #fff;
@@ -1170,18 +1170,18 @@ div:after {
   border-right: 1px solid #ddd;
   border-top: 2px solid #e4393c;
 }
-.health_box #product_detail ul.main_tabs li.current a {
+.health_box .product_detail ul.main_tabs li.current a {
   height: 36px;
   line-height: 36px;
   color: #e4393c;
   padding: 0 19px;
 }
-.health_box #product_detail #product_info ul.detail_list {
+.health_box .product_detail .product_info ul.detail_list {
   padding: 8px;
   border: 1px solid #dedfde;
   border-width: 0 1px 1px;
 }
-.health_box #product_detail #product_info ul.detail_list li {
+.health_box .product_detail .product_info ul.detail_list li {
   float: left;
   width: 33%;
   overflow: hidden;
@@ -1189,57 +1189,57 @@ div:after {
   white-space: nowrap;
   padding: 0 4px;
 }
-.health_box #product_detail #product_info .detail_content {
+.health_box .product_detail .product_info .detail_content {
   text-align: center;
   padding-top: 10px;
 }
-.health_box #product_detail #product_shop {
+.health_box .product_detail .product_shop {
   margin: 0 0 10px;
   padding: 10px;
   width: 100%;
   border: 1px solid #DEDEDE;
   border-top: none;
 }
-.health_box #product_detail #product_order,
-.health_box #product_detail #product_rule,
-.health_box #product_detail #product_shop {
+.health_box .product_detail .product_order,
+.health_box .product_detail .product_rule,
+.health_box .product_detail .product_shop {
   display: none;
 }
-.health_box #product_detail #product_order,
-.health_box #product_detail #product_rule {
+.health_box .product_detail .product_order,
+.health_box .product_detail .product_rule {
   padding: 10px;
   width: 100%;
   border: 1px solid #DEDEDE;
   border-top: none;
 }
-.health_box #product_detail #promise,
-.health_box #product_detail #state {
+.health_box .product_detail .promise,
+.health_box .product_detail .state {
   padding: 10px;
   border-top: 1px solid #DEDEDE;
   margin-top: 10px;
 }
-.health_box #product_detail #promise p,
-.health_box #product_detail #state p {
+.health_box .product_detail .promise p,
+.health_box .product_detail .state p {
   margin-top: 5px;
   margin-bottom: 10px;
 }
-.health_box #product_detail #state span {
+.health_box .product_detail .state span {
   font-weight: bold;
   color: #e4393c;
 }
-.health_box #product_detail #comment {
+.health_box .product_detail #comment {
   margin-bottom: 10px;
   overflow: hidden;
 }
-.health_box #product_detail #comment .main_tabs {
+.health_box .product_detail #comment .main_tabs {
   margin: 0px;
 }
-.health_box #product_detail #comment .m_content {
+.health_box .product_detail #comment .m_content {
   padding: 10px;
   border: 1px solid #DEDEDE;
   border-top: none;
 }
-.health_box #product_detail ul:after {
+.health_box .product_detail ul:after {
   content: '';
   display: block;
   clear: both;
@@ -1356,4 +1356,24 @@ div:after {
 }
 .index_flow li.ln_middle {
   margin: 0 2% 20px 2%;
+}
+/*项目名词解释*/
+.btn-explain {
+  border: none;
+  background: none;
+  padding: 0px;
+  vertical-align: middle;
+}
+.btn-explain .icon-explain {
+  font-size: 1.2em;
+  vertical-align: middle;
+  padding: 5px;
+}
+.tooltip-inner {
+  background: #fff;
+  color: #111;
+  border: 1px solid #aaa;
+}
+.tooltip.top .tooltip-arrow {
+  border-top-color: #aaa;
 }

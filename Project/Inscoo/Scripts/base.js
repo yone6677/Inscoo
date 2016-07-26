@@ -34,23 +34,9 @@ $(document).on('click', ".toggle_color", function () {
 })
 
 /*体检详情*/
-//$(".health_box_body>.health_nav").on("click", "li", showTab);
-//function showTab(e) {
-//    var target = e.target || e.srcElement;
-//    if (target.nodeName == "A") {
-//        target = target.parentNode;
-//    }
-//    if (target.nodeName == "LI") {
-//        $(this).siblings().removeClass('active');
-//        $(this).addClass('active');
-
-//        var link = $(this).children().attr('href');
-//        $(link).addClass('show').siblings().removeClass('show');
-//    }
-//}
 
 $(function(){
-    $("#product_detail>.main_tabs").on('mouseover', showTab);
+    $(".product_detail>.main_tabs").on('mouseover', showTab);
 });
 
 function showTab(e) {
@@ -62,14 +48,13 @@ function showTab(e) {
         $(this).children(".current").removeClass('current');
         $(target).addClass('current');
 
-        var containers = $("#product_detail>[id^='product_']");
+        var containers = $(".product_detail>[class^='product_']");
         for (var i = 0; i < containers.length; i++){
             $(containers[i]).css('display','none');
         }
         var tar = target.dataset.tar;
-        console.log(tar);
         if (tar != "comment"){
-            $("#product_" + tar).css('display','block');
+            $(".product_" + tar).css('display','block');
         }
     }
 
@@ -220,3 +205,10 @@ function changeSel3() {
     console.log(arr3[nowOpt]);
     $("#programme-price3").text(arr3[nowOpt]);
 }
+
+
+/*显示提醒名称解释*/
+$(document).on('mouseover', 'body', function () {
+    $('[data-toggle="tooltip"]').tooltip();
+})
+    

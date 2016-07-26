@@ -682,7 +682,7 @@ namespace Services
                 //document.Add(headImage);
                 document.Add(headImage);
                 document.Close();
-                pdfWrite.Close();
+              
                 return paths[0];
                 //GetPaymentNoticePdf(masterId);
             }

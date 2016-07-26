@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Web;
 using Core.Pager;
 using Models;
+using Models.Api.Archive;
+using Newtonsoft.Json;
 
 namespace Services
 {
@@ -24,8 +26,12 @@ namespace Services
         private readonly IRepository<Domain.FileInfo> _rpFileInfo;
         private readonly ILoggerService _loggerService;
         private readonly IFileService _fileService;
-        public ArchiveService(IRepository<Domain.FileInfo> rpFileInfo, IRepository<CarInsurance> rpCarInsurance, IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService, IRepository<BusinessLicense> rpBusinessLicense)
+        private readonly IWebHelper _webHelper;
+        private readonly IResourceService _resourceService;
+        public ArchiveService(IRepository<Domain.FileInfo> rpFileInfo, IRepository<CarInsurance> rpCarInsurance, IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService,
+            IRepository<BusinessLicense> rpBusinessLicense, IWebHelper webHelper, IResourceService resourceService)
         {
+            _webHelper = webHelper;
             _rpCarInsurance = rpCarInsurance;
             _archiveRepository = archiveRepository;
             _authenticationManager = authenticationManager;
@@ -33,6 +39,7 @@ namespace Services
             _fileService = fileService;
             _rpBusinessLicense = rpBusinessLicense;
             _rpFileInfo = rpFileInfo;
+            _resourceService = resourceService;
         }
 
         public void DeleteCarInsuranceExcel(string excelId)
@@ -124,6 +131,25 @@ namespace Services
             {
                 _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
             }
+        }
+        public int InsertByWechat(DownLoadWechatFileApi model)
+        {
+            try
+            {
+                var url = _resourceService.GetFileSystem() + "/api/file";
+                var postData = JsonConvert.SerializeObject(model);
+                var fid = _webHelper.PostData(url, postData, "post", "json");
+                if (string.IsNullOrEmpty(fid))
+                {
+                    return 0;
+                }
+                return int.Parse(fid);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "FileInfo：InsertByWechat");
+            }
+            return 0;
         }
         public int InsertByUrl(List<string> fileInfo, string type, int pid, string memo)
         {

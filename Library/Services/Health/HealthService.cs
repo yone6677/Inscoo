@@ -15,17 +15,23 @@ using Core.Pager;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common.CommandTrees;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Core;
 using Domain.Orders;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.draw;
+using iTextSharp.text.pdf.draw;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Models.Infrastructure;
 using Models.Order;
+using Services.FileHelper;
 
 namespace Services
 {
@@ -372,16 +378,17 @@ namespace Services
                     Price = master.SellPrice,
                     Count = master.HealthOrderDetails.Count,
                     Amount = master.SellPrice * master.HealthOrderDetails.Count,
-                    PaymentNoticePdf = master.PaymentNoticePdf
+                    PaymentNoticePdf = master.PaymentNoticePdf ?? "",
+                    BaokuOrderCode = master.BaokuOrderCode ?? ""
                 };
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
         }
-       
+
         public SelectList GetListType(string uId)
         {
             var roles = _userManager.GetRoles(uId).First();
@@ -415,7 +422,7 @@ namespace Services
                     var ep = new ExcelPackage(empinfo.InputStream);
                     var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
                     if (worksheet == null)
-                        throw new Exception("上传的文件内容不能为空");
+                        throw new WarningException("上传的文件内容不能为空");
                     var rowNumber = worksheet.Dimension.Rows;
                     var minInsuranceNumber = 0;
 
@@ -437,24 +444,36 @@ namespace Services
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
-                            throw new WarningException($"第{i}行姓名不能为空");
+                            throw new WarningException($"第{i}行 [姓名] 不能为空");
+                        if (Cells["B" + i].Value == null)
+                            throw new WarningException($"第{i}行 [性别] 不能为空");
+                        if (Cells["C" + i].Value == null)
+                            throw new WarningException($"第{i}行 [出生日期] 不能为空");
+                        if (Cells["D" + i].Value == null)
+                            throw new WarningException($"第{i}行 [证件号码] 不能为空");
+                        if (Cells["E" + i].Value == null)
+                            throw new WarningException($"第{i}行 [婚姻状况] 不能为空");
+                        if (Cells["F" + i].Value == null)
+                            throw new WarningException($"第{i}行 [移动电话] 不能为空");
+                        if (Cells["H" + i].Value == null)
+                            throw new WarningException($"第{i}行 [所在城市] 不能为空");
 
-                        if (Cells["B" + i].Value.ToString() != "男" && Cells["B" + i].Value.ToString() != "女")
-                            throw new WarningException($"第{i}行性别只能是男或者女");
+                        if (Cells["B" + i].Value.ToString().Trim() != "男" && Cells["B" + i].Value.ToString().Trim() != "女")
+                            throw new WarningException($"第{i}行 [性别] 只能是男或者女");
 
                         var item = new HealthOrderDetail();
                         item.HealthOrderMasterId = masterId;//批次号
                         item.Name = Cells["A" + i].Value.ToString().Trim();
-                        item.Sex = Cells["B" + i].Value.ToString() == "男";
-                        item.Birthday = GetBirthday(Cells["C" + i].Value.ToString());
+                        item.Sex = Cells["B" + i].Value.ToString().Trim() == "男";
+                        item.Birthday = GetBirthday(Cells["C" + i].Value.ToString(), i);
                         item.IdNumber = Cells["D" + i].Value.ToString().Trim();
                         item.Marriage = Cells["E" + i].Value.ToString().Trim();
                         item.Phone = Cells["F" + i].Value.ToString().Trim();
-                        item.Email = Cells["G" + i].Value.ToString().Trim();
+                        item.Email = Cells["G" + i].Value == null ? "" : Cells["G" + i].Value.ToString().Trim();
                         item.Address = Cells["H" + i].Value.ToString().Trim();
-                        item.CompanyName = Cells["I" + i].Value.ToString().Trim();
-                        item.DepartMent = Cells["J" + i].Value.ToString().Trim();
-                        item.Chair = Cells["K" + i].Value.ToString().Trim();
+                        item.CompanyName = Cells["I" + i].Value == null ? "" : Cells["I" + i].Value.ToString().Trim();
+                        item.DepartMent = Cells["J" + i].Value == null ? "" : Cells["J" + i].Value.ToString().Trim();
+                        item.Chair = Cells["K" + i].Value == null ? "" : Cells["K" + i].Value.ToString().Trim();
                         list.Add(item);
                     }
                     var result = _repHealthOrderDetail.InsertRange(list);
@@ -482,7 +501,7 @@ namespace Services
             catch (Exception exe)
             {
                 _svLogger.InsertAsync(exe, LogLevel.Error, exe.Message, author);
-                throw new WarningException("上传失败");
+                throw new WarningException("上传失败！");
 
             }
         }
@@ -490,6 +509,188 @@ namespace Services
         public void UpdateMaster(HealthOrderMaster master)
         {
             _repHealthOrderMaster.Update(master);
+        }
+
+        public async Task GetPaymentNoticePdfAsync(int masterId)
+        {
+            try
+            {
+                await Task.Run(() =>
+                {
+
+                });
+                GetPaymentNoticePdf(masterId);
+            }
+            catch (Exception exc)
+            {
+                _svLogger.insert(exc, LogLevel.Warning, "HealthService：GetPaymentNoticePdf");
+            }
+        }
+        public string GetPaymentNoticePdf(int masterId)
+        {
+            try
+            {
+                var master = GetConfirmPayment(masterId);
+                var masterUp = GetHealthMaster(masterId);
+                var paths = _svFile.GenerateFilePathBySuffix(".pdf");
+                masterUp.PaymentNoticePdf = "";
+                masterUp.PaymentNoticePdf = @"../.." + paths[1];
+                UpdateMaster(masterUp);
+                var stream = new FileStream(paths[0], FileMode.Create);
+                var baseFont = OperationPDF.GetBaseFont();
+                var font = OperationPDF.GetFont();
+                var document = new Document();
+                Paragraph paragraph;
+                PdfPTable table;
+                PdfPCell cell;
+                var pdfWrite = PdfWriter.GetInstance(document, stream);
+                var eventHd = new PageHeaderHandlerAddLogo();
+
+                document.SetMargins(30, 30, 40, 20);
+                document.Open();
+                eventHd.AddHead(pdfWrite, document);
+                pdfWrite.PageEvent = eventHd;
+                document.Add(new Paragraph("付款通知书/Debit Note\n", OperationPDF.GetTitleFont())
+                {
+                    Alignment = PdfFormField.Q_CENTER,
+                    SpacingAfter = 20
+                });
+
+                table = new PdfPTable(2) { WidthPercentage = 100 };
+                table.AddCell(
+                    new PdfPCell(new Phrase(string.Format($"尊贵的 Dear valued member：{masterUp.Company.Name}"), font))
+                    {
+                        BorderWidth = 0,
+                        HorizontalAlignment = PdfFormField.Q_LEFT
+                    });
+                table.AddCell(
+                    new PdfPCell(new Phrase(string.Format($"日期/Date:{DateTime.Now.ToShortDateString()}"), font))
+                    {
+                        BorderWidth = 0,
+                        HorizontalAlignment = PdfFormField.Q_RIGHT
+                    });
+
+                document.Add(table);
+                document.Add(new Paragraph("感谢您选择保酷平台福利计划！敬请及时支付采购费用。", font) { IndentationLeft = 20 });
+                document.Add(
+                    new Paragraph(
+                        "Thank you for selecting our benefit plan. Please arrange the payment without delay.", font)
+                    {
+                        IndentationLeft = 20
+                    });
+
+                table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[2] { 30, 70 });
+                var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
+                table.AddCell(new PdfPCell(new Phrase("单价：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(master.Price.ToString(CultureInfo.InvariantCulture), font))
+                {
+                    BorderWidth = 0
+                });
+                table.AddCell(new PdfPCell(new Phrase("购买份数：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(master.Count.ToString(), font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("合计金额：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(master.Amount.ToString(CultureInfo.InvariantCulture), font))
+                {
+                    BorderWidth = 0
+                });
+                document.Add(table);
+
+
+                document.Add(
+                    new Paragraph(@"请将款项总额汇入以下账号/ Please remit the total amount to the following bank account	", font) { SpacingAfter = 20, SpacingBefore = 20 });
+
+                table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[2] { 30, 70 });
+                table.AddCell(new PdfPCell(new Phrase("开户公司：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("开户银行：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(master.BaokuOrderCode, font)) { BorderWidth = 0 });
+                document.Add(table);
+
+                document.Add(new Paragraph("RMB Bank Account Information：",
+                    OperationPDF.GetFont(fontSize: 12, style: Font.BOLD))
+                { IndentationLeft = 56 });
+                document.Add(
+                    new Paragraph(
+                        $"Company Name: ss\nBank Name: ss \nAccount No.: ss  \nRemark: {master.BaokuOrderCode}")
+                    {
+                        IndentationLeft = 56
+                    });
+                var fontUnderline = OperationPDF.GetFont(style: Font.UNDERLINE);
+
+                document.Add(new Paragraph() { SpacingAfter = 10 });
+
+                document.Add(new LineSeparator());
+                document.Add(new Paragraph("            金联安保险经纪(北京)有限公司苏州分公司                               签章：", font)
+                {
+                });
+                table = new PdfPTable(1) { SpacingAfter = 20, SpacingBefore = 20, WidthPercentage = 100 };
+                var fontWhite = OperationPDF.GetFont();
+                fontWhite.Color = BaseColor.WHITE;
+                table.AddCell(new PdfPCell(
+                    new Phrase(
+                        "请在付款前仔细阅读以下注意事项\nPlease read the following notice carefully before processing the payment",
+                        fontWhite))
+                { BackgroundColor = BaseColor.BLACK, HorizontalAlignment = Element.ALIGN_CENTER });
+                document.Add(table);
+
+                document.Add(new Phrase("注意事项/Notes：", font1));
+                var list = new List(List.ORDERED);
+                list.Add(
+                    new iTextSharp.text.ListItem(
+                        new Phrase(
+                            "请在最后付款日期之前付款，以便保险公司及时承担相应的保险责任。\nPlease make sure that the premium be finalized before the date of the payment date, so that the insurance company shall undertake the insurance liability accordingly.",
+                            font)));
+
+                list.Add(
+                    new iTextSharp.text.ListItem(
+                        new Phrase(
+                            "如遇汇款时汇款金额与付款通知书不符，请及时通知，以免造成不必要的麻烦。\nTo avoid trouble may happens, please inform us when your the amount not in accordance with Debit Note.",
+                            font)));
+
+                list.Add(
+                    new iTextSharp.text.ListItem(
+                        new Phrase(
+                            "3.	请在转账时添加上述转账备注，以便更快地确认您的付款。\nPlease add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.",
+                            font)));
+
+                list.Add(
+                    new iTextSharp.text.ListItem(
+                        new Phrase(
+                            "若最后付款人与申请表中填写的不同，将以最后付款人名称开具发票。任何情况下发票不能重新开具。\nIf the name of the final payer is different from the one used in your application, please inform us as soon as possible, otherwise the new name will be used for the issue of invoice.Please be noted that the insurance invoice cannot be reissued in any circumstances.",
+                            font)));
+
+                list.Add(
+                    new iTextSharp.text.ListItem(
+                        new Phrase(
+                            "请在付款时填写我司账户全称，以免因付款不成功给您带来不便。\nPlease fill out FULL ACCOUNT NAME provided above when arranging the payment to avoid unsuccessful transfer.",
+                            font)));
+
+                document.Add(list);
+
+                document.Add(new Paragraph() { SpacingAfter = 100 });
+                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
+                var headImage = iTextSharp.text.Image.GetInstance(imgSrc);
+                headImage.Alignment = Element.ALIGN_RIGHT;
+                headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
+                headImage.SpacingAfter = 10;
+                //document.Add(headImage);
+                document.Add(headImage);
+                document.Close();
+                pdfWrite.Close();
+                return paths[0];
+                //GetPaymentNoticePdf(masterId);
+            }
+            catch (Exception exc)
+            {
+                _svLogger.insert(exc, LogLevel.Warning, "HealthService：GetPaymentNoticePdf");
+                return "";
+            }
         }
 
 
@@ -525,17 +726,21 @@ namespace Services
             }
         }
 
-        DateTime GetBirthday(string str)
+        DateTime GetBirthday(string str, int rowNum)
         {
             try
             {
-                if (string.IsNullOrEmpty(str)) throw new WarningException("生日不能为空");
+                if (string.IsNullOrEmpty(str)) throw new WarningException($"第{rowNum}行生日不能为空");
                 return DateTime.Parse(str);
 
             }
+            catch (WarningException e)
+            {
+                throw e;
+            }
             catch (Exception)
             {
-                throw new WarningException("请检查生日是否正确");
+                throw new WarningException($"请检查第{rowNum}行生日是否正确");
             }
         }
 

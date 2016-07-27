@@ -143,10 +143,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\ClaimApiService.cs" />
-    <Compile Include="Api\ClaimFileApiService.cs" />
-    <Compile Include="Api\IClaimAPiService.cs" />
-    <Compile Include="Api\IClaimFileApiService.cs" />
+    <Compile Include="Api\Claim\ClaimApiService.cs" />
+    <Compile Include="Api\Claim\ClaimFileApiService.cs" />
+    <Compile Include="Api\Claim\IClaimAPiService.cs" />
+    <Compile Include="Api\Claim\IClaimFileApiService.cs" />
     <Compile Include="Archives\ArchiveService.cs" />
     <Compile Include="Archives\IArchiveService.cs" />
     <Compile Include="Claim\ClaimService.cs" />

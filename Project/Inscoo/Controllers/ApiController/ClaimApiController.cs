@@ -34,7 +34,7 @@ namespace Inscoo.Controllers
             _archiveService = archiveService;
             _clamFileAPiService = clamFileAPiService;
         }
-        [ResponseType(typeof(ClaimFromWechatItem))]
+        [ResponseType(typeof(ClaimDetailsApi))]
         public IHttpActionResult GetById(int id)
         {
             var item = _claimApiService.GetById(id);
@@ -42,7 +42,34 @@ namespace Inscoo.Controllers
             {
                 return NotFound();
             }
-            return Ok(item);
+            var invoiceNum = _clamFileAPiService.GetByCId(id, 1).Count();
+            var caseNum = _clamFileAPiService.GetByCId(id, 2).Count();
+            var otherNum = _clamFileAPiService.GetByCId(id, 3).Count();
+            var model = new ClaimDetailsApi()
+            {
+                CaseId = item.CaseId,
+                CaseNum = caseNum,
+                CompanyName = item.CompanyName,
+                Describe = item.Describe,
+                Id = item.Id,
+                InvoiceNum = invoiceNum,
+                OtherNum = otherNum,
+                ProposerBirthday = item.ProposerBirthday,
+                ProposerEmail = item.ProposerEmail,
+                ProposerIdNumber = item.ProposerIdNumber,
+                ProposerIdType = item.ProposerIdType,
+                ProposerName = item.ProposerName,
+                ProposerPhone = item.ProposerPhone,
+                ProposerSex = item.ProposerSex,
+                RecipientBirthday = item.RecipientBirthday,
+                RecipientEmail = item.RecipientEmail,
+                RecipientIdNumber = item.RecipientIdNumber,
+                RecipientIdType = item.RecipientIdType,
+                RecipientName = item.RecipientName,
+                RecipientPhone = item.RecipientPhone,
+                RecipientSex = item.RecipientSex
+            };
+            return Ok(model);
         }
 
         [HttpPost]
@@ -123,7 +150,7 @@ namespace Inscoo.Controllers
                         }
                     }
                 }
-                foreach (var c in invoiceMedia)//病例
+                foreach (var c in caseMedia)//病例
                 {
                     if (!string.IsNullOrEmpty(c))
                     {
@@ -147,7 +174,7 @@ namespace Inscoo.Controllers
                         }
                     }
                 }
-                foreach (var o in invoiceMedia)//其他资料
+                foreach (var o in otherMedia)//其他资料
                 {
                     if (!string.IsNullOrEmpty(o))
                     {
@@ -165,7 +192,7 @@ namespace Inscoo.Controllers
                                 claim_Id = cid,
                                 CreateTime = DateTime.Now,
                                 FileId = fid,
-                                fileType = 1
+                                fileType = 3
                             };
                             _clamFileAPiService.insert(claimFile);
                         }

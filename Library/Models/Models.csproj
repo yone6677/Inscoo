@@ -75,6 +75,7 @@
     <Compile Include="Account\RegisterModel.cs" />
     <Compile Include="Api\Archive\ArchiveItemApi.cs" />
     <Compile Include="Api\Archive\DownLoadWechatFileApi.cs" />
+    <Compile Include="Api\Claim\ClaimDetailsApi.cs" />
     <Compile Include="Api\Claim\ClaimItemApi.cs" />
     <Compile Include="Api\Order\GetOrderListApi.cs" />
     <Compile Include="Api\Order\OrderItemApi.cs" />

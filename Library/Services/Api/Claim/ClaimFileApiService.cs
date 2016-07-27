@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.Api
 {
-   public class ClaimFileApiService:IClaimFileApiService
+    public class ClaimFileApiService : IClaimFileApiService
     {
         private readonly IRepository<ClaimFileFromWechatItem> _claimFileApiRepository;
         private readonly ILoggerService _loggerService;
@@ -24,10 +24,31 @@ namespace Services.Api
             {
                 _claimFileApiRepository.Insert(item);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Error, "ClaimFileApiService：insert");
             }
+        }
+        public List<ClaimFileFromWechatItem> GetByCId(int cId, int type)
+        {
+            try
+            {
+                var query = _claimFileApiRepository.Table;
+                query = query.Where(q => q.claim_Id == cId);
+                if (type > 0)
+                {
+                    query = query.Where(q => q.fileType == type);
+                }
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Error, "ClaimFileApiService：insert");
+            }
+            return new List<ClaimFileFromWechatItem>();
         }
     }
 }

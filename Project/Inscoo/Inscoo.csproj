@@ -179,7 +179,6 @@
     <Content Include="App_Data\Sql\Products.sql" />
     <Content Include="App_Data\Sql\Role.sql" />
     <Content Include="Archive\Template\gongzhang.jpg" />
-    <Content Include="Archive\Template\health\logo.png" />
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <Content Include="Archive\Template\jinliananZhang.jpg" />
     <Content Include="Archive\Template\yyzz.jpg" />

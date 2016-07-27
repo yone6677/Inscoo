@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Services.Api
 {
-    public interface IClaimAPiService
+    public interface IClaimFileApiService
     {
-        int insert(ClaimFromWechatItem model);
+        void insert(ClaimFileFromWechatItem item);
+        List<ClaimFileFromWechatItem> GetByCId(int cId, int type = 0);
     }
 }

@@ -97,6 +97,7 @@
                 {
                     <ul>
                         <li class="table-style-control">
+                            <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="请选择将参加该保险方案的员工人数"><span class="icon-explain">*</span></button>
                             @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
                         </li>
                         <li>
@@ -105,17 +106,6 @@
                                 <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
                             </select>
                             @* <span>@Model.StaffRange</span>*@
-                <ul>
-                    <li class="table-style-control">
-                        <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="请选择将参加该保险方案的员工人数"><span class="icon-explain">*</span></button>
-                        @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
-                    </li>
-                    <li>
-                        @Html.HiddenFor(model => model.StaffRange)
-                        <select disabled="disabled" class="product-select">
-                            <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
-                        </select>
-                        @* <span>@Model.StaffRange</span>*@
 
                         </li>
                     </ul>

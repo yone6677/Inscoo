@@ -11,7 +11,7 @@ namespace Services
 {
     public interface IArchiveService
     {
-        void DeleteCarInsuranceExcel(string excelId);
+        void DeleteCarInsuranceExcel(int insuranceId);
         /// <summary>
         /// 删除表记录及文件
         /// </summary>
@@ -67,8 +67,11 @@ namespace Services
         /// <param name="file"></param>
         /// <param name="userName"></param>
         /// <param name="insuranceId"></param>
+        /// <param name="uKey"></param>
         /// <returns></returns>
-        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId);
+        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey);
+
+        void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>
         /// 
         /// </summary>

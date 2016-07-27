@@ -8,6 +8,10 @@ namespace Core.Mapping
     {
         public CarInsuranceMap()
         {
+            Property(p => p.EOrderCode).HasMaxLength(50);
+            Property(p => p.UniqueKey).HasMaxLength(50);
+            Property(p => p.Status).HasMaxLength(5);
+
             HasRequired(c => c.Excel).WithMany().HasForeignKey(c => c.ExcelId);
             HasOptional(c => c.Einsurance).WithMany().HasForeignKey(c => c.EinsuranceId);
         }

@@ -11,6 +11,9 @@
             上传人
         </th>
         <th>
+            电子保单号码
+        </th>
+        <th style="min-width: 180px">
             操作
         </th>
     </tr>
@@ -27,6 +30,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ExceCreateUser)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EOrderCode)
+            </td>
 
 
             <td>
@@ -36,16 +42,23 @@
                     <span>|</span>
                     @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId })
                     <span>|</span>
-                    @Html.ActionLink("删除", "CarInscuranceDelete", new { ExcelId = item.InsuranceId })
+                    @Html.ActionLink("删除", "CarInscuranceDelete", new { insuranceId = item.InsuranceId })
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(item.EinsuranceUrl))
+                    if (item.Status == "A")
                     {
                         <span>|</span>
-                        @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId })
+                        @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
                     }
-                    else
+                    else if (item.Status == "B")
+                    {
+                        <span>|</span>
+                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                        <span>|</span>
+                        @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                    }
+                    else if (item.Status == "C")
                     {
                         <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>

@@ -183,6 +183,10 @@
     <Compile Include="Migrations\201607260818482_claimwechat.Designer.cs">
       <DependentUpon>201607260818482_claimwechat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607270925574_AlterTable_CarInsurance.cs" />
+    <Compile Include="Migrations\201607270925574_AlterTable_CarInsurance.Designer.cs">
+      <DependentUpon>201607270925574_AlterTable_CarInsurance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -246,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607260818482_claimwechat.resx">
       <DependentUpon>201607260818482_claimwechat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607270925574_AlterTable_CarInsurance.resx">
+      <DependentUpon>201607270925574_AlterTable_CarInsurance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,6 +14,12 @@ namespace Models
         /// 文件名
         /// </summary>
         public string ExcelName { get; set; }
+        public string Status { get; set; }
+
+        public string UniqueKey { get; set; }
+
+        public string EOrderCode { get; set; }
+
 
         public string ExceUrl { get; set; }
         public DateTime ExceCreateTime { set; get; }

@@ -216,61 +216,103 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult Buy(CustomizeBuyModel model)
         {
-            if (model.CustomizeProductId > 0)//推荐产品
+            //if (model.CustomizeProductId > 0)//推荐产品
+            //{
+            //    var mixProdt = _mixProductService.GetById(model.CustomizeProductId);
+            //    if (mixProdt != null)
+            //    {
+            //        var cuser = _appUserService.GetCurrentUser();
+            //        var cOrder = new ConfirmOrderModel();
+            //        cOrder.HasFanBao = cuser.FanBao;
+            //        cOrder.HasTiYong = cuser.TiYong;
+            //        cOrder.UserRole = _appUserService.GetUserRoles();
+            //        if (cOrder.UserRole.Count > 0)//获取用户返点
+            //        {
+            //            foreach (var u in cOrder.UserRole)
+            //            {
+            //                if (u.RoleName == "Admin" || u.RoleName == "PartnerChannel")
+            //                {
+            //                    var user = _appUserService.GetCurrentUser();
+            //                    if (user != null)
+            //                    {
+            //                        cOrder.UserRebate = user.Rebate;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        cOrder.OrderName = mixProdt.Name;
+            //        cOrder.StaffRange = mixProdt.StaffRange;
+            //        cOrder.AgeRange = mixProdt.AgeRange;
+            //        cOrder.AnnualExpense = mixProdt.Price;
+            //        int i = 0;
+            //        foreach (var s in mixProdt.ProductMixItem)
+            //        {
+            //            var pitem = new ProductModel()
+            //            {
+            //                Id = s.product.Id,
+            //                CoverageSum = s.CoverageSum,
+            //                PayoutRatio = s.PayoutRatio,
+            //                Price = s.OriginalPrice.ToString(),
+            //                SafeguardName = s.SafefuardName,
+            //                ProdType = s.product.ProdType,
+            //                SafeguardCode = s.product.SafeguardCode,
+            //                InsuredWho = s.product.InsuredWho
+            //            };
+            //            cOrder.ProdItem.Add(pitem);
+            //            if (i == 0)
+            //            {
+            //                cOrder.ids += s.Id;
+            //            }
+            //            else
+            //            {
+            //                cOrder.ids += "," + s.Id;
+            //            }
+            //            i++;
+            //        }
+            //        return View(cOrder);
+            //    }
+            //}
+            if (model.StaffsNum == "0")//推荐产品
             {
-                var mixProdt = _mixProductService.GetById(model.CustomizeProductId);
-                if (mixProdt != null)
+                var cuser = _appUserService.GetCurrentUser();
+                var cOrder = new ConfirmOrderModel();
+                cOrder.HasFanBao = cuser.FanBao;
+                cOrder.HasTiYong = cuser.TiYong;
+                cOrder.UserRole = _appUserService.GetUserRoles();
+                if (cOrder.UserRole.Count > 0)//获取用户返点
                 {
-                    var cuser = _appUserService.GetCurrentUser();
-                    var cOrder = new ConfirmOrderModel();
-                    cOrder.HasFanBao = cuser.FanBao;
-                    cOrder.HasTiYong = cuser.TiYong;
-                    cOrder.UserRole = _appUserService.GetUserRoles();
-                    if (cOrder.UserRole.Count > 0)//获取用户返点
+                    foreach (var u in cOrder.UserRole)
                     {
-                        foreach (var u in cOrder.UserRole)
+                        if (u.RoleName == "Admin" || u.RoleName == "PartnerChannel")
                         {
-                            if (u.RoleName == "Admin" || u.RoleName == "PartnerChannel")
+                            var user = _appUserService.GetCurrentUser();
+                            if (user != null)
                             {
-                                var user = _appUserService.GetCurrentUser();
-                                if (user != null)
-                                {
-                                    cOrder.UserRebate = user.Rebate;
-                                }
+                                cOrder.UserRebate = user.Rebate;
                             }
                         }
                     }
-                    cOrder.OrderName = mixProdt.Name;
-                    cOrder.StaffRange = mixProdt.StaffRange;
-                    cOrder.AgeRange = mixProdt.AgeRange;
-                    cOrder.AnnualExpense = mixProdt.Price;
-                    int i = 0;
-                    foreach (var s in mixProdt.ProductMixItem)
-                    {
-                        var pitem = new ProductModel()
-                        {
-                            Id = s.product.Id,
-                            CoverageSum = s.CoverageSum,
-                            PayoutRatio = s.PayoutRatio,
-                            Price = s.OriginalPrice.ToString(),
-                            SafeguardName = s.SafefuardName,
-                            ProdType = s.product.ProdType,
-                            SafeguardCode = s.product.SafeguardCode,
-                            InsuredWho = s.product.InsuredWho
-                        };
-                        cOrder.ProdItem.Add(pitem);
-                        if (i == 0)
-                        {
-                            cOrder.ids += s.Id;
-                        }
-                        else
-                        {
-                            cOrder.ids += "," + s.Id;
-                        }
-                        i++;
-                    }
-                    return View(cOrder);
                 }
+                var product = _productService.GetById(int.Parse(model.productIds));
+                cOrder.AnnualExpense = decimal.Parse(product.HeadCount3);
+                cOrder.StaffRange = "0";
+                cOrder.AgeRange = model.AgeRangeName;
+                var pmodel = new ProductModel()
+                {
+                    CoverageSum = product.CoverageSum,
+                    Id = product.Id,
+                    InsuredWho = product.InsuredWho,
+                    OriginalPrice = product.HeadCount3,
+                    PayoutRatio = product.PayoutRatio,
+                    Price = product.HeadCount3,
+                    ProdType = product.ProdType,
+                    SafeguardCode = product.SafeguardCode,
+                    SafeguardName = product.SafeguardName
+                };
+                cOrder.ProdItem.Add(pmodel);
+                cOrder.OrderName = model.CaseName;
+                cOrder.ids = product.Id.ToString();
+                return View(cOrder);
             }
             //自选产品
             if (!string.IsNullOrEmpty(model.productIds) && !string.IsNullOrEmpty(model.companyName) && !string.IsNullOrEmpty(model.StaffsNum) && !string.IsNullOrEmpty(model.Avarage))
@@ -405,7 +447,14 @@ namespace Inscoo.Controllers
                 order.Name = model.OrderName;
                 order.Pretium = model.pretium;
                 order.Rebate = _appUserService.GetCurrentUser().Rebate;//Rebate
-                order.StaffRange = model.StaffRange;
+                if (string.IsNullOrEmpty(model.StaffRange))
+                {
+                    order.StaffRange = "0";
+                }
+                else
+                {
+                    order.StaffRange = model.StaffRange;
+                }
                 order.TiYong = model.TiYong;
                 order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
                 var ts = DateTime.Now - DateTime.MinValue;
@@ -582,9 +631,20 @@ namespace Inscoo.Controllers
                         result = "上传的文件内容不能为空";
                     var rowNumber = worksheet.Dimension.Rows;
                     var minInsuranceNumber = 0;
-                    var StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
+                    int StaffRange = 0;
+                    if (order.StaffRange.Trim() == "0")
+                    {
+                        StaffRange = 0;
+                    }
+                    else
+                    {
+                        StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
+                    }
                     switch (StaffRange)
                     {
+                        case 0:
+                            minInsuranceNumber = 1;
+                            break;
                         case 1:
                             minInsuranceNumber = 3;
                             break;
@@ -604,6 +664,7 @@ namespace Inscoo.Controllers
                             minInsuranceNumber = 100;
                             break;
                     }
+
                     if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
                     {
                         TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
@@ -1012,6 +1073,11 @@ namespace Inscoo.Controllers
                     }
                     else
                     {
+                        if (order.State == 3)
+                        {
+                            order.State = 4;//付款通知书已下载
+                            _orderService.Update(order);
+                        }
                         model.PaymentNoticeUrl = _archiveService.GetById(orderBatch.PaymentNoticePDF).Url;
                     }
                     model.YearPrice = order.AnnualExpense;

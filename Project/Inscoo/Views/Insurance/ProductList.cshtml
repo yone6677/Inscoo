@@ -8,16 +8,19 @@
         </th>
         <th style="width:35%;">
             @Html.DisplayNameFor(model => model.SafeguardName)
-           <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="本险种所能保障的本险种本险种所能保障的项目所能保障的项目项目"><span class="icon-explain">*</span></button>
+           <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="本险种所能保障的项目"><span class="icon-explain">*</span></button>
         </th>
         <th style="width:20%;">
             @Html.DisplayNameFor(model => model.CoverageSum)
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="保险公司承担的保险金责任的最高限额"><span class="icon-explain">*</span></button>
         </th>
         <th style="width:22%;">
             @Html.DisplayNameFor(model => model.PayoutRatio)
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="保险公司将按照该比例"><span class="icon-explain">*</span></button>
         </th>
         <th style="width:15%;">
             @Html.DisplayNameFor(model => model.Price)
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="获得该保险保障需支付的保险费用"><span class="icon-explain">*</span></button>
         </th>
     </tr>
     @{
@@ -67,8 +70,6 @@
                 </tr>
                 <tr>
                     <td colspan="4" class="hideDeclare" style="text-align:left">
-                        @*<span>被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.被保险人遭受意外伤害，并自意外伤害发生之日起180日内因该意外伤害身故的，保险人按保险金额给付身故保险金.</span>&nbsp;&nbsp;
-                            <a class="">请查看保险条款</a>*@
                         <span>@item.ProdMemo</span>&nbsp;&nbsp;
                         @if (!string.IsNullOrEmpty(item.ProvisionPath))
                         {
@@ -101,6 +102,7 @@
             <li style="text-align:center;width:40%;line-height:2.5em">
                 <p style="margin:0">此报价适用于有社保的1-4类职业</p>
                 <a href="http://www.inscoo.com/Archive/InsuranceFiles/A0.pdf" target="_blank">职业类别分类</a>
+                <button data-toggle="tooltip" class="btn-explain" data-placement="right" title="不同职业类别的人身风险不同"><span class="icon-explain">*</span></button>
             </li>
         </ul>
     </div>

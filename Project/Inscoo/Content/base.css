@@ -1513,12 +1513,13 @@ div:after {
 .btn-explain .icon-explain {
   font-size: 1.2em;
   vertical-align: middle;
-  padding: 5px;
+  width: 10px;
 }
 .tooltip-inner {
   background: #fff;
   color: #111;
   border: 1px solid #aaa;
+  text-align: left;
 }
 .tooltip.top .tooltip-arrow {
   border-top-color: #aaa;

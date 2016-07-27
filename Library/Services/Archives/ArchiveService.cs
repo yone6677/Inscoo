@@ -42,13 +42,11 @@ namespace Services
             _resourceService = resourceService;
         }
 
-        public void DeleteCarInsuranceExcel(string excelId)
+        public void DeleteCarInsuranceExcel(int insuranceId)
         {
             try
             {
-
-                var item = _rpCarInsurance.GetById(Convert.ToInt32(excelId));
-                _rpCarInsurance.Delete(item);
+                _rpCarInsurance.DeleteById(insuranceId);
             }
             catch (Exception e)
             {
@@ -281,11 +279,13 @@ namespace Services
                             Name = model.Name + model.Postfix,
                             Path = model.Path,
                             Url = model.Path + model.Name + model.Postfix,
-                            EditTime = DateTime.Now
+                            EditTime = DateTime.Now,
                         },
                         AppUserId = userId
 
                     };
+                    item.Status = "A";
+                    item.UniqueKey = DateTime.Now.Ticks.ToString();
                     _rpCarInsurance.InsertGetId(item);
                     return item.Excel.Url;
                 }
@@ -293,11 +293,11 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
                 throw e;
             }
         }
-        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId)
+        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey)
         {
             try
             {
@@ -305,6 +305,7 @@ namespace Services
                 if (model != null)
                 {
                     var item = _rpCarInsurance.GetById(insuranceId);
+                    if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
                     item.Einsurance =
                         new Domain.FileInfo()
                         {
@@ -314,19 +315,45 @@ namespace Services
                             Url = model.Path + model.Name + model.Postfix,
                             EditTime = DateTime.Now
                         };
-
+                    item.Status = "B";
 
                     _rpCarInsurance.Update(item);
                     return item.Einsurance.Url;
                 }
-                throw new Exception("操作失败");
+                throw new WarningException("操作失败");
+            }
+            catch (WarningException e)
+            {
+                throw e;
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "BusinessLicense：Insert");
-                throw e;
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
+                throw new WarningException("操作失败");
             }
         }
+        public void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey)
+        {
+            try
+            {
+                var item = _rpCarInsurance.GetById(insuranceId);
+                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
+                item.EOrderCode = code;
+                item.Status = "C";
+
+                _rpCarInsurance.Update(item);
+            }
+            catch (WarningException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：upload");
+                throw new WarningException("操作失败！");
+            }
+        }
+
         public string InsertUserPortrait(HttpPostedFileBase file)
         {
             try
@@ -368,7 +395,10 @@ namespace Services
                                 ExceCreateTime = excel.CreateTime,
                                 ExceCreateUser = c.AppUser.UserName,
                                 EinsuranceName = ei == null ? "" : ei.Name,
-                                EinsuranceUrl = ei == null ? "" : ei.Url
+                                EinsuranceUrl = ei == null ? "" : ei.Url,
+                                Status = c.Status ?? "",
+                                EOrderCode = c.EOrderCode ?? "",
+                                UniqueKey = c.UniqueKey ?? ""
                             }).ToList();
 
                 return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);

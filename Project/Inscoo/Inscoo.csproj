@@ -504,6 +504,7 @@
     <Content Include="Views\Health\detail\_ProDetail_7.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_8.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_9.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceAddEOrderCode.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 using iTextSharp.text.pdf.draw;
@@ -544,11 +546,12 @@ namespace Services.Orders
                     var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
                     var headImage = Image.GetInstance(imgSrc);
                     headImage.Alignment = Element.ALIGN_RIGHT;
-                    headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
+                    //headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
                     headImage.SpacingAfter = 10;
+                    headImage.IndentationRight = 80;
                     //document.Add(headImage);
                     document.Add(headImage);
-                  
+
                     document.Close();
                     pdfWrite.Close();
                     return paths;
@@ -567,17 +570,25 @@ namespace Services.Orders
             try
             {
                 var order = _orderService.GetById(oid);
+                List<string> pathsToDelete = new List<string>();//生成的临时pdf最后会删除
                 var products = _orderitemService.GetList(oid);
+                bool hasSafeguardType13 = false;// 住院医疗保险
+                string ratioSafeguardType13 = "";
+                bool hasSafeguardType10 = false;//住院门诊医疗保险（含生育）
+                string ratioSafeguardType10 = "";
                 string secondPdfName = null;
+                var font = OperationPDF.GetFont();
                 if (order != null)
                 {
+
                     var paths = _fileService.GenerateFilePathBySuffix(".pdf");
                     var stream = new FileStream(paths[0], FileMode.Create);
                     var baseFont = OperationPDF.GetBaseFont();
-                    var font = OperationPDF.GetFont();
+
                     var document = new Document();
                     PdfWriter writer = PdfWriter.GetInstance(document, stream);
                     document.Open();
+                    #region  manage
                     document.Add(new Phrase("B 投保单位信息", OperationPDF.GetFont("STSONG.ttf", 14, 1)));
                     document.Add(new Phrase(string.Format("（加*处为必填事项，下同）"), font));
                     PdfPTable table = new PdfPTable(6);
@@ -691,6 +702,17 @@ namespace Services.Orders
                     foreach (var p in products)
                     {
                         var prod = _productService.GetById(p.pid);
+                        if (prod.SafeguardCode.Trim() == "SafeguardType13")
+                        {
+                            hasSafeguardType13 = true;
+                            ratioSafeguardType13 = prod.PayoutRatio;
+                        }
+                        if (prod.SafeguardCode.Trim() == "SafeguardType10")
+                        {
+                            hasSafeguardType10 = true;
+                            ratioSafeguardType10 = prod.PayoutRatio;
+                        }
+
                         if (prod != null)
                         {
                             cell2.Phrase = new Phrase(prod.ProdInsuredName, font);
@@ -786,37 +808,108 @@ namespace Services.Orders
                     document.Add(table3);
                     document.Close();
                     secondPdfName = paths[1];
+                    pathsToDelete.Add(paths[0]);
+                    #endregion
                 }
                 if (!string.IsNullOrEmpty(secondPdfName))
                 {
-                    var paths = _fileService.GenerateFilePathBySuffix(".pdf");
-                    var stream = new FileStream(paths[0], FileMode.Create);
-                    var baseFont = OperationPDF.GetBaseFont();
-                    var font = OperationPDF.GetFont();
-                    var document = new Document();
-                    PdfWriter writer = PdfWriter.GetInstance(document, stream);
-                    document.Open();
 
-                    PdfContentByte cb = writer.DirectContent;
-                    PdfImportedPage newPage;
-                    /**/
                     List<string> mergePdf = new List<string>() {
                         "/Archive/Template/投保单1.pdf",
                         secondPdfName,
                         "/Archive/Template/投保单2.pdf"
                     };
-                    for (int j = 0; j < mergePdf.Count; j++)
+
+                    var paths = _fileService.GenerateFilePathBySuffix(".pdf");
+                    pathsToDelete.Add(paths[0]);
+                    #region 生成第三张pdf 
+                    //File.Copy(_httpContext.Request.MapPath("~" + mergePdf[2]), paths[0], true);
+
+
+                    var document = new Document();
+                    var stream = File.Open(paths[0], FileMode.Create);
+                    PdfReader reader3 = new PdfReader(_httpContext.Request.MapPath("~" + mergePdf[2]));
+
+                    PdfStamper stamper = new PdfStamper(reader3, stream);
+                    StringBuilder mes = new StringBuilder();
+
+
+                    var mesContent = mes.ToString();
+
+                    float x = reader3.GetPageSize(1).Width / 2 ;
+                    float y = reader3.GetPageSize(1).GetTop(20) - 170;
+
+                    if (hasSafeguardType13 || hasSafeguardType10)
                     {
-                        PdfReader reader = new PdfReader(_httpContext.Request.MapPath("~" + mergePdf[j]));
-                        var totalPages = reader.NumberOfPages;
-                        for (int i = 1; i <= totalPages; i++)
+                        if (hasSafeguardType13)
                         {
-                            document.NewPage();
-                            newPage = writer.GetImportedPage(reader, i);
-                            cb.AddTemplate(newPage, 1f, 0, 0, 1f, 0, 0);
+                            Phrase mesPhrase = new Phrase($"住院赔付比例为{ratioSafeguardType13}", font);
+                            ColumnText.ShowTextAligned(
+                        stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                        mesPhrase, x, y, 0);
                         }
+                        if (hasSafeguardType10)
+                        {
+                            Phrase mesPhrase = new Phrase($"住院/门诊赔付比例为{ratioSafeguardType10}（该保障产品的赔付比例）,生育责任限额5000元，免赔3000元", font);
+                            ColumnText.ShowTextAligned(
+                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                    mesPhrase, x, y - 15, 0);
+                        }
+                        Phrase mesPhrase1 = new Phrase("无其他特别约定", font);
+                        ColumnText.ShowTextAligned(
+                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                    mesPhrase1, x, y - 30, 0);
                     }
+                    else
+                    {
+                        Phrase mesPhrase = new Phrase("无特别约定", font);
+                        ColumnText.ShowTextAligned(
+                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                    mesPhrase, x, y, 0);
+                    }
+
+                    stamper.Close();
+                    reader3.Close();
+                    #endregion
+                    reader3 = new PdfReader(paths[0]);//第3张pdf
+                    var reader2 = new PdfReader(_httpContext.Request.MapPath("~" + secondPdfName));//第2张pdf
+                    var reader1 = new PdfReader(_httpContext.Request.MapPath("~" + mergePdf[0]));//第1张pdf
+
+                    paths = _fileService.GenerateFilePathBySuffix(".pdf");//最终文件
+                    stream = new FileStream(paths[0], FileMode.Create);
+                    document = new Document();
+
+                    var copy = new PdfCopy(document, stream);
+
+                    //writer = PdfWriter.GetInstance(document, stream);
+                    document.Open();
+                    copy.AddDocument(reader1);
+                    copy.AddDocument(reader2);
+                    copy.AddDocument(reader3);
                     document.Close();
+                    reader1.Close();
+                    reader2.Close();
+                    reader3.Close();
+                    Task.Run(() =>
+                    {
+                        pathsToDelete.ForEach(p => File.Delete(p));
+                    });
+
+                    //PdfContentByte cb = writer.DirectContent;
+                    //PdfImportedPage newPage;
+                    ///**/
+
+                    //for (int j = 0; j < mergePdf.Count; j++)
+                    //{
+                    //    PdfReader reader = new PdfReader(_httpContext.Request.MapPath("~" + mergePdf[j]));
+                    //    var totalPages = reader.NumberOfPages;
+                    //    for (int i = 1; i <= totalPages; i++)
+                    //    {
+                    //        document.NewPage();
+                    //        newPage = writer.GetImportedPage(reader, i);
+                    //        cb.AddTemplate(newPage, 1f, 0, 0, 1f, 0, 0);
+                    //    }
+                    //}
                     return paths;
                 }
             }
@@ -826,5 +919,7 @@ namespace Services.Orders
             }
             return null;
         }
+
+
     }
 }

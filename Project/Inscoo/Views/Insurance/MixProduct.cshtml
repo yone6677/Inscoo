@@ -1,6 +1,16 @@
 ﻿@model IEnumerable<Models.Insurance.RecommendationModel>
 
 
+@using (Html.BeginForm("Buy", "Order", FormMethod.Post, new { id = "purchaseForm" }))
+{
+    <input type="hidden" name="companyName" value="YAIC" />
+    <input type="hidden" name="productIds" id="productIds" value="" />
+    <input type="hidden" name="StaffsNum" id="StaffsNum" value="0" />
+    <input type="hidden" name="Avarage" id="Avarage" value="" />
+    <input type="hidden" name="Price" id="Price" value="0.00" />
+    <input type="hidden" name="CaseName" id="CaseName" value="" />
+    <input type="hidden" name="AgeRangeName" id="AgeRangeName" value="" />
+}
 
 <div class="panel inscooCase">
     <div class="inscooCase-title-left">
@@ -132,7 +142,7 @@
                         </div>
                     </td>
                     <td style="width:20%;background:#F5F5F5">
-                      年龄：<select name="sel1" id="sel1" onchange="changeSel1()">
+                        年龄：<select name="sel1" id="sel1" onchange="changeSel1()">
                             <option value="0" selected="selected">0-49周岁</option>
                             <option value="1">50-54周岁</option>
                             <option value="2">55-59周岁</option>
@@ -141,7 +151,7 @@
                         <div class="programme-price" id="programme-price1">3500元 / 年</div>
                         <p class="programme-clause">
                             <input type="hidden" name="CustomizeProductId" value="2" />
-                            <input type="submit" value="立即购买" class="btn btn-success" />
+                            <input type="button" value="立即购买" onclick="purchase(1)" class="btn btn-success" />
                         </p>
                         <a href="http://www.inscoo.com/Archive/InsuranceFiles/v21.pdf" target="_blank">保险条款</a>
                     </td>
@@ -270,7 +280,7 @@
                         </div>
                     </td>
                     <td style="width:20%;background:#F5F5F5">
-                      年龄：<select name="sel2" id="sel2"  onchange="changeSel2()">
+                        年龄：<select name="sel2" id="sel2" onchange="changeSel2()">
                             <option value="0" selected="selected">0-49周岁</option>
                             <option value="1">50-54周岁</option>
                             <option value="2">55-59周岁</option>
@@ -279,7 +289,7 @@
                         <div class="programme-price" id="programme-price2">6600元 / 年</div>
                         <p class="programme-clause">
                             <input type="hidden" name="CustomizeProductId" value="2" />
-                            <input type="submit" value="立即购买" class="btn btn-success" />
+                            <input type="button" value="立即购买" onclick="purchase(2)" class="btn btn-success" />
                         </p>
                         <a href="http://www.inscoo.com/Archive/InsuranceFiles/v22.pdf" target="_blank">保险条款</a>
                     </td>
@@ -413,16 +423,16 @@
                         </div>
                     </td>
                     <td style="width:20%;background:#F5F5F5">
-                            年龄：<select name="sel3" id="sel3"  onchange="changeSel3()">
-                                <option value="0" selected="selected">0-44周岁</option>
-                                <option value="1">45-49周岁</option>
-                                <option value="2">50-54周岁</option>
-                                <option value="3">55-59周岁</option>
-                            </select>
+                        年龄：<select name="sel3" id="sel3" onchange="changeSel3()">
+                            <option value="0" selected="selected">0-44周岁</option>
+                            <option value="1">45-49周岁</option>
+                            <option value="2">50-54周岁</option>
+                            <option value="3">55-59周岁</option>
+                        </select>
                         <div class="programme-price" id="programme-price3">16610元 / 年</div>
                         <p class="programme-clause">
                             <input type="hidden" name="CustomizeProductId" value="3" />
-                            <input type="submit" value="立即购买" onclick="clickBtn()" class="btn btn-success" />
+                            <input type="submit" value="立即购买" onclick="purchase(3)" class="btn btn-success" />
                         </p>
                         <a href="http://www.inscoo.com/Archive/InsuranceFiles/v23.pdf" target="_blank">保险条款</a>
                     </td>
@@ -432,6 +442,80 @@
     </div>
 
 </div>
-
-
-
+<script>
+    function purchase(e) {
+        var ageRange;
+        var price;
+        var id = 0;
+        var caseName;
+        var ageRangeName;
+        switch (e) {
+            case 1:
+                ageRange = parseInt($("#sel1").val());
+                ageRangeName = $("#sel1").find("option:selected").text();
+                price = document.getElementById("programme-price1").innerText;
+                caseName = "保酷计划一"
+                switch (ageRange) {
+                    case 0:
+                        id = 752;
+                        break;
+                    case 1:
+                        id = 944;
+                        break;
+                    case 2:
+                        id = 945;
+                        break;
+                    case 3:
+                        id = 946;
+                        break;
+                }
+                break;
+            case 2:
+                ageRange = parseInt($("#sel2").val());
+                ageRangeName = $("#sel2").find("option:selected").text();
+                price = document.getElementById("programme-price2").innerText;
+                caseName = "保酷计划二"
+                switch (ageRange) {
+                    case 0:
+                        id = 947;
+                        break;
+                    case 1:
+                        id = 948;
+                        break;
+                    case 2:
+                        id = 949;
+                        break;
+                    case 3:
+                        id = 950;
+                        break;
+                }
+                break;
+            case 3:
+                ageRange = parseInt($("#sel3").val());
+                ageRangeName = $("#sel3").find("option:selected").text();
+                price = document.getElementById("programme-price3").innerText;
+                caseName = "保酷计划三"
+                switch (ageRange) {
+                    case 0:
+                        id = 951;
+                        break;
+                    case 1:
+                        id = 952;
+                        break;
+                    case 2:
+                        id = 953;
+                        break;
+                    case 3:
+                        id = 954;
+                        break;
+                }
+                break;
+        }
+        $("#CaseName").val(caseName);
+        $("#productIds").val(id);
+        $("#Avarage").val(ageRange);
+        $("#Price").val(price);
+        $("#AgeRangeName").val(ageRangeName);
+        $("#purchaseForm").submit();
+    }
+</script>

@@ -196,13 +196,11 @@ function changeSel1() {
 function changeSel2() {
     var arr2 = ['6600元/年', '9500元/年', '11000元/年', '13000元/年'];
     var nowOpt = $("#sel2").val();
-    console.log(arr2[nowOpt]);
     $("#programme-price2").text(arr2[nowOpt]);
 }
 function changeSel3() {
     var arr3 = ['16610元/年', '19388元/年', '24886元/年', '33489元/年'];
     var nowOpt = $("#sel3").val();
-    console.log(arr3[nowOpt]);
     $("#programme-price3").text(arr3[nowOpt]);
 }
 

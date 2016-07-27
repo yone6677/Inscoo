@@ -91,19 +91,22 @@
                         }
                     </li>
                 </ul>
-                <ul>
-                    <li class="table-style-control">
-                        @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
-                    </li>
-                    <li>
-                        @Html.HiddenFor(model => model.StaffRange)
-                        <select disabled="disabled" class="product-select">
-                            <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
-                        </select>
-                        @* <span>@Model.StaffRange</span>*@
+                @if (Model.StaffRange != "0")
+                {
+                    <ul>
+                        <li class="table-style-control">
+                            @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
+                        </li>
+                        <li>
+                            @Html.HiddenFor(model => model.StaffRange)
+                            <select disabled="disabled" class="product-select">
+                                <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
+                            </select>
+                            @* <span>@Model.StaffRange</span>*@
 
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                }
                 <ul>
                     <li class="table-style-control">
                         @Html.LabelFor(model => model.AgeRange, htmlAttributes: new { @class = "control-label" }) :

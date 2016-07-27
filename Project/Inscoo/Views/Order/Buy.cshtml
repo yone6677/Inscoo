@@ -65,6 +65,7 @@
             <dd class="dd-product-style">
                 <ul>
                     <li class="table-style-control">
+                        <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="您可以给您选择的方案取一个特别的名字，例如：备选方案一"><span class="icon-explain">*</span></button>
                         @Html.LabelFor(model => model.OrderName, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
@@ -83,6 +84,7 @@
                 </ul>
                 <ul>
                     <li class="table-style-control">
+                        <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="您可以给您选择的方案进行注释，例如：用于高管"><span class="icon-explain">*</span></button>
                         @Html.LabelFor(model => model.Memo, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
@@ -93,6 +95,7 @@
                 </ul>
                 <ul>
                     <li class="table-style-control">
+                        <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="请选择将参加该保险方案的员工人数"><span class="icon-explain">*</span></button>
                         @Html.LabelFor(model => model.StaffRange, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>
@@ -106,6 +109,7 @@
                 </ul>
                 <ul>
                     <li class="table-style-control">
+                        <button data-toggle="tooltip" class="btn-explain" data-placement="left" title="请选择将参加该保险方案的员工平均年龄"><span class="icon-explain">*</span></button>
                         @Html.LabelFor(model => model.AgeRange, htmlAttributes: new { @class = "control-label" }) :
                     </li>
                     <li>

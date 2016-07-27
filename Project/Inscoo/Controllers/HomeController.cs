@@ -47,7 +47,7 @@ namespace Inscoo.Controllers
 
             return PartialView();
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         // GET: Home
         public ActionResult Index()
         {

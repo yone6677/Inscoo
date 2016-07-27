@@ -1073,6 +1073,11 @@ namespace Inscoo.Controllers
                     }
                     else
                     {
+                        if (order.State == 3)
+                        {
+                            order.State = 4;//付款通知书已下载
+                            _orderService.Update(order);
+                        }
                         model.PaymentNoticeUrl = _archiveService.GetById(orderBatch.PaymentNoticePDF).Url;
                     }
                     model.YearPrice = order.AnnualExpense;

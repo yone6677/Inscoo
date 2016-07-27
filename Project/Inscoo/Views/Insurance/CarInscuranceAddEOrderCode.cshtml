@@ -1,7 +1,7 @@
 ﻿@{
-    ViewBag.Title = "上传车险电子保单";
+    ViewBag.Title = "填写电子保单号码";
 }
-@using (Html.BeginForm("CarInscuranceUploadEinsurance", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CarInscuranceAddEOrderCode", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="insuranceId" name="insuranceId" value="@ViewBag.InsuranceId" />
@@ -10,18 +10,18 @@
         <br />
 
         <div class="form-group">
-            <label class="control-label col-md-3">添加电子保单</label>
+            <label class="control-label col-md-3">电子保单号码</label>
             <div class="col-md-9">
-                <input type="file" name="excel" id="excel" required="" />
+                <input type="text" name="code" id="code" required="" class="form-control" />
                 <input type="submit" class="btn btn-info" value="提交" />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-3"></label>
             <div class="col-md-9">
-                @if (ViewBag.Mes == "上传成功")
+                @if (ViewBag.Mes == "操作成功")
                 {
-                    <div class="alert alert-success">上传成功</div>
+                    <div class="alert alert-success">操作成功</div>
                 }
                 else
                 {

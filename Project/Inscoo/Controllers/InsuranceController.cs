@@ -6,6 +6,7 @@ using Models;
 using Services;
 using Services.Products;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -213,21 +214,23 @@ namespace Inscoo.Controllers
             }
             return View();
         }
-        public ActionResult CarInscuranceUploadEinsurance(string insuranceId)
+        public ActionResult CarInscuranceUploadEinsurance(int insuranceId, string uKey)
         {
             ViewBag.InsuranceId = insuranceId;
+            ViewBag.UKey = uKey;
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CarInscuranceUploadEinsurance(HttpPostedFileBase excel, string insuranceId)
+        public ActionResult CarInscuranceUploadEinsurance(HttpPostedFileBase excel, int insuranceId, string uKey)
         {
             try
             {
                 ViewBag.InsuranceId = insuranceId;
+                ViewBag.UKey = uKey;
                 var userName = User.Identity.Name;
                 string mailContent, path;
-                path = _archiveService.InsertCarInsuranceEinsurance(excel, userName, Convert.ToInt32(insuranceId));
+                path = _archiveService.InsertCarInsuranceEinsurance(excel, userName, insuranceId, uKey);
 
                 mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
                 var mailTo = _genericAttributeService.GetByGroup("CarCustomerMailTo").Select(c => c.Value);
@@ -244,15 +247,48 @@ namespace Inscoo.Controllers
 
                 ViewBag.Mes = "上传成功";
             }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
             catch (Exception e)
             {
                 ViewBag.Mes = "上传失败";
             }
             return View();
         }
-        public ActionResult CarInscuranceDelete(string excelId)
+
+        public ActionResult CarInscuranceAddEOrderCode(string insuranceId, string uKey)
         {
-            _archiveService.DeleteCarInsuranceExcel(excelId);
+            ViewBag.InsuranceId = insuranceId;
+            ViewBag.UKey = uKey;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CarInscuranceAddEOrderCode(int insuranceId, string uKey, string code)
+        {
+            try
+            {
+                ViewBag.InsuranceId = insuranceId;
+                ViewBag.UKey = uKey;
+                _archiveService.UploadCarInsuranceEOrderCode(code, insuranceId, uKey);
+
+                ViewBag.Mes = "操作成功";
+            }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Mes = "操作失败";
+            }
+            return View();
+        }
+        public ActionResult CarInscuranceDelete(int insuranceId)
+        {
+            _archiveService.DeleteCarInsuranceExcel(insuranceId);
             return RedirectToAction("CarInscuranceSearch");
         }
 

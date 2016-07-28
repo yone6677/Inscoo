@@ -132,11 +132,11 @@ namespace Services
                                Id = p.Id,
                                ProductType = p.ProductType,
                                CompanyName = p.CompanyName,
-                               //ProductCode = p.ProductCode,
+                               ProductCode = p.ProductCode,
                                ProductName = p.ProductName,
                                ProductTypeName = p.ProductTypeName,
                                ProductMemo = p.ProductMemo,
-                               //CompanyCode = p.CompanyCode,
+                               CompanyCode = p.CompanyCode,
                                CheckProductPic = p.CheckProductPic,
                                PublicPrice = p.PublicPrice,
                                PrivilegePrice = GetPrivilegePrice(role, p)
@@ -150,7 +150,7 @@ namespace Services
                 return new List<VCheckProductList>();
             }
         }
-        public List<VCheckProductList> GetHealthProducts(string uId, string productType, string productCode)
+        public List<VCheckProductList> GetHealthProducts(string uId, string productType, string productName)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace Services
 
                 var products =
                     _repHealthProduct.Table.AsNoTracking()
-                        .Where(p => p.ProductType == productType && p.ProductCode == productCode)
+                        .Where(p => p.ProductType.Trim() == productType && p.ProductName.Trim() == productName.Trim())
                         .OrderBy(h => h.ProductOrder);
 
                 var list = from p in products.ToList()
@@ -168,11 +168,11 @@ namespace Services
                                Id = p.Id,
                                ProductType = p.ProductType,
                                CompanyName = p.CompanyName,
-                               //ProductCode = p.ProductCode,
+                               ProductCode = p.ProductCode,
                                ProductName = p.ProductName,
                                ProductTypeName = p.ProductTypeName,
                                ProductMemo = p.ProductMemo,
-                               //CompanyCode = p.CompanyCode,
+                               CompanyCode = p.CompanyCode,
                                CheckProductPic = p.CheckProductPic,
                                PublicPrice = p.PublicPrice,
                                PrivilegePrice = GetPrivilegePrice(role, p)
@@ -410,6 +410,8 @@ namespace Services
                 {
                     Id = p.Id,
                     ProductName = p.ProductName,
+                    CompanyName = p.CompanyName,
+                    ProductType = p.ProductType,
                     PrivilegePrice = GetPrivilegePrice(role, p),
                     PublicPrice = p.PublicPrice,
                     CheckProductPic = p.CheckProductPic

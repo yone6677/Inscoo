@@ -31,9 +31,9 @@ namespace Services
         /// </summary>
         /// <param name="uId"></param>
         /// <param name="productType"></param>
-        /// <param name="productCode"></param>
+        /// <param name="productName"></param>
         /// <returns></returns>
-        List<VCheckProductList> GetHealthProducts(string uId, string productType, string productCode);
+        List<VCheckProductList> GetHealthProducts(string uId, string productType, string productName);
         /// <summary>
         /// 
         /// </summary>

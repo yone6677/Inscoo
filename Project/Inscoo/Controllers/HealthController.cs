@@ -42,13 +42,13 @@ namespace Inscoo.Controllers
         /// <summary>
         /// 产品信息页面
         /// </summary>
-        /// <param name="productCode"></param>
+        /// <param name="productName"></param>
         /// <param name="productType"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult BuyInfo(string productCode, string productType, int id = -1)
+        public ActionResult BuyInfo(string productName, string productType, int id = -1)
         {
-            var products = _svHealth.GetHealthProducts(User.Identity.GetUserId(), productType, productCode);
+            var products = _svHealth.GetHealthProducts(User.Identity.GetUserId(), productType, productName);
             VCheckProductList targetP = id == -1 ? products.First() : products.First(p => p.Id == id);
             //var model = new VCheckProductDetail() { Id = targetP.Id, CheckProductPic = targetP.CheckProductPic, PrivilegePrice = targetP.PrivilegePrice, PublicPrice = targetP.PublicPrice, ProductName = targetP.ProductName };
 

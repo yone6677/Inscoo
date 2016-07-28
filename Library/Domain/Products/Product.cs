@@ -81,9 +81,17 @@ namespace Domain.Products
 
         public string ProvisionPath { get; set; }
 
+        /// <summary>
+        /// 产品期限类别
+        /// </summary>
         public string ProdTimeLimit { get; set; }
-
+        /// <summary>
+        /// 可否退保
+        /// </summary>
         public bool ProdWithdraw { get; set; }
+        /// <summary>
+        /// 免赔额
+        /// </summary>
         public string ProdAbatement { get; set; }
         public string ProdQuoteType { get; set; }
         public string ProdPayType { get; set; }

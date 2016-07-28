@@ -426,7 +426,7 @@ namespace Services
                 //var s = _rpCarInsurance.Table.FirstOrDefault().CarInsuranceEinsurances;
                 var listOri =
                     _rpCarInsurance.Entities.Include(c => c.Einsurance).Include(c => c.Excel)
-                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1"))
+                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1")).OrderByDescending(o => o.Id)
                        .AsNoTracking().ToList();
                 var list = (from c in listOri
                             let excel = c.Excel

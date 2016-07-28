@@ -8,7 +8,6 @@ namespace Core.Mapping
         public ProductMixItemMap()
         {
             ToTable("ProductMixItem");
-            HasOptional(a => a.product);
             Property(a => a.CoverageSum).IsRequired().HasMaxLength(50);
             Property(a => a.PayoutRatio).IsOptional().HasMaxLength(50);
             Property(a => a.OriginalPrice).IsRequired();

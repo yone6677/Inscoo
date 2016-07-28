@@ -55,11 +55,10 @@
 
     </ul>
     <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
-        <span class="text-info">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
-        <br />
+        <button data-toggle="tooltip" class="btn-explain" data-placement="top" style="padding:5px 10px;" title="注:如果名单上传错误，请重新上传，新上传文件会把原文件替代"><span class="icon-explain text-danger">*</span></button>
         @if (TempData["error"] != null)
         {
-            <span class="text-danger" style="font-size: 1.3em ">错误：@TempData["error"]</span><br />
+            <span class="text-danger" style="font-size: 1em ">错误：@TempData["error"]</span><br />
         }
     </div>
 }
@@ -111,7 +110,7 @@ else
                     @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
                 </li>
             </ul>
-            <ul>
+            <ul style="height:50px">
                 <li>
                     @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
                 </li>

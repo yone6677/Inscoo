@@ -83,43 +83,60 @@ function menuNav(name, csskey, cssvalue) {
     var bgColor = "";
     $(name).each(function () {
         bgColor = $(this).attr("href");
+
         var urlNow = '/' + url.split('/')[1] + '/' + url.split('/')[2] + '/';
         if (bgColor == '/Insurance/CustomizeProduct') {
             if (url == '/Order/Buy') {
-                url = '/Insurance/CustomizeProduct';
+                url = '/order/ordertopay';
             }
             
             if (urlNow == '/Order/EntryInfo/') {
-                url = '/Insurance/CustomizeProduct';
+                url = '/order/ordertopay';
             }
             if (urlNow == '/Order/UploadFile/') {
-                url = '/Insurance/CustomizeProduct';
+                url = '/order/ordertopay';
             }
             if (urlNow == '/Order/ConfirmPayment/') {
-                url = '/Insurance/CustomizeProduct';
+                url = '/order/ordertopay';
             }
         }
-        //if (bgColor == '/order/index') {
-        //    if (urlNow == '/Order/Details/') {
-        //        url = bgColor;
-        //    }
-        //}
-        //if (bgColor == '/order/ordertopay') {
-        //    if (urlNow == '/order/EntryInfo/') {
-        //        url = bgColor;
-        //    }
-        //    if (urlNow == '/order/UploadFile/') {
-        //        url = bgColor;
-        //    }
-        //}
-        //if (bgColor == '/order/CompletedOrder') {
-        //    if (urlNow == '/Order/Details/') {
-        //        url = bgColor;
-        //    }
-        //    if (urlNow == '/order/BuyMore/') {
-        //        url = '/order/CompletedOrder';
-        //    }
-        //}
+        if (bgColor == '/health/index') {
+            if (urlNow == '/health/BuyInfo/') {
+                url = '/health/index';
+            }
+
+            if (urlNow.indexOf('/health/MakeSure') != -1) {
+                url = '/health/index';
+            }
+            if (urlNow.indexOf("/EntryInfo?productId") != -1) {
+                url = '/health/index';
+            }
+            if (urlNow.indexOf("/Health/ConfirmPayment") != -1) {
+                url = '/health/index';
+            }
+        }
+      
+        if (bgColor == '/order/index') {
+            if (urlNow == '/Order/Details/') {
+                url = bgColor;
+            }
+        }
+        if (bgColor == '/order/ordertopay') {
+            if (urlNow == '/order/EntryInfo/') {
+                url = bgColor;
+            }
+            if (urlNow == '/order/UploadFile/') {
+                url = bgColor;
+            }
+        }
+        if (bgColor == '/order/CompletedOrder') {
+            if (urlNow == '/Order/Details/') {
+                url = bgColor;
+            }
+            if (urlNow == '/order/BuyMore/') {
+                url = '/order/CompletedOrder';
+            }
+        }
         if (bgColor == '/user/index') {
             if (urlNow == '/user/Edit/') {
                 url = bgColor;
@@ -137,6 +154,9 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/Nav/Edit/') {
                 url = bgColor;
             }
+            if (urlNow == '/Nav/Create/') {
+                url = bgColor;
+            }
         }
         if (bgColor == '/GenericAttribute/index') {
             if (urlNow == '/GenericAttribute/Details/') {
@@ -146,6 +166,8 @@ function menuNav(name, csskey, cssvalue) {
                 url = bgColor;
             }
         }
+
+
         if (bgColor == url) {
             $(this).addClass('nav-background');
             $(this).parent().parent().addClass('in');

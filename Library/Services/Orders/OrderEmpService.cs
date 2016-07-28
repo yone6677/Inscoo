@@ -544,13 +544,13 @@ namespace Services.Orders
                     document.Add(list);
                     document.Add(new Paragraph() { SpacingAfter = 100 });
                     var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
-                    var headImage = Image.GetInstance(imgSrc);
-                    headImage.Alignment = Element.ALIGN_RIGHT;
+                    var yinZhangImage = Image.GetInstance(imgSrc);
+                    yinZhangImage.Alignment = Element.ALIGN_RIGHT;
                     //headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
-                    headImage.SpacingAfter = 10;
-                    headImage.IndentationRight = 80;
+                    yinZhangImage.SpacingAfter = 20;
+                    yinZhangImage.IndentationRight = 80;
                     //document.Add(headImage);
-                    document.Add(headImage);
+                    document.Add(yinZhangImage);
 
                     document.Close();
                     pdfWrite.Close();

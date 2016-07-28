@@ -148,7 +148,9 @@ namespace Services
         {
             try
             {
-                return _repHealthOrderMaster.GetById(id);
+                var result = _repHealthOrderMaster.GetById(id);
+
+                return result;
             }
             catch (Exception e)
             {
@@ -487,6 +489,7 @@ namespace Services
                     master.PersonExcelPath = fileModel.Url;
                     _repHealthOrderMaster.Update(master);
 
+
                     return result;
                 }
                 else
@@ -532,6 +535,7 @@ namespace Services
             {
                 var master = GetConfirmPayment(masterId);
                 var masterUp = GetHealthMaster(masterId);
+                if (!masterUp.CompanyId.HasValue) return null;
                 var paths = _svFile.GenerateFilePathBySuffix(".pdf");
                 masterUp.PaymentNoticePdf = "";
                 masterUp.PaymentNoticePdf = @"../.." + paths[1];
@@ -603,11 +607,11 @@ namespace Services
                 table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
                 table.SetWidths(new int[2] { 30, 70 });
                 table.AddCell(new PdfPCell(new Phrase("开户公司：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("上海皓为商务咨询有限公司", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("开户银行：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("工商银行武进路支行", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("ss", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("1001213909200135268", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase(master.BaokuOrderCode, font)) { BorderWidth = 0 });
                 document.Add(table);
@@ -617,7 +621,7 @@ namespace Services
                 { IndentationLeft = 56 });
                 document.Add(
                     new Paragraph(
-                        $"Company Name: ss\nBank Name: ss \nAccount No.: ss  \nRemark: {master.BaokuOrderCode}")
+                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
                     {
                         IndentationLeft = 56
                     });
@@ -674,15 +678,17 @@ namespace Services
                 document.Add(list);
 
                 document.Add(new Paragraph() { SpacingAfter = 100 });
-                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
-                var headImage = iTextSharp.text.Image.GetInstance(imgSrc);
-                headImage.Alignment = Element.ALIGN_RIGHT;
-                headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
-                headImage.SpacingAfter = 10;
+                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
+                var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
+                yinZhangImage.ScalePercent(40, 40);
+                yinZhangImage.Alignment = Element.ALIGN_RIGHT;
+
+                yinZhangImage.SpacingBefore = 40;
+                yinZhangImage.IndentationRight = 80;
                 //document.Add(headImage);
-                document.Add(headImage);
+                document.Add(yinZhangImage);
                 document.Close();
-              
+
                 return paths[0];
                 //GetPaymentNoticePdf(masterId);
             }

@@ -52,6 +52,21 @@ namespace Services.Products
                 return null;
             }
         }
+        public Product GetByItemNo(string itemNo)
+        {
+            try
+            {
+                var query = _productRepository.TableFromBuffer();
+                query = query.Where(q => q.ItemNo == itemNo.Trim());
+                return query.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "ProductService：GetByItemNo");
+            }
+            return null;
+        }
+
         public SelectList GetInsuredComs(string selectedValue)
         {
             try

@@ -293,7 +293,7 @@ namespace Inscoo.Controllers
                         }
                     }
                 }
-                var product = _productService.GetById(int.Parse(model.productIds));
+                var product = _productService.GetByItemNo(model.productIds);
                 cOrder.AnnualExpense = decimal.Parse(product.HeadCount3);
                 cOrder.StaffRange = "0";
                 cOrder.AgeRange = model.AgeRangeName;

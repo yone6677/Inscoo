@@ -446,7 +446,7 @@
     function purchase(e) {
         var ageRange;
         var price;
-        var id = 0;
+        var itemNo;
         var caseName;
         var ageRangeName;
         switch (e) {
@@ -457,16 +457,16 @@
                 caseName = "保酷计划一"
                 switch (ageRange) {
                     case 0:
-                        id = 752;
+                        itemNo = 'Insc116';
                         break;
                     case 1:
-                        id = 944;
+                        itemNo = 'Insc308';
                         break;
                     case 2:
-                        id = 945;
+                        itemNo = 'Insc309';
                         break;
                     case 3:
-                        id = 946;
+                        itemNo = 'Insc310';
                         break;
                 }
                 break;
@@ -477,16 +477,16 @@
                 caseName = "保酷计划二"
                 switch (ageRange) {
                     case 0:
-                        id = 947;
+                        itemNo = 'Insc311';
                         break;
                     case 1:
-                        id = 948;
+                        itemNo = 'Insc312';
                         break;
                     case 2:
-                        id = 949;
+                        itemNo = 'Insc313';
                         break;
                     case 3:
-                        id = 950;
+                        itemNo = 'Insc314';
                         break;
                 }
                 break;
@@ -497,22 +497,22 @@
                 caseName = "保酷计划三"
                 switch (ageRange) {
                     case 0:
-                        id = 951;
+                        itemNo = 'Insc315';
                         break;
                     case 1:
-                        id = 952;
+                        itemNo = 'Insc316';
                         break;
                     case 2:
-                        id = 953;
+                        itemNo = 'Insc317';
                         break;
                     case 3:
-                        id = 954;
+                        itemNo = 'Insc318';
                         break;
                 }
                 break;
         }
         $("#CaseName").val(caseName);
-        $("#productIds").val(id);
+        $("#productIds").val(itemNo);
         $("#Avarage").val(ageRange);
         $("#Price").val(price);
         $("#AgeRangeName").val(ageRangeName);

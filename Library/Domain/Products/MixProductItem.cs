@@ -30,6 +30,6 @@ namespace Domain.Products
         /// <summary>
         /// 关联基础产品
         /// </summary>
-        public virtual Product product { get; set; }
+        //public virtual Product product { get; set; }
     }
 }

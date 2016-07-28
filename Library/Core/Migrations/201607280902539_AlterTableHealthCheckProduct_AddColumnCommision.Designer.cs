@@ -13,7 +13,7 @@ namespace Core.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201607280809005_AlterTableHealthCheckProduct_AddColumnCommision"; }
+            get { return "201607280902539_AlterTableHealthCheckProduct_AddColumnCommision"; }
         }
         
         string IMigrationMetadata.Source

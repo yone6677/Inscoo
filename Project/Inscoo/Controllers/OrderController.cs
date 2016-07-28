@@ -458,8 +458,8 @@ namespace Inscoo.Controllers
                 order.TiYong = model.TiYong;
                 order.Insurer = _productService.GetById(int.Parse(li[0].ToString())).InsuredCom;//保险公司名称
                 var ts = DateTime.Now - DateTime.MinValue;
-                var ary = ts.TotalMilliseconds.ToString().Split('.');
-                order.OrderNum = "Ins" + ary[0];
+                order.OrderNum = "INS" + DateTime.Now.Ticks;
+                order.ProdWithdraw = true;
                 int result = _orderService.Insert(order);
                 if (result > 0)//写产品&批次
                 {
@@ -484,11 +484,16 @@ namespace Inscoo.Controllers
                     {
                         avarag = int.Parse(avar.Value);
                     }
+                    bool ProdWithdraw = true;
                     foreach (var s in li)
                     {
                         var item = _productService.GetProductPrice(s, null, staffnum, avarag);
                         if (item != null)
                         {
+                            if (!item.ProdWithdraw)
+                            {
+                                ProdWithdraw = false;
+                            }
                             var orderItem = new OrderItem()
                             {
                                 pid = item.Id,
@@ -501,11 +506,16 @@ namespace Inscoo.Controllers
                                 Price = decimal.Parse(item.Price),
                                 ProdType = item.ProdType,
                                 SafeguardCode = item.SafeguardCode,
-                                SafeguardName = item.SafeguardName
+                                SafeguardName = item.SafeguardName,
+                                ProdAbatement = item.ProdAbatement,
+                                ProdTimeLimit = item.ProdTimeLimit,
+                                ProdWithdraw = item.ProdWithdraw
                             };
                             _orderItemService.Insert(orderItem);
                         }
                     }
+                    order.ProdWithdraw = ProdWithdraw;//若某个产品无法退保,则此订单无法退保
+                    _orderService.Update(order);
                     return RedirectToAction("EntryInfo", new { id = result });//redirect entry infomation
                 }
             }
@@ -564,11 +574,35 @@ namespace Inscoo.Controllers
                     order.Linkman = model.Linkman;
                     order.PhoneNumber = model.PhoneNumber;
                     order.Address = model.Address;
-
-
-
                     order.StartDate = DateTime.Parse(model.StartDate);
-                    order.EndDate = DateTime.Parse(model.StartDate).AddYears(1).AddSeconds(-1);
+
+                    var timeLimit = order.orderItem.FirstOrDefault().ProdTimeLimit;
+                    if (string.IsNullOrEmpty(timeLimit))
+                    {
+                        order.EndDate = DateTime.Parse(model.StartDate).AddYears(1).AddSeconds(-1);
+                    }
+                    else
+                    {
+                        switch (timeLimit)
+                        {
+                            case "年":
+                                order.EndDate = DateTime.Parse(model.StartDate).AddYears(1).AddSeconds(-1);
+                                break;
+                            case "季":
+                                order.EndDate = DateTime.Parse(model.StartDate).AddMonths(3).AddSeconds(-1);
+                                break;
+                            case "月":
+                                order.EndDate = DateTime.Parse(model.StartDate).AddMonths(1).AddSeconds(-1);
+                                break;
+                            case "周":
+                                order.EndDate = DateTime.Parse(model.StartDate).AddDays(7).AddSeconds(-1);
+                                break;
+                            case "日":
+                                order.EndDate = DateTime.Parse(model.StartDate).AddDays(1).AddSeconds(-1);
+                                break;
+                        }
+                    }
+
                     order.State = 2;//已完成人员上传
                     if (_orderService.Update(order))
                     {
@@ -927,14 +961,30 @@ namespace Inscoo.Controllers
                         }
                         if (orderBatch.PolicyPDF == 0)
                         {
-                            var virpath = _orderEmpService.GetPolicyPdf(id);//产生投保单PDF文件
-                            if (virpath != null)
+                            var product = _productService.GetById(order.orderItem.FirstOrDefault().pid);//
+                            if (string.IsNullOrEmpty(product.ProdCreateType))
                             {
-                                var fid = _archiveService.InsertByUrl(virpath, FileType.PolicySeal.ToString(), id, "投保单PDF");
-                                orderBatch.PolicyPDF = fid;
-                                if (_orderBatchService.Update(orderBatch))
+                                var virpath = _orderEmpService.GetPolicyPdf(id);//产生投保单PDF文件
+                                if (virpath != null)
                                 {
-                                    model.InsurancePolicyTemp = virpath[1];
+                                    var fid = _archiveService.InsertByUrl(virpath, FileType.PolicySeal.ToString(), id, "投保单PDF");
+                                    orderBatch.PolicyPDF = fid;
+                                    if (_orderBatchService.Update(orderBatch))
+                                    {
+                                        model.InsurancePolicyTemp = virpath[1];
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var archive = _archiveService.InsertByUrl(product.ProdCreateType, FileType.PolicySeal.ToString(), id, "投保单PDF");
+                                if (archive != null)
+                                {
+                                    orderBatch.PolicyPDF = archive.Id;
+                                    if (_orderBatchService.Update(orderBatch))
+                                    {
+                                        model.InsurancePolicyTemp = archive.Url;
+                                    }
                                 }
                             }
                         }
@@ -1126,6 +1176,7 @@ namespace Inscoo.Controllers
                 model.State = _genericAttributeService.GetByKey(null, "orderState", order.State.ToString()).Key;
                 model.Role = role;
                 model.OrderNum = order.OrderNum;
+                model.ProdTimeLimit = order.orderItem.FirstOrDefault().ProdTimeLimit;//产品期限
                 model.orderItem = _orderItemService.GetList(id).Select(p => new ProductModel
                 {
                     CoverageSum = p.CoverageSum,
@@ -1558,6 +1609,10 @@ namespace Inscoo.Controllers
                         }
                         if (insType == "减保")
                         {
+                            if (!order.ProdWithdraw)//若此订单无法减保
+                            {
+                                throw new Exception("此订单类型不允许退保，Excel中第" + i + "行数据为减保，请检查");
+                            }
                             item.PMCode = PMType.PM16.ToString();
                             item.BuyType = 2;
                             item.EndDate = changeDate;

@@ -43,5 +43,17 @@ namespace Domain.Orders
 
         public virtual Order order { get; set; }
         public int order_Id { get; set; }
+        /// <summary>
+        /// 产品期限
+        /// </summary>
+        public string ProdTimeLimit { get; set; }
+        /// <summary>
+        /// 是否可以退保
+        /// </summary>
+        public bool ProdWithdraw { get; set; }
+        /// <summary>
+        /// 免赔额
+        /// </summary>
+        public string ProdAbatement { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 using Core.Pager;
 using Models;
 using Models.Api.Archive;
+using Models.Infrastructure;
 
 namespace Services
 {
@@ -28,6 +29,12 @@ namespace Services
         Task DeleteFileBuUrl(string url);
         int InsertByWechat(DownLoadWechatFileApi model);
         int InsertByUrl(List<string> fileInfo, string type, int pid, string memo = null);
+        /// <summary>
+        /// 保存网络资源文件，只保存url其他留空
+        /// </summary>
+        /// <returns></returns>
+        Archive InsertByUrl(string url, string type, int pid, string memo = null); 
+        int InsertBySaveResult(SaveResultModel model, string type, int pid, string memo = null);
         /// <summary>
         /// 保酷上传
         /// </summary>

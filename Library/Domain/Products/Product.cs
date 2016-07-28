@@ -80,21 +80,29 @@ namespace Domain.Products
         public string changer { get; set; }
 
         public string ProvisionPath { get; set; }
-
         /// <summary>
-        /// 产品期限类别
+        /// 产品期限
         /// </summary>
         public string ProdTimeLimit { get; set; }
         /// <summary>
-        /// 可否退保
+        /// 是否可以退保
         /// </summary>
         public bool ProdWithdraw { get; set; }
         /// <summary>
         /// 免赔额
         /// </summary>
         public string ProdAbatement { get; set; }
+        /// <summary>
+        /// 报价方式
+        /// </summary>
         public string ProdQuoteType { get; set; }
+        /// <summary>
+        /// 缴费方式
+        /// </summary>
         public string ProdPayType { get; set; }
+        /// <summary>
+        /// 投保单生成方式
+        /// </summary>
         public string ProdCreateType { get; set; }
     }
 }

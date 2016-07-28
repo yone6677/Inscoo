@@ -30,7 +30,7 @@ namespace Services
         /// <param name="url">路径</param>
         /// <param name="fileName">文件名称</param>
         void DownloadFile(string url, string fileName);
-
+        SaveResultModel DownFileByUrl(string url);
         void DeleteFile(string url);
         /// <summary>
         /// 使用反射获取类的属性和值

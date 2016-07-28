@@ -342,6 +342,10 @@ namespace Services.Products
                         model.SafeguardCode = item.SafeguardCode;
                         model.SafeguardName = item.SafeguardName;
                         model.PayoutRatio = item.PayoutRatio;
+
+                        model.ProdTimeLimit = item.ProdTimeLimit;
+                        model.ProdAbatement = item.ProdAbatement;
+                        model.ProdWithdraw = item.ProdWithdraw;
                     }
                     else
                     {
@@ -356,6 +360,10 @@ namespace Services.Products
                             model.SafeguardCode = item.SafeguardCode;
                             model.SafeguardName = item.SafeguardName;
                             model.PayoutRatio = item.PayoutRatio;
+
+                            model.ProdTimeLimit = item.ProdTimeLimit;
+                            model.ProdAbatement = item.ProdAbatement;
+                            model.ProdWithdraw = item.ProdWithdraw;
                         }
                     }
                 }

@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201607270925574_AlterTable_CarInsurance.Designer.cs">
       <DependentUpon>201607270925574_AlterTable_CarInsurance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607280322561_order.cs" />
+    <Compile Include="Migrations\201607280322561_order.Designer.cs">
+      <DependentUpon>201607280322561_order.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -253,6 +257,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607270925574_AlterTable_CarInsurance.resx">
       <DependentUpon>201607270925574_AlterTable_CarInsurance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607280322561_order.resx">
+      <DependentUpon>201607280322561_order.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

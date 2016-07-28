@@ -20,5 +20,17 @@ namespace Models
         public string Price { get; set; }
         [DisplayName("原价")]
         public string OriginalPrice { get; set; }
+        /// <summary>
+        /// 产品期限
+        /// </summary>
+        public string ProdTimeLimit { get; set; }
+        /// <summary>
+        /// 是否可以退保
+        /// </summary>
+        public bool ProdWithdraw { get; set; }
+        /// <summary>
+        /// 免赔额
+        /// </summary>
+        public string ProdAbatement { get; set; }
     }
 }

@@ -115,5 +115,9 @@ namespace Domain.Orders
         /// 投保批次
         /// </summary>
         public virtual ICollection<OrderBatch> orderBatch { get; set; }
+        /// <summary>
+        /// 是否可以退保
+        /// </summary>
+        public bool ProdWithdraw { get; set; }
     }
 }

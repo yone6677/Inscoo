@@ -682,7 +682,7 @@ namespace Services.Orders
                     cell2.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell2.VerticalAlignment = Element.ALIGN_MIDDLE;
                     cell2.FixedHeight = 22;
-                    cell2.Phrase = new Phrase("*险种名称", font);
+                    cell2.Phrase = new Phrase("*保险名称", font);
                     cell2.Colspan = 1;
                     cell2.Rowspan = 2;
                     table2.AddCell(cell2);
@@ -726,7 +726,7 @@ namespace Services.Orders
                         table2.AddCell(cell2);
                         cell2.Phrase = new Phrase(p.CoverageSum, font);
                         table2.AddCell(cell2);
-                        cell2.Phrase = new Phrase("无", font);//免赔
+                        cell2.Phrase = new Phrase(p.ProdAbatement, font);//免赔
                         table2.AddCell(cell2);
                         cell2.Phrase = new Phrase(p.PayoutRatio, font);
                         table2.AddCell(cell2);
@@ -836,7 +836,7 @@ namespace Services.Orders
 
                     var mesContent = mes.ToString();
 
-                    float x = reader3.GetPageSize(1).Width / 2 ;
+                    float x = reader3.GetPageSize(1).Width / 2;
                     float y = reader3.GetPageSize(1).GetTop(20) - 170;
 
                     if (hasSafeguardType13 || hasSafeguardType10)

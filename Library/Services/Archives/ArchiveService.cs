@@ -130,6 +130,51 @@ namespace Services
                 _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
             }
         }
+        public int InsertBySaveResult(SaveResultModel model, string type, int pid, string memo = null)
+        {
+            try
+            {
+                var item = new Archive()
+                {
+                    pId = pid,
+                    Memo = memo,
+                    Author = _authenticationManager.User.Identity.Name,
+                    Name = model.Name + "." + model.Postfix,
+                    Type = type,
+                    Path = model.Path,
+                    Url = model.Path + model.Name + "." + model.Postfix
+                };
+                return _archiveRepository.InsertGetId(item);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：InsertBySaveResult");
+            }
+            return 0;
+        }
+        public Archive InsertByUrl(string url, string type, int pid, string memo = null)
+        {
+            try
+            {
+                var item = new Archive()
+                {
+                    pId = pid,
+                    Memo = memo,
+                    Author = _authenticationManager.User.Identity.Name,
+                    Name = "",
+                    Type = type,
+                    Path = "",
+                    Url = url
+                };
+                _archiveRepository.Insert(item);
+                return item;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：InsertByUrl");
+            }
+            return null;
+        }
         public int InsertByWechat(DownLoadWechatFileApi model)
         {
             try
@@ -145,7 +190,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "FileInfo：InsertByWechat");
+                _loggerService.insert(e, LogLevel.Warning, "Archive：InsertByWechat");
             }
             return 0;
         }

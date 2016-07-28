@@ -1,11 +1,9 @@
-﻿using Models.Api.Archive;
-using Models.Infrastructure;
+﻿using Models.Infrastructure;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -227,17 +225,14 @@ namespace Services
             return result;
 
         }
-        public List<string> CopyFileByUrl(string url)
+        public SaveResultModel DownFileByUrl(string url)
         {
             try
             {
-                var result = new List<string>();
-                var filePath = _resource.GetFileCatalog();
-                //虚拟路径
-                var savePath = "/" + filePath + "/";
+                var savePath = "/" + _resource.GetFileCatalog() + "/";
                 var date = DateTime.Now;
                 var arry = url.Split('.');
-                var postfix = arry[1];
+                var postfix = arry[arry.Length - 1].ToLower();
                 switch (postfix)
                 {
                     case "jpge":
@@ -263,7 +258,62 @@ namespace Services
                 //保存路径
                 string phyPath = _httpContext.Request.MapPath("~" + savePath);
                 //新文件名
-                var ts = _webHelper.GetTimeStamp(null, false);
+                string ts = date.Ticks.ToString();//_webHelper.GetTimeStamp(null, false);
+                var saveName = ts + "." + postfix;
+                //如果不存在,创建文件夹    
+                if (!Directory.Exists(phyPath))
+                {
+                    Directory.CreateDirectory(phyPath);
+                }
+                string phyFile = phyPath + saveName;
+                var client = new WebClient();
+                client.Encoding = Encoding.UTF8;
+                client.DownloadFile(new Uri(url), phyFile);
+                return new SaveResultModel() { Name = ts, Postfix = postfix, Path = savePath };
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Fatal, "文件下载失败:DownFileByUrl");
+            }
+            return null;
+        }
+        public List<string> CopyFileByUrl(string url)
+        {
+            try
+            {
+                var result = new List<string>();
+                var filePath = _resource.GetFileCatalog();
+                //虚拟路径
+                var savePath = "/" + filePath + "/";
+                var date = DateTime.Now;
+                var arry = url.Split('.');
+                var postfix = arry[arry.Length - 1];
+                switch (postfix)
+                {
+                    case "jpge":
+                        savePath += "img/";
+                        break;
+                    case "jpg":
+                        savePath += "img/";
+                        break;
+                    case "bmp":
+                        savePath += "img/";
+                        break;
+                    case "gif":
+                        savePath += "img/";
+                        break;
+                    case "png":
+                        savePath += "img/";
+                        break;
+                    default:
+                        savePath = savePath += "doc/";
+                        break;
+                }
+                savePath += date.Year + "/" + date.Month + "/" + date.Day + "/";
+                //保存路径
+                string phyPath = _httpContext.Request.MapPath("~" + savePath);
+                //新文件名
+                var ts = date.Ticks;//_webHelper.GetTimeStamp(null, false);
                 var saveName = ts + "." + postfix;
                 //如果不存在,创建文件夹    
                 if (!Directory.Exists(phyPath))
@@ -356,7 +406,7 @@ namespace Services
                 //保存路径
                 string phyPath = _httpContext.Request.MapPath("~" + savePath);
                 //新文件名
-                var ts = _webHelper.GetTimeStamp(null, false);
+                var ts = date.Ticks.ToString();//_webHelper.GetTimeStamp(null, false);
                 var saveName = ts + postfix;
                 //如果不存在,创建文件夹    
                 if (!Directory.Exists(phyPath))

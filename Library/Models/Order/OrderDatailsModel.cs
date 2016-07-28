@@ -47,6 +47,11 @@ namespace Models.Order
         [DisplayName("订单状态")]
         public string State { get; set; }
         /// <summary>
+        /// 缴费方式
+        /// </summary>
+        [DisplayName("缴费方式")]
+        public string ProdTimeLimit { get; set; }
+        /// <summary>
         /// 当前用户角色
         /// </summary>
         public string Role { get; set; }

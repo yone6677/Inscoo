@@ -18,6 +18,8 @@ namespace Core.Mapping
             Property(o => o.ProdType).IsRequired().HasMaxLength(32);
             Property(o => o.SafeguardCode).IsRequired().HasMaxLength(32);
             Property(o => o.SafeguardName).IsRequired().HasMaxLength(32);
+            Property(o => o.ProdTimeLimit).IsOptional().HasMaxLength(10);
+            Property(o => o.ProdAbatement).IsOptional().HasMaxLength(50);
         }
     }
 }

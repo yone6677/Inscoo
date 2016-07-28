@@ -42,12 +42,21 @@ namespace Inscoo.Controllers
         /// <summary>
         /// 产品信息页面
         /// </summary>
+        /// <param name="productCode"></param>
+        /// <param name="productType"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult BuyInfo(int id)
+        public ActionResult BuyInfo(string productCode, string productType, int id = -1)
         {
-            var model = _svHealth.GetHealthProductById(id, User.Identity.GetUserId());
-            return View(model);
+            var products = _svHealth.GetHealthProducts(User.Identity.GetUserId(), productType, productCode);
+            VCheckProductList targetP = id == -1 ? products.First() : products.First(p => p.Id == id);
+            //var model = new VCheckProductDetail() { Id = targetP.Id, CheckProductPic = targetP.CheckProductPic, PrivilegePrice = targetP.PrivilegePrice, PublicPrice = targetP.PublicPrice, ProductName = targetP.ProductName };
+
+            //var companys = new Dictionary<int, string>();
+            //products.ForEach(p => companys.Add(p.Id, p.CompanyName));
+            //ViewBag.Companys = companys;
+            ViewBag.Product = new VCheckProductDetail() { Id = targetP.Id, CheckProductPic = targetP.CheckProductPic, PrivilegePrice = targetP.PrivilegePrice, PublicPrice = targetP.PublicPrice, ProductName = targetP.ProductName };
+            return View(products);
         }
 
         /// <summary>

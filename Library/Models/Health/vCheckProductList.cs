@@ -11,6 +11,7 @@ namespace Models
     {
         public int Id { set; get; }
         public string ProductTypeName { set; get; }
+        public string ProductType{ set; get; }
         public string ProductCode { set; get; }
         public string ProductName { set; get; }
         public string ProductMemo { set; get; }

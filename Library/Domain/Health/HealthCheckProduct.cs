@@ -64,7 +64,10 @@ namespace Domain
         /// <summary>
         /// 佣金比例
         /// </summary>
-        public decimal CommissionRatio { set; get; }
+        public decimal CommissionRatioBD { set; get; }
+        public decimal CommissionRatioChannel{ set; get; }
+        public decimal CommissionRatioHR { set; get; }
+        public decimal CommissionRatioOther { set; get; }
         /// <summary>
         /// 产品图片路径
         /// </summary>

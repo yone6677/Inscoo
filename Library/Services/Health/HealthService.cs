@@ -31,6 +31,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Models.Infrastructure;
 using Models.Order;
+using NPOI.SS.Formula.Functions;
 using Services.FileHelper;
 
 namespace Services
@@ -96,7 +97,7 @@ namespace Services
                     PublicPrice = p.PublicPrice,
                     SellPrice = GetPrivilegePrice(author, p),
                     CommissionMethod = p.CommissionMethod,
-                    CommissionRatio = p.CommissionRatio,
+                    CommissionRatio = GetCommissionRatio(author, p),
                     Author = author,
                     HealthCheckProductId = productId,
                     Status = 1
@@ -112,25 +113,78 @@ namespace Services
         }
         public List<VCheckProductList> GetHealthProducts(string uId)
         {
-            var role = _roleManager.FindById(_userManager.FindById(uId).Roles.First().RoleId);
+            try
+            {
 
-            var products = _repHealthProduct.Table.AsNoTracking().OrderBy(h => h.ProductOrder).ToList();
+                var role = _roleManager.FindById(_userManager.FindById(uId).Roles.First().RoleId);
 
-            var list = from p in products
-                       select (new VCheckProductList
-                       {
-                           Id = p.Id,
-                           CompanyName = p.CompanyName,
-                           ProductCode = p.ProductCode,
-                           ProductName = p.ProductName,
-                           ProductTypeName = p.ProductTypeName,
-                           ProductMemo = p.ProductMemo,
-                           CompanyCode = p.CompanyCode,
-                           CheckProductPic = p.CheckProductPic,
-                           PublicPrice = p.PublicPrice,
-                           PrivilegePrice = GetPrivilegePrice(role, p)
-                       });
-            return list.ToList();
+                var products = from p in _repHealthProduct.Table.AsNoTracking().OrderBy(h => h.ProductOrder)
+                               group p by new
+                               {
+                                   p.ProductType,
+                                   p.ProductName
+                               } into pG
+                               select pG.FirstOrDefault();
+
+                var list = from p in products.ToList()
+                           select (new VCheckProductList
+                           {
+                               Id = p.Id,
+                               ProductType = p.ProductType,
+                               CompanyName = p.CompanyName,
+                               //ProductCode = p.ProductCode,
+                               ProductName = p.ProductName,
+                               ProductTypeName = p.ProductTypeName,
+                               ProductMemo = p.ProductMemo,
+                               //CompanyCode = p.CompanyCode,
+                               CheckProductPic = p.CheckProductPic,
+                               PublicPrice = p.PublicPrice,
+                               PrivilegePrice = GetPrivilegePrice(role, p)
+                           });
+                return list.ToList();
+
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                return new List<VCheckProductList>();
+            }
+        }
+        public List<VCheckProductList> GetHealthProducts(string uId, string productType, string productCode)
+        {
+            try
+            {
+
+                var role = _roleManager.FindById(_userManager.FindById(uId).Roles.First().RoleId);
+
+                var products =
+                    _repHealthProduct.Table.AsNoTracking()
+                        .Where(p => p.ProductType == productType && p.ProductCode == productCode)
+                        .OrderBy(h => h.ProductOrder);
+
+                var list = from p in products.ToList()
+                           select (new VCheckProductList
+                           {
+                               Id = p.Id,
+                               ProductType = p.ProductType,
+                               CompanyName = p.CompanyName,
+                               //ProductCode = p.ProductCode,
+                               ProductName = p.ProductName,
+                               ProductTypeName = p.ProductTypeName,
+                               ProductMemo = p.ProductMemo,
+                               //CompanyCode = p.CompanyCode,
+                               CheckProductPic = p.CheckProductPic,
+                               PublicPrice = p.PublicPrice,
+                               PrivilegePrice = GetPrivilegePrice(role, p)
+                           });
+                return list.ToList();
+
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                return new List<VCheckProductList>();
+            }
         }
         public HealthOrderMaster GetHealthMaster(int id, string author)
         {
@@ -731,7 +785,27 @@ namespace Services
                     return product.OtherPrice;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="product">产品</param>
+        /// <returns></returns>
+        decimal GetCommissionRatio(string userName, HealthCheckProduct product)
+        {
+            var role = _roleManager.FindById(_userManager.FindByName(userName).Roles.First().RoleId);
+            switch (role.Name)
+            {
+                case "BusinessDeveloper":
+                    return product.CommissionRatioBD;
+                case "PartnerChannel":
+                    return product.CommissionRatioChannel;
+                case "CompanyHR":
+                    return product.CommissionRatioHR;
+                default:
+                    return product.CommissionRatioOther;
+            }
+        }
         DateTime GetBirthday(string str, int rowNum)
         {
             try

@@ -18,6 +18,12 @@ namespace Services.Products
         /// <returns></returns>
         bool Delete(int id, bool disable = true);
         Product GetById(int id);
+        /// <summary>
+        /// 根据产品唯一料号查询
+        /// </summary>
+        /// <param name="itemNo"></param>
+        /// <returns></returns>
+        Product GetByItemNo(string itemNo);
         List<Product> GetList(string company = null, string SafeguardCode = null, string CoverageSum = null, string PayoutRatio = null, string InsuredWho = "主被保险人");
         SelectList GetInsuredComs(string selectedValue);
         List<vProvisionPDF> GetProvisionPdfByInsuredCom(string insuredCom);

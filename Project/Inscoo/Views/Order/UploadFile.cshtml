@@ -80,28 +80,28 @@
             </a>
             <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
         </li>
-        
+
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a> 
+            <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
         </li>
         <li>
             @if (Model.HasEmpInfoFilePDFSeal)
             {
-                <div class="uploadInfo">
-                    @if (Model.HasEmpInfoFilePDFSeal)
+            <div class="uploadInfo">
+                @if (Model.HasEmpInfoFilePDFSeal)
                     {
-                        <div>
-                            <span><i class="fa fa-check"></i>已上传</span>
-                            <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
-                        </div>
+                    <div>
+                        <span><i class="fa fa-check"></i>已上传</span>
+                        <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
+                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
+                    </div>
                     }
-                </div>
+            </div>
             }
             else
             {
-                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
+            <span class="text-danger" style="color:#f00" id="errorInfo"></span>
             }
         </li>
 
@@ -152,7 +152,7 @@
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
         <span style="color:gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
         <span style="color:gray">2.如果文件超过2M,请将文件压缩后上传</span><br />
-        
+
     </div>
 </div>
 
@@ -178,7 +178,7 @@
 <form onsubmit=""></form>
 @section Scripts {
     <script>
-        
+
         function msg() {
             $("#errorInfo").text("请先上传所有资料！");
         }
@@ -197,7 +197,7 @@
                         return false;
                     }
                     pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar') {
+                    if (pf == 'zip' || pf == 'rar' || pf == 'pdf') {
                         return true;
                     } else {
                         errorInfo.text("员工名单格式不正确！");
@@ -221,7 +221,7 @@
                         return false;
                     }
                     pf = (ppFile.substring(ppFile.lastIndexOf(".") + 1, ppFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar') {
+                    if (pf == 'zip' || pf == 'rar' || pf == 'pdf') {
                         return true;
                     } else {
                         errorInfo.text("投保单格式不正确");

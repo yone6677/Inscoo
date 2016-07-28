@@ -1,7 +1,7 @@
 ﻿@using Models
 @model List<Models.VCheckProductList>
 @{
-    ViewBag.Title = "BuyInfo";
+    ViewBag.Title = "体检详细信息";
 }
 @{
     VCheckProductDetail product = ViewBag.Product;
@@ -22,7 +22,7 @@
                     @foreach (var item in Model)
                     {
                         <div class="col-xs-4">
-                            @Html.RadioButton("rbCompanyName", item.Id, item.Id == product.Id) @Html.ActionLink(item.CompanyName, "BuyInfo", new {item.ProductType, item.Id, item.ProductName}, new {})
+                            @Html.RadioButton("rbCompanyName", item.Id, item.Id == product.Id) @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { })
                         </div>
                     }
                 </div>

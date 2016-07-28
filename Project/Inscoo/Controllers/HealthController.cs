@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Core;
@@ -105,7 +106,10 @@ namespace Inscoo.Controllers
 
             if (ModelState.IsValid)
             {
+
+
                 var master = _svHealth.GetHealthMaster(model.MasterId, User.Identity.Name);
+                var IsGetPaymentNoticePdf = !master.CompanyId.HasValue;
                 var companyList = Request.Form["isCompanySelect"];
                 if (companyList == "false")
                 {
@@ -125,7 +129,13 @@ namespace Inscoo.Controllers
                     master.CompanyId = Convert.ToInt32(Request.Form["CompanyId"]);
                 }
                 master.Status = 4;
+
+                if (IsGetPaymentNoticePdf)
+                {
+                    _svHealth.GetPaymentNoticePdfAsync(master.Id);
+                }
                 _svHealth.UpdateMaster(master);
+
             }
             return RedirectToAction("ConfirmPayment", new { model.MasterId });
         }
@@ -254,7 +264,6 @@ namespace Inscoo.Controllers
             try
             {
                 _svHealth.UploadEmpExcel(empinfo, masterId, User.Identity.Name);
-                //todo 付款通知书
                 _svHealth.GetPaymentNoticePdfAsync(masterId);
             }
             catch (WarningException e)

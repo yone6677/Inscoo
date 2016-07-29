@@ -4,23 +4,23 @@
     ViewBag.Title = "订单详细";
 }
 <div class="orderDetails">
-    <h4 class="text-primary">基本信息</h4>
+    <h4 class="text-primary_color">基本信息</h4>
     <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Name)：
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.OrderNum)
+            @Html.DisplayNameFor(model => model.OrderNum)：
         </dt>
         <dd>
             @Html.DisplayFor(model => model.OrderNum)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Memo)
+            @Html.DisplayNameFor(model => model.Memo)：
         </dt>
 
         <dd>
@@ -28,7 +28,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StaffRange)
+            @Html.DisplayNameFor(model => model.StaffRange)：
         </dt>
 
         <dd>
@@ -36,7 +36,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AgeRange)
+            @Html.DisplayNameFor(model => model.AgeRange)：
         </dt>
 
         <dd>
@@ -44,7 +44,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AnnualExpense)
+            @Html.DisplayNameFor(model => model.AnnualExpense)：
         </dt>
 
         <dd>
@@ -52,7 +52,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)
+            @Html.DisplayNameFor(model => model.CompanyName)：
         </dt>
 
         <dd>
@@ -60,7 +60,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Linkman)
+            @Html.DisplayNameFor(model => model.Linkman)：
         </dt>
 
         <dd>
@@ -68,7 +68,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.PhoneNumber)：
         </dt>
 
         <dd>
@@ -76,7 +76,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Address)：
         </dt>
 
         <dd>
@@ -84,7 +84,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.BusinessLicense)
+            @Html.DisplayNameFor(model => model.BusinessLicense)：
         </dt>
 
         <dd>
@@ -92,7 +92,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Insurer)
+            @Html.DisplayNameFor(model => model.Insurer)：
         </dt>
 
         <dd>
@@ -100,7 +100,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PolicyNumber)
+            @Html.DisplayNameFor(model => model.PolicyNumber)：
         </dt>
 
         <dd>
@@ -108,7 +108,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.DisplayNameFor(model => model.StartDate)：
         </dt>
 
         <dd>
@@ -116,7 +116,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.EndDate)：
         </dt>
 
         <dd>
@@ -124,21 +124,21 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.InsuranceNumber)
+            @Html.DisplayNameFor(model => model.InsuranceNumber)：
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.InsuranceNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.State)
+            @Html.DisplayNameFor(model => model.State)：
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ProdTimeLimit)
+            @Html.DisplayNameFor(model => model.ProdTimeLimit)：
         </dt>
 
         <dd>
@@ -146,27 +146,27 @@
         </dd>
     </dl>
     <div class="clearfix"></div>
-    <h4 class="text-primary">投保批次</h4>
+    <h4 class="text-primary_color">投保批次</h4>
     @{
         if (Model.orderBatch.Count > 0)
         {
             foreach (var item in Model.orderBatch)
             {
                 <dl style="margin-top:1em;">
-                    <dt style="border-top:1px solid #0094ff;">
-                        批次编号
+                    <dt>
+                        批次编号：
                     </dt>
-                    <dd style="border-top:1px solid #0094ff;">
+                    <dd>
                         @item.BNum
                     </dd>
-                    <dt style="border-top:1px solid #0094ff;">
-                        批次状态
+                    <dt>
+                        批次状态：
                     </dt>
-                    <dd style="border-top:1px solid #0094ff;">
+                    <dd>
                         @item.BState
                     </dd>
                     <dt>
-                        人员资料Excel
+                        人员资料Excel：
                     </dt>
                     <dd>
                         @if (string.IsNullOrEmpty(item.EmpInfoFile))
@@ -179,7 +179,7 @@
                         }
                     </dd>
                     <dt>
-                        人员资料盖章PDF
+                        人员资料盖章PDF：
                     </dt>
                     <dd>
                         @if (string.IsNullOrEmpty(item.EmpInfoFileSeal))
@@ -199,7 +199,7 @@
                         }
                     </dd>
                     <dt>
-                        投保盖章文件
+                        投保盖章文件：
                     </dt>
                     <dd>
                         @if (string.IsNullOrEmpty(item.PolicySeal))
@@ -219,7 +219,7 @@
                         }
                     </dd>
                     <dt>
-                        付款通知书
+                        付款通知书：
                     </dt>
                     <dd>
                         @if (string.IsNullOrEmpty(item.PaymentNoticePDF))
@@ -232,13 +232,13 @@
                         }
                     </dd>
                     <dt>
-                        批次总额
+                        批次总额：
                     </dt>
                     <dd>
                         <span> @item.OrderAmount</span>
                     </dd>
                     <dt>
-                        Inscoo确认时间
+                        Inscoo确认时间：
                     </dt>
                     <dd>
                         @if (item.InscooConfirmDate != DateTime.MinValue)
@@ -249,7 +249,7 @@
                     @if (Model.Role.ToLower() == "admin" || Model.Role.ToLower() == "inscoooperator")
                     {
                         <dt>
-                            财务确认时间
+                            财务确认时间：
                         </dt>
                         <dd>
                             @if (item.FinanceDate != DateTime.MinValue)
@@ -258,7 +258,7 @@
                             }
                         </dd>
                         <dt>
-                            财务收款时间
+                            财务收款时间：
                         </dt>
                         <dd>
                             @if (item.CollectionDate != DateTime.MinValue)
@@ -267,25 +267,25 @@
                             }
                         </dd>
                         <dt>
-                            收款金额
+                            收款金额：
                         </dt>
                         <dd>
                             @item.AmountCollected
                         </dd>
                         <dt>
-                            财务审核意见
+                            财务审核意见：
                         </dt>
                         <dd>
                             @item.FinanceMemo
                         </dd>
                         <dt>
-                            转账凭证
+                            转账凭证：
                         </dt>
                         <dd>
                             @item.TransferVoucher
                         </dd>
                         <dt>
-                            保险公司确认时间
+                            保险公司确认时间：
                         </dt>
                         <dd>
                             @if (item.InsurerConfirmDate != DateTime.MinValue)
@@ -294,13 +294,13 @@
                             }
                         </dd>
                         <dt>
-                            快递单号
+                            快递单号：
                         </dt>
                         <dd>
                             @item.CourierNumber
                         </dd>
                         <dt>
-                            保险公司审核意见
+                            保险公司审核意见：
                         </dt>
                         <dd>
                             @item.InsurerMemo
@@ -311,7 +311,7 @@
         }
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary">人员信息</h4>
+    <h4 class="text-primary_color">人员信息</h4>
     @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -320,7 +320,7 @@
         </div>
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary">投保人员变更信息</h4>
+    <h4 class="text-primary_color">投保人员变更信息</h4>
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />

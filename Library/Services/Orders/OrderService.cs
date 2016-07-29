@@ -154,7 +154,14 @@ namespace Services.Orders
                 }
                 if (state == 0)
                 {
-                    query = query.Where(q => q.State > 3);//默认返回已输完信息的所有订单
+                    if (role == "InsuranceCompany")
+                    {
+                        query = query.Where(q => q.State > 5);//保险公司只能查看已支付订单
+                    }
+                    else
+                    {
+                        query = query.Where(q => q.State > 3);//默认返回已输完信息的所有订单
+                    }
                 }
                 else if (state == 10)//未完成订单列表
                 {

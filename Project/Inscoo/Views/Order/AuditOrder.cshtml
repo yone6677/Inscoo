@@ -1,5 +1,5 @@
 ﻿@model Models.Order.AuditOrderModel
-<h4 class="text-primary">审核意见</h4>
+<h4 class="text-primary_color">审核意见</h4>
 @using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()
@@ -33,7 +33,7 @@
                 <div class="clearfix"></div>
             </div>
             <div style="text-align:center;padding-bottom:.5em;">
-                <input type="submit" value="送出审核" class="btn btn-default" />
+                <input type="submit" value="送出审核" class="orderConfirmNextSubmit" />
             </div>
         }
     }
@@ -107,7 +107,7 @@
                 <div class="clearfix"></div>
             </div>
             <div style="text-align:center;padding-bottom:.5em;">
-                <input type="button" value="送出审核" class="btn btn-default" onclick="auditCheck(1)" />
+                <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(1)" />
             </div>
         }
     }
@@ -173,7 +173,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div style="text-align:center;padding-bottom:.5em;">
-                    <input type="button" value="送出审核" class="btn btn-default" onclick="auditCheck(2)" />
+                    <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(2)" />
                 </div>
             }
         }

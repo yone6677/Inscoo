@@ -1,25 +1,37 @@
-﻿@model Models.VCheckProductDetail
+﻿@using Models
+@model List<Models.VCheckProductList>
 @{
-    ViewBag.Title = "BuyInfo";
+    ViewBag.Title = "体检详细信息";
+}
+@{
+    VCheckProductDetail product = ViewBag.Product;
 }
 <div class="health_box">
     <div class="health_box_header">
         <ul class="">
             <li class="header_left">
-                <img src="@Model.CheckProductPic" />
+                <img src="@product.CheckProductPic" />
             </li>
             <li class="header_right">
-                <h3><span>@Model.ProductName</span></h3>
+                <h3><span>@product.ProductName</span></h3>
                 <ul>
-                    <li>仅售：<b>￥@Convert.ToInt32(Model.PrivilegePrice)</b></li>
-                    <li>市场价：<span>￥@Convert.ToInt32(Model.PublicPrice) </span></li>
+                    <li>仅售：<b>￥@Convert.ToInt32(product.PrivilegePrice)</b></li>
+                    <li>市场价：<span>￥@Convert.ToInt32(product.PublicPrice) </span></li>
                 </ul>
-                <div class="product-count">
+                <div class="col-xs-10 col-xs-offset-1 text-left">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-xs-4">
+                            @Html.RadioButton("rbCompanyName", item.Id, item.Id == product.Id) @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { })
+                        </div>
+                    }
+                </div>
+                <div class="product-count col-xs-12">
                     @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("直接购买", "MakeSure", new { productId = Model.Id }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+                    @Html.ActionLink("直接购买", "MakeSure", new { productId = product.Id }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
                 </div>
             </li>
         </ul>
     </div>
-    @Html.Partial("detail/_ProDetail_" + Model.Id, Model)
+    @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>

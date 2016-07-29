@@ -20,7 +20,20 @@ namespace Services
         Task AddHealthMasterAsync(int productId, string author);
 
         int AddHealthMaster(int productId, string author);
+        /// <summary>
+        /// index Ò³Ãæ
+        /// </summary>
+        /// <param name="uId"></param>
+        /// <returns></returns>
         List<VCheckProductList> GetHealthProducts(string uId);
+        /// <summary>
+        /// buyinfo Ò³Ãæ
+        /// </summary>
+        /// <param name="uId"></param>
+        /// <param name="productType"></param>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        List<VCheckProductList> GetHealthProducts(string uId, string productType, string productName);
         /// <summary>
         /// 
         /// </summary>

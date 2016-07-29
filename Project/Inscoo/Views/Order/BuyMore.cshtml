@@ -4,15 +4,15 @@
 }
 @if (!Model.Disable)
 {
-    <h4 class="text-primary">补充资料</h4>
+    <h4 class="text-primary_color">补充资料</h4>
     using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile(1)") }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)
         <ul class="unloadFile">
-            <li>
+            <li style="width:24%">
                 <label>
-                    上传员工名单
+                    上传员工名单：
                 </label>
             </li>
             <li> 
@@ -25,7 +25,7 @@
                 <input type="submit" value="上传" class="btn btn-default" />
                 <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">模版下载</a>
             </li>
-            <li>
+            <li style="width:26%">
                 @if (Model.HasEmpInfoExcel)
                 {
                     <div class="uploadInfo">
@@ -44,10 +44,10 @@
         <div class="clearfix"></div>
         using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
         {
-            <ul class="unloadFile">
-                <li>
+            <ul class="unloadFile" style="border-bottom:1px solid #ddd">
+                <li style="width:24%">
                     <label>
-                        加减保员工名单(加盖公章)
+                        加减保员工名单(加盖公章)：
                     </label>
                 </li>
                 <li>
@@ -62,7 +62,7 @@
                     <input type="submit" value="上传" class="btn btn-default" />
                     <a href="@Model.EmpInfoFilePDF" target="_blank" class="btn btn-default">名单下载</a>
                 </li>
-                <li>
+                <li style="width:26%">
                     @if (Model.HasEmpInfoFilePDFSeal)
                     {
                         <div class="uploadInfo">
@@ -89,7 +89,7 @@
     <span class="text-danger" style="color:red;" id="error">@Model.Result</span>
 </div>
 <div class="clearfix"></div>
-<h4 class="text-primary">投保变更详细</h4>
+<h4 class="text-primary_color">投保变更详细</h4>
 @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
 {
     <input type="hidden" name="Id" value=@Model.Id />
@@ -98,7 +98,7 @@
     </div>
 }
 <div class="clearfix"></div>
-<h4 class="text-primary">已有人员信息</h4>
+<h4 class="text-primary_color">已有人员信息</h4>
 @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
 {
     <input type="hidden" name="Id" value=@Model.Id />

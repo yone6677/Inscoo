@@ -5,6 +5,12 @@
     <table class="table orderDetailsTable table-bordered ">
         <tr>
             <th>
+                编号
+            </th>
+            <th>
+                类型
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -44,60 +50,70 @@
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            var cssClass = "";
-            if (item.BuyType == 1)
+        @{
+            var i = 1;
+            foreach (var item in Model)
             {
-                cssClass = "success";
-            }
-            if (item.BuyType == 2)
-            {
-                cssClass = "danger";
-            }
-            <tr class=@cssClass>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IDType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IDNumber)
-                </td>
-                <td>
-                    @item.Birthday.ToShortDateString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sex)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Premium)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BankCard)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BankName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HasSocialSecurity)
-                </td>
-                <td>
-                    @item.StartDate.ToShortDateString()
-                </td>
-                <td>
-                    @item.EndDate.ToShortDateString()
-                </td>
-            </tr>
-        }
+                var cssClass = "";
+                var type = "";
+                if (item.BuyType == 1)
+                {
+                    cssClass = "success";
+                    type = "加保";
+                }
+                if (item.BuyType == 2)
+                {
+                    cssClass = "danger";
+                    type = "减保";
+                }
+                <tr class=@cssClass>
+                    <td>
+                        <span>@i</span>
+                    </td>
+                    <td>
+                        <span>@type</span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDNumber)
+                    </td>
+                    <td>
+                        @item.Birthday.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sex)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Premium)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BankCard)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BankName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HasSocialSecurity)
+                    </td>
+                    <td>
+                        @item.StartDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.EndDate.ToShortDateString()
+                    </td>
+                </tr>
+            }}
     </table>
 </div>
 @{

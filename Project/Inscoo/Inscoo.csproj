@@ -188,6 +188,7 @@
     <Content Include="Archive\Template\yyzz.jpg" />
     <Content Include="Archive\Template\ShangChuanRenYuanXinXi.xlsx" />
     <Content Include="Archive\Template\营业执照模板.jpg" />
+    <Content Include="Archive\Template\营业执照模板.png" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">
       <DependentUpon>base.less</DependentUpon>

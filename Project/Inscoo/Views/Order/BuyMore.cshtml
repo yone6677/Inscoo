@@ -88,8 +88,8 @@
 <div style="line-height:2em;width:100%;text-align:center;">
     <span class="text-danger" style="color:red;" id="error">@Model.Result</span>
 </div>
-@*<div class="clearfix"></div>
-<h4 class="text-primary_color">投保变更详细</h4>*@
+<div class="clearfix"></div>
+<h4 class="text-primary_color">投保变更详细</h4>
 @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
 {
     <input type="hidden" name="Id" value=@Model.Id />

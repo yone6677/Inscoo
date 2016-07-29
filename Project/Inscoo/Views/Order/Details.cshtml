@@ -319,8 +319,8 @@
             @Html.Action("DetailsEmp", new { id = Model.Id })
         </div>
     }
-    @*<div class="clearfix"></div>
-    <h4 class="text-primary_color">投保人员变更信息</h4>*@
+    <div class="clearfix"></div>
+    <h4 class="text-primary_color">投保人员变更信息</h4>
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />

@@ -1553,7 +1553,7 @@ namespace Inscoo.Controllers
                     var rowNumber = worksheet.Dimension.Rows;
                     var Cells = worksheet.Cells;
                     if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日"
-                        || Cells["E1"].Value.ToString() != "保全类型" || Cells["F1"].Value.ToString() != "加减保生效日期" || Cells["G1"].Value.ToString() != "性别(男/女)" || Cells["H1"].Value.ToString() != "银行账号"
+                        || Cells["E1"].Value.ToString() != "保全类型(加保/减保)" || Cells["F1"].Value.ToString() != "加减保生效日期" || Cells["G1"].Value.ToString() != "性别(男/女)" || Cells["H1"].Value.ToString() != "银行账号"
                         || Cells["I1"].Value.ToString() != "开户行" || Cells["J1"].Value.ToString() != "联系电话" || Cells["K1"].Value.ToString() != "邮箱" || Cells["L1"].Value.ToString() != "社保（有/无）")
                     {
                         throw new Exception("上传的文件不正确,请检查");
@@ -1563,10 +1563,15 @@ namespace Inscoo.Controllers
                     {
                         if (Cells["A" + i].Value == null)
                             break;
-                        var insType = Cells["E" + i].Value.ToString().Trim();
-                        if (string.IsNullOrEmpty(insType) && insType != "加保" && insType != "减保")
+                       
+                        if (Cells["E" + i].Value == null)
                         {
-                            return View("保全类型填写不正确,请检查");
+                            throw new Exception("保全类型不能为空");
+                        }
+                        var insType = Cells["E" + i].Value.ToString().Trim();
+                        if (insType != "加保" && insType != "减保")
+                        {
+                            throw new Exception("保全类型不正确,只能是加保或减保,请检查");
                         }
                         DateTime changeDate = new DateTime();
                         try

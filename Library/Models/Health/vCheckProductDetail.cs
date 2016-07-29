@@ -19,7 +19,7 @@ namespace Models
         [DisplayName("产品名称")]
         public string ProductName { set; get; }
         public string ProductMemo { set; get; }
-        [DisplayName("保险公司")]
+        [DisplayName("体检单位")]
         public string CompanyName { set; get; }
         [DisplayName("市场价")]
         public decimal PublicPrice { set; get; }

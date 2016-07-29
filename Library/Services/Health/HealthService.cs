@@ -684,11 +684,27 @@ namespace Services
                 var fontUnderline = OperationPDF.GetFont(style: Font.UNDERLINE);
 
                 document.Add(new Paragraph() { SpacingAfter = 10 });
-
+                #region 印章
                 document.Add(new LineSeparator());
-                document.Add(new Paragraph("            金联安保险经纪(北京)有限公司苏州分公司                               签章：", font)
-                {
-                });
+                document.Add(new Paragraph() { SpacingAfter = 20 });
+
+                var yinzhangParagraph =
+                    new Paragraph("           上海皓为商务咨询有限公司                             签章：", font)
+                    {
+                        SpacingBefore = -70,
+                        SpacingAfter = 70
+                    };
+                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
+                var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
+                yinZhangImage.Alignment = Element.ALIGN_RIGHT;
+                //yinZhangImage.SpacingBefore = 50;
+                yinZhangImage.IndentationRight = 40;
+                document.Add(yinZhangImage);
+                document.Add(yinzhangParagraph);
+
+                #endregion
+
+
                 table = new PdfPTable(1) { SpacingAfter = 20, SpacingBefore = 20, WidthPercentage = 100 };
                 var fontWhite = OperationPDF.GetFont();
                 fontWhite.Color = BaseColor.WHITE;
@@ -733,19 +749,9 @@ namespace Services
 
                 document.Add(list);
 
-                document.Add(new Paragraph() { SpacingAfter = 100 });
-                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
-                var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
-                yinZhangImage.ScalePercent(40, 40);
-                yinZhangImage.Alignment = Element.ALIGN_RIGHT;
-
-                yinZhangImage.SpacingBefore = 40;
-                yinZhangImage.IndentationRight = 80;
-                //document.Add(headImage);
-                document.Add(yinZhangImage);
                 document.Close();
 
-                return paths[0];
+                return @"../.." + paths[1];
                 //GetPaymentNoticePdf(masterId);
             }
             catch (Exception exc)

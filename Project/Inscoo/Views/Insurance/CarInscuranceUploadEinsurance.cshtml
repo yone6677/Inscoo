@@ -12,18 +12,29 @@
         <div class="form-group">
             <label class="control-label col-md-3">添加电子保单</label>
             <div class="col-md-9">
-                <input type="file" name="excel" id="excel" required="" />
+                <input type="file" name="excel" id="excel" required=""/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">电子保单号码</label>
+            <div class="col-md-9">
+                <input type="text" name="code" id="code" required="" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3"></label>
+            <div class="col-md-9">
                 <input type="submit" class="btn btn-info" value="提交" />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-3"></label>
             <div class="col-md-9">
-                @if (ViewBag.Mes == "上传成功")
+                @if (ViewBag.Mes == "操作成功")
                 {
-                    <div class="alert alert-success">上传成功</div>
+                    <div class="alert alert-success">操作成功</div>
                 }
-                else
+                else if (ViewBag.Mes != null)
                 {
                     <div class="alert alert-danger">@ViewBag.Mes</div>
                 }

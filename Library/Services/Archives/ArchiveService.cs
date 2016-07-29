@@ -342,7 +342,7 @@ namespace Services
                 throw e;
             }
         }
-        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey)
+        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey,string code)
         {
             try
             {
@@ -360,8 +360,8 @@ namespace Services
                             Url = model.Path + model.Name + model.Postfix,
                             EditTime = DateTime.Now
                         };
-                    item.Status = "B";
-
+                    item.Status = "C";
+                    item.EOrderCode = code;
                     _rpCarInsurance.Update(item);
                     return item.Einsurance.Url;
                 }

@@ -514,10 +514,28 @@ namespace Services.Orders
                         document.Add(new Phrase("最后付款日期/ Date of payment due:      ", font1));
                         document.Add(new Phrase(order.StartDate.AddDays(5).ToLongDateString(), fontUnderline));
                     }
-                    document.Add(new Paragraph() { SpacingAfter = 10 });
+                    document.Add(new Paragraph() { SpacingAfter = 20 });
 
+                    #region 印章
                     document.Add(new LineSeparator());
-                    document.Add(new Paragraph("            金联安保险经纪(北京)有限公司苏州分公司                               签章：", font) { });
+                    document.Add(new Paragraph() { SpacingAfter = 20 });
+
+                    var yinzhangParagraph =
+                        new Paragraph("         金联安保险经纪(北京)有限公司苏州分公司                          签章：", font)
+                        {
+                            SpacingBefore = -70,
+                            SpacingAfter = 70
+                        };
+                    var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
+                    var yinZhangImage = Image.GetInstance(imgSrc);
+                    yinZhangImage.Alignment = Element.ALIGN_RIGHT;
+                    //yinZhangImage.SpacingBefore = 50;
+                    yinZhangImage.IndentationRight = 40;
+                    document.Add(yinZhangImage);
+                    document.Add(yinzhangParagraph);
+                    
+                    #endregion
+
                     table = new PdfPTable(1) { SpacingAfter = 20, SpacingBefore = 20, WidthPercentage = 100 };
                     var fontWhite = OperationPDF.GetFont();
                     fontWhite.Color = BaseColor.WHITE;
@@ -542,15 +560,7 @@ namespace Services.Orders
                     list.Add(new ListItem(new Phrase("请在付款时填写我司账户全称，以免因付款不成功给您带来不便。\nPlease fill out FULL ACCOUNT NAME provided above when arranging the payment to avoid unsuccessful transfer.", font)));
 
                     document.Add(list);
-                    document.Add(new Paragraph() { SpacingAfter = 100 });
-                    var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
-                    var yinZhangImage = Image.GetInstance(imgSrc);
-                    yinZhangImage.Alignment = Element.ALIGN_RIGHT;
-                    //headImage.SetAbsolutePosition(document.Right - 150, document.Bottom + 40);
-                    yinZhangImage.SpacingAfter = 20;
-                    yinZhangImage.IndentationRight = 80;
-                    //document.Add(headImage);
-                    document.Add(yinZhangImage);
+
 
                     document.Close();
                     pdfWrite.Close();

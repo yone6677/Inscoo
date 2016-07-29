@@ -75,8 +75,9 @@ namespace Services
         /// <param name="userName"></param>
         /// <param name="insuranceId"></param>
         /// <param name="uKey"></param>
+        /// <param name="code"></param>
         /// <returns></returns>
-        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey);
+        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey,string code);
 
         void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>

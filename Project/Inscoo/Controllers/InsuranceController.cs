@@ -222,7 +222,7 @@ namespace Inscoo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CarInscuranceUploadEinsurance(HttpPostedFileBase excel, int insuranceId, string uKey)
+        public ActionResult CarInscuranceUploadEinsurance(HttpPostedFileBase excel, int insuranceId, string uKey, string code)
         {
             try
             {
@@ -230,7 +230,7 @@ namespace Inscoo.Controllers
                 ViewBag.UKey = uKey;
                 var userName = User.Identity.Name;
                 string mailContent, path;
-                path = _archiveService.InsertCarInsuranceEinsurance(excel, userName, insuranceId, uKey);
+                path = _archiveService.InsertCarInsuranceEinsurance(excel, userName, insuranceId, uKey, code);
 
                 mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
                 var mailTo = _genericAttributeService.GetByGroup("CarCustomerMailTo").Select(c => c.Value);
@@ -245,7 +245,7 @@ namespace Inscoo.Controllers
 
                 });
 
-                ViewBag.Mes = "上传成功";
+                ViewBag.Mes = "操作成功";
             }
             catch (WarningException e)
             {
@@ -253,7 +253,7 @@ namespace Inscoo.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Mes = "上传失败";
+                ViewBag.Mes = "操作失败";
             }
             return View();
         }

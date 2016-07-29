@@ -32,21 +32,37 @@ namespace Services
             }
             return false;
         }
+        /// <summary>
+        /// 上传人员信息
+        /// </summary>
+        /// <returns></returns>
         public string GetEmployeeInfoTemp()
         {
-            return "/Archive/Template/上传人员信息.xlsx";
+            return "/Archive/Template/ShangChuanRenYuanXinXi.xlsx";
         }
+        /// <summary>
+        /// 投保单
+        /// </summary>
+        /// <returns></returns>
         public string GetInsurancePolicyTemp()
         {
             return "/Archive/Template/投保单.doc";
         }
+        /// <summary>
+        /// 人员信息变更模板
+        /// </summary>
+        /// <returns></returns>
         public string GetEmpInfoBuyMoreTemp()
         {
-            return "/Archive/Template/人员信息变更模板.xlsx";
+            return "/Archive/Template/RenYuanXinXiGengGaiMuBan.xlsx";
         }
+        /// <summary>
+        /// 营业执照
+        /// </summary>
+        /// <returns></returns>
         public string GetBusinessLicenseTemp()
         {
-            return "/Archive/Template/营业执照模版.jpg";
+            return "/Archive/Template/yyzz.jpg";
         }
     }
 }

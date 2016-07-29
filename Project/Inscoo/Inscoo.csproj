@@ -183,9 +183,9 @@
     <Content Include="Archive\Template\health\logo.png" />
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <Content Include="Archive\Template\jinliananZhang.jpg" />
+    <Content Include="Archive\Template\RenYuanXinXiGengGaiMuBan.xlsx" />
     <Content Include="Archive\Template\yyzz.jpg" />
-    <Content Include="Archive\Template\上传人员信息.xlsx" />
-    <Content Include="Archive\Template\人员信息变更模板.xlsx" />
+    <Content Include="Archive\Template\ShangChuanRenYuanXinXi.xlsx" />
     <Content Include="Archive\Template\营业执照模板.jpg" />
     <Content Include="Content\aboutUs.css" />
     <Content Include="Content\base.css">

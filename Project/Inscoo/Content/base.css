@@ -672,11 +672,7 @@ body {
   float: left;
 }
 .orderEntryInfoBody ul li:first-child {
-  width: 20%;
-  text-align: right;
-}
-.orderEntryInfoBody ul li:nth-child(even) {
-  width: 40%;
+  /*text-align: right;*/
 }
 .orderEntryInfoBody ul li:nth-child(even) input {
   width: 100%;
@@ -684,7 +680,6 @@ body {
 }
 .orderEntryInfoBody ul li:last-child {
   text-align: left;
-  width: 40%;
 }
 .orderEntryInfoBody ul li > .form-control {
   border-radius: 0px;
@@ -705,27 +700,25 @@ body {
   float: left;
 }
 .orderEntryInfoBody-loadfile ul li:first-child {
-  width: 20%;
-  text-align: right;
+  width: 35%;
+  margin-left: 10px;
+  /*text-align: right;*/
 }
 .orderEntryInfoBody-loadfile ul li:nth-child(2) {
   width: 30%;
 }
 .orderEntryInfoBody-loadfile ul li:nth-child(3) {
-  width: 20%;
-}
-.orderEntryInfoBody-loadfile ul li:last-child {
   text-align: left;
   width: 30%;
   font-size: 16px;
 }
-.orderEntryInfoBody-loadfile ul li:last-child span {
+.orderEntryInfoBody-loadfile ul li:nth-child(3) span {
   color: #83ba21;
   height: 28px;
   line-height: 28px;
   margin-right: 10px;
 }
-.orderEntryInfoBody-loadfile ul li:last-child a {
+.orderEntryInfoBody-loadfile ul li:nth-child(3) a {
   height: 28px;
   line-height: 28px;
   margin-right: 10px;

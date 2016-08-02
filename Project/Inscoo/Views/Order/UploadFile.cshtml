@@ -23,135 +23,142 @@
         </li>
     </ul>
 </div>
-
+<div class="text-center text-danger" style="min-height: 35px">
+    @if (TempData["errorMes"] != null)
+    {
+        <span id="errorInfo">@TempData["errorMes"].ToString()</span>
+    }
+    else
+    {
+        <span id="errorInfo"></span>
+    }
+</div>
 @using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
+
+    <div>
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i> 营业执照
+        </label>
+        <a href=@Model.BusinessLicenseTemp target="_blank" style="color: red">查看示例</a>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                营业执照(加盖公章)：
-            </label>
-        </li>
-        <li>
+            <span style="font-size: larger">请上传加盖公章的营业执照</span>
             <input type="hidden" value=@Model.Id name="Id" />
+
+        </li>
+        <li>
             <a href="javascript:;" class="a-upload">
-                <input type="file" id="BusinessLicensePdfSeal" required name="BusinessLicensePdfSeal" />+ 选择文件
+                <input type="file" id="BusinessLicensePdfSeal" required name="BusinessLicensePdfSeal" />+ 浏览
             </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
         </li>
         <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-        <li>
-            @*<div class="uploadInfo uploadInfo-hide">dasfsd</div>*@
-            @if (Model.HasBusinessLicense)
-            {
-                <div class="uploadInfo">
-                    @if (Model.HasBusinessLicense)
-                    {
-                        <div>
-                            <span><i class="fa fa-check"></i>已上传</span>
-                            <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
+            <div class="uploadInfo">
+                @if (Model.HasBusinessLicense)
+                {
+                    <div>
+                        <span><i class="fa fa-check"></i>已上传</span>
+                        <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
+                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
+                    </div>
+                }
+            </div>
         </li>
     </ul>
 }
 @using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
 {
+    <input type="hidden" value=@Model.Id name="Id" />
+    <div>
+
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i> 员工名单
+        </label>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                员工名单(加盖公章)：
-            </label>
+            <span style="font-size: larger">1.下载员工名单（系统生成）</span>
         </li>
         <li>
-            <input type="hidden" value=@Model.Id name="Id" />
-            <a href="javascript:;" class="a-upload">
-                <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 选择文件
-            </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
-        </li>
-
-        <li>
-            <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
         </li>
+    </ul>
+    <ul class="unloadFile">
         <li>
-            @if (Model.HasEmpInfoFilePDFSeal)
-            {
+            <span style="font-size: larger">2. 上传员工名单（加盖公章）</span>
+        </li>
+        <li>
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 浏览
+            </a>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
+        </li>
+        <li>
             <div class="uploadInfo">
                 @if (Model.HasEmpInfoFilePDFSeal)
-                    {
+                {
                     <div>
                         <span><i class="fa fa-check"></i>已上传</span>
                         <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
                         @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                     </div>
-                    }
+                }
             </div>
-            }
-            else
-            {
-            <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
         </li>
-
     </ul>
 }
 @using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
 {
+    <input type="hidden" value=@Model.Id name="Id" />
+    <div>
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i>投保单
+        </label>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                投保单(加盖公章)：
-            </label>
+            <span style="font-size: larger">1. 下载投保单并填写</span>
         </li>
         <li>
-            <input type="hidden" value=@Model.Id name="Id" />
+            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">投保单下载</a>
+        </li>
+    </ul>
+    <ul class="unloadFile">
+        <li>
+            <span style="font-size: larger">2. 上传投保单（加盖公章）</span>
+        </li>
+        <li>
+
             <a href="javascript:;" class="a-upload">
-                <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />+ 选择文件
+                <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />+ 浏览
             </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
         </li>
         <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-        <li>
-            @if (Model.HasInsurancePolicy)
-            {
-                <div class="uploadInfo">
-                    @if (Model.HasInsurancePolicy)
-                    {
-                        <div>
-                            <span><i class="fa fa-check"></i>已上传</span>
-                            <a href=@Model.InsurancePolicySealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
+            <div class="uploadInfo">
+                @if (Model.HasInsurancePolicy)
+                {
+                    <div>
+                        <span><i class="fa fa-check"></i>已上传</span>
+                        <a href=@Model.InsurancePolicySealUrl>查看</a>
+                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
+                    </div>
+                }
+            </div>
         </li>
     </ul>
 }
 <div style="height:5em;width:100%;height:auto;">
     <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
-        <span style="color:gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
-        <span style="color:gray">2.如果文件超过2M,请将文件压缩后上传</span><br />
+        <span style="color: gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
+        <span style="color:gray">2.员工名单只能上传JPG/PNG/PDF/ZIP/RAR/7Z格式压缩文件</span><br />
+        <span style="color:gray">3.如果文件超过2M,请将文件压缩后上传</span><br />
 
     </div>
 </div>
@@ -165,7 +172,7 @@
     </div>
     <div>
         @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
-        {
+                {
             <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
         }
         else
@@ -197,7 +204,7 @@
                         return false;
                     }
                     pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar' || pf == 'pdf') {
+                    if (pf == 'zip' || pf == 'rar' || pf === '7z' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
                         errorInfo.text("员工名单格式不正确！");
@@ -209,7 +216,8 @@
                         return false;
                     }
                     pf = (blFile.substring(blFile.lastIndexOf(".") + 1, blFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
+                    //console.log(pf);
+                    if (pf === 'zip' || pf === 'rar' || pf === '7z' || pf === 'doc' || pf === 'pdf' || pf === 'jpg' || pf === 'png') {
                         return true;
                     } else {
                         errorInfo.text("营业执照格式不正确！");

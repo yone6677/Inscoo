@@ -1135,7 +1135,7 @@ namespace Inscoo.Controllers
                 var orderBatch = _orderBatchService.GetByOrderId(id);
                 if (order != null && orderBatch != null)
                 {
-                    if (orderBatch.PaymentNoticePDF != 0)//还未产生付款通知书
+                    if (orderBatch.PaymentNoticePDF == 0)//还未产生付款通知书
                     {
                         var ls = _orderEmpService.GetPaymentNoticePdf(id);
                         var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");

@@ -35,22 +35,25 @@
 </div>
 @using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
+
+    <div>
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i> 营业执照
+        </label>
+        <a href=@Model.BusinessLicenseTemp target="_blank" style="color: red">查看示例</a>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                营业执照(加盖公章)：
-            </label>
-        </li>
-        <li>
+            <span style="font-size: larger">请上传加盖公章的营业执照</span>
             <input type="hidden" value=@Model.Id name="Id" />
-            <a href="javascript:;" class="a-upload">
-                <input type="file" id="BusinessLicensePdfSeal" required name="BusinessLicensePdfSeal" />+ 选择文件
-            </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+
         </li>
         <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="BusinessLicensePdfSeal" required name="BusinessLicensePdfSeal" />+ 浏览
+            </a>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
         </li>
         <li>
             <div class="uploadInfo">
@@ -62,37 +65,40 @@
                         @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
                     </div>
                 }
-                else
-                {
-                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
-                }
             </div>
         </li>
     </ul>
 }
 @using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('1')") }))
 {
+    <input type="hidden" value=@Model.Id name="Id" />
+    <div>
+
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i> 员工名单
+        </label>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                员工名单(加盖公章)：
-            </label>
+            <span style="font-size: larger">1.下载员工名单（系统生成）</span>
         </li>
         <li>
-            <input type="hidden" value=@Model.Id name="Id" />
-            <a href="javascript:;" class="a-upload">
-                <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 选择文件
-            </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
-        </li>
-
-        <li>
-            <input type="submit" value="上传" class="btn btn-default" />
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
         </li>
+    </ul>
+    <ul class="unloadFile">
         <li>
-
-            <div class="uploadInfo text-center">
+            <span style="font-size: larger">2. 上传员工名单（加盖公章）</span>
+        </li>
+        <li>
+            <a href="javascript:;" class="a-upload">
+                <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 浏览
+            </a>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
+        </li>
+        <li>
+            <div class="uploadInfo">
                 @if (Model.HasEmpInfoFilePDFSeal)
                 {
                     <div>
@@ -101,33 +107,37 @@
                         @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                     </div>
                 }
-                else
-                {
-                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
-                }
             </div>
         </li>
-
     </ul>
 }
 @using (Html.BeginForm("UploadPolicyPdfSeal", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('3')") }))
 {
+    <input type="hidden" value=@Model.Id name="Id" />
+    <div>
+        <label style="color: #24a9e4">
+            <i class="fa fa-edit fa-2x"></i>投保单
+        </label>
+    </div>
     <ul class="unloadFile">
         <li>
-            <label>
-                投保单(加盖公章)：
-            </label>
+            <span style="font-size: larger">1. 下载投保单并填写</span>
         </li>
         <li>
-            <input type="hidden" value=@Model.Id name="Id" />
+            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">投保单下载</a>
+        </li>
+    </ul>
+    <ul class="unloadFile">
+        <li>
+            <span style="font-size: larger">2. 上传投保单（加盖公章）</span>
+        </li>
+        <li>
+
             <a href="javascript:;" class="a-upload">
-                <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />+ 选择文件
+                <input type="file" id="PolicyPdfSeal" name="PolicyPdfSeal" />+ 浏览
             </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
-        </li>
-        <li>
-            <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">保单下载</a>
+            <span class="lab" style="height: 28px; line-height: 28px;">@*未选择上传文件*@</span>
+            <input type="submit" value="上传" class="btn btn-default" style="max-width: 70px" />
         </li>
         <li>
             <div class="uploadInfo">
@@ -138,10 +148,6 @@
                         <a href=@Model.InsurancePolicySealUrl>查看</a>
                         @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
                     </div>
-                }
-                else
-                {
-                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
                 }
             </div>
         </li>
@@ -166,7 +172,7 @@
     </div>
     <div>
         @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
-        {
+                {
             <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
         }
         else

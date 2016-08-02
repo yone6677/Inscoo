@@ -116,12 +116,12 @@
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
-                <sapn style="color:#888;">(请填写全称用于发票抬头)</sapn>
+                <span style="color:#888;">(请填写全称用于发票抬头)</span>
             </li>
         </ul>
 
         <ul>
-            <li>
+            <li style="width:20%;text-align:right">
                 @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>
@@ -141,11 +141,11 @@
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                <sapn style="color:#888;">(供保单及发票寄送)</sapn>
+                <span style="color:#888;">(供保单及发票寄送)</span>
             </li>
         </ul>
         <ul>
-            <li>
+            <li style="width:20%;text-align:right">
                 @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
             </li>
             <li>

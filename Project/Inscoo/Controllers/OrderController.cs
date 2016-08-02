@@ -1563,15 +1563,15 @@ namespace Inscoo.Controllers
                     {
                         if (Cells["A" + i].Value == null)
                             break;
-                       
+
                         if (Cells["E" + i].Value == null)
                         {
-                            throw new Exception("保全类型不能为空");
+                            throw new Exception($"第{i}行保全类型不能为空");
                         }
                         var insType = Cells["E" + i].Value.ToString().Trim();
                         if (insType != "加保" && insType != "减保")
                         {
-                            throw new Exception("保全类型不正确,只能是加保或减保,请检查");
+                            throw new Exception($"第{i}行保全类型不正确,只能是加保或减保,请检查");
                         }
                         DateTime changeDate = new DateTime();
                         try
@@ -1580,11 +1580,11 @@ namespace Inscoo.Controllers
                         }
                         catch (Exception)
                         {
-                            throw new Exception("请注意生效时间格式是否正确,正确的格式为 2017-1-1 或者 2017/1/1");
+                            throw new Exception($"第{i}行请注意生效时间格式是否正确,正确的格式为 2017-1-1 或者 2017/1/1");
                         }
                         if (changeDate < DateTime.Now.AddDays(3).AddSeconds(-1))
                         {
-                            throw new Exception("请注意生效日期，最小应为三日之后");
+                            throw new Exception($"第{i}行请注意生效日期，最小应为三日之后");
                         }
                         var item = new OrderEmpTemp();
                         if (insType == "加保")
@@ -1616,7 +1616,7 @@ namespace Inscoo.Controllers
                         {
                             if (!order.ProdWithdraw)//若此订单无法减保
                             {
-                                throw new Exception("此订单类型不允许退保，Excel中第" + i + "行数据为减保，请检查");
+                                throw new Exception($"此订单类型不允许退保，Excel中第{i}行数据为减保，请检查");
                             }
                             item.PMCode = PMType.PM16.ToString();
                             item.BuyType = 2;

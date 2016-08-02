@@ -104,7 +104,7 @@ body {
 }
 .firstMenu li a {
   text-align: left;
-  font-weight: 600;
+  /*font-weight: 600;*/
   color: #fff;
   padding-left: 20%;
 }
@@ -112,6 +112,9 @@ body {
   width: 18px;
   text-align: center;
   margin-right: .5em;
+}
+.firstMenu .fa {
+  color: #ccc;
 }
 .firstMenu li a:hover {
   border-left: .3em solid #1f91c7;
@@ -406,6 +409,9 @@ body {
   margin-bottom: 1em;
   padding-left: 10px;
   border-left: 5px solid #5CB85C;
+}
+.describe_name_expand {
+  margin-top: -1em;
 }
 .inscoo-productTable {
   margin: .5em auto;
@@ -1419,8 +1425,8 @@ div:after {
   cursor: pointer;
   color: #111;
   background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px dashed #ddd;
+  /*border-radius: 4px;*/
   display: inline-block;
   *display: inline;
   *zoom: 1;
@@ -1534,4 +1540,64 @@ div:after {
 }
 .tooltip.top .tooltip-arrow {
   border-top-color: #aaa;
+}
+/*客服部分*/
+.service-girl {
+  width: 150px;
+  position: absolute;
+  right: 0;
+  top: 200px;
+  z-index: 2000;
+  background: #fff;
+}
+.service-girl.out {
+  right: -150px;
+}
+.service-girl .arrow-left {
+  position: absolute;
+  top: 40%;
+  left: -42px;
+  background: #24A9E4;
+  padding: 20px 0;
+  cursor: pointer;
+}
+.service-girl .fa-hand-o-left {
+  color: #fff;
+}
+.service-girl .service-girl-title {
+  background: #24A9E4;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+.service-girl .service-type {
+  border: 2px solid #24A9E4;
+  text-align: center;
+}
+.service-girl .service-type span {
+  margin: 10px 0;
+  display: block;
+  color: #24A9E4;
+}
+.service-girl .service-type b {
+  display: block;
+  color: #3F43B3;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #aaa;
+}
+.service-girl .service-type b a {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #EDEDED;
+  font-weight: bold;
+}
+.service-girl .service-type b a:hover {
+  text-decoration: none;
+}
+.service-girl .service-type b a:visited {
+  text-decoration: none;
+}
+.service-girl .service-type b a:link {
+  text-decoration: none;
 }

@@ -265,6 +265,7 @@
     <Content Include="Content\imgIndex\p4.png" />
     <Content Include="Content\imgIndex\patternGroup.png" />
     <Content Include="Content\imgIndex\polygon.png" />
+    <Content Include="Content\imgIndex\qqzx1.jpg" />
     <Content Include="Content\imgIndex\question.png" />
     <Content Include="Content\imgIndex\question_1.png" />
     <Content Include="Content\imgIndex\ruzhi_02.png" />
@@ -510,6 +511,7 @@
     <Content Include="Views\Health\detail\_ProDetail_9.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceAddEOrderCode.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_11.cshtml" />
+    <Content Include="Views\Home\Service.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

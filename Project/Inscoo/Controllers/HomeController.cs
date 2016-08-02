@@ -124,5 +124,10 @@ namespace Inscoo.Controllers
             ViewBag.Portrait = Request.Cookies.Get("PortraitPath")?.Value;
             return PartialView();
         }
+        public ActionResult Service()
+        {
+            return PartialView();
+        }
+
     }
 }

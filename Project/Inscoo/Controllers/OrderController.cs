@@ -540,7 +540,8 @@ namespace Inscoo.Controllers
                         PhoneNumber = order.PhoneNumber,
                         Address = order.Address,
                         IsUploadInfo = empCount.Count,//已上传人员数
-                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp()
+                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp(),
+                        ProdTimeLimit = order.orderItem.FirstOrDefault().ProdTimeLimit
                     };
                     if (order.StartDate == DateTime.MinValue)
                     {
@@ -720,22 +721,20 @@ namespace Inscoo.Controllers
                     var Cells = worksheet.Cells;
                     if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
                         result = "上传的文件不正确";
-                    var eList = new List<OrderEmployeeModel>();
+                    var eList = new List<OrderEmployeeModel>();//先把资料写入临时List,以便判断是否正确
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
                             break;
-                        var item = new OrderEmployee();
-                        item.batch_Id = batch.Id;//批次号
+                        var item = new OrderEmployeeModel();
+                        item.BId = batch.Id;//批次号
                         item.Premium = order.AnnualExpense;
-                        item.PMCode = PMType.PM00.ToString();
-                        item.Relationship = "本人";
                         item.Name = Cells["A" + i].Value.ToString().Trim();
                         item.IDType = Cells["B" + i].Value.ToString().Trim();
                         item.IDNumber = Cells["C" + i].Value.ToString().Trim();
                         try
                         {
-                            item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                            item.Birthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
                         }
                         catch
                         {
@@ -755,9 +754,38 @@ namespace Inscoo.Controllers
                         item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
                         item.StartDate = order.StartDate;
                         item.EndDate = order.EndDate;
+                        bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
+                        if (idCon)
+                        {
+                            throw new Exception("请检查第 " + i + " 行资料,此人员证件号码重复");
+                        }
+                        else
+                        {
+                            eList.Add(item);
+                        }
+                    }
+                    foreach (var e in eList)
+                    {
+                        var item = new OrderEmployee();
+                        item.batch_Id = e.BId;
+                        item.Premium = e.Premium;// order.AnnualExpense;
+                        item.PMCode = PMType.PM00.ToString();
+                        item.Relationship = "本人";
+                        item.Name = e.Name;
+                        item.IDType = e.IDType;
+                        item.IDNumber = e.IDNumber;
+                        item.BirBirthday = e.Birthday;
+                        item.Sex = e.Sex;
+                        item.BankCard = e.BankCard;
+                        item.BankName = e.BankName;
+                        item.PhoneNumber = e.PhoneNumber;
+                        item.Email = e.Email;
+                        item.HasSocialSecurity = e.HasSocialSecurity;
+                        item.StartDate = e.StartDate;
+                        item.EndDate = e.EndDate;
                         if (!_orderEmpService.Insert(item))
                         {
-                            result = "上传失败";
+                            throw new Exception("上传失败,请稍后再试");
                         }
                     }
                     var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
@@ -1017,13 +1045,22 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id, int uType = 0)
         {
-            if (!CheckFileInfo(EmpInfoPdfSeal, "EmpInfoPdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (EmpInfoPdfSeal != null && Id > 0)
             {
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
                 if (orderBatch != null)
                 {
-                    var fileId = _archiveService.Insert(EmpInfoPdfSeal, FileType.EmployeeInfoSeal.ToString(), Id);
+                    #region 判断文件是否符合格式
+
+                    int fileId = 0;
+                    if (CheckFileInfo(EmpInfoPdfSeal, "EmpInfoPdf"))
+                    {
+                        fileId = _archiveService.Insert(EmpInfoPdfSeal, FileType.EmployeeInfoSeal.ToString(), Id);
+                    }
+
+
+                    #endregion
+
                     if (fileId > 0)
                     {
                         orderBatch.EmpInfoFileSeal = fileId;
@@ -1042,6 +1079,11 @@ namespace Inscoo.Controllers
                                 return RedirectToAction("BuyMore", new { id = Id });
                             }
                         }
+                    }
+                    else
+                    {
+                        TempData["errorMes"] = "员工名单上传失败：请检查文件格式及大小是否符合上传条件";
+                        return RedirectToAction("UploadFile", new { id = Id });
                     }
                 }
             }
@@ -1078,13 +1120,20 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadBusinessLicensePdf(HttpPostedFileBase BusinessLicensePdfSeal, int Id)
         {
-            if (!CheckFileInfo(BusinessLicensePdfSeal, "BusinessLicensePdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (BusinessLicensePdfSeal != null && Id > 0)
             {
                 var order = _orderService.GetById(Id);
                 if (order != null)
                 {
-                    var fileId = _archiveService.Insert(BusinessLicensePdfSeal, FileType.BusinessLicenseSeal.ToString(), Id);
+                    #region 判断文件是否符合格式
+
+                    int fileId = 0;
+                    if (CheckFileInfo(BusinessLicensePdfSeal, "BusinessLicensePdf"))
+                    {
+                        fileId = _archiveService.Insert(BusinessLicensePdfSeal, FileType.BusinessLicenseSeal.ToString(), Id);
+                    }
+                    #endregion
+
                     if (fileId > 0)
                     {
                         order.BusinessLicense = fileId;
@@ -1092,6 +1141,11 @@ namespace Inscoo.Controllers
                         {
                             return RedirectToAction("UploadFile", new { id = Id });
                         }
+                    }
+                    else
+                    {
+                        TempData["errorMes"] = "营业执照上传失败：请检查文件格式及大小是否符合上传条件";
+                        return RedirectToAction("UploadFile", new { id = Id });
                     }
                 }
             }
@@ -1650,8 +1704,15 @@ namespace Inscoo.Controllers
                             item.Email = Cells["K" + i].Value.ToString().Trim();
                         }
                         item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
-
-                        eList.Add(item);
+                        bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
+                        if (idCon)
+                        {
+                            throw new Exception("请检查第 " + i + " 行资料,此人员证件号码重复");
+                        }
+                        else
+                        {
+                            eList.Add(item);
+                        }
                     }
                     if (eList.Count > 0)
                     {
@@ -1876,7 +1937,7 @@ namespace Inscoo.Controllers
             }
             if (type == "EmpInfoPdf")
             {
-                return ("JPG/PNG/PDF/DOC/ZIP/RAR").Split('/').Contains(suffix);
+                return ("JPG/PNG/PDF/7Z/ZIP/RAR").Split('/').Contains(suffix);
             }
             return true;
         }

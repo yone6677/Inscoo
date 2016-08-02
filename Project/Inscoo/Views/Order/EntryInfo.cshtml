@@ -23,39 +23,36 @@
         </li>
     </ul>
 </div>
-
-
-
-@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadEmp", "Order", FormMethod.Post, new { @class = "entryInfoUpload", enctype = "multipart/form-data", id = "entryInfoUpload" }))
 {
 
     <p class="basic-information">
-        <i class="fa fa-edit fa-2x"></i>详细信息填写
+        <i class="fa fa-edit fa-2x"></i>投保人员信息
     </p>
-    <ul style="width:65%">
+    <ul>
         <li>
-            <label>
-                上传员工名单：
-            </label>
+            1.请下载员工名单模板并按模板格式填写：
+        </li>
+        <li>
+            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
+        </li>
+        <li>
+            2.请上传填写完成的员工名单
         </li>
         <li>
             <input type="hidden" value=@Model.Id name="Id" />
             <a href="javascript:;" class="a-upload">
-                <input type="file" id="empinfo" required name="empinfo" />+ 选择文件
+                <input type="file" id="empinfo" name="empinfo" />+ 浏览
             </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+            <span class="lab" style="height:28px;line-height:28px;"></span>
+            <input type="button" onclick="CheckEmpFile()" value="上传" class="btn btn-default clickError" />
         </li>
-        <li>
-            <input type="submit" value="上传" class="btn btn-default clickError" />
-            <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-        
     </ul>
-    <div style="line-height:2em;text-align:left;" class="text-danger-hide">
+    <div style="width:80%;margin:1em auto;line-height:2em;text-align:left;">
         <span style="color:#5cb85c">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
     </div>
-    
-    <div style="line-height:1.5em;width:35%;text-align:left;float:left;" class="text-danger-show">
+
+    <div style="width:80%;margin:0 auto;line-height:2em;text-align:left;">
         @if (!string.IsNullOrEmpty(ViewBag.error))
         {
             <span class="text-danger">@ViewBag.error</span><br />
@@ -65,28 +62,44 @@
             <span class="text-danger">@TempData["error"]</span><br />
         }
         <span class="text-danger" id="error"></span>
-        
+
     </div>
 }
+<hr />
 @using (Html.BeginForm("EntryInfo", "Order", FormMethod.Post, new { @id = "EntryInfoForm", style = "display: none" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.IsUploadInfo)
     @Html.Hidden("isCompanySelect")
-
+    <p class="basic-information">
+        <i class="fa fa-edit fa-2x"></i>投保计划
+    </p>
+    <ul class="insure_plan row">
+        <li class="col-md-4">
+            保障起始日期：
+        </li>
+        <li class="col-md-4">
+            <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
+        </li>
+        <li class="col-md-4">
+            0时起
+        </li>
+        <li class="col-md-4">
+            保障结束日期：
+        </li>
+        <li class="col-md-4">
+            <span id="endDate"></span>
+        </li>
+        <li class="col-md-4">
+            24时止，共<span id="endDateTip" style="color:red;">  </span>
+        </li>
+    </ul>
+    <hr />
 
     <div class="orderEntryInfoBody">
-        <ul>
-            <li>
-                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })：
-            </li>
-            <li>
-                <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
-                @*@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "", type = "date"}})*@
-            </li>
-        </ul>
-        <p class="basic-information" style="margin-top: 70px;">
+
+        <p class="basic-information">
             <i class="fa fa-edit fa-2x"></i>基本信息
             <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
         </p>
@@ -99,10 +112,11 @@
                 @if (ViewBag.CompanyNameList != null)
                 {
                     @Html.DropDownList("CompanyNameList", ViewBag.CompanyNameList as SelectList, null, new { @class = "form-control" })
-                }
+                }          
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                <sapn style="color:#888;">(请填写全称用于发票抬头)</sapn>
             </li>
         </ul>
 
@@ -123,11 +137,11 @@
             </li>
             <li>
                 @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                <sapn style="color:#888;">(供保单及发票寄送)</sapn>
+               
             </li>
             <li>
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-
+                <sapn style="color:#888;">(供保单及发票寄送)</sapn>
             </li>
         </ul>
         <ul>
@@ -144,14 +158,7 @@
     </div>
 
 }
-
-@using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
-{
-    <input type="hidden" name="Id" value=@Model.Id />
-    <div class="employeeInfo" id="dadaGrid">
-        @Html.Action("UploadEmp")
-    </div>
-}
+<hr />
 <div class="orderConfirmBodyNext" style="text-align:center;">
     @*<div>
             <a href="/Order/Buy/@Model.Id">返回</a>
@@ -165,18 +172,76 @@
         <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
     }
 </div>
+@using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
+{
+    <input type="hidden" name="Id" value=@Model.Id />
+    <div class="employeeInfo" id="dadaGrid">
+        @Html.Action("UploadEmp")
+    </div>
+}
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    }
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
     <script>
-
+        function CheckEmpFile(){
+            var empFile= $("#empinfo").val();
+            if (empFile == '') {
+                $('#error').text('未选择任何文件');
+            }
+            else{
+                var emp = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
+                if(emp=='xlsx'||emp=='xls'){
+                    $('#entryInfoUpload').submit();
+                }
+                else{
+                    $('#error').text('请上传正确的Excel人员信息文件,'+emp+'为不支持的格式');
+                }
+            }
+        }
         jQuery(function() {
             jQuery("#StartDate")
                 .datepicker({
-                    startDate: '@DateTime.Now.AddDays(4).ToShortDateString()'
+            startDate: '@DateTime.Now.AddDays(4).ToShortDateString()'
                 });
+            $('#endDate').text('@endDate');
+            $('#endDateTip').text('@endDateTip');
             InitCompanyList();
-
+            $('#StartDate').change(function(){
+                var dateType='@prodlimit';
+                var startdate=$('#StartDate').val();
+                if (startdate.indexOf("-") > 0) {
+                    arr = startdate.split("-");
+                }
+                if (startdate.indexOf("/") > 0) {
+                    arr = startdate.split("/");
+                }
+                var starttime = new Date(arr[0], arr[1] - 1, arr[2]);
+                var endDate=new Date();
+                switch(dateType){
+                    case '年':
+                        endDate=dateAdd(starttime,'year',1);
+                        $('#endDateTip').text('12 个月');
+                        break;
+                    case '季':
+                        endDate=dateAdd(starttime,'season',1);
+                        $('#endDateTip').text('3 个月');
+                        break;
+                    case '月':
+                        endDate=dateAdd(starttime,'month',1);
+                        $('#endDateTip').text('1 个月');
+                        break;
+                    case '周':
+                        endDate=dateAdd(starttime,'week',1);
+                        $('#endDateTip').text('7 天');
+                        break;
+                    case '日':
+                        endDate=dateAdd(starttime,'day',1);
+                        $('#endDateTip').text('1 天');
+                        break;
+                }
+                $('#endDate').text(endDate.getFullYear()+'年 '+(endDate.getMonth()+1)+'月 '+(endDate.getDate())+'日');
+            });
             if (document.getElementById("isListExist") != null) {
                 jQuery("#EntryInfoForm").show();
             }
@@ -191,7 +256,7 @@
                 } else {
                     $("#error").text("生效时间最早为三日之后，请重新选择");
                 }
-                
+
             } else {
                 $('.text-danger-hide').hide();
                 $("#error").text("还未上传人员资料");

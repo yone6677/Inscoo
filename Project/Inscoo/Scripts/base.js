@@ -246,9 +246,28 @@ $(function () {
         t = t + oldTop + "px";
 
         setTimeout(function () {
-            $(".service-girl").css("top",t);
+            $(".service-girl").css("top", t);
         }, 200);
     });
-})
-
-
+});
+///时间操作
+function dateAdd(date, strInterval, Number) {
+    var dtTmp = date;
+    switch (strInterval) {
+        case 'year':
+            return new Date(dtTmp.getFullYear() + Number, dtTmp.getMonth(), dtTmp.getDate() + -1, dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'season':
+            return new Date(dtTmp.getFullYear(), dtTmp.getMonth() + 3 * Number, dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'month':
+            return new Date(dtTmp.getFullYear(), dtTmp.getMonth() + Number, dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'week':
+            return new Date(Date.parse(dtTmp) + ((86400000 * 7) * Number));
+            break;
+        case 'day':
+            return new Date(Date.parse(dtTmp) + (86400000 * Number));
+            break;
+    }
+}

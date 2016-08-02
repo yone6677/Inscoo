@@ -7,10 +7,10 @@ using Core;
 using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Linq;
 
 namespace Inscoo.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly IAppUserService _appUserService;
@@ -32,7 +32,6 @@ namespace Inscoo.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(returnUrl))
@@ -44,10 +43,11 @@ namespace Inscoo.Controllers
         //
         // POST: /Account/Login
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            //查看验证未通过原因
+           //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 var user = _appUserService.Find(model.UserName, model.Password);
@@ -71,14 +71,12 @@ namespace Inscoo.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        [AllowAnonymous]
         public ActionResult ForgetPassword()
         {
             return View();
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ForgetPassword(string email)
         {
@@ -104,19 +102,16 @@ namespace Inscoo.Controllers
             });
             return RedirectToAction("ForgotPasswordConfirmation", "Account");
         }
-        [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
-        [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
             return View();
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPasswordModel model)
         {
@@ -148,7 +143,6 @@ namespace Inscoo.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();

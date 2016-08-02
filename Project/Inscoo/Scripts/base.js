@@ -203,7 +203,7 @@ $("[type='file']").on('change', function () {
     var empFile = $(this).val();
     var pf = (empFile.substring(empFile.lastIndexOf("\\") + 1, empFile.length));
     $(this).parent().next().text(pf);
-    console.log($(this).parent().css("display","none"));
+    //console.log($(this).parent().css("display","none"));
 });
 
 

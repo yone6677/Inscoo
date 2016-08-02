@@ -203,6 +203,7 @@ $("[type='file']").on('change', function () {
     var empFile = $(this).val();
     var pf = (empFile.substring(empFile.lastIndexOf("\\") + 1, empFile.length));
     $(this).parent().next().text(pf);
+    console.log($(this).parent().css("display","none"));
 });
 
 
@@ -232,3 +233,20 @@ $(document).on('mouseover', 'body', function () {
     $('[data-toggle="tooltip"]').tooltip();
 })
     
+
+/*客服部分*/
+$(".arrow-left").on("click", function () {
+    console.log(1000);
+    $(".service-girl").toggleClass("out");
+});
+$(function () {
+    $(window).scroll(function () {
+        var oldTop = 200;
+        var t = $("body").scrollTop();
+        t = t + oldTop + "px";
+
+        setTimeout(function () {
+            $(".service-girl").css("top",t);
+        }, 200);
+    });
+})

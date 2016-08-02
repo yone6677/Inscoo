@@ -38,14 +38,20 @@
                             @Html.AntiForgeryToken()
                             <div class="inputControl">
                                 <span class="icon1"></span>
-                                @Html.TextBoxFor(m => m.UserName)
+                                @Html.TextBoxFor(m => m.UserName, new { @placeholder = "请输入注册邮箱" })
                             </div>
                             <div class="inputControl">
                                 <span class="icon2"></span>
-                                @Html.PasswordFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
+                            <div style="margin-bottom:5px;">
+                                <div style="float:left;"><input type="checkbox" checked="checked" style="vertical-align:middle;margin-bottom:2px;margin-top:-1px;margin-right:3px;" name="name" value="" />记住密码</div>
+                                 @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd",style="float:right;text-decoration:none" })
+                                <div style="clear:both"></div>
+                            </div>
+                            
                             <input type="submit" class="submitBtn" value="登录">
-                            @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd" })
+                            
                         }
                     </div>
                 </div>

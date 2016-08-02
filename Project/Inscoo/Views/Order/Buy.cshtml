@@ -72,7 +72,7 @@
                         @{
                             if (string.IsNullOrEmpty(Model.OrderName))
                             {
-                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control product-select", placeholder = "请输入方案名称", title = "您可以给您选择的方案取一个特别的名字，例如：备选方案一" } })
+                                @Html.EditorFor(model => model.OrderName, new { htmlAttributes = new { @class = "form-control product-select", data_placement = "right", data_toggle = "tooltip", placeholder = "请输入方案名称", title = "您可以给您选择的方案取一个特别的名字，例如：备选方案一" } })
                             }
                             else
                             {
@@ -89,7 +89,7 @@
                     </li>
                     <li>
                         @{
-                            @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control product-select", title = "您可以给您选择的方案进行注释，例如：用于高管" } })
+                            @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control product-select", data_placement = "right", data_toggle = "tooltip", title = "您可以给您选择的方案进行注释，例如：用于高管" } })
                         }
                     </li>
                 </ul>
@@ -102,10 +102,10 @@
                         </li>
                         <li>
                             @Html.HiddenFor(model => model.StaffRange)
-                            <select disabled="disabled" class="product-select" title="请选择将参加该保险方案的员工人数">
+                            @*<select disabled="disabled" class="product-select" data_placement="right" data_toggle="tooltip" title="请选择将参加该保险方案的员工人数">
                                 <option value=@Model.StaffRange selected="selected">@Model.StaffRange</option>
-                            </select>
-                            @* <span>@Model.StaffRange</span>*@
+                            </select>*@
+                             <span class="product-select" data-placement="right" data-toggle="tooltip" title="已选择将参加该保险方案的员工人数">@Model.StaffRange</span>
 
                         </li>
                     </ul>
@@ -117,14 +117,14 @@
                         @Html.LabelFor(model => model.AgeRange, htmlAttributes: new
                    {
                        @class = "control-label",
-                       title = "请选择将参加该保险方案的员工平均年龄"
                    }) :
                     </li>
                     <li>
                         @Html.HiddenFor(model => model.AgeRange)
-                        <select disabled class="product-select">
+                        @*<select disabled class="product-select">
                             <option value=@Model.AgeRange selected>@Model.AgeRange</option>
-                        </select>
+                        </select>*@
+                        <span class="product-select"  data-placement="right" data-toggle="tooltip" title="已选择将参加该保险方案的员工平均年龄">@Model.AgeRange</span>
                     </li>
                 </ul>
             </dd>
@@ -207,7 +207,7 @@
                     $("#pretiumShow").val(pretium);
                 }
             });
-            $(function () { $("[data-toggle='tooltip']").tooltip(); });
+            $(function () { $("[data_toggle='tooltip']").tooltip(); });
         })
     </script>
 }

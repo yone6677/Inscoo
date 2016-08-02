@@ -4,10 +4,6 @@ namespace Models
 {
     public class LoginModel
     {
-        public LoginModel()
-        {
-            RememberMe = true;
-        }
         [Required]
         [Display(Name = "用户名")]
         public string UserName { get; set; }

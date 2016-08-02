@@ -235,13 +235,13 @@ $(document).on('mouseover', 'body', function () {
     
 
 /*客服部分*/
-$(".arrow-left").on("click", function () {
-    console.log(1000);
-    $(".service-girl").toggleClass("out");
-});
+//$(".arrow-left").on("click", function () {
+//    console.log(1000);
+//    $(".service-girl").toggleClass("out");
+//});
 $(function () {
     $(window).scroll(function () {
-        var oldTop = 200;
+        var oldTop = 180;
         var t = $("body").scrollTop();
         t = t + oldTop + "px";
 
@@ -250,3 +250,5 @@ $(function () {
         }, 200);
     });
 })
+
+

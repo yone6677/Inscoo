@@ -20,7 +20,7 @@ namespace Models.Insurance
         public string SafeguardCode { set; get; }
         [DisplayName("保额")]
         public string CoverageSum { get; set; }
-        [DisplayName("赔付比例(住院/门诊)")]
+        [DisplayName("赔付比例")]
         public string PayoutRatio { get; set; }
         [DisplayName("保费")]
         public string Price { get; set; }

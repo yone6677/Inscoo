@@ -8,19 +8,19 @@
         </th>
         <th style="width:35%;">
             @Html.DisplayNameFor(model => model.SafeguardName)
-           <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="本险种所能保障的项目"><span class="icon-explain">*</span></button>
+           <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="本险种所能保障的项目"><span class="icon-explain fa fa-question-circle"></span></button>
         </th>
         <th style="width:20%;">
             @Html.DisplayNameFor(model => model.CoverageSum)
-            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="保险公司承担的保险金责任的最高限额"><span class="icon-explain">*</span></button>
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="保险公司承担的保险金责任的最高限额"><span class="icon-explain fa fa-question-circle"></span></button>
         </th>
         <th style="width:22%;">
             @Html.DisplayNameFor(model => model.PayoutRatio)
-            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="保险公司将按照该比例"><span class="icon-explain">*</span></button>
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="住院/门诊，如90%/80%代表住院赔付比例为90%，门诊赔付比例为80%"><span class="icon-explain fa fa-question-circle"></span></button>
         </th>
         <th style="width:15%;">
             @Html.DisplayNameFor(model => model.Price)
-            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="获得该保险保障需支付的保险费用"><span class="icon-explain">*</span></button>
+            <button data-toggle="tooltip" class="btn-explain" data-placement="top" title="获得该保险保障需支付的保险费用"><span class="icon-explain fa fa-question-circle"></span></button>
         </th>
     </tr>
     @{
@@ -90,19 +90,18 @@
     }
     <div class="customProduct_purchase">
         <ul class="customProduct_purchaseul">
-            <li style="width:30%">
-                总保费：<b id=@totalName>0.00</b>
+            <li style="width:70%;text-align:left;padding-left:7%;">
+                <p><span style="margin:0;margin-right:50px;" class=""><b style="vertical-align:middle;margin-top:-3px;font-size:1em" class="fa fa-exclamation-circle"></b> 此报价适用于有社保的1-4类职业</span>
+                <a href="http://www.inscoo.com/Archive/InsuranceFiles/A0.pdf" target="_blank">查看职业类别</a>
+                <button data-toggle="tooltip" class="btn-explain" data-placement="right" title="不同职业类别的人身风险不同"><span class="icon-explain fa fa-question-circle"></span></button><p>
+                <p>总保费：<b id=@totalName style="color:#e4393c">0.00</b>元</p>
             </li>
-            <li style="width:30%">
+
+            <li style="width:30%;height:73px;line-height:73px;margin-top:-10px;">
                 @if (Model != null)
                 {
                     @Html.Action("Cart", new { company = Model.FirstOrDefault().InsuredCom })
                 }
-            </li>
-            <li style="text-align:center;width:40%;line-height:2.5em">
-                <p style="margin:0">此报价适用于有社保的1-4类职业</p>
-                <a href="http://www.inscoo.com/Archive/InsuranceFiles/A0.pdf" target="_blank">职业类别分类</a>
-                <button data-toggle="tooltip" class="btn-explain" data-placement="right" title="不同职业类别的人身风险不同"><span class="icon-explain">*</span></button>
             </li>
         </ul>
     </div>

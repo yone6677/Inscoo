@@ -15,6 +15,12 @@
 a {
   text-decoration: none;
 }
+select {
+  border: solid 1px #aaa;
+}
+select::-ms-expand {
+  border: none;
+}
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -398,6 +404,11 @@ body {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
+.programme-query .programme-query-list {
+  padding-left: 20px;
+  height: 45px;
+  line-height: 45px;
+}
 .programme-footer {
   line-height: 3em;
   text-align: center;
@@ -412,6 +423,13 @@ body {
 }
 .describe_name_expand {
   margin-top: -1em;
+}
+.myTab-title {
+  font-weight: bold;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 20px 0 0;
+  font-size: 1em;
 }
 .inscoo-productTable {
   margin: .5em auto;
@@ -469,19 +487,20 @@ body {
 }
 .customProduct_purchase {
   width: 100%;
-  height: 5em;
-  line-height: 5em;
+  padding: 10px 0 0 0;
   box-shadow: 0 0 3px #999;
+  height: 83px;
 }
 .customProduct_purchase from {
   width: 100%;
 }
 .customProduct_purchaseul {
   width: 100%;
-  height: 4em;
+  height: 73px;
 }
 .customProduct_purchaseul li {
   width: 33%;
+  height: 100%;
   text-align: center;
   float: left;
   margin: 0 auto;
@@ -543,26 +562,29 @@ body {
   color: #fff;
 }
 .orderConfirmBody dl .dd-product-style {
-  width: 60%;
+  width: 100%;
+  overflow: hidden;
 }
 .orderConfirmBody dl .dd-product-style ul {
-  margin-left: 70%;
+  width: 50%!important;
+  float: left;
+  margin: 5px 0;
 }
 .orderConfirmBody dl .dd-product-style ul li:nth-child(odd) {
-  width: 68%;
+  width: 35%;
 }
 .orderConfirmBody dl .dd-product-style ul li:nth-child(even) {
-  width: 30%;
+  width: 63%;
 }
 .orderConfirmBody dl .dd-product-style ul .product-select {
   border-radius: 3px;
   height: 30px;
   line-height: 22px;
-  width: 80%;
+  width: 50%;
 }
 .orderConfirmBody dl dd ol {
   width: 96%;
-  height: 100px;
+  height: auto;
   margin: .5em 2%;
 }
 .orderConfirmBody dl dd ol li {
@@ -1528,9 +1550,7 @@ div:after {
   vertical-align: middle;
 }
 .btn-explain .icon-explain {
-  font-size: 1.2em;
-  vertical-align: middle;
-  width: 10px;
+  color: #888;
 }
 .tooltip-inner {
   background: #fff;
@@ -1543,54 +1563,49 @@ div:after {
 }
 /*客服部分*/
 .service-girl {
-  width: 150px;
+  width: 9%;
   position: absolute;
   right: 0;
-  top: 200px;
+  top: 180px;
   z-index: 2000;
-  background: #fff;
-}
-.service-girl.out {
-  right: -150px;
-}
-.service-girl .arrow-left {
-  position: absolute;
-  top: 40%;
-  left: -42px;
-  background: #24A9E4;
-  padding: 20px 0;
-  cursor: pointer;
-}
-.service-girl .fa-hand-o-left {
-  color: #fff;
+  background: #f7f7f7;
+  border: 1px solid #aaa;
+  text-align: center;
+  /*&.out{
+        right:-150px;
+    }*/
 }
 .service-girl .service-girl-title {
-  background: #24A9E4;
-  color: #fff;
+  background: #f7f7f7;
+  color: #A31A47;
   font-weight: bold;
   padding: 5px 10px;
+  border-bottom: 1px solid #ddd;
 }
-.service-girl .service-type {
-  border: 2px solid #24A9E4;
-  text-align: center;
+.service-girl .service-type p {
+  text-align: left;
+  text-indent: 2em;
+  margin: 10px 0;
 }
 .service-girl .service-type span {
   margin: 10px 0;
-  display: block;
-  color: #24A9E4;
+  display: inline-block;
+  width: 100%;
+  padding-left: 10%;
+  text-align: left;
+  color: #111;
 }
 .service-girl .service-type b {
   display: block;
   color: #3F43B3;
   padding-bottom: 20px;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px dashed #aaa;
 }
 .service-girl .service-type b a {
   padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background: #EDEDED;
-  font-weight: bold;
+  border-radius: 3px;
+  background: #A31A47;
+  color: #fff;
 }
 .service-girl .service-type b a:hover {
   text-decoration: none;

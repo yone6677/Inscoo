@@ -23,7 +23,16 @@
         </li>
     </ul>
 </div>
-
+<div class="text-center text-danger" style="min-height: 35px">
+    @if (TempData["errorMes"] != null)
+    {
+        <span id="errorInfo">@TempData["errorMes"].ToString()</span>
+    }
+    else
+    {
+        <span id="errorInfo"></span>
+    }
+</div>
 @using (Html.BeginForm("UploadBusinessLicensePdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
 {
     <ul class="unloadFile">
@@ -44,24 +53,20 @@
             <a href=@Model.BusinessLicenseTemp target="_blank" class="btn btn-default">下载模板</a>
         </li>
         <li>
-            @*<div class="uploadInfo uploadInfo-hide">dasfsd</div>*@
-            @if (Model.HasBusinessLicense)
-            {
-                <div class="uploadInfo">
-                    @if (Model.HasBusinessLicense)
-                    {
-                        <div>
-                            <span><i class="fa fa-check"></i>已上传</span>
-                            <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
+            <div class="uploadInfo">
+                @if (Model.HasBusinessLicense)
+                {
+                    <div>
+                        <span><i class="fa fa-check"></i>已上传</span>
+                        <a href=@Model.BusinessLicenseSealUrl target="_blank">查看</a>
+                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 1 }, new { @style = "color:red;" })
+                    </div>
+                }
+                else
+                {
+                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
+                }
+            </div>
         </li>
     </ul>
 }
@@ -86,23 +91,21 @@
             <a href=@Model.EmpInfoFilePDFUrl target="_blank" class="btn btn-default">名单下载</a>
         </li>
         <li>
-            @if (Model.HasEmpInfoFilePDFSeal)
-            {
-            <div class="uploadInfo">
+
+            <div class="uploadInfo text-center">
                 @if (Model.HasEmpInfoFilePDFSeal)
-                    {
+                {
                     <div>
                         <span><i class="fa fa-check"></i>已上传</span>
                         <a href=@Model.EmpInfoFilePDFSealUrl>查看</a>
                         @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 2 }, new { @style = "color:red;" })
                     </div>
-                    }
+                }
+                else
+                {
+                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
+                }
             </div>
-            }
-            else
-            {
-            <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
         </li>
 
     </ul>
@@ -124,34 +127,32 @@
         </li>
         <li>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">下载模板</a>
+            <a href=@Model.InsurancePolicyTemp target="_blank" class="btn btn-default">保单下载</a>
         </li>
         <li>
-            @if (Model.HasInsurancePolicy)
-            {
-                <div class="uploadInfo">
-                    @if (Model.HasInsurancePolicy)
-                    {
-                        <div>
-                            <span><i class="fa fa-check"></i>已上传</span>
-                            <a href=@Model.InsurancePolicySealUrl>查看</a>
-                            @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <span class="text-danger" style="color:#f00" id="errorInfo"></span>
-            }
+            <div class="uploadInfo">
+                @if (Model.HasInsurancePolicy)
+                {
+                    <div>
+                        <span><i class="fa fa-check"></i>已上传</span>
+                        <a href=@Model.InsurancePolicySealUrl>查看</a>
+                        @Html.ActionLink("删除", "DeleteFile", new { id = Model.Id, fType = 3 }, new { @style = "color:red;" })
+                    </div>
+                }
+                else
+                {
+                    @*<div class="text-warning text-center" style="font-size: small; color: #777;">未上传</div>*@
+                }
+            </div>
         </li>
     </ul>
 }
 <div style="height:5em;width:100%;height:auto;">
     <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
-        <span style="color:gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
-        <span style="color:gray">2.如果文件超过2M,请将文件压缩后上传</span><br />
+        <span style="color: gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
+        <span style="color:gray">2.员工名单只能上传JPG/PNG/PDF/ZIP/RAR/7Z格式压缩文件</span><br />
+        <span style="color:gray">3.如果文件超过2M,请将文件压缩后上传</span><br />
 
     </div>
 </div>
@@ -197,7 +198,7 @@
                         return false;
                     }
                     pf = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar' || pf == 'pdf') {
+                    if (pf == 'zip' || pf == 'rar' || pf === '7z' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
                         return true;
                     } else {
                         errorInfo.text("员工名单格式不正确！");
@@ -209,7 +210,8 @@
                         return false;
                     }
                     pf = (blFile.substring(blFile.lastIndexOf(".") + 1, blFile.length)).toLowerCase();
-                    if (pf == 'zip' || pf == 'rar' || pf == 'doc' || pf == 'pdf' || pf == 'jpg' || pf == 'png') {
+                    //console.log(pf);
+                    if (pf === 'zip' || pf === 'rar' || pf === '7z' || pf === 'doc' || pf === 'pdf' || pf === 'jpg' || pf === 'png') {
                         return true;
                     } else {
                         errorInfo.text("营业执照格式不正确！");

@@ -1017,13 +1017,22 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadEmpInfoPdf(HttpPostedFileBase EmpInfoPdfSeal, int Id, int uType = 0)
         {
-            if (!CheckFileInfo(EmpInfoPdfSeal, "EmpInfoPdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (EmpInfoPdfSeal != null && Id > 0)
             {
                 var orderBatch = _orderBatchService.GetByOrderId(Id);
                 if (orderBatch != null)
                 {
-                    var fileId = _archiveService.Insert(EmpInfoPdfSeal, FileType.EmployeeInfoSeal.ToString(), Id);
+                    #region 判断文件是否符合格式
+
+                    int fileId = 0;
+                    if (CheckFileInfo(EmpInfoPdfSeal, "EmpInfoPdf"))
+                    {
+                        fileId = _archiveService.Insert(EmpInfoPdfSeal, FileType.EmployeeInfoSeal.ToString(), Id);
+                    }
+
+
+                    #endregion
+
                     if (fileId > 0)
                     {
                         orderBatch.EmpInfoFileSeal = fileId;
@@ -1042,6 +1051,11 @@ namespace Inscoo.Controllers
                                 return RedirectToAction("BuyMore", new { id = Id });
                             }
                         }
+                    }
+                    else
+                    {
+                        TempData["errorMes"] = "员工名单上传失败：请检查文件格式及大小是否符合上传条件";
+                        return RedirectToAction("UploadFile", new { id = Id });
                     }
                 }
             }
@@ -1078,13 +1092,20 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadBusinessLicensePdf(HttpPostedFileBase BusinessLicensePdfSeal, int Id)
         {
-            if (!CheckFileInfo(BusinessLicensePdfSeal, "BusinessLicensePdf")) return RedirectToAction("UploadFile", new { id = Id });
             if (BusinessLicensePdfSeal != null && Id > 0)
             {
                 var order = _orderService.GetById(Id);
                 if (order != null)
                 {
-                    var fileId = _archiveService.Insert(BusinessLicensePdfSeal, FileType.BusinessLicenseSeal.ToString(), Id);
+                    #region 判断文件是否符合格式
+
+                    int fileId = 0;
+                    if (CheckFileInfo(BusinessLicensePdfSeal, "BusinessLicensePdf"))
+                    {
+                        fileId = _archiveService.Insert(BusinessLicensePdfSeal, FileType.BusinessLicenseSeal.ToString(), Id);
+                    }
+                    #endregion
+
                     if (fileId > 0)
                     {
                         order.BusinessLicense = fileId;
@@ -1092,6 +1113,11 @@ namespace Inscoo.Controllers
                         {
                             return RedirectToAction("UploadFile", new { id = Id });
                         }
+                    }
+                    else
+                    {
+                        TempData["errorMes"] = "营业执照上传失败：请检查文件格式及大小是否符合上传条件";
+                        return RedirectToAction("UploadFile", new { id = Id });
                     }
                 }
             }
@@ -1109,7 +1135,7 @@ namespace Inscoo.Controllers
                 var orderBatch = _orderBatchService.GetByOrderId(id);
                 if (order != null && orderBatch != null)
                 {
-                    if (orderBatch.PaymentNoticePDF == 0)//还未产生付款通知书
+                    if (orderBatch.PaymentNoticePDF != 0)//还未产生付款通知书
                     {
                         var ls = _orderEmpService.GetPaymentNoticePdf(id);
                         var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "付款通知书");
@@ -1876,7 +1902,7 @@ namespace Inscoo.Controllers
             }
             if (type == "EmpInfoPdf")
             {
-                return ("JPG/PNG/PDF/DOC/ZIP/RAR").Split('/').Contains(suffix);
+                return ("JPG/PNG/PDF/7Z/ZIP/RAR").Split('/').Contains(suffix);
             }
             return true;
         }

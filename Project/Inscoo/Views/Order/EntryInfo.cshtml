@@ -179,8 +179,35 @@
         @Html.Action("UploadEmp")
     </div>
 }
-
+@{
+    var prodlimit = Model.ProdTimeLimit;
+    var endDate = "";
+    var endDateTip = "";
+    switch (prodlimit)
+    {
+        case "年":
+            endDate = DateTime.Parse(Model.StartDate).AddYears(1).AddSeconds(-1).ToLongDateString();
+            endDateTip = "12 个月";
+            break;
+        case "季":
+            endDate = DateTime.Parse(Model.StartDate).AddMonths(3).AddSeconds(-1).ToLongDateString();
+            endDateTip = "3 个月";
+            break;
+        case "月":
+            endDate = DateTime.Parse(Model.StartDate).AddMonths(1).AddSeconds(-1).ToLongDateString();
+            endDateTip = "1 个月";
+            break;
+        case "周":
+            endDate = DateTime.Parse(Model.StartDate).AddDays(7).AddSeconds(-1).ToLongDateString();
+            endDateTip = "7 天";
+            break;
+        case "日":
+            endDate = DateTime.Parse(Model.StartDate).AddDays(1).AddSeconds(-1).ToLongDateString();
+            endDateTip = "1 天";
+            break;
     }
+
+}
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
     <script>

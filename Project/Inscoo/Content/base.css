@@ -1410,9 +1410,9 @@ div:after {
 }
 /*IE type=file样式*/
 .a-upload {
-  padding: 0 1em;
-  height: 2.3em;
-  line-height: 2.3em;
+  padding: 0 1.5em;
+  height: 2.4em;
+  line-height: 2.4em;
   position: relative;
   cursor: pointer;
   color: #555;

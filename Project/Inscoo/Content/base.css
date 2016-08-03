@@ -706,6 +706,49 @@ body {
 .orderEntryInfoBody ul li > .form-control {
   border-radius: 0px;
 }
+.orderEntryInfoBody-loadfile {
+  width: 100%;
+  font-size: 13px;
+  overflow: hidden;
+}
+.orderEntryInfoBody-loadfile ul {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+.orderEntryInfoBody-loadfile ul li {
+  height: auto;
+  min-height: 28px;
+  float: left;
+}
+.orderEntryInfoBody-loadfile ul li:first-child {
+  width: 30%;
+  margin-left: 10px;
+  /*text-align: right;*/
+}
+.orderEntryInfoBody-loadfile ul li:nth-child(2) {
+  width: 38%;
+}
+.orderEntryInfoBody-loadfile ul li:nth-child(3) {
+  text-align: left;
+  width: 30%;
+  font-size: 16px;
+}
+.orderEntryInfoBody-loadfile ul li:nth-child(3) span {
+  color: #83ba21;
+  height: 28px;
+  line-height: 28px;
+  margin-right: 10px;
+}
+.orderEntryInfoBody-loadfile ul li:nth-child(3) a {
+  height: 28px;
+  line-height: 28px;
+  margin-right: 10px;
+}
+.orderEntryInfoBody-loadfile ul li > .form-control {
+  height: 28px;
+  border-radius: 0px;
+}
 .buyMoreFile {
   width: 100%;
   font-size: 13px;
@@ -767,7 +810,6 @@ body {
 .uploadInfo {
   width: 100%;
   height: auto;
-  margin: .5em auto;
 }
 .uploadInfo dl {
   width: 100%;

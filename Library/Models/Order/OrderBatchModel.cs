@@ -36,6 +36,8 @@ namespace Models.Order
         public DateTime InsurerConfirmDate { get; set; }
         [DisplayName("快递单号")]
         public string CourierNumber { get; set; }
+        [DisplayName("快递公司")]
+        public string Express { get; set; }
         [DisplayName("保险公司审核意见")]
         public string InsurerMemo { get; set; }
         [DisplayName("批次总额")]

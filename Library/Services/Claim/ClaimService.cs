@@ -1,23 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Data.Entity.Infrastructure;
-
-using Microsoft.Owin.Security;
-using System.Web;
-using Microsoft.AspNet.Identity;
-
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Web.UI.WebControls;
-using OfficeOpenXml;
 using Core.Data;
 using Domain;
 using Models;
 using Core.Pager;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace Services
 {
@@ -25,49 +13,52 @@ namespace Services
     {
         private readonly IRepository<Company> _repCompany;
         private readonly IRepository<ClaimManagementDetail> _repClaimManagementDetail;
-        public ClaimService(IRepository<Company> repCompany, IRepository<ClaimManagementDetail> repClaimManagementDetail)
+        private readonly IAppUserService _appUserService;
+        public ClaimService(IRepository<Company> repCompany, IRepository<ClaimManagementDetail> repClaimManagementDetail, IAppUserService appUserService)
         {
             _repCompany = repCompany;
             _repClaimManagementDetail = repClaimManagementDetail;
+            _appUserService = appUserService;
         }
-
-
-
-
         public IPagedList<vClaimManagementDetailList> GetClaimsDetailList(int pageIndex, int pageSize, vClaimManagementDetailListSearch model)
         {
             try
             {
-                if (model.ClaimAccdtDateBegin == DateTime.MinValue)
+                var user = _appUserService.GetCurrentUser();
+                var role = _appUserService.GetRoleByUserId(user.Id);
+                if (role == "Admin")
                 {
-                    model.ClaimAccdtDateBegin = DateTime.Now.AddMonths(-1);
-                    model.ClaimAccdtDateEnd = DateTime.Now;
+                    if (model.ClaimAccdtDateBegin == DateTime.MinValue)
+                    {
+                        model.ClaimAccdtDateBegin = DateTime.Now.AddMonths(-1);
+                        model.ClaimAccdtDateEnd = DateTime.Now;
+                    }
+
+                    var list = _repClaimManagementDetail.Entities.AsNoTracking()
+                        .Where(c =>
+                    (string.IsNullOrEmpty(model.InsuranceGroupName) || c.InsuranceGroupName.Contains(model.InsuranceGroupName))
+                    && (string.IsNullOrEmpty(model.InsuranceName) || c.InsuranceName.Contains(model.InsuranceName))
+                    && (string.IsNullOrEmpty(model.InsuranceNo) || c.InsuranceNo.Contains(model.InsuranceNo))
+                    && c.ClaimAccdtDate >= model.ClaimAccdtDateBegin
+                     && c.ClaimAccdtDate <= model.ClaimAccdtDateEnd
+                    )
+                    .Select(c => new vClaimManagementDetailList
+                    {
+                        Id = c.Id,
+                        ClaimBatch = c.ClaimBatch,
+                        InsuranceGroupName = c.InsuranceGroupName,
+                        InsuranceNo = c.InsuranceNo,
+                        InsuranceName = c.InsuranceName,
+                        ClaimAccdtDate = c.ClaimAccdtDate,
+                        ClaimAmt = c.ClaimAmt,
+                        ClaimPayDate = c.ClaimPayDate,
+
+                        ExpTotal = c.ExpTotal
+
+                    }).OrderBy(c => c.Id).ToList();
+                    return new PagedList<vClaimManagementDetailList>(list, pageIndex, pageSize);
                 }
-
-                var list = _repClaimManagementDetail.Entities.AsNoTracking()
-                    .Where(c =>
-                (string.IsNullOrEmpty(model.InsuranceGroupName) || c.InsuranceGroupName.Contains(model.InsuranceGroupName))
-                && (string.IsNullOrEmpty(model.InsuranceName) || c.InsuranceName.Contains(model.InsuranceName))
-                && (string.IsNullOrEmpty(model.InsuranceNo) || c.InsuranceNo.Contains(model.InsuranceNo))
-                && c.ClaimAccdtDate >= model.ClaimAccdtDateBegin
-                 && c.ClaimAccdtDate <= model.ClaimAccdtDateEnd
-                )
-                .Select(c => new vClaimManagementDetailList
-                {
-                    Id = c.Id,
-                    ClaimBatch = c.ClaimBatch,
-                    InsuranceGroupName = c.InsuranceGroupName,
-                    InsuranceNo = c.InsuranceNo,
-                    InsuranceName = c.InsuranceName,
-                    ClaimAccdtDate = c.ClaimAccdtDate,
-                    ClaimAmt = c.ClaimAmt,
-                    ClaimPayDate = c.ClaimPayDate,
-
-                    ExpTotal = c.ExpTotal
-
-                }).OrderBy(c => c.Id).ToList();
-                return new PagedList<vClaimManagementDetailList>(list, pageIndex, pageSize);
-
+                return new PagedList<vClaimManagementDetailList>(new List<vClaimManagementDetailList>(), pageIndex, pageSize);
             }
             catch (Exception e)
             {

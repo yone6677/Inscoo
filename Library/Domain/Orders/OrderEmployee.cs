@@ -64,5 +64,9 @@ namespace Domain.Orders
 
         public virtual OrderBatch order { get; set; }
         public int batch_Id { get; set; }
+        /// <summary>
+        /// 是否抛转TPA
+        /// </summary>
+        public bool Transfer2TPA { get; set; }
     }
 }

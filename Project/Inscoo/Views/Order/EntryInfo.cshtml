@@ -76,22 +76,22 @@
         <i class="fa fa-edit fa-2x"></i>投保计划
     </p>
     <ul class="insure_plan row">
-        <li class="col-md-4">
+        <li class="col-xs-4">
             保障起始日期：
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             0时起
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             保障结束日期：
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             <span id="endDate"></span>
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             24时止，共<span id="endDateTip" style="color:red;">  </span>
         </li>
     </ul>
@@ -159,19 +159,7 @@
 
 }
 <hr />
-<div class="orderConfirmBodyNext" style="text-align:center;">
-    @*<div>
-            <a href="/Order/Buy/@Model.Id">返回</a>
-        </div>*@
-    @if (Model.State < 4)
-    {
-        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
-    }
-    else
-    {
-        <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
-    }
-</div>
+
 @using (Ajax.BeginForm("UploadEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
 {
     <input type="hidden" name="Id" value=@Model.Id />
@@ -179,6 +167,25 @@
         @Html.Action("UploadEmp")
     </div>
 }
+<div class="d2-box box main-width">
+    <div class="d3-box box-1">
+        <div class="main-width">
+            <div class="sort-all sort-basic">
+                <div class="orderConfirmBodyNext" style="text-align:center;width:auto;">
+                    @if (Model.State < 4)
+                    {
+                        <input type="button" value="下一步" onclick="subInfo()" class="orderConfirmNextSubmit" />
+                    }
+                    else
+                    {
+                        <input type="button" value="下一步" onclick="errorInfo()" class="orderConfirmNextSubmit" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @{
     var prodlimit = Model.ProdTimeLimit;
     var endDate = "";

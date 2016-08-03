@@ -150,9 +150,11 @@
     @{
         if (Model.orderBatch.Count > 0)
         {
+            var id = 0;
             foreach (var item in Model.orderBatch)
             {
-                <dl style="margin-top:1em;">
+                var dlId = "id_" + id;
+                <dl style="margin-top:1em;" id=@dlId>
                     <dt>
                         批次编号：
                     </dt>
@@ -300,6 +302,12 @@
                             @item.CourierNumber
                         </dd>
                         <dt>
+                            快递公司：
+                        </dt>
+                        <dd>
+                            @item.Express
+                        </dd>
+                        <dt>
                             保险公司审核意见：
                         </dt>
                         <dd>
@@ -307,7 +315,11 @@
                         </dd>
                     }
                 </dl>
+                id++;
             }
+            @**
+            
+            **@
         }
     }
     <div class="clearfix"></div>

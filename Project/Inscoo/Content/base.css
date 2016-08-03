@@ -1651,13 +1651,13 @@ div:after {
   overflow: hidden;
 }
 .entryInfoUpload ul {
-  width: 80%;
-  margin: 0 auto;
+  width: 90%;
+  margin-left: 10%;
   height: 8em;
 }
 .entryInfoUpload ul li {
   margin-bottom: 1em;
-  height: 3em;
+  height: auto;
   line-height: 3em;
   float: left;
   text-align: left;

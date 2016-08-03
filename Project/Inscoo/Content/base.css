@@ -706,46 +706,44 @@ body {
 .orderEntryInfoBody ul li > .form-control {
   border-radius: 0px;
 }
-.orderEntryInfoBody-loadfile {
+.buyMoreFile {
   width: 100%;
   font-size: 13px;
-  overflow: hidden;
+  height: auto;
+  font-size: 14px;
 }
-.orderEntryInfoBody-loadfile ul {
+.buyMoreFile ul {
   width: 100%;
-  height: 40px;
+  float: left;
+  height: auto;
+}
+.buyMoreFile ul li {
+  height: auto;
+  min-height: 40px ;
   float: left;
 }
-.orderEntryInfoBody-loadfile ul li {
-  height: 28px;
-  line-height: 28px;
-  float: left;
-}
-.orderEntryInfoBody-loadfile ul li:first-child {
+.buyMoreFile ul li:nth-child(odd) {
   width: 35%;
-  margin-left: 10px;
-  /*text-align: right;*/
-}
-.orderEntryInfoBody-loadfile ul li:nth-child(2) {
-  width: 30%;
-}
-.orderEntryInfoBody-loadfile ul li:nth-child(3) {
   text-align: left;
-  width: 30%;
-  font-size: 16px;
 }
-.orderEntryInfoBody-loadfile ul li:nth-child(3) span {
-  color: #83ba21;
-  height: 28px;
-  line-height: 28px;
-  margin-right: 10px;
+.buyMoreFile ul .uploadInfo {
+  width: 100%;
+  height: auto;
+  margin: 0;
 }
-.orderEntryInfoBody-loadfile ul li:nth-child(3) a {
-  height: 28px;
-  line-height: 28px;
-  margin-right: 10px;
+.buyMoreFile ul li:nth-child(even) {
+  width: 45%;
+  text-align: left;
 }
-.orderEntryInfoBody-loadfile ul li > .form-control {
+.buyMoreFile ul li:nth-child(even) [type="submit"] {
+  width: 20%;
+  margin-top: -3px;
+}
+.buyMoreFile ul li:nth-child(5) {
+  width: 20%;
+  text-align: left;
+}
+.buyMoreFile ul li > .form-control {
   height: 28px;
   border-radius: 0px;
 }
@@ -1645,4 +1643,29 @@ div:after {
 }
 .insure_plan li:nth-child(4) {
   text-align: right;
+}
+/*"下一步"固定*/
+.box {
+  position: relative;
+}
+.main-width {
+  width: 100%;
+  margin: 0 auto;
+}
+.box-1 {
+  left: 0;
+  bottom: 0;
+  z-index: 900;
+  text-align: right;
+  width: 100%;
+  background: #fff;
+  overflow: hidden;
+  padding: 10px 0;
+}
+.sort-basic {
+  display: inline;
+}
+.fixed {
+  position: fixed;
+  padding-left: 12%;
 }

@@ -824,46 +824,44 @@ body {
     }
     
 }
-.orderEntryInfoBody-loadfile{
+.buyMoreFile{
     width: 100%;
     font-size:13px;
-    overflow:hidden;
+    height:auto;
+    font-size:14px;
     ul {
         width: 100%;
-        height: 40px;
         float:left;
-
+        height:auto;
         li {
-            height: 28px;
-            line-height: 28px;
+            height: auto;
+            min-height:40px ;
             float: left;
         }
 
-        li:first-child {
-            width: 35%;
-            margin-left:10px;
-            /*text-align: right;*/
+       li:nth-child(odd){
+           width:35%;
+           text-align:left;
+          
+       }
+       .uploadInfo {
+            width: 100%;
+            height: auto;
+            margin:0;
         }
-        li:nth-child(2) {
-            width: 30%;
-        }
-        li:nth-child(3) {
-            text-align: left;
-            width: 30%;
-            font-size:16px;        
-            span{
-
-                color:#83ba21;
-                height:28px;
-                line-height:28px;
-                margin-right:10px;
-            }
-            a{
-                height:28px;
-                line-height:28px;
-                margin-right:10px;
-            }
-        }
+       li:nth-child(even){
+           width:45%;
+           text-align:left;
+            [type="submit"]{
+               width:20%;
+               margin-top:-3px;
+           }
+       }
+       li:nth-child(5){
+           width:20%;
+           text-align:left;
+          
+       }
         li>.form-control{
             height:28px;
             border-radius:0px;
@@ -1862,3 +1860,35 @@ div:after{
          text-align:right;
      }
  }
+
+
+ /*"下一步"固定*/
+.box{
+	position:relative;
+}
+.main-width{
+	width:100%;
+	margin:0 auto;
+
+}
+
+.box-1{
+	left:0;
+	bottom:0;
+	z-index:900;
+	text-align:right;
+	width:100%;
+	background:#fff;
+    overflow:hidden;
+	padding:10px 0;
+}
+
+.sort-basic{
+	display:inline;
+}
+.fixed{
+    position:fixed;
+    padding-left:12%;
+}
+
+

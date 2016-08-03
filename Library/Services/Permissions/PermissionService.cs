@@ -52,7 +52,7 @@ namespace Services.Permissions
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：DeleteById");
                 return false;
             }
 
@@ -91,7 +91,7 @@ namespace Services.Permissions
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：DeleteByUrl");
                 return false;
             }
 
@@ -141,7 +141,7 @@ namespace Services.Permissions
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：Delete");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：AddByUrl");
                 return false;
             }
 
@@ -166,7 +166,7 @@ namespace Services.Permissions
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByRole");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetPermissionByRole");
                 return null;
             }
         }
@@ -190,7 +190,7 @@ namespace Services.Permissions
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Permission：HasPermissionByUser");
+                _loggerService.insert(e, LogLevel.Warning, "Permission：GetPermissionByUser");
             }
             return result;
         }
@@ -200,19 +200,19 @@ namespace Services.Permissions
             {
                 var result = new List<NavigationModel>();
                 var query = _navService.GetAll();
-                var first = query.Where(s => s.level == 0 && s.pId == 0).ToList();
+                var first = query.Where(s => s.level == 0 && s.PId == 0).ToList();
                 for (var i = 0; i < first.Count(); i++)
                 {
                     first[i].SonMenu = new List<NavigationModel>();
                     first[i].hasPermission = HasPermissionByRoleId(first[i].Id, roleid);
-                    var second = query.Where(s => s.pId == first[i].Id).ToList();
+                    var second = query.Where(s => s.PId == first[i].Id).ToList();
                     if (second.Any())
                     {
                         for (var x = 0; x < second.Count; x++)
                         {
                             second[x].hasPermission = HasPermissionByRoleId(second[x].Id, roleid);
                             second[x].SonMenu = new List<NavigationModel>();
-                            var third = query.Where(s => s.pId == second[x].Id).ToList();
+                            var third = query.Where(s => s.PId == second[x].Id).ToList();
                             if (third.Any())
                             {
                                 for (var n = 0; n < third.Count; n++)

@@ -1,4 +1,7 @@
-﻿using Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Domain;
 using Innscoo.Infrastructure;
 using Models.Navigation;
 using Services;
@@ -17,11 +20,12 @@ namespace Inscoo.Controllers
         // GET: Nav
         public ActionResult Index()
         {
+            ViewBag.ParentList = _navService.GetParentNavList();
             return View();
         }
         public ActionResult List(int pid = 0)
         {
-            var model = _navService.GetList(1, 15, null, pid);
+            var model = _navService.GetList(1, 15, pid);
             var command = new PageCommand()
             {
                 PageIndex = model.PageIndex,
@@ -34,9 +38,10 @@ namespace Inscoo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult List(int PageIndex = 1, int PageSize = 15, int pid = 0)
+        public ActionResult List(int pageIndex = 1, int pageSize = 15, int pid = 0)
         {
-            var model = _navService.GetList(PageIndex, PageSize, null, pid);
+            var r = Request;
+            var model = _navService.GetList(pageIndex, pageSize, pid);
             var command = new PageCommand()
             {
                 PageIndex = model.PageIndex,
@@ -64,7 +69,7 @@ namespace Inscoo.Controllers
                         level = item.level,
                         memo = item.memo,
                         name = item.name,
-                        pId = item.pId,
+                        PId = item.pId,
                         url = item.url,
                         htmlAtt = item.htmlAtt,
                         SonMenu = _navService.GetSonViewList(id)
@@ -76,11 +81,11 @@ namespace Inscoo.Controllers
         }
 
         // GET: Nav/Create
-        public ActionResult Create(int id = 0, int level = 0)
+        public ActionResult Create()
         {
+            ViewBag.ParentList = _navService.GetParentNavList();
+            ViewBag.Controllers = GetAllControles();
             var model = new NavigationModel();
-            model.pId = id;
-            model.level = level;
             return View(model);
         }
 
@@ -89,27 +94,37 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(NavigationModel model)
         {
+
             if (ModelState.IsValid)
             {
+                var isExist = false;
                 var item = new Navigation();
-                if (!string.IsNullOrEmpty(model.action))
+                item = _navService.GetByUrl(item.controller, item.action);
+
+                if (!string.IsNullOrEmpty(model.controller))//非一级菜单
                 {
-                    item.action = model.action.Trim().ToLower();
+                    if (item != null)
+                    {
+                        isExist = true;
+                    }
                 }
-                if (!string.IsNullOrEmpty(model.controller))
-                {
-                    item.controller = model.controller.Trim().ToLower() + "Controller";
-                }
+
+                item.action = model.action ?? "";
+                item.controller = model.controller.Trim();
                 item.isShow = model.isShow;
-                item.level = model.level;
+                item.level = model.PId == 0 ? 0 : 1;
                 item.memo = model.memo;
                 item.name = model.name;
-                item.pId = model.pId;
-                item.isShow = model.isShow;
-                item.url = model.controller + "/" + model.action;
+                item.pId = model.PId;
+                item.isShow = true;
+                item.url = item.controller.Replace("Controller", "") + "/" + item.action;
                 item.htmlAtt = model.htmlAtt;
                 item.sequence = model.sequence;
-                if (_navService.Insert(item))
+                if (isExist)
+                {
+                    if (_navService.Update(item)) return RedirectToAction("Index");
+                }
+                else if (_navService.Insert(item))
                 {
                     return RedirectToAction("Index");
                 }
@@ -120,18 +135,22 @@ namespace Inscoo.Controllers
         // GET: Nav/Edit/5
         public ActionResult Edit(int id)
         {
+
             var item = _navService.GetById(id);
             var model = new NavigationModel()
             {
+                PId = item.pId,
                 Id = item.Id,
-                action = item.action,
-                controller = item.controller,
+                action = item.action ?? "",
+                controller = item.controller ?? "",
                 isShow = item.isShow,
                 memo = item.memo,
                 name = item.name,
                 sequence = item.sequence,
                 htmlAtt = item.htmlAtt
             };
+            ViewBag.ParentList = _navService.GetParentNavList(model.PId);
+            ViewBag.Controllers = GetAllControles(model.controller);
             return View(model);
         }
 
@@ -145,17 +164,10 @@ namespace Inscoo.Controllers
                 var item = _navService.GetById(model.Id);
                 if (item != null)
                 {
-                    if (!string.IsNullOrEmpty(model.action))
-                    {
-                        model.action = model.action.Trim().ToLower();
-                    }
-                    if (!string.IsNullOrEmpty(model.controller))
-                    {
-                        model.controller = model.controller.Trim().ToLower();
-                    }
-                    item.action = model.action;
-                    item.controller = model.controller;
-                    item.url = model.controller.Substring(0, (model.controller.Length - 10)) + "/" + model.action;
+                    item.pId = model.PId;
+                    item.action = model.action ?? "";
+                    item.controller = model.controller.Trim();
+                    item.url = item.controller.Substring(0, (item.controller.Length - 10)) + "/" + item.action;
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;
@@ -188,7 +200,7 @@ namespace Inscoo.Controllers
                         level = item.level,
                         memo = item.memo,
                         name = item.name,
-                        pId = item.pId,
+                        PId = item.pId,
                         url = item.url,
                         htmlAtt = item.htmlAtt,
                         SonMenu = _navService.GetSonViewList(id)
@@ -209,6 +221,12 @@ namespace Inscoo.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             return RedirectToAction("Index");
+        }
+        SelectList GetAllControles(string selectedValue = "")
+        {
+            var controllers = typeof(BaseController).Assembly.GetTypes().Where(t => t.BaseType.Name.Contains("BaseController")).Select(c => new { Text = c.Name, Value = c.Name }).ToList();
+            controllers.Add(new { Text = "无", Value = "" });
+            return new SelectList(controllers, "Value", "Text", selectedValue);
         }
     }
 }

@@ -47,6 +47,8 @@ namespace Models.Order
         [DisplayName("快递单号")]
         [Required]
         public string CourierNumber { get; set; }
+        [DisplayName("快递公司")]
+        public string Express { get; set; }
         [DisplayName("审核意见/备注")]
         public string InsurerMemo { get; set; }
     }

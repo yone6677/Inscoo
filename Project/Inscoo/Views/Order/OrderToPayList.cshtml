@@ -21,7 +21,8 @@
             @Html.DisplayNameFor(model => model.StateDesc)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @*@Html.DisplayNameFor(model => model.StartDate)*@
+            保险期间
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
@@ -74,11 +75,21 @@
                 @if (item.StartDate != DateTime.MinValue)
                 {
                     var dt = item.StartDate.ToShortDateString();
-                    <span>@dt</span>
+                    if (item.EndDate != DateTime.MinValue)
+                    {
+                        <span>@dt</span><span>- @item.EndDate.ToShortDateString()</span>
+                    }
+                    else
+                    {
+                        <span>@dt</span>
+                    }
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
+                @{ 
+                    var CreateDate = item.CreateDate.ToShortDateString();
+                    <span>@CreateDate</span>
+                }
             </td>
             <td>
                 @{

@@ -5,6 +5,9 @@
             @Html.DisplayNameFor(model => model.name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.level)
         </th>
         <th>
@@ -16,9 +19,7 @@
         <th>
             @Html.DisplayNameFor(model => model.url)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isShow)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.sequence)
         </th>
@@ -28,7 +29,10 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item.name, "Details", new { id = item.Id })
+                @Html.ActionLink(item.name, "Details", new {id = item.Id})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.level)
@@ -42,9 +46,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.url)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.isShow)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.sequence)
             </td>

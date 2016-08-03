@@ -61,35 +61,42 @@ namespace Inscoo.Controllers
         // GET: Oder
         public ActionResult Index()
         {
-            //var select = _genericAttributeService.GetSelectList("orderState", true);
-            var select = new List<SelectListItem>()
+            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
+            var select = new List<SelectListItem>();
+            select.Add(
+                new SelectListItem()
+                {
+                    Text = "请选择",
+                    Value = "0"
+                });
+            if (role == "InscooOperator" || role == "Admin" || role == "CompanyHR" || role == "InscooFinance" || role == "PartnerChannel" || role == "BusinessDeveloper")
             {
-                new SelectListItem()
+                select.Add(new SelectListItem()
                 {
-                    Text="请选择",
-                    Value="0"
-                },
-                  new SelectListItem()
+                    Text = "待审核",
+                    Value = "4"
+                });
+                select.Add(new SelectListItem()
                 {
-                    Text="待审核",
-                    Value="4"
-                },
-                new SelectListItem()
-                {
-                    Text="待支付",
-                    Value="5"
-                },
-                new SelectListItem()
-                {
-                    Text="已完成",
-                    Value="6"
-                },
-                new SelectListItem()
-                {
-                    Text="审核未通过",
-                    Value="7"
-                }
-            };
+                    Text = "待支付",
+                    Value = "5"
+                });
+            }
+            select.Add(new SelectListItem()
+            {
+                Text = "已支付",
+                Value = "9"
+            });
+            select.Add(new SelectListItem()
+            {
+                Text = "已完成",
+                Value = "6"
+            });
+            select.Add(new SelectListItem()
+            {
+                Text = "审核未通过",
+                Value = "7"
+            });
             ViewBag.orderState = select;
             return View();
         }
@@ -1443,6 +1450,7 @@ namespace Inscoo.Controllers
                     batch.InsurerConfirmDate = DateTime.Now;
                     batch.InsurerMemo = model.InsurerMemo;
                     batch.CourierNumber = model.CourierNumber;
+                    batch.Express = model.Express;
                     if (model.InsurerAudit)
                     {
                         batch.BState = 5;//订单完结
@@ -1665,12 +1673,21 @@ namespace Inscoo.Controllers
                             {
                                 throw new Exception("人员" + Cells["A" + i].Value.ToString() + "银行账号未填写");
                             }
+                            if (Cells["G" + i].Value != null)
+                            {
+                                item.Sex = Cells["G" + i].Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                throw new Exception("第" + i + "行资料[性别]未填写,类型为加保的资料为必须填写！");
+                            }
+
                         }
                         if (insType == "减保")
                         {
                             if (!order.ProdWithdraw)//若此订单无法减保
                             {
-                                throw new Exception($"此订单类型不允许退保，Excel中第{i}行数据为减保，请检查");
+                                throw new Exception($"此订单类型不允许退保，Excel中第{i}行资料为减保，请检查");
                             }
                             item.PMCode = PMType.PM16.ToString();
                             item.BuyType = 2;
@@ -1688,13 +1705,44 @@ namespace Inscoo.Controllers
                             {
                                 item.BankName = Cells["I" + i].Value.ToString().Trim();
                             }
+                            if (Cells["G" + i].Value != null)
+                            {
+                                item.Sex = Cells["G" + i].Value.ToString().Trim();
+                            }
                         }
                         item.Relationship = "本人";
-                        item.Name = Cells["A" + i].Value.ToString().Trim();
-                        item.IDType = Cells["B" + i].Value.ToString().Trim();
-                        item.IDNumber = Cells["C" + i].Value.ToString().Trim();
-                        item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
-                        item.Sex = Cells["G" + i].Value.ToString().Trim();
+                        if (Cells["A" + i].Value != null)
+                        {
+                            item.Name = Cells["A" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[姓名]未填写");
+                        }
+                        if (Cells["B" + i].Value != null)
+                        {
+                            item.IDType = Cells["B" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[证据类型]未填写");
+                        }
+                        if (Cells["C" + i].Value != null)
+                        {
+                            item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[证据号码]未填写");
+                        }
+                        try
+                        {
+                            item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception($"请注意第{i}资料生日格式是否正确,正确的格式为 2017-1-1 或者 2017/1/1");
+                        }
                         if (Cells["J" + i].Value != null)
                         {
                             item.PhoneNumber = Cells["J" + i].Value.ToString().Trim();
@@ -1703,7 +1751,10 @@ namespace Inscoo.Controllers
                         {
                             item.Email = Cells["K" + i].Value.ToString().Trim();
                         }
-                        item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
+                        if (Cells["L" + i].Value != null)
+                        {
+                            item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
+                        }
                         bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
                         if (idCon)
                         {

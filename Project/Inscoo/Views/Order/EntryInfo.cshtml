@@ -76,22 +76,22 @@
         <i class="fa fa-edit fa-2x"></i>投保计划
     </p>
     <ul class="insure_plan row">
-        <li class="col-md-4">
+        <li class="col-xs-4">
             保障起始日期：
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             <input readonly="readonly" type="text" name="StartDate" id="StartDate" class="form-control" value="@DateTime.Now.AddDays(4).ToShortDateString()" />
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             0时起
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             保障结束日期：
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             <span id="endDate"></span>
         </li>
-        <li class="col-md-4">
+        <li class="col-xs-4">
             24时止，共<span id="endDateTip" style="color:red;">  </span>
         </li>
     </ul>

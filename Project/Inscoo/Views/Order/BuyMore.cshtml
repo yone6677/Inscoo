@@ -5,27 +5,29 @@
 @if (!Model.Disable)
 {
     <h4 class="text-primary_color">补充资料</h4>
-    using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile(1)") }))
+    using (Html.BeginForm("BuyMore", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody  buyMoreFile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile(1)") }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)
-        <ul class="unloadFile">
-            <li style="width:24%">
-                <label>
-                    上传员工名单：
-                </label>
+        <ul class="">
+            <li>
+                   1. 下载变更人员模板人员信息变更模板:
+            </li>
+            <li>
+                <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
+            </li>
+            <li>
+                2.请上传填写完成的员工名单:
             </li>
             <li> 
                 <a href="javascript:;" class="a-upload">
-                    <input type="file" id="empinfo" name="empinfo" />+ 选择文件
+                    <input type="file" id="empinfo" name="empinfo" />+ 浏览
                 </a>
                 <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+                <input type="submit" value="上传" class="btn btn-default" />
+
             </li>
             <li>
-                <input type="submit" value="上传" class="btn btn-default" />
-                <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">模版下载</a>
-            </li>
-            <li style="width:26%">
                 @if (Model.HasEmpInfoExcel)
                 {
                     <div class="uploadInfo">
@@ -42,27 +44,28 @@
     if (Model.HasEmpInfoExcel)
     {
         <div class="clearfix"></div>
-        using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody orderEntryInfoBody-loadfile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
+        using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody buyMoreFile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
         {
-            <ul class="unloadFile" style="border-bottom:1px solid #ddd">
-                <li style="width:24%">
-                    <label>
-                        加减保员工名单(加盖公章)：
-                    </label>
+            <ul class="">
+                <li>
+                        3. 下载系统生成的盖章文件:
+                </li>
+                <li>
+                    <a href="@Model.EmpInfoFilePDF" target="_blank" class="btn btn-default">名单下载</a>
+                </li>
+                <li>
+                    4. 加盖公章的影像文件并上传:
                 </li>
                 <li>
                     <input type="hidden" name="Id" value=@Model.Id />
                     <input type="hidden" name="uType" value="2" />
                     <a href="javascript:;" class="a-upload">
-                        <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 选择文件
+                        <input type="file" id="EmpInfoPdfSeal" name="EmpInfoPdfSeal" />+ 浏览
                     </a>
                     <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
+                    <input type="submit" value="上传" class="btn btn-default" />
                 </li>
                 <li>
-                    <input type="submit" value="上传" class="btn btn-default" />
-                    <a href="@Model.EmpInfoFilePDF" target="_blank" class="btn btn-default">名单下载</a>
-                </li>
-                <li style="width:26%">
                     @if (Model.HasEmpInfoFilePDFSeal)
                     {
                         <div class="uploadInfo">
@@ -78,10 +81,18 @@
         }
         if (Model.HasPaymentNotice)
         {
-            <div class="clearfix"></div>
-            <div style="line-height:2em;width:100%;text-align:center;">
-                <a href="@Model.PaymentNotice" target="_blank">下载付款通知书</a>
-            </div>
+            <ul class="buyMoreFile" style="border-bottom:1px solid #ddd;overflow:hidden">
+                <li style="width:35%;float:left;line-height:40px;">
+                    5. 请下载付款通知书:
+                </li>
+                <li style="width:30%;float:left;line-height:40px">
+                    <div class="clearfix"></div>
+                    <div style="line-height:2em;width:100%;text-align:left;">
+                        <a href="@Model.PaymentNotice" target="_blank" class="btn btn-default">下载付款通知书</a>
+                    </div>
+               
+                </li>
+            </ul>
         }
     }
 }

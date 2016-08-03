@@ -1,15 +1,41 @@
 ﻿
 @{
-    ViewBag.Title = "系统功能";
+    ViewBag.Title = "菜单管理";
 }
 
 @using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
 {
     <p>
-        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
+
     </p>
+    <div class="Search">
+        <dl style="width:100%">
+            <dt>
+                父菜单
+            </dt>
+            <dd>
+                @Html.DropDownList("pid", ViewBag.ParentList as SelectList)
+            </dd>
+            <dt></dt>
+            <dd>
+                @Html.ActionLink("新增菜单", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
+            </dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
     @Html.AntiForgeryToken()
     <div id="dadaGrid">
         @Html.Action("List")
     </div>
+}
+@section Scripts {
+    <script>
+        jQuery(function () {
+            jQuery("#pid")
+                .change(function () {
+                    jQuery("#searchForm").submit();
+
+                });
+        })
+    </script>
 }

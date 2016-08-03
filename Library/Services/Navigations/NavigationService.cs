@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using System.Web.Mvc;
 
 namespace Services
 {
@@ -147,9 +148,6 @@ namespace Services
         {
             try
             {
-                var ss = _navRepository.TableFromBuffer(72).Where(s => controller.Equals(s.controller, StringComparison.CurrentCultureIgnoreCase) && action.Equals(s.action, StringComparison.CurrentCultureIgnoreCase));
-
-                var sss = _navRepository.TableFromBuffer(72);
                 return _navRepository.TableFromBuffer(72).Where(s => controller.Equals(s.controller, StringComparison.CurrentCultureIgnoreCase) && action.Equals(s.action, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             }
             catch (Exception e)
@@ -188,7 +186,7 @@ namespace Services
                         level = s.level,
                         memo = s.memo,
                         name = s.name,
-                        pId = s.pId,
+                        PId = s.pId,
                         url = s.url,
                         htmlAtt = s.htmlAtt
                     }).ToList();
@@ -200,27 +198,43 @@ namespace Services
             }
             return null;
         }
-        public IPagedList<NavigationModel> GetList(int pageIndex, int pageSize, string name, int pId, bool isShow, int level)
+        public SelectList GetParentNavList(int selectedPId)
+        {
+            try
+            {
+
+                var list = new List<Navigation>();
+                list.Add(new Navigation() { name = "父菜单", Id = 0 });
+                list.AddRange(_navRepository.TableFromBuffer(72).Where(s => s.isShow && s.pId == 0 && !s.IsDeleted).OrderBy(s => s.sequence));
+                if (list.Any()) return new SelectList(list.ToList(), "Id", "name", selectedPId);
+
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Nav：GetParentNavList");
+            }
+            return new SelectList(new List<SelectListItem>());
+        }
+        public IPagedList<NavigationModel> GetList(int pageIndex, int pageSize, int pId)
         {
             try
             {
                 var query = _navRepository.TableFromBuffer(72);
                 if (query != null)
                 {
-                    query = query.Where(q => q.pId == pId);
-                    if (level > 0)
-                    {
-                        query = query.Where(q => q.level == level);
-                    }
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        query = query.Where(q => q.name == name);
-                    }
-                    if (isShow)
-                    {
-                        query = query.Where(q => q.isShow == true);
-                    }
-                    query = query.OrderBy(q => q.sequence);
+                    query = query.Where(q => q.pId == pId && q.isShow && !q.IsDeleted).OrderBy(q => q.sequence);
+                    //if (level > 0)
+                    //{
+                    //    query = query.Where(q => q.level == level);
+                    //}
+                    //if (!string.IsNullOrEmpty(name))
+                    //{
+                    //    query = query.Where(q => q.name == name);
+                    //}
+                    //if (isShow)
+                    //{
+                    //    query = query.Where(q => q.isShow == true);
+                    //}
                     return new PagedList<NavigationModel>(query.Select(s => new NavigationModel()
                     {
                         Id = s.Id,
@@ -230,7 +244,7 @@ namespace Services
                         level = s.level,
                         memo = s.memo,
                         name = s.name,
-                        pId = s.pId,
+                        PId = s.pId,
                         url = s.url,
                         htmlAtt = s.htmlAtt,
                         sequence = s.sequence
@@ -256,7 +270,7 @@ namespace Services
                     level = s.level,
                     memo = s.memo,
                     name = s.name,
-                    pId = s.pId,
+                    PId = s.pId,
                     url = s.url,
                     htmlAtt = s.htmlAtt,
                     sequence = s.sequence

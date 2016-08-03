@@ -2,6 +2,7 @@
 using Domain;
 using Models.Navigation;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Services
 {
@@ -13,9 +14,10 @@ namespace Services
         Navigation GetById(int id);
         List<Navigation> GetLeftNavigations(string uId);
         List<Navigation> GetNotControllerNav();
-        Navigation GetByUrl(string controller, string action);
+        Navigation GetByUrl(string controller = "", string action = "");
         List<NavigationModel> GetSonViewList(int pid = 0);
-        IPagedList<NavigationModel> GetList(int pageIndex = 1, int pageSize = 15, string name = null, int pId = 0, bool isShow = false, int level = 0);
+        SelectList GetParentNavList(int selectedPId = 0);
+        IPagedList<NavigationModel> GetList(int pageIndex = 1, int pageSize = 15, int pId = 0);
         List<NavigationModel> GetAll();
     }
 }

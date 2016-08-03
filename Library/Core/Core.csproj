@@ -203,6 +203,10 @@
     <Compile Include="Migrations\201608030340212_express.Designer.cs">
       <DependentUpon>201608030340212_express.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608030733508_tpa.cs" />
+    <Compile Include="Migrations\201608030733508_tpa.Designer.cs">
+      <DependentUpon>201608030733508_tpa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -281,6 +285,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608030340212_express.resx">
       <DependentUpon>201608030340212_express.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608030733508_tpa.resx">
+      <DependentUpon>201608030733508_tpa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

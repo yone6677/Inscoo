@@ -216,6 +216,7 @@ namespace Services.Orders
                                 InsuranceNumber = s.InsuranceNumber,
                                 Name = s.Name,
                                 StartDate = s.StartDate,
+                                EndDate = s.EndDate,
                                 StateDesc = _genericAttributeService.GetByKey(null, "orderState", s.State.ToString()).Key,
                                 State = s.State
                             };

@@ -17,6 +17,7 @@ namespace Core.Mapping
             Property(b => b.BState).IsOptional();
             Property(b => b.CollectionDate).IsOptional().HasColumnType("datetime2");
             Property(b => b.CourierNumber).IsOptional().HasMaxLength(32);
+            Property(b => b.Express).IsOptional().HasMaxLength(32);
             Property(b => b.EmpInfoFile).IsOptional();
             Property(b => b.EmpInfoFilePDF).IsOptional();
             Property(b => b.EmpInfoFileSeal).IsOptional();

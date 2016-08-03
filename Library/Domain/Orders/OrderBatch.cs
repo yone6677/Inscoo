@@ -91,6 +91,10 @@ namespace Domain.Orders
         /// </summary>
         public string CourierNumber { get; set; }
         /// <summary>
+        /// 快递公司
+        /// </summary>
+        public string Express { get; set; }
+        /// <summary>
         /// 保险公司备注
         /// </summary>
         public string InsurerMemo { get; set; }

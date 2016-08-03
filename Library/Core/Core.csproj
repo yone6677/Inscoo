@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201607280902539_AlterTableHealthCheckProduct_AddColumnCommision.Designer.cs">
       <DependentUpon>201607280902539_AlterTableHealthCheckProduct_AddColumnCommision.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608030340212_express.cs" />
+    <Compile Include="Migrations\201608030340212_express.Designer.cs">
+      <DependentUpon>201608030340212_express.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -274,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607280902539_AlterTableHealthCheckProduct_AddColumnCommision.resx">
       <DependentUpon>201607280902539_AlterTableHealthCheckProduct_AddColumnCommision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608030340212_express.resx">
+      <DependentUpon>201608030340212_express.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

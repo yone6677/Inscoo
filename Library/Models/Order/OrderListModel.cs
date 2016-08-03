@@ -20,6 +20,8 @@ namespace Models.Order
         public int State { get; set; }
         [DisplayName("生效日期")]
         public DateTime StartDate { get; set; }
+        [DisplayName("失效日期")]
+        public DateTime EndDate { get; set; }
         [DisplayName("创建日期")]
         public DateTime CreateDate { get; set; }
         public int BatchState { get; set; }       

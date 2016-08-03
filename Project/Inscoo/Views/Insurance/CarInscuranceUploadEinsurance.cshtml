@@ -11,14 +11,32 @@
 
         <div class="form-group">
             <label class="control-label col-md-3">添加电子保单</label>
-            <div class="col-md-9">
-                <input type="file" name="excel" id="excel" required=""/>
+            <div class="col-md-5">
+                <a href="javascript:;" class="a-upload">
+                    <input type="file" name="excel" id="excel" />+ 浏览
+                </a>
+                <span class="lab" style="height: 28px; line-height: 28px;"></span>
             </div>
+            <div class="col-md-4">
+                @if (ViewBag.Url != null)
+                {
+                    <a href="@ViewBag.Url" target="_blank" style="line-height: 40px;">查看</a>
+                }
+            </div>
+
         </div>
         <div class="form-group">
             <label class="control-label col-md-3">电子保单号码</label>
             <div class="col-md-9">
-                <input type="text" name="code" id="code" required="" class="form-control"/>
+                @if (ViewBag.EOrderCode != null)
+                {
+                    <input type="text" name="code" id="code" value="@ViewBag.EOrderCode" class="form-control" />
+                }
+                else
+                {
+                    <input type="text" name="code" id="code" class="form-control" />
+                }
+
             </div>
         </div>
         <div class="form-group">

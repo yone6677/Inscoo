@@ -342,30 +342,37 @@ namespace Services
                 throw e;
             }
         }
-        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey,string code)
+        public string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code)
         {
             try
             {
-                var model = _fileService.SaveCarInsuranceExcel(file);
-                if (model != null)
+                var item = _rpCarInsurance.GetById(insuranceId);
+                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
+
+                if (file != null)
                 {
-                    var item = _rpCarInsurance.GetById(insuranceId);
-                    if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
-                    item.Einsurance =
-                        new Domain.FileInfo()
-                        {
-                            Author = userName,
-                            Name = model.Name + model.Postfix,
-                            Path = model.Path,
-                            Url = model.Path + model.Name + model.Postfix,
-                            EditTime = DateTime.Now
-                        };
-                    item.Status = "C";
-                    item.EOrderCode = code;
-                    _rpCarInsurance.Update(item);
-                    return item.Einsurance.Url;
+                    var model = _fileService.SaveCarInsuranceExcel(file);
+                    if (model != null)
+                    {
+                        item.Einsurance =
+                       new Domain.FileInfo()
+                       {
+                           Author = userName,
+                           Name = model.Name + model.Postfix,
+                           Path = model.Path,
+                           Url = model.Path + model.Name + model.Postfix,
+                           EditTime = DateTime.Now
+                       };
+                    }
                 }
-                throw new WarningException("操作失败");
+                item.EOrderCode = code;
+                if (item.EinsuranceId.HasValue && !string.IsNullOrEmpty(item.EOrderCode))
+                { item.Status = "C"; }
+
+                _rpCarInsurance.Update(item);
+                if (item.Einsurance != null)
+                    return item.Einsurance.Url;
+                else return null;
             }
             catch (WarningException e)
             {
@@ -377,6 +384,25 @@ namespace Services
                 throw new WarningException("操作失败");
             }
         }
+        public CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey)
+        {
+            try
+            {
+                var item = _rpCarInsurance.Table.Include(c => c.Einsurance).AsEnumerable().FirstOrDefault(c => c.Id == insuranceId);
+                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
+                return item;
+            }
+            catch (WarningException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
+            }
+            return null;
+        }
+
         public void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey)
         {
             try

@@ -61,35 +61,42 @@ namespace Inscoo.Controllers
         // GET: Oder
         public ActionResult Index()
         {
-            //var select = _genericAttributeService.GetSelectList("orderState", true);
-            var select = new List<SelectListItem>()
+            var role = _appUserService.GetRoleByUserId(User.Identity.GetUserId());
+            var select = new List<SelectListItem>();
+            select.Add(
+                new SelectListItem()
+                {
+                    Text = "请选择",
+                    Value = "0"
+                });
+            if (role == "InscooOperator" || role == "Admin" || role == "CompanyHR" || role == "InscooFinance" || role == "PartnerChannel" || role == "BusinessDeveloper")
             {
-                new SelectListItem()
+                select.Add(new SelectListItem()
                 {
-                    Text="请选择",
-                    Value="0"
-                },
-                  new SelectListItem()
+                    Text = "待审核",
+                    Value = "4"
+                });
+                select.Add(new SelectListItem()
                 {
-                    Text="待审核",
-                    Value="4"
-                },
-                new SelectListItem()
-                {
-                    Text="待支付",
-                    Value="5"
-                },
-                new SelectListItem()
-                {
-                    Text="已完成",
-                    Value="6"
-                },
-                new SelectListItem()
-                {
-                    Text="审核未通过",
-                    Value="7"
-                }
-            };
+                    Text = "待支付",
+                    Value = "5"
+                });
+            }
+            select.Add(new SelectListItem()
+            {
+                Text = "已支付",
+                Value = "9"
+            });
+            select.Add(new SelectListItem()
+            {
+                Text = "已完成",
+                Value = "6"
+            });
+            select.Add(new SelectListItem()
+            {
+                Text = "审核未通过",
+                Value = "7"
+            });
             ViewBag.orderState = select;
             return View();
         }
@@ -540,7 +547,8 @@ namespace Inscoo.Controllers
                         PhoneNumber = order.PhoneNumber,
                         Address = order.Address,
                         IsUploadInfo = empCount.Count,//已上传人员数
-                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp()
+                        EmpInfoFileUrl = _resourceService.GetEmployeeInfoTemp(),
+                        ProdTimeLimit = order.orderItem.FirstOrDefault().ProdTimeLimit
                     };
                     if (order.StartDate == DateTime.MinValue)
                     {
@@ -720,22 +728,20 @@ namespace Inscoo.Controllers
                     var Cells = worksheet.Cells;
                     if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
                         result = "上传的文件不正确";
-                    var eList = new List<OrderEmployeeModel>();
+                    var eList = new List<OrderEmployeeModel>();//先把资料写入临时List,以便判断是否正确
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
                             break;
-                        var item = new OrderEmployee();
-                        item.batch_Id = batch.Id;//批次号
+                        var item = new OrderEmployeeModel();
+                        item.BId = batch.Id;//批次号
                         item.Premium = order.AnnualExpense;
-                        item.PMCode = PMType.PM00.ToString();
-                        item.Relationship = "本人";
                         item.Name = Cells["A" + i].Value.ToString().Trim();
                         item.IDType = Cells["B" + i].Value.ToString().Trim();
                         item.IDNumber = Cells["C" + i].Value.ToString().Trim();
                         try
                         {
-                            item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                            item.Birthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
                         }
                         catch
                         {
@@ -755,9 +761,38 @@ namespace Inscoo.Controllers
                         item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
                         item.StartDate = order.StartDate;
                         item.EndDate = order.EndDate;
+                        bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
+                        if (idCon)
+                        {
+                            throw new Exception("请检查第 " + i + " 行资料,此人员证件号码重复");
+                        }
+                        else
+                        {
+                            eList.Add(item);
+                        }
+                    }
+                    foreach (var e in eList)
+                    {
+                        var item = new OrderEmployee();
+                        item.batch_Id = e.BId;
+                        item.Premium = e.Premium;// order.AnnualExpense;
+                        item.PMCode = PMType.PM00.ToString();
+                        item.Relationship = "本人";
+                        item.Name = e.Name;
+                        item.IDType = e.IDType;
+                        item.IDNumber = e.IDNumber;
+                        item.BirBirthday = e.Birthday;
+                        item.Sex = e.Sex;
+                        item.BankCard = e.BankCard;
+                        item.BankName = e.BankName;
+                        item.PhoneNumber = e.PhoneNumber;
+                        item.Email = e.Email;
+                        item.HasSocialSecurity = e.HasSocialSecurity;
+                        item.StartDate = e.StartDate;
+                        item.EndDate = e.EndDate;
                         if (!_orderEmpService.Insert(item))
                         {
-                            result = "上传失败";
+                            throw new Exception("上传失败,请稍后再试");
                         }
                     }
                     var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
@@ -1415,6 +1450,7 @@ namespace Inscoo.Controllers
                     batch.InsurerConfirmDate = DateTime.Now;
                     batch.InsurerMemo = model.InsurerMemo;
                     batch.CourierNumber = model.CourierNumber;
+                    batch.Express = model.Express;
                     if (model.InsurerAudit)
                     {
                         batch.BState = 5;//订单完结
@@ -1637,12 +1673,21 @@ namespace Inscoo.Controllers
                             {
                                 throw new Exception("人员" + Cells["A" + i].Value.ToString() + "银行账号未填写");
                             }
+                            if (Cells["G" + i].Value != null)
+                            {
+                                item.Sex = Cells["G" + i].Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                throw new Exception("第" + i + "行资料[性别]未填写,类型为加保的资料为必须填写！");
+                            }
+
                         }
                         if (insType == "减保")
                         {
                             if (!order.ProdWithdraw)//若此订单无法减保
                             {
-                                throw new Exception($"此订单类型不允许退保，Excel中第{i}行数据为减保，请检查");
+                                throw new Exception($"此订单类型不允许退保，Excel中第{i}行资料为减保，请检查");
                             }
                             item.PMCode = PMType.PM16.ToString();
                             item.BuyType = 2;
@@ -1660,13 +1705,44 @@ namespace Inscoo.Controllers
                             {
                                 item.BankName = Cells["I" + i].Value.ToString().Trim();
                             }
+                            if (Cells["G" + i].Value != null)
+                            {
+                                item.Sex = Cells["G" + i].Value.ToString().Trim();
+                            }
                         }
                         item.Relationship = "本人";
-                        item.Name = Cells["A" + i].Value.ToString().Trim();
-                        item.IDType = Cells["B" + i].Value.ToString().Trim();
-                        item.IDNumber = Cells["C" + i].Value.ToString().Trim();
-                        item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
-                        item.Sex = Cells["G" + i].Value.ToString().Trim();
+                        if (Cells["A" + i].Value != null)
+                        {
+                            item.Name = Cells["A" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[姓名]未填写");
+                        }
+                        if (Cells["B" + i].Value != null)
+                        {
+                            item.IDType = Cells["B" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[证据类型]未填写");
+                        }
+                        if (Cells["C" + i].Value != null)
+                        {
+                            item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[证据号码]未填写");
+                        }
+                        try
+                        {
+                            item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception($"请注意第{i}资料生日格式是否正确,正确的格式为 2017-1-1 或者 2017/1/1");
+                        }
                         if (Cells["J" + i].Value != null)
                         {
                             item.PhoneNumber = Cells["J" + i].Value.ToString().Trim();
@@ -1675,9 +1751,19 @@ namespace Inscoo.Controllers
                         {
                             item.Email = Cells["K" + i].Value.ToString().Trim();
                         }
-                        item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
-
-                        eList.Add(item);
+                        if (Cells["L" + i].Value != null)
+                        {
+                            item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
+                        }
+                        bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
+                        if (idCon)
+                        {
+                            throw new Exception("请检查第 " + i + " 行资料,此人员证件号码重复");
+                        }
+                        else
+                        {
+                            eList.Add(item);
+                        }
                     }
                     if (eList.Count > 0)
                     {

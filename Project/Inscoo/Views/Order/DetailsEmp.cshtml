@@ -4,6 +4,9 @@
     <table class="orderDetailsTable table-bordered ">
         <tr>
             <th>
+
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -43,10 +46,14 @@
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
+        @{
+            var i = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @i
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -57,7 +64,7 @@
                     @Html.DisplayFor(modelItem => item.IDNumber)
                 </td>
                 <td>
-                    @item.Birthday.ToShortDateString()                 
+                    @item.Birthday.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Sex)
@@ -87,6 +94,8 @@
                     @item.EndDate.ToShortDateString()
                 </td>
             </tr>
+                i++;
+            }
         }
     </table>
 </div>

@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.StateDesc)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+           保险期间
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
@@ -54,12 +54,21 @@
                 @if (item.StartDate != DateTime.MinValue)
                 {
                     var dt = item.StartDate.ToShortDateString();
-                    <span>@dt</span>
-                    @*@Html.DisplayFor(modelItem => item.StartDate.ToShortDateString())*@
+                    if (item.EndDate != DateTime.MinValue)
+                    {
+                        <span>@dt</span><span>- @item.EndDate.ToShortDateString()</span>
+                    }
+                    else
+                    {
+                        <span>@dt</span>
+                    }
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
+                @{
+                    var CreateDate = item.CreateDate.ToShortDateString();
+                    <span>@CreateDate</span>
+                }
             </td>
             <td>
                 @{
@@ -73,11 +82,11 @@
                     }
                     if (item.State == 6 && item.BatchState == 0)
                     {
-                        @Html.ActionLink("加减保信息", "BuyMore", new { id = item.Id });
+                        @Html.ActionLink("基础信息修改", "BuyMore", new { id = item.Id });
                     }
                     if (item.State == 6 && item.BatchState == 1 || item.BatchState == 3)
                     {
-                        <span>正在审核</span>
+                        <a href="/Order/Details/@item.Id">查看详情</a>
                     }
                 }
             </td>

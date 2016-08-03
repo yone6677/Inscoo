@@ -25,6 +25,10 @@ namespace Models.Order
         [Required]
         [Display(Name = "生效日期")]
         public string StartDate { get; set; }
+        /// <summary>
+        /// 产品期限 年，季，月，周，日
+        /// </summary>
+        public string ProdTimeLimit { get; set; }
         [Required]
         [Range(0,9999 ,ErrorMessage ="还未上传人员资料")]
         public int IsUploadInfo { get; set; }

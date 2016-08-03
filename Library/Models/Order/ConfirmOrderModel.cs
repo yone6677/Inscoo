@@ -18,9 +18,9 @@ namespace Models.Order
         public string OrderName { get; set; }
         [DisplayName("产品备注")]
         public string Memo { get; set; }
-        [DisplayName("投保员工数")]
+        [DisplayName("员工人数")]
         public string StaffRange { get; set; }
-        [DisplayName("投保员工平均年龄")]
+        [DisplayName("平均年龄")]
         public string AgeRange { get; set; }
         /// <summary>
         /// 保费

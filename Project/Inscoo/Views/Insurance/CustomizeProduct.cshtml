@@ -6,6 +6,7 @@
 <div class="panel-body">
     <div class="describe_name describe_name_expand">投保类型</div>
     <ul id="myTab" class="nav nav-tabs">
+        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666"></i>保险公司<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>
         @{
             if (Model.CompanyList.Count > 0)
             {
@@ -50,22 +51,28 @@
                 compangName += "getPriceAndIds(c='" + s.Value + "',e=1);getPriceAndIds(c='" + s.Value + "',e=2);getPriceAndIds(c='" + s.Value + "',e=3);";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
-                        <label class="checkbox-inline">
-                            <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
-                            员工福利保险
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" name=@radioName value="雇主责任保险" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
-                            雇主责任保险
-                        </label>
-                        <label class="checkbox-inline">
-                            @Html.DisplayNameFor(m => m.StaffsNumber)
-                            @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(changeCon) })
-                        </label>
-                        <label class="checkbox-inline">
-                            @Html.DisplayNameFor(m => m.Avarage)
-                            @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(changeAge) })
-                        </label>
+                        <div class="programme-query-list">
+                            请选择保险类别：
+                            <label class="checkbox-inline">
+                                <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
+                                员工福利保险
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name=@radioName value="雇主责任保险" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
+                                雇主责任保险
+                            </label>
+                        </div>
+                        <div class="programme-query-list">
+                            请选择投保信息：
+                            <label class="checkbox-inline">
+                                @Html.DisplayNameFor(m => m.StaffsNumber)
+                                @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(changeCon) })
+                            </label>
+                            <label class="checkbox-inline">
+                                @Html.DisplayNameFor(m => m.Avarage)
+                                @Html.DropDownList(AvarageName, Model.Avarage, new { onchange = Html.Raw(changeAge) })
+                            </label>
+                        </div>
                     </div>
                     <div id="@ProductName">
                         @Html.Action("ProductList", new { company = s.Value, })

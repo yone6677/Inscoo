@@ -203,7 +203,7 @@ $("[type='file']").on('change', function () {
     var empFile = $(this).val();
     var pf = (empFile.substring(empFile.lastIndexOf("\\") + 1, empFile.length));
     $(this).parent().next().text(pf);
-    console.log($(this).parent().css("display","none"));
+    //console.log($(this).parent().css("display","none"));
 });
 
 
@@ -235,18 +235,39 @@ $(document).on('mouseover', 'body', function () {
     
 
 /*客服部分*/
-$(".arrow-left").on("click", function () {
-    console.log(1000);
-    $(".service-girl").toggleClass("out");
-});
+//$(".arrow-left").on("click", function () {
+//    console.log(1000);
+//    $(".service-girl").toggleClass("out");
+//});
 $(function () {
     $(window).scroll(function () {
-        var oldTop = 200;
+        var oldTop = 180;
         var t = $("body").scrollTop();
         t = t + oldTop + "px";
 
         setTimeout(function () {
-            $(".service-girl").css("top",t);
+            $(".service-girl").css("top", t);
         }, 200);
     });
-})
+});
+///时间操作
+function dateAdd(date, strInterval, Number) {
+    var dtTmp = date;
+    switch (strInterval) {
+        case 'year':
+            return new Date(dtTmp.getFullYear() + Number, dtTmp.getMonth(), dtTmp.getDate() + -1, dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'season':
+            return new Date(dtTmp.getFullYear(), dtTmp.getMonth() + 3 * Number, dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'month':
+            return new Date(dtTmp.getFullYear(), dtTmp.getMonth() + Number, dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
+            break;
+        case 'week':
+            return new Date(Date.parse(dtTmp) + ((86400000 * 7) * Number));
+            break;
+        case 'day':
+            return new Date(Date.parse(dtTmp) + (86400000 * Number));
+            break;
+    }
+}

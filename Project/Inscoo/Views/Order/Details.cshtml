@@ -150,9 +150,11 @@
     @{
         if (Model.orderBatch.Count > 0)
         {
+            var id = 0;
             foreach (var item in Model.orderBatch)
             {
-                <dl style="margin-top:1em;">
+                var dlId = "id_" + id;
+                <dl style="margin-top:1em;" id=@dlId>
                     <dt>
                         批次编号：
                     </dt>
@@ -313,7 +315,11 @@
                         </dd>
                     }
                 </dl>
+                id++;
             }
+            @**
+            
+            **@
         }
     }
     <div class="clearfix"></div>

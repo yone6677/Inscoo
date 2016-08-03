@@ -1267,6 +1267,7 @@ namespace Inscoo.Controllers
                         batchItem.InsurerConfirmDate = b.InsurerConfirmDate;
                         batchItem.CourierNumber = b.CourierNumber;
                         batchItem.InsurerMemo = b.InsurerMemo;
+                        batchItem.Express = b.Express;
                         var empTemp = _orderEmpTempService.GetListByBid(b.Id);
                         decimal empTempAmount = 0;
                         if (empTemp.Count > 0)
@@ -1575,7 +1576,9 @@ namespace Inscoo.Controllers
                 }
                 if (model.HasEmpInfoFilePDF)
                 {
-                    if (batch.PaymentNoticePDF == 0)//已经产生人员信息PDF,需要生成pdf
+                    decimal bMoney = batch.orderEmp.Sum(e => e.Premium);//批次金额
+
+                    if (batch.PaymentNoticePDF == 0 && bMoney > 0)//已经产生人员信息PDF且批次金额大于0,需要生成pdf
                     {
                         var ls = _orderEmpService.GetPaymentNoticePdf(id, batch.Id);
                         var fid = _archiveService.InsertByUrl(ls, FileType.PaymentNotice.ToString(), id, "加减保付款通知书");

@@ -241,7 +241,8 @@ $(document).on('mouseover', 'body', function () {
 //});
 $(function () {
     $(window).scroll(function () {
-        var oldTop = 180;
+        var innerH = window.innerHeight;
+        var oldTop = innerH / 2;
         var t = $("body").scrollTop();
         t = t + oldTop + "px";
 

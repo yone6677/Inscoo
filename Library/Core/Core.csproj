@@ -100,6 +100,8 @@
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
+    <Compile Include="Mapping\CashFlowDetailsMap.cs" />
+    <Compile Include="Mapping\CashFlowMap.cs" />
     <Compile Include="Mapping\ClaimFileFromWechatMap.cs" />
     <Compile Include="Mapping\ClaimFromWechatMap.cs" />
     <Compile Include="Mapping\FileInfoMap.cs" />
@@ -212,6 +214,18 @@
     <Compile Include="Migrations\201608040256007_AddTableAboutWZHuman.Designer.cs">
       <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608040330335_finance.cs" />
+    <Compile Include="Migrations\201608040330335_finance.Designer.cs">
+      <DependentUpon>201608040330335_finance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608040654217_finance1.cs" />
+    <Compile Include="Migrations\201608040654217_finance1.Designer.cs">
+      <DependentUpon>201608040654217_finance1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608040833392_orderInitialNumber.cs" />
+    <Compile Include="Migrations\201608040833392_orderInitialNumber.Designer.cs">
+      <DependentUpon>201608040833392_orderInitialNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -296,6 +310,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608040256007_AddTableAboutWZHuman.resx">
       <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040330335_finance.resx">
+      <DependentUpon>201608040330335_finance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040654217_finance1.resx">
+      <DependentUpon>201608040654217_finance1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040833392_orderInitialNumber.resx">
+      <DependentUpon>201608040833392_orderInitialNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

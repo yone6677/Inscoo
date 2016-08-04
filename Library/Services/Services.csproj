@@ -158,6 +158,10 @@
     <Compile Include="Company\ICompanyService.cs" />
     <Compile Include="FileHelper\OperationPDF.cs" />
     <Compile Include="FileHelper\PageHeaderHandler.cs" />
+    <Compile Include="Finance\CashFlowDetailsService.cs" />
+    <Compile Include="Finance\CashFlowService.cs" />
+    <Compile Include="Finance\ICashFlowDetailsService.cs" />
+    <Compile Include="Finance\ICashFlowService.cs" />
     <Compile Include="Health\HealthService.cs" />
     <Compile Include="Health\IHealthService.cs" />
     <Compile Include="Identity\AppRoleService.cs" />

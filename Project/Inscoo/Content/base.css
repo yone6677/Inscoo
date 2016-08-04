@@ -431,11 +431,26 @@ body {
   padding: 0 20px 0 0;
   font-size: 1em;
 }
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background: #f7f7f7;
+}
 .inscoo-productTable {
   margin: .5em auto;
   margin-bottom: 1.5em;
   width: 100%;
   border: 1px solid #ddd;
+}
+.inscoo-productTable tr:first-child {
+  background: #24A9E4;
+  color: #fff;
+}
+.inscoo-productTable tr:first-child span {
+  color: #fff;
+}
+.inscoo-productTable tr:first-child:hover {
+  background-color: #24A9E4;
 }
 .inscoo-productTable tr th {
   text-align: center;
@@ -443,6 +458,7 @@ body {
   height: 3.2em;
   border-right: 1px dashed #ddd;
   border-bottom: 1px solid #ddd;
+  font-weight: normal;
 }
 .inscoo-productTable tr td {
   text-align: center;
@@ -883,9 +899,10 @@ div:after {
 .confirmPayment p {
   display: block;
   width: 100%;
+  text-align: center;
 }
 .confirmPayment p a {
-  margin-left: 23%;
+  margin: 0 auto;
   display: block;
   text-align: center;
   width: 12em;
@@ -982,6 +999,11 @@ div:after {
   width: 96%;
   margin: 0 auto;
 }
+.orderDetails dl:after {
+  content: '';
+  display: block;
+  clear: both;
+}
 .orderDetails dl dt {
   width: 20%;
   height: 1.7em;
@@ -991,7 +1013,7 @@ div:after {
   box-shadow: 0 1px 0 #eee;
   color: #000;
   font-size: 1.1em;
-  font-weight: initial;
+  font-weight: normal!important;
 }
 .orderDetails dl dd {
   width: 30%;
@@ -1329,16 +1351,6 @@ div:after {
   display: block;
   clear: both;
 }
-@media screen and (min-width: 1321px) {
-  .first_li {
-    height: 20px;
-  }
-}
-@media screen and (max-width: 1320px) {
-  .first_li {
-    height: 40px;
-  }
-}
 /*体检须知*/
 .t {
   width: 100%;
@@ -1561,7 +1573,6 @@ div:after {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   backface-visibility: hidden;
   transition: all 0.6s ease 0s;
 }
@@ -1596,7 +1607,8 @@ div:after {
   width: 9%;
   position: absolute;
   right: 0;
-  top: 180px;
+  top: 50%;
+  margin-top: -200px;
   z-index: 2000;
   background: #f7f7f7;
   border: 1px solid #aaa;
@@ -1710,4 +1722,9 @@ div:after {
 .fixed {
   position: fixed;
   padding-left: 12%;
+}
+/*表格蓝色表头*/
+.table-header-blur tr:first-child {
+  background: #24A9E4;
+  color: #fff;
 }

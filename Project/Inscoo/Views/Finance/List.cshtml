@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Models.Finance.CashFlowModel>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Difference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.OId.ToString(), "Details", "Order", new { id = item.OId }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.ActionLink("详细", "Details", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

@@ -104,7 +104,6 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/health/BuyInfo/') {
                 url = '/health/index';
             }
-
             if (urlNow.indexOf('/health/MakeSure') != -1) {
                 url = '/health/index';
             }
@@ -116,7 +115,7 @@ function menuNav(name, csskey, cssvalue) {
             }
         }
       
-        if (bgColor == '/order/index') {
+        if (bgColor == '/Order/completedorder') {
             if (urlNow == '/Order/Details/') {
                 url = bgColor;
             }
@@ -241,7 +240,8 @@ $(document).on('mouseover', 'body', function () {
 //});
 $(function () {
     $(window).scroll(function () {
-        var oldTop = 180;
+        var innerH = window.innerHeight;
+        var oldTop = innerH / 2;
         var t = $("body").scrollTop();
         t = t + oldTop + "px";
 
@@ -274,31 +274,30 @@ function dateAdd(date, strInterval, Number) {
 
 
 /*"下一步"固定*/
-function getTop(elem) {
-    //var sum = elem.offset().top;
-    //while (elem.offset().parent != null) {
-    //    sum += elem.offset().parent.offset().top;
-    //    elem = elem.offset().parent;
-    //}
-    //return sum;
-    return;
-}
-$(function () {
+$(function() {
+    
     $(window).on("scroll", function () {
-        var parent = $(".d2-box");
-        var parentHeight = getTop(parent);
-        
-        var innerHeight = window.innerHeight;
+        var pathName = window.location.pathname;
+        var partialName = pathName.split("/");
+        console.log(pathName);
+        var Name = "/" + partialName[1] + "/" + partialName[2] + "/";
+        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/" || Name == "/Order/Details/") {
+            var parent = $(".d2-box");
+            var parentHeight = parent.offset().top;
+            var innerHeight = window.innerHeight;
 
-        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-        if (parentHeight >= innerHeight) {
-            $(".d3-box").attr("class", "d3-box box-1 fixed");
-        } else {
-            $(".d3-box").attr("class", "d3-box box-1");
-        }
-        if ((scrollTop + innerHeight) > parentHeight){
-            $(".d3-box").attr("class", "d3-box box-1");
+            if (parentHeight >= innerHeight) {
+                $(".d3-box").attr("class", "d3-box box-1 fixed");
+            } else {
+                $(".d3-box").attr("class", "d3-box box-1");
+            }
+            if ((scrollTop + innerHeight) > parentHeight) {
+                $(".d3-box").attr("class", "d3-box box-1");
+            }
         }
     })
 })
+
+

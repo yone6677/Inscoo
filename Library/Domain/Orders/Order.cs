@@ -107,6 +107,10 @@ namespace Domain.Orders
         /// </summary>
         public int InsuranceNumber { get; set; }
         /// <summary>
+        /// 初始人数
+        /// </summary>
+        public int InitialNumber { get; set; }
+        /// <summary>
         /// 产品详细
         /// </summary>
         public virtual ICollection<OrderItem> orderItem { get; set; }

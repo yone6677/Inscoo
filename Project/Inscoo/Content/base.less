@@ -497,7 +497,9 @@ body {
     padding:0 20px 0 0;
     font-size:1em;
 }
-
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+    background:#f7f7f7;
+}
 //以上是新增
 .inscoo-productTable {
     margin: .5em auto;
@@ -506,12 +508,23 @@ body {
     border: 1px solid #ddd;
 
     tr {
+        &:first-child{
+            background :#24A9E4;
+            color:#fff;
+            span{
+                color:#fff;
+            }
+            &:hover{
+            background-color:#24A9E4;
+        }
+        }
         th {
             text-align: center;
             line-height: 3.2em;
             height: 3.2em;
             border-right: 1px dashed #ddd;
             border-bottom:1px solid #ddd;
+            font-weight:normal;
         }
 
         td {
@@ -1028,9 +1041,9 @@ div:after{
     p {
         display: block;
         width: 100%;
-
+        text-align:center;
         a {
-            margin-left: 23%;
+            margin:0 auto;
             display: block;
             text-align: center;
             width: 12em;
@@ -1140,7 +1153,11 @@ div:after{
     dl {
         width: 96%;
         margin: 0 auto;
-
+        &:after{
+            content:'';
+            display:block;
+            clear:both;
+        }
         dt {
             width: 20%;
             height: 1.7em;
@@ -1150,7 +1167,7 @@ div:after{
             box-shadow: 0 1px 0 #eee;
             color: #000;
             font-size:1.1em;
-            font-weight:initial
+            font-weight:normal!important;
         }
 
         dd {
@@ -1523,16 +1540,7 @@ div:after{
         }
     }
 }
-@media screen and (min-width: 1321px){
-    .first_li{
-        height:20px;
-    }
-}
-@media screen and (max-width:1320px) {
-    .first_li{
-        height:40px;
-    }
-}
+
 /*体检须知*/
 
 .t{
@@ -1719,6 +1727,7 @@ div:after{
         display:block;
         clear:both;
     }
+
     li{
         float:left;
         width:32%;
@@ -1765,7 +1774,6 @@ div:after{
                position: absolute; 
                top: 0; 
                left:0; 
-               width:100%;
                backface-visibility:hidden; 
                transition:all 0.6s ease 0s;
                
@@ -1809,7 +1817,8 @@ div:after{
     width:9%;
     position:absolute; 
     right:0;
-    top:180px;
+    top:50%;
+    margin-top:-200px;
     z-index:2000;
     background:#f7f7f7; 
     border:1px solid #aaa;
@@ -1916,7 +1925,6 @@ div:after{
 .main-width{
 	width:100%;
 	margin:0 auto;
-
 }
 
 .box-1{
@@ -1939,3 +1947,10 @@ div:after{
 }
 
 
+/*表格蓝色表头*/
+.table-header-blur{
+    tr:first-child{
+        background:#24A9E4;
+        color:#fff;
+    }
+}

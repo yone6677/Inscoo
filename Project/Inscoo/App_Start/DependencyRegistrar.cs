@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Core;
+using Services.Finance;
 
 namespace Inscoo
 {
@@ -77,6 +78,8 @@ namespace Inscoo
             builder.RegisterType<ClaimService>().As<IClaimService>().InstancePerDependency();
             builder.RegisterType<OrderEmpTempService>().As<IOrderEmpTempService>().InstancePerDependency();
             builder.RegisterType<HealthService>().As<IHealthService>().InstancePerDependency();
+            builder.RegisterType<CashFlowService>().As<ICashFlowService>().InstancePerDependency();
+            builder.RegisterType<CashFlowDetailsService>().As<ICashFlowDetailsService>().InstancePerDependency();
             builder.RegisterType<WZHumanService>().As<IWZHumanService>().InstancePerDependency();
         }
     }

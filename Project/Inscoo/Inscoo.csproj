@@ -389,6 +389,7 @@
     <Compile Include="Controllers\WZHumanController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -516,6 +517,10 @@
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\WZHuman\FileListIndex.cshtml" />
     <Content Include="Views\WZHuman\FileListData.cshtml" />
+    <Content Include="Views\Finance\List.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
+    <Content Include="Views\Finance\Details.cshtml" />
+    <Content Include="Views\Finance\CashFlowDetails.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

@@ -1,4 +1,5 @@
-﻿using Domain.Orders;
+﻿using Domain.Finance;
+using Domain.Orders;
 using Innscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Models;
@@ -6,6 +7,7 @@ using Models.Infrastructure;
 using Models.Order;
 using OfficeOpenXml;
 using Services;
+using Services.Finance;
 using Services.Orders;
 using Services.Products;
 using System;
@@ -36,9 +38,13 @@ namespace Inscoo.Controllers
         private readonly IFileService _fileService;
         private readonly ICompanyService _svCompany;
         private readonly IWebHelper _webHelper;
+        private readonly ICashFlowDetailsService _cashFlowDetails;
+        private readonly ICashFlowService _cashFlow;
+
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany, IWebHelper webHelper)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany,
+            IWebHelper webHelper, ICashFlowDetailsService cashFlowDetails, ICashFlowService cashFlow)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -55,6 +61,8 @@ namespace Inscoo.Controllers
             _svCompany = svCompany;
             _orderEmpTempService = orderEmpTempService;
             _webHelper = webHelper;
+            _cashFlow = cashFlow;
+            _cashFlowDetails = cashFlowDetails;
         }
         #endregion
         #region 订单管理
@@ -797,6 +805,7 @@ namespace Inscoo.Controllers
                     }
                     var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
                     order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
+                    order.InitialNumber = InsuranceNumber;//初始人数
                     _orderService.Update(order);
                     //定单批次
                     var orderBatch = _orderBatchService.GetByOrderId(Id);
@@ -1226,6 +1235,7 @@ namespace Inscoo.Controllers
                 model.EndDate = order.EndDate.ToShortDateString();
                 model.Id = order.Id;
                 model.InsuranceNumber = order.InsuranceNumber;
+                model.InitialNumber = order.InitialNumber;
                 model.Insurer = _genericAttributeService.GetByKey(null, "InsuranceCompany", order.Insurer).Key;
                 model.Linkman = order.Linkman;
                 model.Memo = order.Memo;
@@ -1435,6 +1445,60 @@ namespace Inscoo.Controllers
                         {
                             order.State = 9;//已支付
                         }
+                        var cashFlow = _cashFlow.GetByOid(order.Id);
+                        if (cashFlow == null)
+                        {
+                            cashFlow = new CashFlow();
+                            //cashFlow.cashFlowDetails.Add(cashFlowDetails);
+                            cashFlow.Amount = model.Price;
+                            cashFlow.OId = order.Id;
+                            cashFlow.OType = 1;//保险为1
+                            cashFlow.Difference = model.Price - model.AmountCollected;//金额差异
+                            var cid = _cashFlow.InsertGetId(cashFlow);
+
+                            if (cid > 0)
+                            {
+                                var cashFlowDetails = new CashFlowDetails();
+                                cashFlowDetails.Author = User.Identity.GetUserId();
+                                cashFlowDetails.cId = cid;
+                                if (batch.AmountCollected > 0)//收款
+                                {
+                                    cashFlowDetails.Receivable = model.Price;
+                                    cashFlowDetails.ActualCollected = batch.AmountCollected;
+                                }
+                                else//付款
+                                {
+                                    cashFlowDetails.Payable = model.Price;
+                                    cashFlowDetails.RealPayment = batch.AmountCollected;
+                                }
+                                _cashFlowDetails.Insert(cashFlowDetails);
+                            }
+                            else
+                            {
+                                throw new Exception("财务写入失败，未能审核");
+                            }
+                        }
+                        else
+                        {
+                            var cashFlowDetails = new CashFlowDetails();
+                            if (batch.AmountCollected > 0)//收款
+                            {
+                                cashFlowDetails.Receivable = model.Price;
+                                cashFlowDetails.ActualCollected = batch.AmountCollected;
+                            }
+                            else//付款
+                            {
+                                cashFlowDetails.Payable = model.Price;
+                                cashFlowDetails.RealPayment = batch.AmountCollected;
+                            }
+                            cashFlowDetails.cId = cashFlow.Id;
+                            if (_cashFlowDetails.Insert(cashFlowDetails))
+                            {
+                                cashFlow.Difference += model.Price - model.AmountCollected;
+                                cashFlow.Amount += model.Price;
+                                _cashFlow.Update(cashFlow);
+                            }
+                        }
                     }
                     else
                     {
@@ -1576,7 +1640,8 @@ namespace Inscoo.Controllers
                 }
                 if (model.HasEmpInfoFilePDF)
                 {
-                    decimal bMoney = batch.orderEmp.Sum(e => e.Premium);//批次金额
+                    var empTemp = _orderEmpTempService.GetListByBid(batch.Id);
+                    decimal bMoney = empTemp.Sum(e => e.Premium);//批次金额
 
                     if (batch.PaymentNoticePDF == 0 && bMoney > 0)//已经产生人员信息PDF且批次金额大于0,需要生成pdf
                     {

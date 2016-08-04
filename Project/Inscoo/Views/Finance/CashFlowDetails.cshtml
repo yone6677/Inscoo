@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Models.Finance.CashFlowDetailsModel>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Receivable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActualCollected)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Payable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RealPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="color:green;">
+                @Html.DisplayFor(modelItem => item.Receivable)
+            </td>
+            <td style="color:green;">
+                @Html.DisplayFor(modelItem => item.ActualCollected)
+            </td>
+            <td style="color:red;">
+                @Html.DisplayFor(modelItem => item.Payable)
+            </td>
+            <td style="color:red;">
+                @Html.DisplayFor(modelItem => item.RealPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+        </tr>
+    }
+
+</table>
+
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

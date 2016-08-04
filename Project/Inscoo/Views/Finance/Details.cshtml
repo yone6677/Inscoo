@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "账目明细";
+}
+
+@using (Ajax.BeginForm("CashFlowDetails", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="cid" value="@ViewBag.id" />
+    <div id="dadaGrid">
+        @Html.Action("CashFlowDetails",new { cid=ViewBag.id})
+    </div>
+}

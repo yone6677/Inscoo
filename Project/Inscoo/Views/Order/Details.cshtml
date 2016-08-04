@@ -353,7 +353,7 @@
             <nav style="text-align:center">
                 <ul class="pagination" id="nav-pagination">
                     <li>
-                        <a href="#" aria-label="Previous">
+                        <a href="#" aria-label="Previous" style="cursor:default">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -364,7 +364,7 @@
                         }
                     }
                     <li>
-                        <a href="#" aria-label="Next">
+                        <a href="#" aria-label="Next" style="cursor:default">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -541,7 +541,6 @@
             }
             if (target.nodeName == "LI") {
                 var text = $(target).children().html();
-                console.log(text);
                 var t = $("[id^='id_']");
                 for (var i = 0; i < t.length; i++) {
                     $(t[i]).removeClass("inscoo").css("display", 'none');

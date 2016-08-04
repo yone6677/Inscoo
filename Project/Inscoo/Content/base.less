@@ -497,7 +497,9 @@ body {
     padding:0 20px 0 0;
     font-size:1em;
 }
-
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+    background:#f7f7f7;
+}
 //以上是新增
 .inscoo-productTable {
     margin: .5em auto;
@@ -506,12 +508,23 @@ body {
     border: 1px solid #ddd;
 
     tr {
+        &:first-child{
+            background :#24A9E4;
+            color:#fff;
+            span{
+                color:#fff;
+            }
+            &:hover{
+            background-color:#24A9E4;
+        }
+        }
         th {
             text-align: center;
             line-height: 3.2em;
             height: 3.2em;
             border-right: 1px dashed #ddd;
             border-bottom:1px solid #ddd;
+            font-weight:normal;
         }
 
         td {

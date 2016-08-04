@@ -104,7 +104,6 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/health/BuyInfo/') {
                 url = '/health/index';
             }
-
             if (urlNow.indexOf('/health/MakeSure') != -1) {
                 url = '/health/index';
             }
@@ -116,7 +115,7 @@ function menuNav(name, csskey, cssvalue) {
             }
         }
       
-        if (bgColor == '/order/index') {
+        if (bgColor == '/Order/completedorder') {
             if (urlNow == '/Order/Details/') {
                 url = bgColor;
             }

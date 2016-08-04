@@ -275,12 +275,13 @@ function dateAdd(date, strInterval, Number) {
 
 /*"下一步"固定*/
 function getTop(elem) {
-    var sum = elem.offset().top;
-    while (elem.offset().parent != null) {
-        sum += elem.offset().parent.offset().top;
-        elem = elem.offset().parent;
-    }
-    return sum;
+    //var sum = elem.offset().top;
+    //while (elem.offset().parent != null) {
+    //    sum += elem.offset().parent.offset().top;
+    //    elem = elem.offset().parent;
+    //}
+    //return sum;
+    return;
 }
 $(function () {
     $(window).on("scroll", function () {

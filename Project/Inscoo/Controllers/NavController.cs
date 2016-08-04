@@ -98,8 +98,8 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 var isExist = false;
-                var item = new Navigation();
-                item = _navService.GetByUrl(item.controller, item.action);
+
+                var item = _navService.GetByUrl(model.controller, model.action);
 
                 if (!string.IsNullOrEmpty(model.controller))//非一级菜单
                 {
@@ -108,15 +108,16 @@ namespace Inscoo.Controllers
                         isExist = true;
                     }
                 }
-
+                if (item == null)
+                    item = new Navigation();
                 item.action = model.action ?? "";
-                item.controller = model.controller.Trim();
-                item.isShow = model.isShow;
+                item.controller = model.controller ?? "";
                 item.level = model.PId == 0 ? 0 : 1;
                 item.memo = model.memo;
                 item.name = model.name;
                 item.pId = model.PId;
                 item.isShow = true;
+                item.IsDeleted = false;
                 item.url = item.controller.Replace("Controller", "") + "/" + item.action;
                 item.htmlAtt = model.htmlAtt;
                 item.sequence = model.sequence;
@@ -166,14 +167,15 @@ namespace Inscoo.Controllers
                 {
                     item.pId = model.PId;
                     item.action = model.action ?? "";
-                    item.controller = model.controller.Trim();
-                    item.url = item.controller.Substring(0, (item.controller.Length - 10)) + "/" + item.action;
+                    item.controller = model.controller ?? "";
+                    item.url = item.controller.Replace("Controller", "") + "/" + item.action;
                     item.isShow = model.isShow;
                     item.memo = model.memo;
                     item.name = model.name;
                     item.isShow = model.isShow;
                     item.htmlAtt = model.htmlAtt;
                     item.sequence = model.sequence;
+                    item.level = model.PId == 0 ? 0 : 1;
                     if (_navService.Update(item))
                     {
                         return RedirectToAction("Index");

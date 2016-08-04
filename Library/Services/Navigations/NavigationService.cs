@@ -109,13 +109,13 @@ namespace Services
                 var roles = _svAppUser.GetRolesByUserId(uId);
                 if (roles.Any(r => r.Equals("admin", StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    var navs = _navRepository.TableFromBuffer().ToList().Where(p => p.isShow);
+                    var navs = _navRepository.TableFromBuffer().ToList().Where(p => p.isShow && !p.IsDeleted);
 
                     return navs.OrderBy(n => n.sequence).ToList();
                 }
                 else if (roles.Count == 1 && roles.Contains("InscooOperator"))
                 {
-                    var navs = _navRepository.TableFromBuffer().Where(p => p.isShow).ToList();
+                    var navs = _navRepository.TableFromBuffer().Where(p => p.isShow && !p.IsDeleted).ToList();
                     var removeItems = navs.Where(n => n.controller != null).Where(n => n.controller.Equals("RoleController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("NavController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("PermissionController", StringComparison.CurrentCultureIgnoreCase) || n.controller.Equals("GenericattributeController", StringComparison.CurrentCultureIgnoreCase));
                     if (removeItems.Any())
                     {
@@ -131,7 +131,7 @@ namespace Services
                     var roleIds = _svAppRole.Roles().Where(r => roles.Contains(r.Name)).Select(r => r.Id).AsNoTracking().ToList();
                     var navs = from p in _navRepository.DatabaseContext.Set<Permission>().Include(n => n.Navigation).AsNoTracking()
                                let n = p.Navigation
-                               where (roleIds.Contains(p.roleId) && p.Navigation.isShow)
+                               where (roleIds.Contains(p.roleId) && p.Navigation.isShow && !p.IsDeleted)
                                select (n);
 
                     return navs.OrderBy(n => n.sequence).ToList();

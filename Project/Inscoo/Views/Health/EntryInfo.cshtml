@@ -5,9 +5,7 @@
 }
 @section head {
     <style>
-        li {
-            width: 33%;
-        }
+       
     </style>
 }
 <div class="orderConfirm">
@@ -29,35 +27,36 @@
 
 
 
-@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = "orderEntryInfoBody", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data" }))
 {
 
     <p class="basic-information">
         <i class="fa fa-edit fa-2x"></i>详细信息填写
     </p>
-    <ul style="width:65%">
+    <ul>
         <li>
-            <label>
-                上传员工名单：
-            </label>
+            1.请下载员工名单模板并按模板格式填写：
+        </li>
+        <li>
+            <a href="~/Archive/Template/health/体检上传表格.xlsx" target="_blank" class="btn btn-default">下载模板</a>
+        </li>
+        <li>
+            2.请上传填写完成的员工名单
         </li>
         <li>
             <input type="hidden" value=@Model.MasterId name="masterId" />
             <a href="javascript:;" class="a-upload">
-                <input type="file" id="empinfo" required name="empinfo" />+ 选择文件
+                <input type="file" id="empinfo" required name="empinfo" />+ 浏览
             </a>
-            <span class="lab" style="height:28px;line-height:28px;">@*未选择上传文件*@</span>
-        </li>
-        <li>
+            <span class="lab" style="height:28px;line-height:28px;"></span>
             <input type="submit" value="上传" class="btn btn-default" />
-            <a href="~/Archive/Template/health/体检上传表格.xlsx" target="_blank" class="btn btn-default">下载模板</a>
         </li>
 
     </ul>
-    <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
+    <div style="width:80%;margin:1em auto;line-height:2em;text-align:left;">
         <span style="color:#5cb85c">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
     </div>
-    <div style="line-height:2em;width:35%;text-align:left;float:left;" class="text-danger-hide">
+    <div style="width:80%;margin:0 auto;line-height:2em;text-align:left;">
 
         @if (TempData["error"] != null)
         {
@@ -80,9 +79,9 @@ else
         @Html.HiddenFor(model => model.MasterId)
         @Html.Hidden("isCompanySelect")
 
-
+   <hr>
         <div class="orderEntryInfoBody">
-            <p class="basic-information" style="margin-top: 70px;">
+            <p class="basic-information" style="margin-top: 20px;">
                 <i class="fa fa-edit fa-2x"></i>发票公司信息
                 <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
             </p>
@@ -90,6 +89,7 @@ else
                 <li>
                     @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
                 </li>
+                
                 <li>
                     @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
                     @if (Model.CompanyNameList != null)
@@ -99,11 +99,11 @@ else
                 </li>
                 <li>
                     @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                    <span style="color:#888;">(请填写全称用于发票抬头)</span>
                 </li>
             </ul>
-
             <ul>
-                <li>
+                <li style="width:20%;text-align:right">
                     @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
                 </li>
                 <li>
@@ -119,15 +119,15 @@ else
                 </li>
                 <li>
                     @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                    <sapn style="color:#888;">(供保单及发票寄送)</sapn>
+                    
                 </li>
                 <li>
                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-
+                    <sapn style="color:#888;">(供保单及发票寄送)</sapn>
                 </li>
             </ul>
             <ul>
-                <li>
+                <li style="width:20%;text-align:right">
                     @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
                 </li>
                 <li>

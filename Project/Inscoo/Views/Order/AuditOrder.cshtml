@@ -64,6 +64,7 @@
                         @Html.LabelFor(model => model.AmountCollected)
                     </li>
                     <li>
+                        <input type="hidden" name="Price" id="Price" value="@Model.Price" />
                         <input type="number" id="AmountCollected" name="AmountCollected" class="form-control" value=@Model.Price />
                     </li>
                     <li>

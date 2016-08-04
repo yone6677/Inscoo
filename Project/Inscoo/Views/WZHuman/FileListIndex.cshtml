@@ -1,0 +1,74 @@
+﻿@model Models.WZFileSearchModel
+
+@{
+    ViewBag.Title = "企业列表";
+}
+@using (Html.BeginForm("UploadInsurants", "WZHuman", FormMethod.Post))
+{
+    @Html.Hidden("masterId", ViewBag.MasterId)
+    <div class="Search">
+        <dl style="width:100%">
+            <dt>上传保险人员名单</dt>
+            <dd>
+                <a href="javascript:;" class="a-upload">
+                    <input type="file" name="excel" id="excel" />+ 浏览
+                </a>
+                <span class="lab" style="height: 28px; line-height: 28px;"></span>
+            </dd>
+            <dt>备注</dt>
+            <dd>
+                <input type="text" name="memo" id="memo" placeholder="" class="form-control" />
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="提交" /></p>
+            </dd>
+            <dt></dt>
+            <dd>
+                @if (TempData["errorMes"] != null)
+                {
+                    if (TempData["errorMes"].ToString() == "上传成功")
+                    {
+                        <span class="text-success">上传成功</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">@TempData["errorMes"].ToString()</span>
+                    }
+                }
+            </dd>
+        </dl>
+    </div>
+}
+@using (Ajax.BeginForm("FileListData", null, new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    @Html.Hidden("masterId", ViewBag.MasterId.ToString())
+    <div class="Search">
+        <dl style="width:100%">
+            <dt>
+                上传人
+            </dt>
+            <dd>
+                @Html.EditorFor(model => model.Uploader)
+            </dd>
+            <dt>上传日期</dt>
+            <dd>
+                <input type="text" name="UploadDate" id="UploadDate" />
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="查找" /></p>
+            </dd>
+        </dl>
+
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid">
+        @Html.Action("FileListData", new { ViewBag.MasterId })
+    </div>
+}

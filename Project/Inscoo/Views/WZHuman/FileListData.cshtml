@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Models.WZFileDataModel>
+
+
+@Html.AntiForgeryToken()
+<table class="table table-bordered table-style-control">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UploadDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Memo)
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memo)
+            </td>
+            <td>
+                <a href="@item.Url" target="_blank">下载</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.Pager(ViewBag.pageCommand as PageCommand)
+

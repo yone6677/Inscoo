@@ -386,6 +386,7 @@
     <Compile Include="Controllers\ApiController\BaseApiController.cs" />
     <Compile Include="Controllers\ApiController\ClaimApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\WZHumanController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GenericAttributeController.cs" />
@@ -513,6 +514,8 @@
     <Content Include="Views\Insurance\CarInscuranceAddEOrderCode.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_11.cshtml" />
     <Content Include="Views\Home\Service.cshtml" />
+    <Content Include="Views\WZHuman\FileListIndex.cshtml" />
+    <Content Include="Views\WZHuman\FileListData.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -522,6 +525,9 @@
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Changeportrait.cshtml" />
+    <Content Include="Views\WZHuman\Create.cshtml" />
+    <Content Include="Views\WZHuman\ListData.cshtml" />
+    <Content Include="Views\WZHuman\ListIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

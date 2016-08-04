@@ -55,6 +55,24 @@ namespace Services
             }
         }
 
+        public CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey)
+        {
+            try
+            {
+                var item = _rpCarInsurance.Table.Include(c => c.Einsurance).AsEnumerable().FirstOrDefault(c => c.Id == insuranceId);
+                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
+                return item;
+            }
+            catch (WarningException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
+            }
+            return null;
+        }
         public Archive GetById(int id)
         {
             try
@@ -67,6 +85,19 @@ namespace Services
             }
             return null;
         }
+        public IQueryable<Archive> GetByTypeAndPId(int pId, string type)
+        {
+            try
+            {
+                return _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：GetByTypeAndPId");
+            }
+            return null;
+        }
+
         public bool Delete(Archive item, bool disable)
         {
             try
@@ -254,6 +285,33 @@ namespace Services
             }
             return 0;
         }
+        public string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo)
+        {
+            try
+            {
+                var model = _fileService.SaveFile(file);
+                if (model != null)
+                {
+                    var item = new Archive()
+                    {
+                        Author = author,
+                        pId = masterId,
+                        Memo = memo,
+                        Type = "WZHuman",
+                        Name = model.Name + model.Postfix,
+                        Path = model.Path,
+                        Url = model.Path + model.Name + model.Postfix
+                    };
+                    _archiveRepository.Insert(item);
+                    return item.Url;
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：InsertWZInsurants");
+            }
+            return null;
+        }
         public Domain.FileInfo InsertFileInfo(HttpPostedFileBase file, string author, string memo = "")
         {
             try
@@ -384,24 +442,7 @@ namespace Services
                 throw new WarningException("操作失败");
             }
         }
-        public CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey)
-        {
-            try
-            {
-                var item = _rpCarInsurance.Table.Include(c => c.Einsurance).AsEnumerable().FirstOrDefault(c => c.Id == insuranceId);
-                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
-                return item;
-            }
-            catch (WarningException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
-            }
-            return null;
-        }
+
 
         public void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey)
         {

@@ -77,6 +77,7 @@ namespace Inscoo
             builder.RegisterType<ClaimService>().As<IClaimService>().InstancePerDependency();
             builder.RegisterType<OrderEmpTempService>().As<IOrderEmpTempService>().InstancePerDependency();
             builder.RegisterType<HealthService>().As<IHealthService>().InstancePerDependency();
+            builder.RegisterType<WZHumanService>().As<IWZHumanService>().InstancePerDependency();
         }
     }
 }

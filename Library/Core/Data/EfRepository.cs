@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Core.Data
 {
@@ -81,108 +82,6 @@ namespace Core.Data
             return Entities.Find(id);
         }
 
-        /// <summary>
-        /// Insert entity
-        /// </summary>
-        /// <param name="entity">Entity</param>
-        public virtual void Insert(T entity, bool isCached)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
-
-                Entities.Add(entity);
-
-                _context.SaveChanges();
-                if (isCached)
-                {
-                    string key = typeof(T).Name;
-                    if (_cachingManager.IsSet(key))
-                    {
-                        _cachingManager.Remove(key);
-                    }
-                }
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                var msg = string.Empty;
-
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
-
-                var fail = new Exception(msg, dbEx);
-                throw fail;
-            }
-        }
-        public virtual int InsertGetId(T entity, bool isCached)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
-
-                Entities.Add(entity);
-
-                _context.SaveChanges();
-                if (isCached)
-                {
-                    string key = typeof(T).Name;
-                    if (_cachingManager.IsSet(key))
-                    {
-                        _cachingManager.Remove(key);
-                    }
-                }
-                return entity.Id;
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                var msg = string.Empty;
-
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
-
-                var fail = new Exception(msg, dbEx);
-                throw fail;
-            }
-        }
-        /// <summary>
-        /// Insert entities
-        /// </summary>
-        /// <param name="entities">Entities</param>
-        public virtual void Insert(IEnumerable<T> entities, bool isCached)
-        {
-            try
-            {
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
-
-                foreach (var entity in entities)
-                    Entities.Add(entity);
-                _context.SaveChanges();
-                if (isCached)
-                {
-                    string key = typeof(T).Name;
-                    if (_cachingManager.IsSet(key))
-                    {
-                        _cachingManager.Remove(key);
-                    }
-                }
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                var msg = string.Empty;
-
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
-
-                var fail = new Exception(msg, dbEx);
-                throw fail;
-            }
-        }
 
         /// <summary>
         /// Update entity
@@ -356,6 +255,170 @@ namespace Core.Data
             }
         }
 
+        /// <summary>
+        /// Insert entity
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        public virtual void Insert(T entity, bool isCached)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("entity");
+
+                Entities.Add(entity);
+
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
+        public async Task InsertAsync(T entity, bool isCached)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("entity");
+
+                Entities.Add(entity);
+                await _context.SaveChangesAsync();
+
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
+        public virtual int InsertGetId(T entity, bool isCached)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException("entity");
+
+                Entities.Add(entity);
+
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+                return entity.Id;
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
+        /// <summary>
+        /// Insert entities
+        /// </summary>
+        /// <param name="entities">Entities</param>
+        public virtual void Insert(IEnumerable<T> entities, bool isCached)
+        {
+            try
+            {
+                if (entities == null)
+                    throw new ArgumentNullException("entities");
+
+                foreach (var entity in entities)
+                    Entities.Add(entity);
+                _context.SaveChanges();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
+        public async Task InsertAsync(IEnumerable<T> entities, bool isCached)
+        {
+            try
+            {
+                if (entities == null)
+                    throw new ArgumentNullException("entities");
+
+                foreach (var entity in entities)
+                    Entities.Add(entity);
+                await _context.SaveChangesAsync();
+                if (isCached)
+                {
+                    string key = typeof(T).Name;
+                    if (_cachingManager.IsSet(key))
+                    {
+                        _cachingManager.Remove(key);
+                    }
+                }
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                var msg = string.Empty;
+
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                        msg += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage) + Environment.NewLine;
+
+                var fail = new Exception(msg, dbEx);
+                throw fail;
+            }
+        }
         #endregion
 
         #region Properties

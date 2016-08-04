@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Core.Data
 {
@@ -22,12 +22,13 @@ namespace Core.Data
         /// </summary>
         /// <param name="entity">Entity</param>
         void Insert(T entity, bool isCached = true);
-
+        Task InsertAsync(T entity, bool isCached = true);
         /// <summary>
         /// Insert entities
         /// </summary>
         /// <param name="entities">Entities</param>
         void Insert(IEnumerable<T> entities, bool isCached = true);
+        Task InsertAsync(IEnumerable<T> entities, bool isCached = true);
 
         int InsertGetId(T entity, bool isCached = true);
 

@@ -387,10 +387,19 @@ namespace Services
                 else
                 {
                     allRoles.RemoveAll(r => r.Name.Equals("Admin"));
+
                     allRoles.RemoveAll(r => r.Name.Equals("InscooFinance"));
                     allRoles.RemoveAll(r => r.Name.Equals("InsuranceCompany"));
+                    allRoles.RemoveAll(r => r.Name.Equals("InscooOperator"));
+
                     allRoles.RemoveAll(r => r.Name.Equals("CarInscuranceCompany"));
                     allRoles.RemoveAll(r => r.Name.Equals("CarInscuranceCustomer"));
+
+                    allRoles.RemoveAll(r => r.Name.Equals("WZHumanAssistant"));
+                    allRoles.RemoveAll(r => r.Name.Equals("WZHumanCustomer"));
+
+                    allRoles.RemoveAll(r => r.Name.Equals("HealthCheck"));
+                    
                 }
 
                 if (userRoles.Contains("BusinessDeveloper"))

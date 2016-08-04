@@ -193,6 +193,8 @@
     <Compile Include="Products\MixProductService.cs" />
     <Compile Include="Products\ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WZHuman\IWZHumanService.cs" />
+    <Compile Include="WZHuman\WZHumanService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

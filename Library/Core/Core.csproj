@@ -98,6 +98,7 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
     <Compile Include="Mapping\ClaimFileFromWechatMap.cs" />
     <Compile Include="Mapping\ClaimFromWechatMap.cs" />
@@ -207,6 +208,10 @@
     <Compile Include="Migrations\201608030733508_tpa.Designer.cs">
       <DependentUpon>201608030733508_tpa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608040256007_AddTableAboutWZHuman.cs" />
+    <Compile Include="Migrations\201608040256007_AddTableAboutWZHuman.Designer.cs">
+      <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -288,6 +293,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608030733508_tpa.resx">
       <DependentUpon>201608030733508_tpa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040256007_AddTableAboutWZHuman.resx">
+      <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

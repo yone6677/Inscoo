@@ -150,7 +150,7 @@
     @{
         if (Model.orderBatch.Count > 0)
         {
-            var id = 0;
+            var id = 1;
             foreach (var item in Model.orderBatch)
             {
                 var dlId = "id_" + id;
@@ -325,7 +325,7 @@
                         </a>
                     </li>
                     @{ 
-                        for(var i = 0;i < id;i++){
+                        for(var i = 1;i < id;i++){
                             <li><a href="#">@i</a></li>
                         }
                     }
@@ -507,17 +507,17 @@
             }
             if (target.nodeName == "LI") {
                 var text = $(target).children().html();
+                console.log(text);
                 var t = $("[id^='id_']");
                 for (var i = 0; i < t.length; i++) {
                     $(t[i]).removeClass("inscoo").css("display", 'none');
-                    $(t[text]).css("display", "block").addClass("inscoo");
-                    
+                    $(t[text - 1]).css("display", "block").addClass("inscoo");
                 }
             }
         }
         $(function () {
             $("[id^='id_']").css("display",'none');
-            $("#id_0").css("display", "block").addClass("inscoo");
+            $("#id_1").css("display", "block").addClass("inscoo");
             
             $("#nav-pagination").on("click", togglePage);
         })

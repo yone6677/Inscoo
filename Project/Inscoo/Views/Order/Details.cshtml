@@ -146,6 +146,39 @@
         </dd>
     </dl>
     <div class="clearfix"></div>
+    <h4 class="text-primary_color"><span>保单信息</span></h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                保险责任
+            </th>
+            <th>
+                保障额度
+            </th>
+            <th>
+                赔付比例
+            </th>
+            <th>
+                保障期限
+            </th>
+        </tr>
+        @{
+            if (Model.orderItem != null && Model.orderItem.Count > 0)
+            {
+                foreach (var item in Model.orderItem)
+                {
+                    <tr class="table-style-control">
+                        <td>@item.SafeguardName</td>
+                        <td>@item.CoverageSum</td>
+                        <td>@item.PayoutRatio</td>
+                        <td>一年</td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+
+    <div class="clearfix"></div>
     <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-plus toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @{
         if (Model.orderBatch.Count > 0)
@@ -318,14 +351,15 @@
                 id++;
             }
             <nav style="text-align:center">
-                <ul class="pagination"  id="nav-pagination">
+                <ul class="pagination" id="nav-pagination">
                     <li>
                         <a href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    @{ 
-                        for(var i = 1;i < id;i++){
+                    @{
+                        for (var i = 1; i < id; i++)
+                        {
                             <li><a href="#">@i</a></li>
                         }
                     }
@@ -336,7 +370,7 @@
                     </li>
                 </ul>
             </nav>
-        }
+                        }
     }
     <div class="clearfix"></div>
     <h4 class="text-primary_color">人员信息</h4>
@@ -516,9 +550,9 @@
             }
         }
         $(function () {
-            $("[id^='id_']").css("display",'none');
+            $("[id^='id_']").css("display", 'none');
             $("#id_1").css("display", "block").addClass("inscoo");
-            
+
             $("#nav-pagination").on("click", togglePage);
         })
 

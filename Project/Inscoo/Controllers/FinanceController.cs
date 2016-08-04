@@ -51,5 +51,38 @@ namespace Inscoo.Controllers
             ViewBag.pageCommand = command;
             return PartialView(model);
         }
+        public ActionResult Details(int id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+        public ActionResult CashFlowDetails(int cid)
+        {
+            var model = _cashFlowDetails.GetListOfPager(1, 15, cid);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CashFlowDetails(int cid, int PageIndex = 1, int PageSize = 15)
+        {
+            var model = _cashFlowDetails.GetListOfPager(PageIndex, PageSize, cid);
+            var command = new PageCommand()
+            {
+                PageIndex = model.PageIndex,
+                PageSize = model.PageSize,
+                TotalCount = model.TotalCount,
+                TotalPages = model.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(model);
+        }
     }
 }

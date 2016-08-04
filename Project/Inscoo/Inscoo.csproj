@@ -516,6 +516,8 @@
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\Finance\List.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
+    <Content Include="Views\Finance\Details.cshtml" />
+    <Content Include="Views\Finance\CashFlowDetails.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

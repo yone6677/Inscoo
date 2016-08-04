@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Models.Finance
 {
@@ -24,5 +25,7 @@ namespace Models.Finance
         /// </summary>
         [DisplayName("实付款")]
         public decimal RealPayment { get; set; }
+        [DisplayName("操作时间")]
+        public DateTime CreateTime { get; set; }
     }
 }

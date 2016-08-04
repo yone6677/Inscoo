@@ -6,6 +6,8 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System.Linq;
 using Microsoft.AspNet.Identity;
+using Core.Pager;
+using Models.Finance;
 
 namespace Services.Finance
 {
@@ -92,6 +94,30 @@ namespace Services.Finance
                 _loggerService.insert(e, LogLevel.Warning, "CashFlowDetailsService：Delete");
             }
             return false;
+        }
+        public IPagedList<CashFlowDetailsModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, int cId = 0)
+        {
+            try
+            {
+                var query = GetList(cId);
+                if (query.Count > 0)
+                {
+                    return new PagedList<CashFlowDetailsModel>(query.Select(s => new CashFlowDetailsModel()
+                    {
+                        ActualCollected = s.ActualCollected,
+                        Id = s.Id,
+                        Payable = s.Payable,
+                        RealPayment = s.RealPayment,
+                        Receivable = s.Receivable,
+                        CreateTime = s.CreateTime
+                    }).ToList(), pageIndex, pageSize);
+                }
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "CashFlowDetailsService：GetListOfPager");
+            }
+            return new PagedList<CashFlowDetailsModel>(new List<CashFlowDetailsModel>(), pageIndex, pageSize); ;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core.Data;
 using Domain.Finance;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System;
@@ -36,6 +37,7 @@ namespace Services.Finance
         {
             try
             {
+                item.Author = _authenticationManager.User.Identity.GetUserId();
                 _cashFlowRepository.Insert(item);
                 return true;
             }
@@ -44,6 +46,19 @@ namespace Services.Finance
                 _loggerService.insert(e, LogLevel.Warning, "CashFlowService：Insert");
             }
             return false;
+        }
+        public int InsertGetId(CashFlow item)
+        {
+            try
+            {
+                item.Author = _authenticationManager.User.Identity.GetUserId();
+                return _cashFlowRepository.InsertGetId(item);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "CashFlowService：InsertGetId");
+            }
+            return 0;
         }
         public bool Update(CashFlow item)
         {

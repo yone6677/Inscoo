@@ -4,7 +4,7 @@
     ViewBag.Title = "订单详细";
 }
 <div class="orderDetails">
-    <h4 class="text-primary_color">基本信息</h4>
+    <h4 class="text-primary_color"><span>基本信息</span> <b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     <dl>
         <dt>
             @Html.DisplayNameFor(model => model.Name)：
@@ -146,7 +146,7 @@
         </dd>
     </dl>
     <div class="clearfix"></div>
-    <h4 class="text-primary_color">投保批次</h4>
+    <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-plus toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @{
         if (Model.orderBatch.Count > 0)
         {
@@ -154,7 +154,7 @@
             foreach (var item in Model.orderBatch)
             {
                 var dlId = "id_" + id;
-                <dl style="margin-top:1em;" id=@dlId>
+                <dl style="margin-top:1em;overflow:hidden" id=@dlId>
                     <dt>
                         批次编号：
                     </dt>
@@ -317,9 +317,25 @@
                 </dl>
                 id++;
             }
-            @**
-            
-            **@
+            <nav style="text-align:center">
+                <ul class="pagination"  id="nav-pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @{ 
+                        for(var i = 0;i < id;i++){
+                            <li><a href="#">@i</a></li>
+                        }
+                    }
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         }
     }
     <div class="clearfix"></div>
@@ -483,5 +499,44 @@
             }
             return false;
         }
+
+        function togglePage(e) {
+            var target = e.target || e.srcElement;
+            if (target.nodeName == "A") {
+                target = target.parentNode;
+            }
+            if (target.nodeName == "LI") {
+                var text = $(target).children().html();
+            
+                var t = $("[id^='id_']");
+                for (var i = 0; i < t.length; i++) {
+                    console.log(t[i]);
+                    $(t[i]).removeClass("inscoo").css("display", 'none');
+                    $(t[text]).css("display", "block").addClass("inscoo");
+                    
+                }
+            }
+        }
+        $(function () {
+            $("[id^='id_']").css("display",'none');
+            $("#id_0").css("display", "block").addClass("inscoo");
+            
+            $("#nav-pagination").on("click", togglePage);
+        })
+
+        $(".toggle_switch").on("click", function () {
+            $(this).parent().next("dl").slideToggle();
+            $(this).toggleClass("fa-minus");
+        });
+        $(function () {
+            
+            $(".toggle_switch_1").on("click", function () {
+
+                $(".inscoo").slideToggle();
+                $(this).toggleClass("fa-minus");
+                
+
+            });
+        })
     </script>
 }

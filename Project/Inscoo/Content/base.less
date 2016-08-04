@@ -1523,16 +1523,7 @@ div:after{
         }
     }
 }
-@media screen and (min-width: 1321px){
-    .first_li{
-        height:20px;
-    }
-}
-@media screen and (max-width:1320px) {
-    .first_li{
-        height:40px;
-    }
-}
+
 /*体检须知*/
 
 .t{
@@ -1715,6 +1706,11 @@ div:after{
     width:100%;
     margin-top:20px;
     &:after{
+        content:'';
+        display:block;
+        clear:both;
+    }
+    li:after{
         content:'';
         display:block;
         clear:both;

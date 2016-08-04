@@ -4,7 +4,7 @@
     ViewBag.Title = "订单详细";
 }
 <div class="orderDetails">
-    <h4 class="text-primary_color"><span>基本信息</span> <b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>基本信息</span> <b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     <dl >
         
         <dt>
@@ -103,7 +103,7 @@
     </dl>
 
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>保单信息</span> <b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>保单信息</span> <b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     <div>
      <dl>
         <dt>
@@ -189,7 +189,7 @@
     </table>
     </div>
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-plus toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-hand-o-up toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @{
         if (Model.orderBatch.Count > 0)
         {
@@ -383,7 +383,7 @@
                         }
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>人员信息</span><b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>人员信息</span><b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -392,7 +392,7 @@
         </div>
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保人员变更信息</span><b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>投保人员变更信息</span><b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -567,12 +567,12 @@
 
         $(".toggle_switch").on("click", function () {
             $(this).parent().next().slideToggle();
-            $(this).toggleClass("fa-minus");
+            $(this).toggleClass("fa-hand-o-down");
         });
         $(function () {
             $(".toggle_switch_1").on("click", function () {
                 $(".inscoo").slideToggle();
-                $(this).toggleClass("fa-minus");
+                $(this).toggleClass("fa-hand-o-down");
             });
         })
     </script>

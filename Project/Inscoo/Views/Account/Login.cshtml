@@ -44,9 +44,15 @@
                                 <span class="icon2"></span>
                                 @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
+                            <div style="color:red;text-align:center;width:100%;line-height:2em;">
+                                @if (Model != null)
+                                {
+                                    <span> @Model.Result</span>
+                                }
+                            </div>
                             <div style="margin-bottom:5px;">
                                 <div style="float:left;">
-                                    @Html.CheckBoxFor(m => m.RememberMe,new { @class="", title = "6小时之内将自动登陆" })
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "", title = "6小时之内将自动登陆" })
                                     @*<input type="checkbox" name="RememberMe" id="RememberMe" checked="checked" style="vertical-align:middle;margin-bottom:2px;margin-top:-1px;margin-right:3px;" title="6小时之内将自动登陆" />*@记住密码
                                 </div>
                                 @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd", style = "float:right;text-decoration:none" })

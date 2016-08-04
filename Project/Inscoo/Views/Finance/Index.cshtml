@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "账目列表";
+}
+
+@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="Search">
+        <dl>
+            <dt>订单ID:</dt>
+            <dd><input type="number" name="oId" /></dd>
+            <dt>时间起:</dt>
+            <dd>
+                <input type="text" readonly="readonly" name="beginDate" class="form-control" value="">
+            </dd>
+            <dt>时间止:</dt>
+            <dd>
+                <input type="text" readonly="readonly" name="endDate" class="form-control" value="">
+            </dd>
+            <dt></dt>
+            <dd><p><input type="submit" value="查找" /></p></dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+    <div id="dadaGrid">
+        @Html.Action("List")
+    </div>
+}
+
+
+@section Scripts{
+    <script>
+        jQuery(function () {
+            jQuery("[name='beginDate']")
+                .datepicker({
+                });
+            jQuery("[name='endDate']")
+                .datepicker({
+                });
+        });
+    </script>
+}
+

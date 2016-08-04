@@ -90,6 +90,8 @@
     <Compile Include="Company\vCompanySearch.cs" />
     <Compile Include="Company\vCompanyEdit.cs" />
     <Compile Include="Company\vCompanyAdd.cs" />
+    <Compile Include="Finance\CashFlowDetailsModel.cs" />
+    <Compile Include="Finance\CashFlowModel.cs" />
     <Compile Include="Health\VHealthAuditList.cs" />
     <Compile Include="Health\VHealthConfirmPayment.cs" />
     <Compile Include="Health\VFNConfirm.cs" />

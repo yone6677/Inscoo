@@ -12,6 +12,7 @@ namespace Core.Mapping
             Property(c => c.Amount).IsRequired();
             Property(c => c.Difference).IsRequired();
             Property(d => d.Author).IsRequired().HasMaxLength(256);
+            Property(d => d.Changer).IsRequired().HasMaxLength(256);
         }
     }
 }

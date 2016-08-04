@@ -213,6 +213,10 @@
     <Compile Include="Migrations\201608040330335_finance.Designer.cs">
       <DependentUpon>201608040330335_finance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608040654217_finance1.cs" />
+    <Compile Include="Migrations\201608040654217_finance1.Designer.cs">
+      <DependentUpon>201608040654217_finance1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -297,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608040330335_finance.resx">
       <DependentUpon>201608040330335_finance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040654217_finance1.resx">
+      <DependentUpon>201608040654217_finance1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

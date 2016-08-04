@@ -15,5 +15,6 @@ namespace Models
 
         [Display(Name = "记住密码?")]
         public bool RememberMe { get; set; }
+        public string  Result { get; set; }
     }
 }

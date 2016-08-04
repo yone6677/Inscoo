@@ -58,7 +58,8 @@ namespace Inscoo.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    model.Result = "错误的账号或者密码";
+                    //ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
 

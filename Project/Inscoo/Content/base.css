@@ -431,11 +431,26 @@ body {
   padding: 0 20px 0 0;
   font-size: 1em;
 }
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background: #f7f7f7;
+}
 .inscoo-productTable {
   margin: .5em auto;
   margin-bottom: 1.5em;
   width: 100%;
   border: 1px solid #ddd;
+}
+.inscoo-productTable tr:first-child {
+  background: #24A9E4;
+  color: #fff;
+}
+.inscoo-productTable tr:first-child span {
+  color: #fff;
+}
+.inscoo-productTable tr:first-child:hover {
+  background-color: #24A9E4;
 }
 .inscoo-productTable tr th {
   text-align: center;
@@ -443,6 +458,7 @@ body {
   height: 3.2em;
   border-right: 1px dashed #ddd;
   border-bottom: 1px solid #ddd;
+  font-weight: normal;
 }
 .inscoo-productTable tr td {
   text-align: center;

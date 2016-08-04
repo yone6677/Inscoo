@@ -15,7 +15,6 @@ namespace Models.Navigation
         [Display(Name = "级别")]
         public int level { get; set; }
         [Display(Name = "Controller")]
-        [Required]
         public string controller { get; set; }
         [Display(Name = "Action")]
         public string action { get; set; }

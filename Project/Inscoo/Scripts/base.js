@@ -274,30 +274,29 @@ function dateAdd(date, strInterval, Number) {
 
 
 /*"下一步"固定*/
-function getTop(elem) {
-    var sum = elem.offset().top;
-    while (elem.offset().parent != null) {
-        sum += elem.offset().parent.offset().top;
-        elem = elem.offset().parent;
-    }
-    return sum;
-}
-$(function () {
+$(function() {
+    
     $(window).on("scroll", function () {
-        var parent = $(".d2-box");
-        var parentHeight = getTop(parent);
-        
-        var innerHeight = window.innerHeight;
+        var pathName = window.location.pathname;
+        var partialName = pathName.split("/");
+        var Name = "/" + partialName[1] + "/" + partialName[2] + "/";
+        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/") {
+            var parent = $(".d2-box");
+            var parentHeight = parent.offset().top;
+            var innerHeight = window.innerHeight;
 
-        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
 
-        if (parentHeight >= innerHeight) {
-            $(".d3-box").attr("class", "d3-box box-1 fixed");
-        } else {
-            $(".d3-box").attr("class", "d3-box box-1");
-        }
-        if ((scrollTop + innerHeight) > parentHeight){
-            $(".d3-box").attr("class", "d3-box box-1");
+            if (parentHeight >= innerHeight) {
+                $(".d3-box").attr("class", "d3-box box-1 fixed");
+            } else {
+                $(".d3-box").attr("class", "d3-box box-1");
+            }
+            if ((scrollTop + innerHeight) > parentHeight) {
+                $(".d3-box").attr("class", "d3-box box-1");
+            }
         }
     })
 })
+
+

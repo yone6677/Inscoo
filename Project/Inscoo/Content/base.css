@@ -1329,16 +1329,6 @@ div:after {
   display: block;
   clear: both;
 }
-@media screen and (min-width: 1321px) {
-  .first_li {
-    height: 20px;
-  }
-}
-@media screen and (max-width: 1320px) {
-  .first_li {
-    height: 40px;
-  }
-}
 /*体检须知*/
 .t {
   width: 100%;
@@ -1510,6 +1500,11 @@ div:after {
   margin-top: 20px;
 }
 .index_flow:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.index_flow li:after {
   content: '';
   display: block;
   clear: both;

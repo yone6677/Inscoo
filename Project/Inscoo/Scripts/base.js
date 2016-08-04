@@ -279,8 +279,9 @@ $(function() {
     $(window).on("scroll", function () {
         var pathName = window.location.pathname;
         var partialName = pathName.split("/");
+        console.log(pathName);
         var Name = "/" + partialName[1] + "/" + partialName[2] + "/";
-        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/") {
+        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/" || Name == "/Order/Details/") {
             var parent = $(".d2-box");
             var parentHeight = parent.offset().top;
             var innerHeight = window.innerHeight;

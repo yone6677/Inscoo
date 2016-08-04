@@ -1153,7 +1153,11 @@ div:after{
     dl {
         width: 96%;
         margin: 0 auto;
-
+        &:after{
+            content:'';
+            display:block;
+            clear:both;
+        }
         dt {
             width: 20%;
             height: 1.7em;
@@ -1943,3 +1947,10 @@ div:after{
 }
 
 
+/*表格蓝色表头*/
+.table-header-blur{
+    tr:first-child{
+        background:#24A9E4;
+        color:#fff;
+    }
+}

@@ -5,27 +5,15 @@
 }
 <div class="orderDetails">
     <h4 class="text-primary_color"><span>基本信息</span> <b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
-    <dl>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <dl >
+        
         <dt>
             @Html.DisplayNameFor(model => model.OrderNum)：
         </dt>
         <dd>
             @Html.DisplayFor(model => model.OrderNum)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Memo)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Memo)
-        </dd>
+        
 
         <dt>
             @Html.DisplayNameFor(model => model.StaffRange)：
@@ -41,14 +29,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.AgeRange)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AnnualExpense)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AnnualExpense)
         </dd>
 
         <dt>
@@ -92,35 +72,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Insurer)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Insurer)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.PolicyNumber)：
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.PolicyNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
         </dd>
 
         <dt>
@@ -137,6 +93,41 @@
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
+        
+    </dl>
+
+    <div class="clearfix"></div>
+    <h4 class="text-primary_color"><span>保单信息</span> <b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <div>
+     <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Memo)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Memo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Insurer)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Insurer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AnnualExpense)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualExpense)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ProdTimeLimit)：
         </dt>
@@ -144,10 +135,23 @@
         <dd>
             @Html.DisplayFor(model => model.ProdTimeLimit)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
     </dl>
-    <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>保单信息</span></h4>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-header-blur">
         <tr>
             <th>
                 保险责任
@@ -177,7 +181,7 @@
             }
         }
     </table>
-
+    </div>
     <div class="clearfix"></div>
     <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-plus toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @{
@@ -373,7 +377,7 @@
                         }
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color">人员信息</h4>
+    <h4 class="text-primary_color"><span>人员信息</span><b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -382,7 +386,7 @@
         </div>
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color">投保人员变更信息</h4>
+    <h4 class="text-primary_color"><span>投保人员变更信息</span><b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -556,7 +560,7 @@
         })
 
         $(".toggle_switch").on("click", function () {
-            $(this).parent().next("dl").slideToggle();
+            $(this).parent().next().slideToggle();
             $(this).toggleClass("fa-minus");
         });
         $(function () {

@@ -1,5 +1,5 @@
 ﻿@model Models.Order.AuditOrderModel
-<h4 class="text-primary_color">审核意见</h4>
+<h4 class="text-primary_color"><span>审核意见</span><b class="fa fa-plus toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
 @using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()
@@ -32,9 +32,18 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div style="text-align:center;padding-bottom:.5em;">
-                <input type="submit" value="送出审核" class="orderConfirmNextSubmit" />
+            <div class="d2-box box main-width">
+                <div class="d3-box box-1">
+                    <div class="main-width">
+                        <div class="sort-all sort-basic">
+                            <div style="text-align:center;padding-bottom:.5em;">
+                                <input type="submit" value="送出审核" class="orderConfirmNextSubmit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         }
     }
     if (Model.State == 1)//inscoo通过审核
@@ -107,8 +116,17 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div style="text-align:center;padding-bottom:.5em;">
-                <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(1)" />
+            
+            <div class="d2-box box main-width">
+                <div class="d3-box box-1">
+                    <div class="main-width">
+                        <div class="sort-all sort-basic">
+                            <div style="text-align:center;padding-bottom:.5em;">
+                                <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(1)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     }
@@ -184,8 +202,17 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div style="text-align:center;padding-bottom:.5em;">
-                    <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(2)" />
+                
+                <div class="d2-box box main-width">
+                    <div class="d3-box box-1">
+                        <div class="main-width">
+                            <div class="sort-all sort-basic">
+                                <div style="text-align:center;padding-bottom:.5em;">
+                                    <input type="button" value="送出审核" class="orderConfirmNextSubmit" onclick="auditCheck(2)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
         }

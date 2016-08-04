@@ -1,4 +1,5 @@
-﻿using Domain.Orders;
+﻿using Domain.Finance;
+using Domain.Orders;
 using Innscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Models;
@@ -6,6 +7,7 @@ using Models.Infrastructure;
 using Models.Order;
 using OfficeOpenXml;
 using Services;
+using Services.Finance;
 using Services.Orders;
 using Services.Products;
 using System;
@@ -36,9 +38,13 @@ namespace Inscoo.Controllers
         private readonly IFileService _fileService;
         private readonly ICompanyService _svCompany;
         private readonly IWebHelper _webHelper;
+        private readonly ICashFlowDetailsService _cashFlowDetails;
+        private readonly ICashFlowService _cashFlow;
+
         public OrderController(IMixProductService mixProductService, IAppUserService appUserService, IGenericAttributeService genericAttributeService, IProductService productService,
             IOrderService orderService, IOrderItemService orderItemService, IArchiveService archiveService, IOrderEmpService orderEmpService, IOrderBatchService orderBatchService,
-            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany, IWebHelper webHelper)
+            IResourceService resourceService, IAppRoleService appRoleService, IFileService fileService, IOrderEmpTempService orderEmpTempService, ICompanyService svCompany,
+            IWebHelper webHelper, ICashFlowDetailsService cashFlowDetails, ICashFlowService cashFlow)
         {
             _mixProductService = mixProductService;
             _appUserService = appUserService;
@@ -55,6 +61,8 @@ namespace Inscoo.Controllers
             _svCompany = svCompany;
             _orderEmpTempService = orderEmpTempService;
             _webHelper = webHelper;
+            _cashFlow = cashFlow;
+            _cashFlowDetails = cashFlowDetails;
         }
         #endregion
         #region 订单管理
@@ -1434,6 +1442,51 @@ namespace Inscoo.Controllers
                         if (order.State != 6)
                         {
                             order.State = 9;//已支付
+                        }
+                        var cashFlow = _cashFlow.GetByOid(order.Id);
+                        if (cashFlow == null)
+                        {
+                            var cashFlowDetails = new CashFlowDetails();
+                            cashFlowDetails.Author = User.Identity.GetUserId();
+                            if (batch.AmountCollected > 0)//收款
+                            {
+                                cashFlowDetails.Receivable = model.Price;
+                                cashFlowDetails.ActualCollected = batch.AmountCollected;
+                            }
+                            else//付款
+                            {
+                                cashFlowDetails.Payable = model.Price;
+                                cashFlowDetails.RealPayment = batch.AmountCollected;
+                            }
+                            cashFlow = new CashFlow();
+                            cashFlow.cashFlowDetails.Add(cashFlowDetails);
+                            cashFlow.Amount = model.Price;
+                            cashFlow.OId = order.Id;
+                            cashFlow.OType = 1;//保险为1
+                            cashFlow.Difference = model.Price - model.AmountCollected;//金额差异
+                            _cashFlow.Insert(cashFlow);
+                        }
+                        else
+                        {
+                            var cashFlowDetails = new CashFlowDetails();
+                            cashFlowDetails.Author = User.Identity.GetUserId();
+                            if (batch.AmountCollected > 0)//收款
+                            {
+                                cashFlowDetails.Receivable = model.Price;
+                                cashFlowDetails.ActualCollected = batch.AmountCollected;
+                            }
+                            else//付款
+                            {
+                                cashFlowDetails.Payable = model.Price;
+                                cashFlowDetails.RealPayment = batch.AmountCollected;
+                            }
+                            cashFlowDetails.cId = cashFlow.Id;
+                            if (_cashFlowDetails.Insert(cashFlowDetails))
+                            {
+                                cashFlow.Difference += model.Price - model.AmountCollected;
+                                cashFlow.Amount += model.Price;
+                                _cashFlow.Update(cashFlow);
+                            }
                         }
                     }
                     else

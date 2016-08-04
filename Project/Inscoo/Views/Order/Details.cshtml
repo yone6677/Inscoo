@@ -507,10 +507,8 @@
             }
             if (target.nodeName == "LI") {
                 var text = $(target).children().html();
-            
                 var t = $("[id^='id_']");
                 for (var i = 0; i < t.length; i++) {
-                    console.log(t[i]);
                     $(t[i]).removeClass("inscoo").css("display", 'none');
                     $(t[text]).css("display", "block").addClass("inscoo");
                     
@@ -529,13 +527,9 @@
             $(this).toggleClass("fa-minus");
         });
         $(function () {
-            
             $(".toggle_switch_1").on("click", function () {
-
                 $(".inscoo").slideToggle();
                 $(this).toggleClass("fa-minus");
-                
-
             });
         })
     </script>

@@ -71,7 +71,7 @@ namespace Services.Finance
         {
             try
             {
-                item.Author = _authenticationManager.User.Identity.GetUserId();
+                item.Author = _authenticationManager.User.Identity.Name;
                 _cashFlowDetalsRepository.Insert(item);
                 return true;
             }
@@ -109,7 +109,9 @@ namespace Services.Finance
                         Payable = s.Payable,
                         RealPayment = s.RealPayment,
                         Receivable = s.Receivable,
-                        CreateTime = s.CreateTime
+                        CreateTime = s.CreateTime,
+                        Memo = s.Memo,
+                        TransferVoucher = s.TransferVoucher
                     }).ToList(), pageIndex, pageSize);
                 }
             }

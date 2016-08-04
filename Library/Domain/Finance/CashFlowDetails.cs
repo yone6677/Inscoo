@@ -25,6 +25,11 @@ namespace Domain.Finance
         /// </summary>
         public decimal RealPayment { get; set; }
         public CashFlow cashFlow { get; set; }
+        /// <summary>
+        /// 转账凭证
+        /// </summary>
+        public string TransferVoucher { get; set; }
+        public string Memo { get; set; }
         public int cId { get; set; }
     }
 }

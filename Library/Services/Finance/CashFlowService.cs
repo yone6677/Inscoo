@@ -55,7 +55,7 @@ namespace Services.Finance
         {
             try
             {
-                item.Author = _authenticationManager.User.Identity.GetUserId();
+                item.Author = _authenticationManager.User.Identity.Name;
                 item.Changer = item.Author;
                 item.ChangeTime = DateTime.Now;
                 return _cashFlowRepository.InsertGetId(item);
@@ -70,7 +70,7 @@ namespace Services.Finance
         {
             try
             {
-                item.Changer = _authenticationManager.User.Identity.GetUserId();
+                item.Changer = _authenticationManager.User.Identity.Name;
                 item.ChangeTime = DateTime.Now;
                 _cashFlowRepository.Update(item);
                 return true;

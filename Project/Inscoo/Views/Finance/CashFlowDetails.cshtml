@@ -3,6 +3,9 @@
 <table class="table table-bordered">
     <tr>
         <th>
+            编号
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Receivable)
         </th>
         <th>
@@ -22,6 +25,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.ActionLink(item.Id.ToString(), "CashFlowDtl", new { Id = item.Id })
+            </td>
             <td style="color:green;">
                 @Html.DisplayFor(modelItem => item.Receivable)
             </td>

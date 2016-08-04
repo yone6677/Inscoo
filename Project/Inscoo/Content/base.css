@@ -1505,11 +1505,6 @@ div:after {
   display: block;
   clear: both;
 }
-.index_flow li:after {
-  content: '';
-  display: block;
-  clear: both;
-}
 .index_flow li {
   float: left;
   width: 32%;
@@ -1557,7 +1552,6 @@ div:after {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   backface-visibility: hidden;
   transition: all 0.6s ease 0s;
 }
@@ -1592,7 +1586,8 @@ div:after {
   width: 9%;
   position: absolute;
   right: 0;
-  top: 180px;
+  top: 50%;
+  margin-top: -200px;
   z-index: 2000;
   background: #f7f7f7;
   border: 1px solid #aaa;

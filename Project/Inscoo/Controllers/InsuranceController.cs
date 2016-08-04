@@ -218,6 +218,12 @@ namespace Inscoo.Controllers
         {
             ViewBag.InsuranceId = insuranceId;
             ViewBag.UKey = uKey;
+            var carInsurance = _archiveService.GetCarEInsuranceUrl(insuranceId, uKey);
+            if (carInsurance.Einsurance != null)
+                ViewBag.Url = carInsurance.Einsurance.Url;
+            if (carInsurance.EOrderCode != null)
+                ViewBag.EOrderCode = carInsurance.EOrderCode;
+
             return View();
         }
         [HttpPost]
@@ -232,19 +238,21 @@ namespace Inscoo.Controllers
                 string mailContent, path;
                 path = _archiveService.InsertCarInsuranceEinsurance(excel, userName, insuranceId, uKey, code);
 
-                mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
-                var mailTo = _genericAttributeService.GetByGroup("CarCustomerMailTo").Select(c => c.Value);
-                MailService.SendMailAsync(new MailQueue()
+                if (path != null)
                 {
-                    MQTYPE = "UploadCarInscurance",
-                    MQSUBJECT = "上传车险电子保单通知",
-                    MQMAILCONTENT = "",
-                    MQMAILFRM = "redy.yone@inscoo.com",
-                    MQMAILTO = string.Join(";", mailTo),
-                    MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
+                    mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
+                    var mailTo = _genericAttributeService.GetByGroup("CarCustomerMailTo").Select(c => c.Value);
+                    MailService.SendMailAsync(new MailQueue()
+                    {
+                        MQTYPE = "UploadCarInscurance",
+                        MQSUBJECT = "上传车险电子保单通知",
+                        MQMAILCONTENT = "",
+                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILTO = string.Join(";", mailTo),
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
 
-                });
-
+                    });
+                }
                 ViewBag.Mes = "操作成功";
             }
             catch (WarningException e)
@@ -255,7 +263,7 @@ namespace Inscoo.Controllers
             {
                 ViewBag.Mes = "操作失败";
             }
-            return View();
+            return RedirectToAction("CarInscuranceSearch");
         }
 
         public ActionResult CarInscuranceAddEOrderCode(string insuranceId, string uKey)

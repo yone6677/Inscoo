@@ -79,6 +79,7 @@ namespace Services
         /// <returns></returns>
         string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey,string code);
 
+        CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
         void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>
         /// 

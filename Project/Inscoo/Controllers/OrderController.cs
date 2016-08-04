@@ -1446,30 +1446,39 @@ namespace Inscoo.Controllers
                         var cashFlow = _cashFlow.GetByOid(order.Id);
                         if (cashFlow == null)
                         {
-                            var cashFlowDetails = new CashFlowDetails();
-                            cashFlowDetails.Author = User.Identity.GetUserId();
-                            if (batch.AmountCollected > 0)//收款
-                            {
-                                cashFlowDetails.Receivable = model.Price;
-                                cashFlowDetails.ActualCollected = batch.AmountCollected;
-                            }
-                            else//付款
-                            {
-                                cashFlowDetails.Payable = model.Price;
-                                cashFlowDetails.RealPayment = batch.AmountCollected;
-                            }
                             cashFlow = new CashFlow();
-                            cashFlow.cashFlowDetails.Add(cashFlowDetails);
+                            //cashFlow.cashFlowDetails.Add(cashFlowDetails);
                             cashFlow.Amount = model.Price;
                             cashFlow.OId = order.Id;
                             cashFlow.OType = 1;//保险为1
                             cashFlow.Difference = model.Price - model.AmountCollected;//金额差异
-                            _cashFlow.Insert(cashFlow);
+                            var cid = _cashFlow.InsertGetId(cashFlow);
+
+                            if (cid > 0)
+                            {
+                                var cashFlowDetails = new CashFlowDetails();
+                                cashFlowDetails.Author = User.Identity.GetUserId();
+                                cashFlowDetails.cId = cid;
+                                if (batch.AmountCollected > 0)//收款
+                                {
+                                    cashFlowDetails.Receivable = model.Price;
+                                    cashFlowDetails.ActualCollected = batch.AmountCollected;
+                                }
+                                else//付款
+                                {
+                                    cashFlowDetails.Payable = model.Price;
+                                    cashFlowDetails.RealPayment = batch.AmountCollected;
+                                }
+                                _cashFlowDetails.Insert(cashFlowDetails);
+                            }
+                            else
+                            {
+                                throw new Exception("财务写入失败，未能审核");
+                            }
                         }
                         else
                         {
                             var cashFlowDetails = new CashFlowDetails();
-                            cashFlowDetails.Author = User.Identity.GetUserId();
                             if (batch.AmountCollected > 0)//收款
                             {
                                 cashFlowDetails.Receivable = model.Price;
@@ -1629,7 +1638,8 @@ namespace Inscoo.Controllers
                 }
                 if (model.HasEmpInfoFilePDF)
                 {
-                    decimal bMoney = batch.orderEmp.Sum(e => e.Premium);//批次金额
+                    var empTemp = _orderEmpTempService.GetListByBid(batch.Id);
+                    decimal bMoney = empTemp.Sum(e => e.Premium);//批次金额
 
                     if (batch.PaymentNoticePDF == 0 && bMoney > 0)//已经产生人员信息PDF且批次金额大于0,需要生成pdf
                     {

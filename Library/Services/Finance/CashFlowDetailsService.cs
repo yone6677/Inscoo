@@ -5,6 +5,7 @@ using Core.Data;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using System.Linq;
+using Microsoft.AspNet.Identity;
 
 namespace Services.Finance
 {
@@ -68,7 +69,7 @@ namespace Services.Finance
         {
             try
             {
-                item.Author = _authenticationManager.User.Identity.Name;
+                item.Author = _authenticationManager.User.Identity.GetUserId();
                 _cashFlowDetalsRepository.Insert(item);
                 return true;
             }

@@ -42,7 +42,9 @@ namespace Models.Order
         public string StartDate { get; set; }
         [DisplayName("失效日期")]
         public string EndDate { get; set; }
-        [DisplayName("投保人数")]
+        [DisplayName("初始人数")]
+        public int InitialNumber { get; set; }
+        [DisplayName("当前人数")]
         public int InsuranceNumber { get; set; }
         [DisplayName("订单状态")]
         public string State { get; set; }

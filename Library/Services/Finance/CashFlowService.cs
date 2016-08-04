@@ -41,6 +41,7 @@ namespace Services.Finance
             {
                 item.Author = _authenticationManager.User.Identity.GetUserId();
                 item.Changer = item.Author;
+                item.ChangeTime = DateTime.Now;
                 _cashFlowRepository.Insert(item);
                 return true;
             }
@@ -56,6 +57,7 @@ namespace Services.Finance
             {
                 item.Author = _authenticationManager.User.Identity.GetUserId();
                 item.Changer = item.Author;
+                item.ChangeTime = DateTime.Now;
                 return _cashFlowRepository.InsertGetId(item);
             }
             catch (Exception e)

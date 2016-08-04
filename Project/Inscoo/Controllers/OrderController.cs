@@ -805,6 +805,7 @@ namespace Inscoo.Controllers
                     }
                     var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
                     order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
+                    order.InitialNumber = InsuranceNumber;//初始人数
                     _orderService.Update(order);
                     //定单批次
                     var orderBatch = _orderBatchService.GetByOrderId(Id);
@@ -1234,6 +1235,7 @@ namespace Inscoo.Controllers
                 model.EndDate = order.EndDate.ToShortDateString();
                 model.Id = order.Id;
                 model.InsuranceNumber = order.InsuranceNumber;
+                model.InitialNumber = order.InitialNumber;
                 model.Insurer = _genericAttributeService.GetByKey(null, "InsuranceCompany", order.Insurer).Key;
                 model.Linkman = order.Linkman;
                 model.Memo = order.Memo;

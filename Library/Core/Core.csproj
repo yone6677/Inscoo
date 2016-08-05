@@ -234,6 +234,14 @@
     <Compile Include="Migrations\201608050742591_orderItem_ItemNo.Designer.cs">
       <DependentUpon>201608050742591_orderItem_ItemNo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608050815435_AlterTableHealth_AddColumn.cs" />
+    <Compile Include="Migrations\201608050815435_AlterTableHealth_AddColumn.Designer.cs">
+      <DependentUpon>201608050815435_AlterTableHealth_AddColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608050935073_AlterCompany_AlterCodeLength.cs" />
+    <Compile Include="Migrations\201608050935073_AlterCompany_AlterCodeLength.Designer.cs">
+      <DependentUpon>201608050935073_AlterCompany_AlterCodeLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -333,6 +341,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608050742591_orderItem_ItemNo.resx">
       <DependentUpon>201608050742591_orderItem_ItemNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608050815435_AlterTableHealth_AddColumn.resx">
+      <DependentUpon>201608050815435_AlterTableHealth_AddColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608050935073_AlterCompany_AlterCodeLength.resx">
+      <DependentUpon>201608050935073_AlterCompany_AlterCodeLength.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

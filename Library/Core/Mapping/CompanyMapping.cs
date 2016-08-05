@@ -16,7 +16,7 @@ namespace Core.Mapping
         {
             Property(c => c.Name).HasMaxLength(100).IsRequired();
             Property(c => c.Address).HasMaxLength(100).IsRequired();
-            Property(c => c.Code).HasMaxLength(10).IsUnicode(false).IsRequired().HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute() { IsUnique = true }));
+            Property(c => c.Code).HasMaxLength(30).IsUnicode(false).IsRequired().HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute() { IsUnique = true }));
             Property(c => c.Email).HasMaxLength(100).IsOptional();
             Property(c => c.Phone).HasMaxLength(30).IsRequired();
             Property(c => c.LinkMan).HasMaxLength(100).IsRequired();

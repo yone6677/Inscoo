@@ -17,6 +17,9 @@
             @Html.DisplayNameFor(model => model.Author)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
@@ -33,13 +36,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>*@
+            <td>
+                @item.Author.Split('@')[0]
+            </td>
+            <td>
+                @item.CreateTime.ToShortDateString()
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.StatusDes)
             </td>
             <td>
+                @*@if (item.Status >= 4 && !User.IsInRole("InscooOperator"))
+                {
+                    @Html.ActionLink("查看订单信息", "AuditOrder", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize }, new { target = "_blank" })
+                    <span>|</span>
+                }*@
+
                 @if (ViewBag.IsInscooOperator)
                 {
                     if (item.Status == 4)

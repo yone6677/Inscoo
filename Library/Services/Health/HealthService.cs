@@ -94,6 +94,7 @@ namespace Services
                 var p = _repHealthProduct.GetById(productId);
                 var master = new HealthOrderMaster()
                 {
+                    DateTicks = DateTime.Now.Ticks.ToString(),
                     PublicPrice = p.PublicPrice,
                     SellPrice = GetPrivilegePrice(author, p),
                     CommissionMethod = p.CommissionMethod,
@@ -262,6 +263,8 @@ namespace Services
                         Price = master.SellPrice,
                         Count = master.HealthOrderDetails.Count,
                         Amount = master.SellPrice * master.HealthOrderDetails.Count,
+                        DateTicks=master.DateTicks,
+                        Author=master.Author
                     };
                 }
             }
@@ -373,7 +376,7 @@ namespace Services
 
                 if (!list.Any()) throw new Exception();
                 var totalCount = list.Count();
-                var pList = from h in list.OrderBy(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
+                var pList = from h in list.OrderBy(h => h.Id).OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
                             let p = h.HealthCheckProduct
                             select (new VHealthAuditList()
                             {
@@ -384,7 +387,8 @@ namespace Services
                                 PrivilegePrice = h.SellPrice,
                                 StatusDes = GetHealthOrderStatus(h.Status),
                                 Status = h.Status,
-                                Author = h.Author
+                                Author = h.Author,
+                                CreateTime = h.CreateTime
                             });
 
                 return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);

@@ -9,6 +9,7 @@ namespace Models
     public class VHealthAuditOrder
     {
         public int MasterId { set; get; }
+        public string DateTicks { set; get; }
         [DisplayName("公司全称")]
         public string CompanyName { get; set; }
         [DisplayName("联系人")]
@@ -28,5 +29,7 @@ namespace Models
 
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
+        [DisplayName("下单人")]
+        public string Author { set; get; }
     }
 }

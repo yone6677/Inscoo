@@ -8,6 +8,7 @@ namespace Domain
 {
     public class HealthOrderMaster : BaseEntity
     {
+        public string DateTicks { set; get; }
         public int HealthCheckProductId { set; get; }
         /// <summary>
         /// 对外售价

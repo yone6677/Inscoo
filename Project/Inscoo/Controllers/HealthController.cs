@@ -156,6 +156,7 @@ namespace Inscoo.Controllers
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         public ActionResult AuditOrder(int masterId, int pageIndex = 1, int pageSize = 15)
         {
             try
@@ -178,6 +179,7 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 var master = _svHealth.GetHealthMaster(model.MasterId);
+                if (master.DateTicks != model.DateTicks) RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
                 var result = Request.Form["result"] == "1";
                 master.Status = result ? 11 : 14;
                 master.BaokuConfirmDate = DateTime.Now;
@@ -192,8 +194,8 @@ namespace Inscoo.Controllers
         {
             try
             {
-                var model = new VFNConfirm() { MasterId = masterId, PageIndex = pageIndex, PageSize = pageSize, FinancePayDate = DateTime.Now };
-
+                var model = new VFNConfirm() { MasterId = masterId, PageIndex = pageIndex, PageSize = pageSize };
+                model.FinanceAmount = _svHealth.GetConfirmPayment(masterId).Amount;
                 return View(model);
 
             }
@@ -209,6 +211,7 @@ namespace Inscoo.Controllers
 
             if (ModelState.IsValid)
             {
+                if (model.FinancePayDate > DateTime.Now) return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
                 var master = _svHealth.GetHealthMaster(model.MasterId);
 
                 master.FinanceAmount = model.FinanceAmount;
@@ -244,6 +247,7 @@ namespace Inscoo.Controllers
         /// <param name="pageIndex">1</param>
         /// <param name="pageSize">15</param>
         /// <returns></returns>
+        [AllowAnonymous]
         public ActionResult HealthPersons(int masterId, int pageIndex = 1, int pageSize = 15)
         {
             if (masterId > 0)

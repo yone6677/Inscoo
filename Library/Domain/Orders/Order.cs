@@ -71,6 +71,10 @@ namespace Domain.Orders
         /// </summary>
         public string CompanyName { get; set; }
         /// <summary>
+        /// 公司编号
+        /// </summary>
+        public int CompanyId { get; set; }
+        /// <summary>
         /// 联系人
         /// </summary>
         public string Linkman { get; set; }

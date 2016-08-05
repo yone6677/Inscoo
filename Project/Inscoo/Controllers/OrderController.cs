@@ -503,8 +503,10 @@ namespace Inscoo.Controllers
                     foreach (var s in li)
                     {
                         var item = _productService.GetProductPrice(s, null, staffnum, avarag);
+
                         if (item != null)
                         {
+                            var prod = _productService.GetById(item.Id);//.CommissionRate,//佣金比率
                             if (!item.ProdWithdraw)
                             {
                                 ProdWithdraw = false;
@@ -512,7 +514,7 @@ namespace Inscoo.Controllers
                             var orderItem = new OrderItem()
                             {
                                 pid = item.Id,
-                                CommissionRate = _productService.GetById(item.Id).CommissionRate,//佣金比率
+                                CommissionRate = prod.CommissionRate,
                                 CoverageSum = item.CoverageSum,
                                 InsuredWho = item.InsuredWho,
                                 order_Id = result,
@@ -524,7 +526,8 @@ namespace Inscoo.Controllers
                                 SafeguardName = item.SafeguardName,
                                 ProdAbatement = item.ProdAbatement,
                                 ProdTimeLimit = item.ProdTimeLimit,
-                                ProdWithdraw = item.ProdWithdraw
+                                ProdWithdraw = item.ProdWithdraw,
+                                ItemNo = prod.ItemNo
                             };
                             _orderItemService.Insert(orderItem);
                         }
@@ -586,7 +589,9 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(model.Id);
                 if (order != null)
                 {
+                    var company = _svCompany.GetByName(model.CompanyName.Trim(), User.Identity.GetUserId());
                     order.CompanyName = model.CompanyName;
+                    order.CompanyId = company.Id;
                     order.Linkman = model.Linkman;
                     order.PhoneNumber = model.PhoneNumber;
                     order.Address = model.Address;

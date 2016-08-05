@@ -5,6 +5,10 @@ namespace Domain.Orders
     {
         public int pid { get; set; }
         /// <summary>
+        /// 产品编号
+        /// </summary>
+        public string ItemNo { set; get; }
+        /// <summary>
         /// 产品类别
         /// </summary>
         public string ProdType { get; set; }

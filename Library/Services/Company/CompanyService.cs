@@ -222,6 +222,23 @@ namespace Services
                 return false;
             }
         }
+        public Company GetByName(string name, string userId)
+        {
+            try
+            {
+                var query = _repCompany.Table;
+                query = query.Where(q => q.Name == name);
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    query = query.Where(q => q.UserId == userId);
+                }
+                return query.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
         public bool UpdateCompany(vCompanyEdit model)
         {
             try

@@ -7,6 +7,7 @@ using Core.Pager;
 using Models;
 using Models.Api.Archive;
 using Models.Infrastructure;
+using System.Linq;
 
 namespace Services
 {
@@ -27,13 +28,26 @@ namespace Services
         Task DeleteFileInfo(string url);
 
         Task DeleteFileBuUrl(string url);
+
+        IQueryable<Archive> GetByTypeAndPId(int pId, string type);
+        CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pId"></param>
+        /// <param name="type">文件类型</param>
+        /// <returns></returns>
+        IPagedList<Archive> GetPagelistByTypeAndPId(int pageIndex, int pageSize, int pId, string type);
+        IPagedList<Archive> GetWZFileDataModels(WZFileSearchModel model, int pageIndex, int pageSize);
         int InsertByWechat(DownLoadWechatFileApi model);
         int InsertByUrl(List<string> fileInfo, string type, int pid, string memo = null);
         /// <summary>
         /// 保存网络资源文件，只保存url其他留空
         /// </summary>
         /// <returns></returns>
-        Archive InsertByUrl(string url, string type, int pid, string memo = null); 
+        Archive InsertByUrl(string url, string type, int pid, string memo = null);
         int InsertBySaveResult(SaveResultModel model, string type, int pid, string memo = null);
         /// <summary>
         /// 保酷上传
@@ -77,9 +91,8 @@ namespace Services
         /// <param name="uKey"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey,string code);
+        string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
 
-        CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
         void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>
         /// 
@@ -90,6 +103,16 @@ namespace Services
         string InsertUserPortrait(HttpPostedFileBase file);
         Archive GetById(int id);
         int inert(Archive item);
+        /// <summary>
+        /// 吴中人力资源 
+        /// 上传保险人员名单
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="author"></param>
+        /// <param name="masterId"></param>
+        /// <param name="memo"></param>
+        /// <returns></returns>
+        string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "");
         bool Delete(Archive item, bool disable = false);
         /// <summary>
         /// 

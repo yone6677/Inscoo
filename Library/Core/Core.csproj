@@ -98,6 +98,7 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
     <Compile Include="Mapping\CashFlowDetailsMap.cs" />
     <Compile Include="Mapping\CashFlowMap.cs" />
@@ -209,6 +210,10 @@
     <Compile Include="Migrations\201608030733508_tpa.Designer.cs">
       <DependentUpon>201608030733508_tpa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608040256007_AddTableAboutWZHuman.cs" />
+    <Compile Include="Migrations\201608040256007_AddTableAboutWZHuman.Designer.cs">
+      <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201608040330335_finance.cs" />
     <Compile Include="Migrations\201608040330335_finance.Designer.cs">
       <DependentUpon>201608040330335_finance.cs</DependentUpon>
@@ -306,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608030733508_tpa.resx">
       <DependentUpon>201608030733508_tpa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608040256007_AddTableAboutWZHuman.resx">
+      <DependentUpon>201608040256007_AddTableAboutWZHuman.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608040330335_finance.resx">
       <DependentUpon>201608040330335_finance.cs</DependentUpon>

@@ -51,6 +51,8 @@ namespace Inscoo.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            //var productSeries = _appUserService.GetProdSeries(User.Identity.GetUserId()).Select(p => p.Text).ToList();
+            //ViewBag.ProductSeries = productSeries;
             return View();
         }
         public ActionResult About()

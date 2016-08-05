@@ -131,6 +131,11 @@
     <Compile Include="Products\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleModel.cs" />
+    <Compile Include="WZHuman\WZFileDataModel.cs" />
+    <Compile Include="WZHuman\WZListModel.cs" />
+    <Compile Include="WZHuman\WZFileSearchModel.cs" />
+    <Compile Include="WZHuman\WZSearchModel.cs" />
+    <Compile Include="WZHuman\WZCreateModel.cs" />
     <Compile Include="User\ChangePasswordModel.cs" />
     <Compile Include="Role\UserRoleModel.cs" />
     <Compile Include="User\UserModel.cs" />

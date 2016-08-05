@@ -1,0 +1,55 @@
+﻿@model Models.WZSearchModel
+
+@{
+    ViewBag.Title = "吴中人力资源";
+}
+
+@using (Ajax.BeginForm("ListData", null, new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    @Html.HiddenFor(m => m.UserId)
+    <div class="Search">
+        <dl style="width:100%">
+            <dt>
+                公司名称
+            </dt>
+            <dd>
+                @Html.EditorFor(model => model.CompanyName)
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="查找" /></p>
+            </dd>
+            <dt></dt>
+            <dd class="text-center"> 
+                @if (TempData["errorMes"] != null)
+                {
+                    if (TempData["errorMes"].ToString() == "添加成功")
+                    {
+                        <span class="text-success" style="font-size:25px">添加成功</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger" style="font-size:25px">@TempData["errorMes"].ToString()</span>
+                    }
+                }
+            </dd>
+
+            @if (User.IsInRole("WZHumanAssistant"))
+            {
+                <dt></dt>
+                <dd>
+                    <p>@Html.ActionLink("添加新客户", "Create", new { ViewBag.pageIndex }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+                </dd>
+            }
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid">
+        @Html.Action("ListData", new { ViewBag.pageIndex })
+    </div>
+}

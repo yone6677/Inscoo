@@ -11,13 +11,17 @@
         <div class="form-group">
             <label class="control-label col-md-3">上传Excel</label>
             <div class="col-md-7">
-                <input type="file" name="excel" id="excel" required="" />
+                <a href="javascript:;" class="a-upload">
+                    <input type="file" name="excel" id="excel" required="" />+ 浏览
+                </a>
+                <span class="lab" style="height: 28px; line-height: 28px;"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-3"></label>
             <div class="col-md-7">
                 <input type="submit" class="btn btn-info" value="提交" />
+                @Html.ActionLink("返回列表", "CarInscuranceSearch", new { }, new { @class = "btn btn-default" })
             </div>
         </div>
         <div class="form-group">

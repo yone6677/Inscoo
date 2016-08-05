@@ -80,6 +80,7 @@ namespace Inscoo
             builder.RegisterType<HealthService>().As<IHealthService>().InstancePerDependency();
             builder.RegisterType<CashFlowService>().As<ICashFlowService>().InstancePerDependency();
             builder.RegisterType<CashFlowDetailsService>().As<ICashFlowDetailsService>().InstancePerDependency();
+            builder.RegisterType<WZHumanService>().As<IWZHumanService>().InstancePerDependency();
         }
     }
 }

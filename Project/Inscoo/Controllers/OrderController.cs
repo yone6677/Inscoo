@@ -1461,6 +1461,8 @@ namespace Inscoo.Controllers
                                 var cashFlowDetails = new CashFlowDetails();
                                 cashFlowDetails.Author = User.Identity.GetUserId();
                                 cashFlowDetails.cId = cid;
+                                cashFlowDetails.Memo = model.FinanceMemo;
+                                cashFlowDetails.TransferVoucher = model.TransferVoucher;
                                 if (batch.AmountCollected > 0)//收款
                                 {
                                     cashFlowDetails.Receivable = model.Price;

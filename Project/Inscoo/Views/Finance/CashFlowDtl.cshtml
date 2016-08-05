@@ -1,0 +1,76 @@
+﻿@model Models.Finance.CashFlowDetailsModel
+
+@{
+    ViewBag.Title = "账目明细";
+}
+<div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Receivable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Receivable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActualCollected)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActualCollected)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Payable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RealPayment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RealPayment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransferVoucher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransferVoucher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Memo)
+        </dt>
+
+        <dd>
+            <pre>
+              @Model.Memo
+            </pre>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
+
+    </dl>
+</div>

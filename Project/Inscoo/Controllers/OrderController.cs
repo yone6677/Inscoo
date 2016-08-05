@@ -790,6 +790,7 @@ namespace Inscoo.Controllers
                         item.batch_Id = e.BId;
                         item.Premium = e.Premium;// order.AnnualExpense;
                         item.PMCode = PMType.PM00.ToString();
+                        item.PMName = _webHelper.GetEnumDescription(PMType.PM00);
                         item.Relationship = "本人";
                         item.Name = e.Name;
                         item.IDType = e.IDType;
@@ -1727,6 +1728,7 @@ namespace Inscoo.Controllers
                         if (insType == "加保")
                         {
                             item.PMCode = PMType.PM15.ToString();
+                            item.PMName = _webHelper.GetEnumDescription(PMType.PM15);
                             item.BuyType = 1;
                             double tsDay = (order.EndDate - changeDate).TotalDays;
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
@@ -1765,6 +1767,7 @@ namespace Inscoo.Controllers
                                 throw new Exception($"此订单类型不允许退保，Excel中第{i}行资料为减保，请检查");
                             }
                             item.PMCode = PMType.PM16.ToString();
+                            item.PMName = _webHelper.GetEnumDescription(PMType.PM16);
                             item.BuyType = 2;
                             item.EndDate = changeDate;
                             double tsDay = (changeDate - order.StartDate).TotalDays;
@@ -2048,7 +2051,6 @@ namespace Inscoo.Controllers
         #endregion
 
         #region private
-
         bool CheckFileInfo(HttpPostedFileBase file, string type)
         {
             if (file == null || string.IsNullOrEmpty(file.FileName)) return false;

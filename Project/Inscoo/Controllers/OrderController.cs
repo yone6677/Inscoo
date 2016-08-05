@@ -1489,6 +1489,10 @@ namespace Inscoo.Controllers
                         else
                         {
                             var cashFlowDetails = new CashFlowDetails();
+                            cashFlowDetails.Author = User.Identity.GetUserId();
+                            cashFlowDetails.cId = cashFlow.Id;
+                            cashFlowDetails.Memo = model.FinanceMemo;
+                            cashFlowDetails.TransferVoucher = model.TransferVoucher;
                             if (batch.AmountCollected > 0)//收款
                             {
                                 cashFlowDetails.Receivable = model.Price;
@@ -1499,7 +1503,7 @@ namespace Inscoo.Controllers
                                 cashFlowDetails.Payable = model.Price;
                                 cashFlowDetails.RealPayment = batch.AmountCollected;
                             }
-                            cashFlowDetails.cId = cashFlow.Id;
+                            
                             if (_cashFlowDetails.Insert(cashFlowDetails))
                             {
                                 cashFlow.Difference += model.Price - model.AmountCollected;

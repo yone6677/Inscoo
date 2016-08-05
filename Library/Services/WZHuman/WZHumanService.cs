@@ -65,5 +65,20 @@ namespace Services
             }).OrderByDescending(c => c.Id).ToList();
             return new PagedList<WZListModel>(pageList, pageIndex, pageSize);
         }
+
+        public bool HasPerminsion(int masterId, string uName)
+        {
+            try
+            {
+                var wz = _repWZHumanMaster.GetById(masterId);
+                if (wz.Account == uName || wz.Author == uName) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
     }
 }

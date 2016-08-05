@@ -13,29 +13,43 @@
     @Html.HiddenFor(m => m.UserId)
     <div class="Search">
         <dl style="width:100%">
-            <dt style="width:10%">
+            <dt>
                 公司名称
             </dt>
-            <dd style="width:22%">
+            <dd>
                 @Html.EditorFor(model => model.CompanyName)
             </dd>
-            <dt style="width:10%"></dt>
-            <dd style="width:25%;float:right">
+            <dt></dt>
+            <dd>
                 <p> <input type="submit" value="查找" /></p>
             </dd>
-        </dl>
-        @if (User.IsInRole("WZHumanAssistant"))
-        {
-            <dl style="width:100%">
-                <dd style="float:right;width:25%;">
-                    <p>@Html.ActionLink("添加新客户", "Create", "Company", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            <dt></dt>
+            <dd class="text-center"> 
+                @if (TempData["errorMes"] != null)
+                {
+                    if (TempData["errorMes"].ToString() == "添加成功")
+                    {
+                        <span class="text-success" style="font-size:25px">添加成功</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger" style="font-size:25px">@TempData["errorMes"].ToString()</span>
+                    }
+                }
+            </dd>
+
+            @if (User.IsInRole("WZHumanAssistant"))
+            {
+                <dt></dt>
+                <dd>
+                    <p>@Html.ActionLink("添加新客户", "Create", new { ViewBag.pageIndex }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
                 </dd>
-            </dl>
-        }
+            }
+        </dl>
         <p class="clearfix"></p>
     </div>
 
     <div id="dataGrid">
-        @Html.Action("ListData")
+        @Html.Action("ListData", new { ViewBag.pageIndex })
     </div>
 }

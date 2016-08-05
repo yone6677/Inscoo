@@ -29,18 +29,19 @@ namespace Inscoo.Controllers
             _svArchive = svArchive;
         }
         // GET: User
-        public ActionResult ListIndex()
+        public ActionResult ListIndex(int pageIndex = 1)
         {
-            var model = new vCompanySearch();
+            var model = new WZSearchModel();
             model.UserId = User.Identity.GetUserId();
+            ViewBag.pageIndex = pageIndex;
             return View(model);
         }
 
-        public ActionResult ListData()
+        public ActionResult ListData(int pageIndex = 1)
         {
 
             var search = new WZSearchModel() { Author = User.Identity.Name };
-            var list = _svWZHuman.GetWZList(search);
+            var list = _svWZHuman.GetWZList(search, pageIndex);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -55,6 +56,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult ListData(WZSearchModel search, int pageIndex = 1, int pageSize = 15)
         {
+            search.Author = User.Identity.Name;
             var list = _svWZHuman.GetWZList(search, pageIndex: pageIndex, pageSize: pageSize);
             var command = new PageCommand()
             {
@@ -73,8 +75,9 @@ namespace Inscoo.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult Create(int pageIndex = 1)
         {
+            ViewBag.pageIndex = pageIndex;
             var model = new WZCreateModel();
             return View(model);
         }
@@ -82,55 +85,92 @@ namespace Inscoo.Controllers
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(WZCreateModel model)
+        public async Task<ActionResult> Create(WZCreateModel model, int pageIndex = 1)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var uId = User.Identity.GetUserId();
-                var user = new AppUser()
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    CompanyName = model.CompanyName,
-                    IsDelete = false,
-                    CreaterId = uId,
-                    Changer = uId,
-                    ProdSeries = "WZHumanResource",
-                };
-                var defaultPwd = ConfigurationManager.AppSettings["newPwd"];
-                var result = await _svUser.CreateAsync(user, "", defaultPwd);
-                if (result.Succeeded)
-                {
-                    _svWZHuman.AddNewWZHum2anMaster(new WZHumanMaster()
-                    {
-                        CompanyName = user.CompanyName,
-                        Account = user.UserName,
-                        Author = User.Identity.Name
-                    });
 
-                    if (ForRole(user, "WZHumanCustomer"))
+                if (ModelState.IsValid)
+                {
+                    var uId = User.Identity.GetUserId();
+                    var user = new AppUser()
                     {
-                        return RedirectToAction("Index", new { successMes = "添加成功" });
+                        UserName = model.Email,
+                        Email = model.Email,
+                        CompanyName = model.CompanyName,
+                        IsDelete = false,
+                        CreaterId = uId,
+                        Changer = uId,
+                        ProdSeries = "WZHumanResource",
+                    };
+                    var defaultPwd = ConfigurationManager.AppSettings["newPwd"];
+                    var result = await _svUser.CreateAsync(user, "", defaultPwd);
+                    if (result.Succeeded)
+                    {
+                        _svWZHuman.AddNewWZHum2anMaster(new WZHumanMaster()
+                        {
+                            CompanyName = user.CompanyName,
+                            Account = user.UserName,
+                            Author = User.Identity.Name
+                        });
+
+                        if (ForRole(user, "WZHumanCustomer"))
+                        {
+                            TempData["errorMes"] = "添加成功";
+
+                            return RedirectToAction("ListIndex", new { pageIndex });
+                        }
                     }
                 }
             }
-            return RedirectToAction("ListIndex");
+            catch (WarningException we)
+            {
+                TempData["errorMes"] = we.Message;
+            }
+            catch (Exception ex)
+            {
+                TempData["errorMes"] = "添加失败";
+            }
+            ViewBag.pageIndex = pageIndex;
+            return View(model);
         }
 
         public ActionResult FileListIndex(int masterId)
         {
+            //判断是否有权限
+            if (!_svWZHuman.HasPerminsion(masterId, User.Identity.Name)) return RedirectToAction("ListIndex");
             ViewBag.MasterId = masterId;
             return View();
         }
-        public ActionResult FileListData()
+
+        public ActionResult FileListData(int masterId)
         {
-            return View();
+            var search = new WZFileSearchModel() { MasterId = masterId };
+            var list = _svArchive.GetWZFileDataModels(search, 1, 15);
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(list);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult FileListData(WZFileSearchModel search, int pageIndex = 1, int pageSize = 15)
         {
-            return View();
+            var list = _svArchive.GetWZFileDataModels(search, pageIndex, pageSize);
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            return PartialView(list);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -146,7 +186,7 @@ namespace Inscoo.Controllers
                 {
                     mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
 
-                    var isFirstUpload = _svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
+                    var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                     var mailTo = isFirstUpload ? _svGenericAttribute.GetByGroup("WZHumanEmail").Select(c => c.Value) : _svGenericAttribute.GetByGroup("WZHumanEmailMaintain").Select(c => c.Value);
                     MailService.SendMailAsync(new MailQueue()
                     {
@@ -157,8 +197,12 @@ namespace Inscoo.Controllers
                         MQMAILTO = string.Join(";", mailTo),
                         MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
                     });
+                    TempData["errorMes"] = "上传成功";
                 }
-                TempData["errorMes"] = "上传成功";
+                else
+                {
+                    TempData["errorMes"] = "上传失败";
+                }
             }
             catch (WarningException e)
             {

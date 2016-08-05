@@ -54,50 +54,6 @@ namespace Services
                 throw e;
             }
         }
-
-        public CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey)
-        {
-            try
-            {
-                var item = _rpCarInsurance.Table.Include(c => c.Einsurance).AsEnumerable().FirstOrDefault(c => c.Id == insuranceId);
-                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
-                return item;
-            }
-            catch (WarningException e)
-            {
-                throw e;
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
-            }
-            return null;
-        }
-        public Archive GetById(int id)
-        {
-            try
-            {
-                return _archiveRepository.GetById(id);
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Warning, "Archive：GetById");
-            }
-            return null;
-        }
-        public IQueryable<Archive> GetByTypeAndPId(int pId, string type)
-        {
-            try
-            {
-                return _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Warning, "Archive：GetByTypeAndPId");
-            }
-            return null;
-        }
-
         public bool Delete(Archive item, bool disable)
         {
             try
@@ -161,6 +117,129 @@ namespace Services
                 _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");
             }
         }
+
+        public CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey)
+        {
+            try
+            {
+                var item = _rpCarInsurance.Table.Include(c => c.Einsurance).AsEnumerable().FirstOrDefault(c => c.Id == insuranceId);
+                if (item.UniqueKey != uKey) throw new WarningException("无权操作！");
+                return item;
+            }
+            catch (WarningException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
+            }
+            return null;
+        }
+        public Archive GetById(int id)
+        {
+            try
+            {
+                return _archiveRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：GetById");
+            }
+            return null;
+        }
+        public IQueryable<Archive> GetByTypeAndPId(int pId, string type)
+        {
+            try
+            {
+                return _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：GetByTypeAndPId");
+            }
+            return null;
+        }
+        public IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
+        {
+            try
+            {
+                //var s = _rpCarInsurance.Table.FirstOrDefault().CarInsuranceEinsurances;
+                var listOri =
+                    _rpCarInsurance.Entities.Include(c => c.Einsurance).Include(c => c.Excel)
+                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1")).OrderByDescending(o => o.Id)
+                       .AsNoTracking().ToList();
+                var list = (from c in listOri
+                            let excel = c.Excel
+                            let ei = c.Einsurance
+                            select new vCarInsuranceList()
+                            {
+                                ExcelId = excel.Id,
+                                InsuranceId = c.Id,
+                                ExcelName = excel.Name,
+                                ExceUrl = excel.Url,
+                                ExceCreateTime = excel.CreateTime,
+                                ExceCreateUser = c.AppUser.UserName,
+                                EinsuranceName = ei == null ? "" : ei.Name,
+                                EinsuranceUrl = ei == null ? "" : ei.Url,
+                                Status = c.Status ?? "",
+                                EOrderCode = c.EOrderCode ?? "",
+                                UniqueKey = c.UniqueKey ?? ""
+                            }).ToList();
+
+                return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：GetList");
+                return new PagedList<vCarInsuranceList>(new List<vCarInsuranceList>(), pageIndex, pageSize);
+            }
+        }
+        public IPagedList<Archive> GetPagelistByTypeAndPId(int pageIndex, int pageSize, int pId, string type)
+        {
+            try
+            {
+                var list = GetByTypeAndPId(pId, type).AsNoTracking(); ;
+
+                return new PagedList<Archive>(list.ToList(), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：GetList");
+                return new PagedList<Archive>(new List<Archive>(), pageIndex, pageSize);
+            }
+        }
+        public IPagedList<Archive> GetWZFileDataModels(WZFileSearchModel model, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var list = GetByTypeAndPId(model.MasterId, "WZHuman").AsNoTracking();
+
+                if (!string.IsNullOrEmpty(model.Author))
+                {
+                    list = list.Where(f => f.Author.Contains(model.Author));
+                }
+                if (!string.IsNullOrEmpty(model.Name))
+                {
+                    list = list.Where(f => f.Name.Contains(model.Name));
+                }
+                if (model.CreateTime.HasValue)
+                {
+                    var date = model.CreateTime.Value.AddDays(1).Date;
+                    list = list.Where(f => f.CreateTime <= date);
+                }
+
+                return new PagedList<Archive>(list.ToList(), pageIndex, pageSize);
+                var type = new System.Diagnostics.StackTrace().GetFrame(0).GetType();
+                var method = new System.Diagnostics.StackTrace().GetFrame(0).GetMethod();
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "ArchiveService：GetWZFileDataModels");
+                return new PagedList<Archive>(new List<Archive>(), pageIndex, pageSize);
+            }
+        }
+
         public int InsertBySaveResult(SaveResultModel model, string type, int pid, string memo = null)
         {
             try
@@ -289,7 +368,7 @@ namespace Services
         {
             try
             {
-                var model = _fileService.SaveFile(file);
+                var model = _fileService.SaveFile(file, true);
                 if (model != null)
                 {
                     var item = new Archive()
@@ -424,8 +503,13 @@ namespace Services
                     }
                 }
                 item.EOrderCode = code;
+
+                _rpCarInsurance.Update(item);
                 if (item.EinsuranceId.HasValue && !string.IsNullOrEmpty(item.EOrderCode))
-                { item.Status = "C"; }
+                {
+                    item.Status = "C";
+                    _rpCarInsurance.Update(item);
+                }
 
                 _rpCarInsurance.Update(item);
                 if (item.Einsurance != null)
@@ -486,41 +570,7 @@ namespace Services
 
 
 
-        public IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
-        {
-            try
-            {
-                //var s = _rpCarInsurance.Table.FirstOrDefault().CarInsuranceEinsurances;
-                var listOri =
-                    _rpCarInsurance.Entities.Include(c => c.Einsurance).Include(c => c.Excel)
-                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1")).OrderByDescending(o => o.Id)
-                       .AsNoTracking().ToList();
-                var list = (from c in listOri
-                            let excel = c.Excel
-                            let ei = c.Einsurance
-                            select new vCarInsuranceList()
-                            {
-                                ExcelId = excel.Id,
-                                InsuranceId = c.Id,
-                                ExcelName = excel.Name,
-                                ExceUrl = excel.Url,
-                                ExceCreateTime = excel.CreateTime,
-                                ExceCreateUser = c.AppUser.UserName,
-                                EinsuranceName = ei == null ? "" : ei.Name,
-                                EinsuranceUrl = ei == null ? "" : ei.Url,
-                                Status = c.Status ?? "",
-                                EOrderCode = c.EOrderCode ?? "",
-                                UniqueKey = c.UniqueKey ?? ""
-                            }).ToList();
 
-                return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);
-            }
-            catch (Exception e)
-            {
-                _loggerService.insert(e, LogLevel.Warning, "CarInsuranceExcel：GetList");
-                return new PagedList<vCarInsuranceList>(new List<vCarInsuranceList>(), pageIndex, pageSize);
-            }
-        }
 
         public string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId)
         {

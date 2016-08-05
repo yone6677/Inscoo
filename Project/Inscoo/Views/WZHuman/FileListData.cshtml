@@ -1,20 +1,20 @@
-﻿@model IEnumerable<Models.WZFileDataModel>
+﻿@model IEnumerable<Domain.Archive>
 
 
 @Html.AntiForgeryToken()
 <table class="table table-bordered table-style-control">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
-            @Html.DisplayNameFor(model => model.FileName)
+            文件名
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UploadDate)
+            上传时间
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
+            上传人
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Memo)
+            备注
         </th>
         <th>
             操作
@@ -22,13 +22,13 @@
     </tr>
 
     @foreach (var item in Model)
-            {
+    {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FileName)
+                @item.Name.Substring(0, item.Name.Length - 18)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UploadDate)
+                @Html.DisplayFor(modelItem => item.CreateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
@@ -43,5 +43,7 @@
     }
 
 </table>
-@Html.Pager(ViewBag.pageCommand as PageCommand)
-
+@{
+    var pageCommand = ViewBag.pageCommand as PageCommand;
+}
+@Html.Pager(pageCommand)

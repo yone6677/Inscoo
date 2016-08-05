@@ -14,11 +14,11 @@ namespace Models
     public class WZFileDataModel
     {
         [DisplayName("文件名")]
-        public string FileName { set; get; }
+        public string Name { set; get; }
         [DisplayName("上传人")]
         public string Author { set; get; }
         [DisplayName("上传日期")]
-        public DateTime UploadDate { set; get; }
+        public DateTime CreateTime { set; get; }
         [DisplayName("备注")]
         public string Memo { set; get; }
         public string Url { set; get; }

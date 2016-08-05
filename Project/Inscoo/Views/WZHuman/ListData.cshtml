@@ -25,11 +25,10 @@
                 @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
             <td>
-                @Html.ActionLink("保全操作", "Edit", new { id = item.Id })
+                @Html.ActionLink("保全操作", "FileListIndex", new { masterId = item.Id })
             </td>
         </tr>
     }
 
 </table>
 @Html.Pager(ViewBag.pageCommand as PageCommand)
-

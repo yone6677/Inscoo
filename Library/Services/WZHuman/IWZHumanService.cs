@@ -16,5 +16,12 @@ namespace Services
         /// <param name="pageSize"></param>
         /// <returns></returns>
         IPagedList<WZListModel> GetWZList(WZSearchModel search, int pageIndex = 1, int pageSize = 15);
+        /// <summary>
+        /// 判断当前用户是否有查看权限
+        /// </summary>
+        /// <param name="masterId"></param>
+        /// <param name="uName"></param>
+        /// <returns></returns>
+        bool HasPerminsion(int masterId, string uName);
     }
 }

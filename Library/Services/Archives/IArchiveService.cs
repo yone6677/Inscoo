@@ -31,8 +31,16 @@ namespace Services
 
         IQueryable<Archive> GetByTypeAndPId(int pId, string type);
         CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pId"></param>
+        /// <param name="type">文件类型</param>
+        /// <returns></returns>
+        IPagedList<Archive> GetPagelistByTypeAndPId(int pageIndex, int pageSize, int pId, string type);
+        IPagedList<Archive> GetWZFileDataModels(WZFileSearchModel model, int pageIndex, int pageSize);
         int InsertByWechat(DownLoadWechatFileApi model);
         int InsertByUrl(List<string> fileInfo, string type, int pid, string memo = null);
         /// <summary>
@@ -84,7 +92,7 @@ namespace Services
         /// <param name="code"></param>
         /// <returns></returns>
         string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
-       
+
         void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>
         /// 

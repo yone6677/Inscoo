@@ -16,15 +16,16 @@ namespace Models
         /// <summary>
         /// 文件名
         /// </summary>
-        public string FileName { set; get; }
+        public string Name { set; get; }
         /// <summary>
         /// 上传人
         /// </summary>
-        public string Uploader { set; get; }
+        public string Author { set; get; }
         /// <summary>
         /// 上传日期
         /// </summary>
+        public DateTime? CreateTime { set; get; }
 
-        public DateTime UploadDate { set; get; }
+        public int MasterId { set; get; }
     }
 }

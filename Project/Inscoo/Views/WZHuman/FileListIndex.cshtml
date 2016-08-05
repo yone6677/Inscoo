@@ -3,14 +3,16 @@
 @{
     ViewBag.Title = "企业列表";
 }
-@using (Html.BeginForm("UploadInsurants", "WZHuman", FormMethod.Post))
+@using (Html.BeginForm("UploadInsurants", "WZHuman", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
-    @Html.Hidden("masterId", ViewBag.MasterId)
-    <div class="Search">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="MasterId" value="@ViewBag.MasterId" />
+
+    <div class="Search" style="">
         <dl style="width:100%">
             <dt>上传保险人员名单</dt>
             <dd>
-                <a href="javascript:;" class="a-upload">
+                <a href="javascript:;" class="a-upload" style="margin-left:20px">
                     <input type="file" name="excel" id="excel" />+ 浏览
                 </a>
                 <span class="lab" style="height: 28px; line-height: 28px;"></span>
@@ -21,21 +23,21 @@
             </dd>
             <dt></dt>
             <dd>
-                <p> <input type="submit" value="提交" /></p>
-            </dd>
-            <dt></dt>
-            <dd>
                 @if (TempData["errorMes"] != null)
                 {
                     if (TempData["errorMes"].ToString() == "上传成功")
                     {
-                        <span class="text-success">上传成功</span>
+                        <span class="text-success" tyle="font-size:25px">上传成功</span>
                     }
                     else
                     {
-                        <span class="text-danger">@TempData["errorMes"].ToString()</span>
+                        <span class="text-danger" tyle="font-size:25px">@TempData["errorMes"].ToString()</span>
                     }
                 }
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="上传名单" /></p>
             </dd>
         </dl>
     </div>
@@ -46,22 +48,32 @@
     UpdateTargetId = "dataGrid"
 }, new { @id = "searchForm" }))
 {
-    @Html.Hidden("masterId", ViewBag.MasterId.ToString())
-    <div class="Search">
+
+    <input type="hidden" name="MasterId" value="@ViewBag.MasterId" />
+    <div class="Search" style="background-color:#24a9e4">
         <dl style="width:100%">
             <dt>
                 上传人
             </dt>
             <dd>
-                @Html.EditorFor(model => model.Uploader)
+                @Html.EditorFor(model => model.Author)
             </dd>
-            <dt>上传日期</dt>
+            <dt>
+                文件名
+            </dt>
             <dd>
-                <input type="text" name="UploadDate" id="UploadDate" />
+                @Html.EditorFor(model => model.Name)
+            </dd>
+            <dt>上传截止日期</dt>
+            <dd>
+                <input type="text" name="CreateTime" id="CreateTime" value="@DateTime.Now.ToShortDateString()" class="inputDate" />
             </dd>
             <dt></dt>
             <dd>
-                <p> <input type="submit" value="查找" /></p>
+                <p>
+                    <input type="submit" value="查找" style="width:60%" />
+                    @Html.ActionLink("返回列表", "ListIndex", new { }, new { style = "width:30%;color:white;font-size:large" })
+                </p>
             </dd>
         </dl>
 

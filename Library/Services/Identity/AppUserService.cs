@@ -57,7 +57,29 @@ namespace Services
             {
                 _userManager.RemoveFromRole(uid, roleName);
                 var result = _userManager.AddToRole(uid, roleName);
-                if (result.Succeeded) return true;
+                if (result.Succeeded)
+                {
+                    if (roleName == "WZHumanCustomer" || roleName == "WZHumanAssistant")//吴中人力资源要角色在WZHumanMaster表中新增一条记录
+                    {
+                        var user = _userManager.FindById(uid);
+                        using (var db = _rpGenericAttribute.DatabaseContext)
+                        {
+                            var item = db.Set<WZHumanMaster>().SingleOrDefault(w => w.Account == user.UserName);
+                            if (item != null)//已存在
+                            {
+                                item.Account = user.UserName;
+                                item.CompanyName = user.CompanyName;
+                                return _rpGenericAttribute.DatabaseContext.SaveChanges() > 0;
+                            }
+                            else
+                            {
+                                db.Set<WZHumanMaster>().Add(new WZHumanMaster() { Account = user.UserName, CompanyName = user.CompanyName, Author = "Admin" });
+                                return _rpGenericAttribute.DatabaseContext.SaveChanges() > 0;
+                            }
+                        }
+                    }
+                    return true;
+                }
                 return false;
             }
             catch (Exception e)
@@ -399,7 +421,7 @@ namespace Services
                     allRoles.RemoveAll(r => r.Name.Equals("WZHumanCustomer"));
 
                     allRoles.RemoveAll(r => r.Name.Equals("HealthCheck"));
-                    
+
                 }
 
                 if (userRoles.Contains("BusinessDeveloper"))

@@ -155,7 +155,7 @@ namespace Services.Finance
                         Id = s.Id,
                         OId = s.OId,
                         OType = s.OType == 1 ? "保险订单" : s.OType.ToString()
-                    }).ToList(), pageIndex, pageSize);
+                    }).OrderByDescending(q => q.Id).ToList(), pageIndex, pageSize);
                 }
             }
             catch (Exception e)

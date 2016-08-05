@@ -15,7 +15,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FinancePayDate, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.EditorFor(model => model.FinancePayDate, new { htmlAttributes = new { @class = "form-control inputDate", value = Model.FinancePayDate.ToShortTimeString() } })
+                <input type="text" class="form-control inputDate" name="FinancePayDate" id="FinancePayDate" value="@DateTime.Now.ToShortDateString()" />
+                @*@Html.EditorFor(model => model., new { htmlAttributes = new { @, value = Model.FinancePayDate.ToShortTimeString() } })*@
                 @Html.ValidationMessageFor(model => model.FinancePayDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -53,7 +54,12 @@
         </div>
     </div>
 }
-
+@Html.Action("AuditOrder", new { Model.MasterId });
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        jQuery(function () {
+            $('#FinancePayDate').datepicker({ endDate: '@DateTime.Now.ToShortDateString()' });
+        });
+    </script>
 }

@@ -503,8 +503,10 @@ namespace Inscoo.Controllers
                     foreach (var s in li)
                     {
                         var item = _productService.GetProductPrice(s, null, staffnum, avarag);
+
                         if (item != null)
                         {
+                            var prod = _productService.GetById(item.Id);//.CommissionRate,//佣金比率
                             if (!item.ProdWithdraw)
                             {
                                 ProdWithdraw = false;
@@ -512,7 +514,7 @@ namespace Inscoo.Controllers
                             var orderItem = new OrderItem()
                             {
                                 pid = item.Id,
-                                CommissionRate = _productService.GetById(item.Id).CommissionRate,//佣金比率
+                                CommissionRate = prod.CommissionRate,
                                 CoverageSum = item.CoverageSum,
                                 InsuredWho = item.InsuredWho,
                                 order_Id = result,
@@ -524,7 +526,8 @@ namespace Inscoo.Controllers
                                 SafeguardName = item.SafeguardName,
                                 ProdAbatement = item.ProdAbatement,
                                 ProdTimeLimit = item.ProdTimeLimit,
-                                ProdWithdraw = item.ProdWithdraw
+                                ProdWithdraw = item.ProdWithdraw,
+                                ItemNo = prod.ItemNo
                             };
                             _orderItemService.Insert(orderItem);
                         }
@@ -586,7 +589,9 @@ namespace Inscoo.Controllers
                 var order = _orderService.GetById(model.Id);
                 if (order != null)
                 {
+                    var company = _svCompany.GetByName(model.CompanyName.Trim(), User.Identity.GetUserId());
                     order.CompanyName = model.CompanyName;
+                    order.CompanyId = company.Id;
                     order.Linkman = model.Linkman;
                     order.PhoneNumber = model.PhoneNumber;
                     order.Address = model.Address;
@@ -734,7 +739,7 @@ namespace Inscoo.Controllers
 
                     //读取excel数据
                     var Cells = worksheet.Cells;
-                    if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日" || Cells["E1"].Value.ToString() != "性别(男/女)" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "联系电话" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
+                    if (Cells["A1"].Value.ToString() != "姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "出生日期" || Cells["E1"].Value.ToString() != "性别" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "手机" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
                         result = "上传的文件不正确";
                     var eList = new List<OrderEmployeeModel>();//先把资料写入临时List,以便判断是否正确
                     for (var i = 2; i <= rowNumber; i++)
@@ -785,6 +790,7 @@ namespace Inscoo.Controllers
                         item.batch_Id = e.BId;
                         item.Premium = e.Premium;// order.AnnualExpense;
                         item.PMCode = PMType.PM00.ToString();
+                        item.PMName = _webHelper.GetEnumDescription(PMType.PM00);
                         item.Relationship = "本人";
                         item.Name = e.Name;
                         item.IDType = e.IDType;
@@ -1684,8 +1690,8 @@ namespace Inscoo.Controllers
                     }
                     var rowNumber = worksheet.Dimension.Rows;
                     var Cells = worksheet.Cells;
-                    if (Cells["A1"].Value.ToString() != "被保险人姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日"
-                        || Cells["E1"].Value.ToString() != "保全类型(加保/减保)" || Cells["F1"].Value.ToString() != "加减保生效日期" || Cells["G1"].Value.ToString() != "性别(男/女)" || Cells["H1"].Value.ToString() != "银行账号"
+                    if (Cells["A1"].Value.ToString() != "姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "生日"
+                        || Cells["E1"].Value.ToString() != "保全操作（加保/减保）" || Cells["F1"].Value.ToString() != "加减保生效日期" || Cells["G1"].Value.ToString() != "性别" || Cells["H1"].Value.ToString() != "银行账号"
                         || Cells["I1"].Value.ToString() != "开户行" || Cells["J1"].Value.ToString() != "联系电话" || Cells["K1"].Value.ToString() != "邮箱" || Cells["L1"].Value.ToString() != "社保（有/无）")
                     {
                         throw new Exception("上传的文件不正确,请检查");
@@ -1722,6 +1728,7 @@ namespace Inscoo.Controllers
                         if (insType == "加保")
                         {
                             item.PMCode = PMType.PM15.ToString();
+                            item.PMName = _webHelper.GetEnumDescription(PMType.PM15);
                             item.BuyType = 1;
                             double tsDay = (order.EndDate - changeDate).TotalDays;
                             item.Premium = premium * int.Parse(tsDay.ToString("0"));
@@ -1760,6 +1767,7 @@ namespace Inscoo.Controllers
                                 throw new Exception($"此订单类型不允许退保，Excel中第{i}行资料为减保，请检查");
                             }
                             item.PMCode = PMType.PM16.ToString();
+                            item.PMName = _webHelper.GetEnumDescription(PMType.PM16);
                             item.BuyType = 2;
                             item.EndDate = changeDate;
                             double tsDay = (changeDate - order.StartDate).TotalDays;
@@ -2043,7 +2051,6 @@ namespace Inscoo.Controllers
         #endregion
 
         #region private
-
         bool CheckFileInfo(HttpPostedFileBase file, string type)
         {
             if (file == null || string.IsNullOrEmpty(file.FileName)) return false;

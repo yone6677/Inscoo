@@ -77,13 +77,22 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(vCompanyAdd model, HttpPostedFileBase BusinessLicense)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var context = HttpContext;
-                var comId = _companyService.AddNewCompany(model, User.Identity.GetUserId());
-                _archiveService.InsertBusinessLicense(BusinessLicense, User.Identity.Name, comId);
+                if (ModelState.IsValid)
+                {
+                    var context = HttpContext;
+                    var comId = _companyService.AddNewCompany(model, User.Identity.GetUserId());
+                    _archiveService.InsertBusinessLicense(BusinessLicense, User.Identity.Name, comId);
+                }
+                return RedirectToAction("ListIndex");
             }
-            return RedirectToAction("ListIndex");
+            catch (Exception)
+            {
+                ViewBag.error = "添加失败";
+                return View(model);
+            }
+
         }
 
         // GET: User/Edit/5

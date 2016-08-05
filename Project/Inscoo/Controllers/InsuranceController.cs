@@ -44,6 +44,8 @@ namespace Inscoo.Controllers
         }
         public ActionResult MixProduct()
         {
+            var productSeries = _appUserService.GetProdSeries(User.Identity.GetUserId()).Select(p => p.Text).ToList();
+            ViewBag.ProductSeries = productSeries;
             //var product = _mixProductService.GetAll();
             //var model = new List<RecommendationModel>();
             //foreach (var p in product)

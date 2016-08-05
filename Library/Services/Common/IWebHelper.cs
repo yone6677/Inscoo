@@ -78,5 +78,11 @@ namespace Services
         /// <param name="num"></param>
         /// <returns></returns>
         string CmycurD(decimal num);
+        /// <summary>
+        /// 获取枚举描述
+        /// </summary>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
+        string GetEnumDescription(Enum enumValue);
     }
 }

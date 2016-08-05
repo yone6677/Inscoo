@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<Domain.HealthOrderDetail>
 @if (Model.Any())
 {
+    var num = 1;
     <div class="orderConfirmBody form-inline " style="overflow:auto ">
         <dl style="width:130%">
-            <dt>上传人员信息</dt>
             <dd>
                 <table class="table">
-                    <tr>
+                    <tr style="background-color:#24A9E4;color:#fff;">
+                        <th>
+                            编号
+                        </th>
                         <th>
                             姓名
                         </th>
@@ -44,44 +47,48 @@
 
                     @foreach (var item in Model)
                 {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @{
+                    <tr>
+                        <td>
+                            @num
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @{
                                     var sex = item.Sex ? "男" : "女";
-                                }
-                                @sex
-                            </td>
-                            <td>
-                                @item.Birthday.Value.ToShortDateString()
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IdNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Marriage)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Phone)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CompanyName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DepartMent)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Chair)
-                            </td>
-                        </tr>
+                            }
+                            @sex
+                        </td>
+                        <td>
+                            @item.Birthday.Value.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Marriage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompanyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DepartMent)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Chair)
+                        </td>
+                    </tr>
+                                        num++;
                                     }
                 </table>
                 @{
@@ -90,4 +97,5 @@
                 }
             </dd>
         </dl>
-    </div>}
+    </div>
+                    }

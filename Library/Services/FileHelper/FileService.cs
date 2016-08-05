@@ -369,7 +369,7 @@ namespace Services
             //}
         }
 
-        public virtual SaveResultModel SaveFile(HttpPostedFileBase postedFileBase)
+        public virtual SaveResultModel SaveFile(HttpPostedFileBase postedFileBase, bool isRename = false)
         {
             try
             {
@@ -407,6 +407,7 @@ namespace Services
                 string phyPath = _httpContext.Request.MapPath("~" + savePath);
                 //新文件名
                 var ts = date.Ticks.ToString();//_webHelper.GetTimeStamp(null, false);
+                if (isRename) ts = fileName.Split('.')[0] + ts;
                 var saveName = ts + postfix;
                 //如果不存在,创建文件夹    
                 if (!Directory.Exists(phyPath))

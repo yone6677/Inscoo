@@ -26,6 +26,7 @@ namespace Models
         [DisplayName("优惠价")]
         public decimal PrivilegePrice { set; get; }
 
-
+        [DisplayName("填写时间")]
+        public DateTime CreateTime { set; get; }
     }
 }

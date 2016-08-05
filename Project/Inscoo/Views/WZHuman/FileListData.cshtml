@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Domain.Archive>
+
+
+@Html.AntiForgeryToken()
+<table class="table table-bordered table-style-control">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            文件名
+        </th>
+        <th>
+            上传时间
+        </th>
+        <th>
+            上传人
+        </th>
+        <th>
+            备注
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name.Substring(0, item.Name.Length - 18)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memo)
+            </td>
+            <td>
+                <a href="@item.Url" target="_blank">下载</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    var pageCommand = ViewBag.pageCommand as PageCommand;
+}
+@Html.Pager(pageCommand)

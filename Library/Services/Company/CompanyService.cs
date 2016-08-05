@@ -43,10 +43,10 @@ namespace Services
                     Phone = model.Phone,
                     LinkMan = model.LinkMan,
                     Email = model.Email,
-                    Code = GenerateNewCode()
+                    Code = "C" + DateTime.Now.Ticks.ToString()
                 };
-
-                return _repCompany.InsertGetId(item);
+                var id = _repCompany.InsertGetId(item);
+                return id;
             }
             catch (Exception e)
             {
@@ -222,6 +222,23 @@ namespace Services
                 return false;
             }
         }
+        public Company GetByName(string name, string userId)
+        {
+            try
+            {
+                var query = _repCompany.Table;
+                query = query.Where(q => q.Name == name);
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    query = query.Where(q => q.UserId == userId);
+                }
+                return query.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
         public bool UpdateCompany(vCompanyEdit model)
         {
             try
@@ -243,32 +260,6 @@ namespace Services
 
 
         #region private
-        string GenerateNewCode()
-        {
-            try
-            {
-                var lastCom = _repCompany.DatabaseContext.Set<Company>().AsNoTracking().OrderByDescending(c => c.Id).FirstOrDefault();
-                if (lastCom == null)
-                {
-                    return "INS0000669";
-                }
-                else
-                {
-                    var result = "INS0000000";
-                    var reg = new Regex(@"\d+");
-                    var numInt = Convert.ToInt32(reg.Match(lastCom.Code).Value) + 1;
-                    var len = numInt.ToString().Length;
-                    result = result.Substring(0, 10 - len);
-                    result = result + numInt;
-                    return result;
-                }
-
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
         #endregion
     }
 }

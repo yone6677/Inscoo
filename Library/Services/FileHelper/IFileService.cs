@@ -43,8 +43,10 @@ namespace Services
         /// <summary>
         /// 上传文件
         /// </summary>
+        /// <typeparam name="postedFileBase">文件</typeparam>
+        /// <typeparam name="isFileNameUsed">是否重命名并且不包含原名称,否则只采用时间戳</typeparam>
         /// <returns>成功时返回路径加文件名,失败返回null</returns>
-        SaveResultModel SaveFile(HttpPostedFileBase postedFileBase);
+        SaveResultModel SaveFile(HttpPostedFileBase postedFileBase, bool isRename = false);
         /// <summary>
         /// 上传保险条款
         /// </summary>

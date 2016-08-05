@@ -94,6 +94,7 @@ namespace Services
                 var p = _repHealthProduct.GetById(productId);
                 var master = new HealthOrderMaster()
                 {
+                    DateTicks = DateTime.Now.Ticks.ToString(),
                     PublicPrice = p.PublicPrice,
                     SellPrice = GetPrivilegePrice(author, p),
                     CommissionMethod = p.CommissionMethod,
@@ -262,6 +263,8 @@ namespace Services
                         Price = master.SellPrice,
                         Count = master.HealthOrderDetails.Count,
                         Amount = master.SellPrice * master.HealthOrderDetails.Count,
+                        DateTicks=master.DateTicks,
+                        Author=master.Author
                     };
                 }
             }
@@ -373,7 +376,7 @@ namespace Services
 
                 if (!list.Any()) throw new Exception();
                 var totalCount = list.Count();
-                var pList = from h in list.OrderBy(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
+                var pList = from h in list.OrderBy(h => h.Id).OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
                             let p = h.HealthCheckProduct
                             select (new VHealthAuditList()
                             {
@@ -384,7 +387,8 @@ namespace Services
                                 PrivilegePrice = h.SellPrice,
                                 StatusDes = GetHealthOrderStatus(h.Status),
                                 Status = h.Status,
-                                Author = h.Author
+                                Author = h.Author,
+                                CreateTime = h.CreateTime
                             });
 
                 return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
@@ -665,7 +669,7 @@ namespace Services
                 table.AddCell(new PdfPCell(new Phrase("开户公司：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("上海皓为商务咨询有限公司", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("开户银行：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("工商银行武进路支行", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("中国工商银行武进路支行", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("1001213909200135268", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
@@ -677,7 +681,7 @@ namespace Services
                 { IndentationLeft = 56 });
                 document.Add(
                     new Paragraph(
-                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
+                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
                     {
                         IndentationLeft = 56
                     });
@@ -697,6 +701,8 @@ namespace Services
                 var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
                 var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
                 yinZhangImage.Alignment = Element.ALIGN_RIGHT;
+                yinZhangImage.ScaleAbsoluteWidth(80);
+                yinZhangImage.ScaleAbsoluteHeight(80);
                 //yinZhangImage.SpacingBefore = 50;
                 yinZhangImage.IndentationRight = 40;
                 document.Add(yinZhangImage);

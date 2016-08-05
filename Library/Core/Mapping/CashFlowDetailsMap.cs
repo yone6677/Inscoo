@@ -14,6 +14,8 @@ namespace Core.Mapping
             Property(d => d.ActualCollected).IsRequired();
             Property(d => d.RealPayment).IsRequired();
             Property(d => d.Author).IsRequired().HasMaxLength(256);
+            Property(d => d.TransferVoucher).IsOptional().HasMaxLength(256);
+            Property(d => d.Memo).IsOptional().HasMaxLength(512);
         }
     }
 }

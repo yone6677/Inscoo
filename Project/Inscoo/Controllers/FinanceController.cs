@@ -1,4 +1,6 @@
-﻿using Innscoo.Infrastructure;
+﻿using Domain.Finance;
+using Innscoo.Infrastructure;
+using Models.Finance;
 using Services.Finance;
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,59 @@ namespace Inscoo.Controllers
             };
             ViewBag.pageCommand = command;
             return PartialView(model);
+        }
+        public ActionResult Settlement(int id)
+        {
+            var model = new CashFlowDetailsModel();
+            model.cId = id;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Settlement(CashFlowDetailsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var item = new CashFlowDetails()
+                {
+                    ActualCollected = model.ActualCollected,
+                    Author = User.Identity.Name,
+                    cId = model.cId,
+                    Memo = model.Memo,
+                    RealPayment = model.RealPayment,
+                    TransferVoucher = model.TransferVoucher
+                };
+                if (_cashFlowDetails.Insert(item))
+                {
+                    var cashFlow = _cashFlow.GetById(model.cId);
+                    if (cashFlow != null)
+                    {
+                        cashFlow.Difference += model.ActualCollected + model.RealPayment;
+                        _cashFlow.Update(cashFlow);
+                    }
+                }
+                return RedirectToAction("Details", new { id = model.Id });
+            }
+            return View(model);
+        }
+        public ActionResult CashFlowDtl(int id)
+        {
+            var item = _cashFlowDetails.GetById(id);
+            var model = new CashFlowDetailsModel();
+            if (item != null)
+            {
+                model.ActualCollected = item.ActualCollected;
+                model.Author = item.Author;
+                model.cId = item.cId;
+                model.CreateTime = item.CreateTime;
+                model.Id = item.Id;
+                model.Memo = item.Memo;
+                model.Payable = item.Payable;
+                model.RealPayment = item.RealPayment;
+                model.Receivable = item.Receivable;
+                model.TransferVoucher = item.TransferVoucher;
+            }
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

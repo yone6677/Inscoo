@@ -282,7 +282,7 @@ namespace Services.Orders
                     document.Open();
 
                     PdfPTable table = new PdfPTable(10);
-                    table.SetWidths(new float[] { 4, 6, 3, 5, 14, 10, 9, 9, 4, 6 });
+                    table.SetWidths(new float[] { 4, 6, 3, 7, 13, 9, 9, 9, 4, 6 });
 
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);
@@ -291,16 +291,16 @@ namespace Services.Orders
                     table.AddCell(cell);
                     var headFont = OperationPDF.GetFont();
                     headFont.SetColor(255, 255, 255);
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("序号", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("姓名", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("性别", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("证件类型", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("证件号码", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("生日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("生效日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("结束日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("社保", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
-                    table.AddCell(new PdfPCell() { BorderColor = new BaseColor(128, 138, 135), Phrase = new Phrase("投保类型", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("序号", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("姓名", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("性别", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("证件类型", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("证件号码", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("生日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("生效日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("结束日", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("社保", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
+                    table.AddCell(new PdfPCell() { BackgroundColor = new BaseColor(128, 138, 135), Phrase = new Phrase("投保类型", headFont), HorizontalAlignment = Element.ALIGN_CENTER });
                     var index = 1;
                     foreach (var item in list)
                     {
@@ -352,7 +352,7 @@ namespace Services.Orders
                     document.Open();
 
                     PdfPTable table = new PdfPTable(9);
-                    table.SetWidths(new float[] { 4, 8, 3, 5, 14, 10, 11, 11, 4 });
+                    table.SetWidths(new float[] { 4, 8, 3, 7, 14, 10, 10, 10, 4 });
 
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);

@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201608040941481_financeDateils.Designer.cs">
       <DependentUpon>201608040941481_financeDateils.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608050742591_orderItem_ItemNo.cs" />
+    <Compile Include="Migrations\201608050742591_orderItem_ItemNo.Designer.cs">
+      <DependentUpon>201608050742591_orderItem_ItemNo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -326,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608040941481_financeDateils.resx">
       <DependentUpon>201608040941481_financeDateils.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608050742591_orderItem_ItemNo.resx">
+      <DependentUpon>201608050742591_orderItem_ItemNo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

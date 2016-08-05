@@ -1137,6 +1137,7 @@ div:after {
   padding: 5px;
   margin-top: 5px;
   border: 1px solid #aaa;
+  border-radius: 10px;
 }
 .health_box .health_project .health_detail li.health_content .content_left {
   width: 100%;

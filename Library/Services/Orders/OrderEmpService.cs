@@ -287,7 +287,7 @@ namespace Services.Orders
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);
                     PdfPCell cell;
-                    cell = new PdfPHeaderCell() { Colspan = 10, Phrase = new Phrase("《" + order.CompanyName + "》团体保险人员变更名单", OperationPDF.GetFont(fontSize: 12, style: Font.BOLD)), MinimumHeight = 28, HorizontalAlignment = Element.ALIGN_CENTER };
+                    cell = new PdfPHeaderCell() { Colspan = 10, Phrase = new Phrase("" + order.CompanyName + " 团体保险人员变更名单", OperationPDF.GetFont(fontSize: 12, style: Font.BOLD)), MinimumHeight = 28, HorizontalAlignment = Element.ALIGN_CENTER };
                     table.AddCell(cell);
                     var headFont = OperationPDF.GetFont();
                     headFont.SetColor(255, 255, 255);
@@ -357,7 +357,7 @@ namespace Services.Orders
                     //table.SetWidthPercentage(new float[] { 0.4f, 8, 10, 10, 14, 8, 6, 6, 4 }, PageSize.A4.Rotate());
                     //table.SetTotalWidth(100);
                     PdfPCell cell;
-                    cell = new PdfPHeaderCell() { Colspan = 10, Phrase = new Phrase("《" + order.CompanyName + "》团体保险被保险人投保名单", OperationPDF.GetFont(fontSize: 12, style: Font.BOLD)), MinimumHeight = 28, HorizontalAlignment = Element.ALIGN_CENTER };
+                    cell = new PdfPHeaderCell() { Colspan = 10, Phrase = new Phrase("" + order.CompanyName + " 团体保险被保险人投保名单", OperationPDF.GetFont(fontSize: 12, style: Font.BOLD)), MinimumHeight = 28, HorizontalAlignment = Element.ALIGN_CENTER };
                     table.AddCell(cell);
                     var headFont = OperationPDF.GetFont();
                     headFont.SetColor(255, 255, 255);

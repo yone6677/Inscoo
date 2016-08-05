@@ -665,7 +665,7 @@ namespace Services
                 table.AddCell(new PdfPCell(new Phrase("开户公司：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("上海皓为商务咨询有限公司", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("开户银行：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("工商银行武进路支行", font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("中国工商银行武进路支行", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("1001213909200135268", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
@@ -677,7 +677,7 @@ namespace Services
                 { IndentationLeft = 56 });
                 document.Add(
                     new Paragraph(
-                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
+                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
                     {
                         IndentationLeft = 56
                     });
@@ -697,6 +697,8 @@ namespace Services
                 var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
                 var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
                 yinZhangImage.Alignment = Element.ALIGN_RIGHT;
+                yinZhangImage.ScaleAbsoluteWidth(80);
+                yinZhangImage.ScaleAbsoluteHeight(80);
                 //yinZhangImage.SpacingBefore = 50;
                 yinZhangImage.IndentationRight = 40;
                 document.Add(yinZhangImage);

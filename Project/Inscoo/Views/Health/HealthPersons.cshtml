@@ -1,12 +1,16 @@
 ﻿@model IEnumerable<Domain.HealthOrderDetail>
 @if (Model.Any())
 {
+    var num = 1;
     <div class="orderConfirmBody form-inline " style="overflow:auto ">
         <dl style="width:130%">
             <dt>上传人员信息</dt>
             <dd>
                 <table class="table">
                     <tr>
+                        <th>
+                            编号
+                        </th>
                         <th>
                             姓名
                         </th>
@@ -46,6 +50,9 @@
                 {
                         <tr>
                             <td>
+                                @num
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
@@ -82,6 +89,7 @@
                                 @Html.DisplayFor(modelItem => item.Chair)
                             </td>
                         </tr>
+                                        num++;
                                     }
                 </table>
                 @{

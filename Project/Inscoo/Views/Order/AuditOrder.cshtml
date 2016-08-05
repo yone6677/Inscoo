@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            
+
         }
     }
     if (Model.State == 1)//inscoo通过审核
@@ -116,7 +116,7 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            
+
             <div class="d2-box box main-width">
                 <div class="d3-box box-1">
                     <div class="main-width">
@@ -153,28 +153,6 @@
                     </ul>
                     <ul>
                         <li>
-                            @Html.LabelFor(model => model.CourierNumber)
-                        </li>
-                        <li>
-                            @Html.EditorFor(model => model.CourierNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入快递单号" } })
-                        </li>
-                        <li>
-                            @Html.ValidationMessageFor(model => model.CourierNumber, "", new { @class = "text-danger" })
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            @Html.LabelFor(model => model.Express)
-                        </li>
-                        <li>
-                            @Html.EditorFor(model => model.Express, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入快递公司名称" } })
-                        </li>
-                        <li>
-                            @Html.ValidationMessageFor(model => model.Express, "", new { @class = "text-danger" })
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
                             @Html.LabelFor(model => model.PolicyNumber)
                         </li>
                         <li>
@@ -194,6 +172,28 @@
                     </ul>
                     <ul>
                         <li>
+                            @Html.LabelFor(model => model.Express)
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.Express, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入快递公司名称" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.Express, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.CourierNumber)
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.CourierNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "请输入快递单号" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.CourierNumber, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
                             @Html.LabelFor(model => model.InsurerMemo)
                         </li>
                         <li>
@@ -202,7 +202,7 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                
+
                 <div class="d2-box box main-width">
                     <div class="d3-box box-1">
                         <div class="main-width">

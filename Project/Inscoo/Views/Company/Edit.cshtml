@@ -62,13 +62,18 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BusinessLicenseFilePath, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                <a href="javascript:;" class="a-upload" >
+                <a href="javascript:;" class="a-upload">
                     <input type="file" id="file" name="file" class="form-control" />选择文件
                 </a>
                 <span class="lab" style="height:28px;line-height:28px;">未选择上传文件</span>
-                <div style="width:60%;float:right;line-height:34px;text-align:left" >
-                    <a target="_blank" href="@Model.BusinessLicenseFilePath">查看</a>
-                </div>
+                @{
+                    if (!string.IsNullOrEmpty(Model.BusinessLicenseFilePath))
+                    {
+                        <div style="width:60%;float:right;line-height:34px;text-align:left">
+                            <a target="_blank" href="@Model.BusinessLicenseFilePath">查看</a>
+                        </div>
+                    }
+                }
             </div>
         </div>
 
@@ -79,7 +84,7 @@
             </div>
         </div>
     </div>
-}
+                    }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -26,16 +26,7 @@
                         </div>
                     }
                 </div>
-                @*<div class="count-change col-xs-11 col-xs-offset-1 text-left">
-                    <div>数量：</div>
-                    <div class="wrap-input">
-                        <span class="btn-reduce"  onclick="reduce('#buy-num')">-</span>
-                        <input class="text" id="buy-num" value="1" onkeyup="">
-                        <span class="btn-add"  onclick="add('#buy-num')">+</span>
-
-                        <span></span>
-                    </div>
-                </div>*@
+                
                 <div class="product-count col-xs-12">
                     @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
                     @Html.ActionLink("直接购买", "MakeSure", new { productId = product.Id }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
@@ -45,26 +36,3 @@
     </div>
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
-
-
-@*@section Scripts {
-    <script>
-        function reduce(param) {
-            var Num = $(param).val();
-            if (Num >= 2) {
-                Num--;
-                $(param).val(Num);
-            } else {
-                $(param).val("1");
-            }
-        }
-
-        function add(param) {
-            var Num = $(param).val();
-            if (Num >= 1) {
-                Num++;
-                $(param).val(Num);
-            }
-        }
-    </script>
-}*@

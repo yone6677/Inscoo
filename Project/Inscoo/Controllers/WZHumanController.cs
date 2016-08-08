@@ -116,9 +116,11 @@ namespace Inscoo.Controllers
 
                         if (ForRole(user, "WZHumanCustomer"))
                         {
-                            TempData["errorMes"] = "添加成功";
-
                             return RedirectToAction("ListIndex", new { pageIndex });
+                        }
+                        else
+                        {
+                            TempData["errorMes"] = "添加失败";
                         }
                     }
                 }

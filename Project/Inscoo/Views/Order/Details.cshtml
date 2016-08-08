@@ -186,7 +186,7 @@
     </table>
     </div>
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保批次</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
+    <h4 class="text-primary_color"><span>投保批次</span> <b class="toggle_switch_1 text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     @{
         if (Model.orderBatch.Count > 0)
         {
@@ -568,8 +568,8 @@
         });
         $(function () {
             $(".toggle_switch_1").on("click", function () {
+               
                 $(".inscoo").slideToggle();
-                $(this).toggleClass("fa-hand-o-down");
             });
         })
     </script>

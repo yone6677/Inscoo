@@ -7,9 +7,9 @@
         <th>
             上传时间
         </th>
-        <th>
-            上传人
-        </th>
+        @*<th>
+                上传人
+            </th>*@
         <th>
             电子保单号码
         </th>
@@ -22,14 +22,15 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ExcelName)
+                @{ string name = item.ExcelName.Substring(0, item.ExcelName.Length - 15);}
+                <span>@name</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExceCreateTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExceCreateUser)
-            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.ExceCreateUser)
+                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.EOrderCode)
             </td>
@@ -70,7 +71,7 @@
 
 
         </tr>
-    }
+                    }
 </table>
 @{
     PageCommand command = ViewBag.pageCommand;

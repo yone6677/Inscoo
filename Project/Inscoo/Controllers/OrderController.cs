@@ -77,7 +77,7 @@ namespace Inscoo.Controllers
                     Text = "请选择",
                     Value = "0"
                 });
-            if (role == "InscooOperator" || role == "Admin" || role == "CompanyHR" || role == "InscooFinance" || role == "PartnerChannel" || role == "BusinessDeveloper")
+            if (role == "InscooOperator" || role == "Admin" || role == "CompanyHR" || role == "PartnerChannel" || role == "BusinessDeveloper")
             {
                 select.Add(new SelectListItem()
                 {
@@ -105,6 +105,15 @@ namespace Inscoo.Controllers
                 Text = "审核未通过",
                 Value = "7"
             });
+            if (role == "InscooFinance")
+            {
+                select.Clear();
+                select.Add(new SelectListItem()
+                {
+                    Text = "待支付",
+                    Value = "5"
+                });
+            }
             ViewBag.orderState = select;
             return View();
         }
@@ -1489,6 +1498,10 @@ namespace Inscoo.Controllers
                         else
                         {
                             var cashFlowDetails = new CashFlowDetails();
+                            cashFlowDetails.Author = User.Identity.GetUserId();
+                            cashFlowDetails.cId = cashFlow.Id;
+                            cashFlowDetails.Memo = model.FinanceMemo;
+                            cashFlowDetails.TransferVoucher = model.TransferVoucher;
                             if (batch.AmountCollected > 0)//收款
                             {
                                 cashFlowDetails.Receivable = model.Price;
@@ -1499,7 +1512,7 @@ namespace Inscoo.Controllers
                                 cashFlowDetails.Payable = model.Price;
                                 cashFlowDetails.RealPayment = batch.AmountCollected;
                             }
-                            cashFlowDetails.cId = cashFlow.Id;
+
                             if (_cashFlowDetails.Insert(cashFlowDetails))
                             {
                                 cashFlow.Difference += model.Price - model.AmountCollected;

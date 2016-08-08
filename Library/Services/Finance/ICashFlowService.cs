@@ -14,7 +14,7 @@ namespace Services.Finance
         bool Update(CashFlow item);
         CashFlow GetById(int id);
         CashFlow GetByOid(int oId);
-        List<CashFlow> GetList(int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null);
-        IPagedList<CashFlowModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null);
+        List<CashFlow> GetList(int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null, int differ = 0);
+        IPagedList<CashFlowModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null, int differ = 0);
     }
 }

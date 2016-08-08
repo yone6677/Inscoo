@@ -11,7 +11,7 @@
         @Html.HiddenFor(model => model.Id)
         <ul class="">
             <li>
-                   1. 下载变更人员模板人员信息变更模板:
+                1. 下载变更人员模板人员信息变更模板:
             </li>
             <li>
                 <a href=@Model.EmpInfoFileUrl target="_blank" class="btn btn-default">下载模板</a>
@@ -19,7 +19,7 @@
             <li>
                 2.请上传填写完成的员工名单:
             </li>
-            <li> 
+            <li>
                 <a href="javascript:;" class="a-upload">
                     <input type="file" id="empinfo" name="empinfo" />+ 浏览
                 </a>
@@ -48,7 +48,7 @@
         {
             <ul class="">
                 <li>
-                        3. 下载系统生成的盖章文件:
+                    3. 下载系统生成的盖章文件:
                 </li>
                 <li>
                     <a href="@Model.EmpInfoFilePDF" target="_blank" class="btn btn-default">名单下载</a>
@@ -90,9 +90,21 @@
                     <div style="line-height:2em;width:100%;text-align:left;">
                         <a href="@Model.PaymentNotice" target="_blank" class="btn btn-default">下载付款通知书</a>
                     </div>
-               
+
                 </li>
             </ul>
+        }
+        else
+        {
+            <ul class="buyMoreFile" style="border-bottom:1px solid #ddd;overflow:hidden">
+                <li style="width:35%;float:left;line-height:40px;">
+                    5. 本次退款将用于以后增加人员费用:
+                </li>
+                <li style="width:30%;float:left;line-height:40px">
+
+                </li>
+            </ul>
+
         }
     }
 }
@@ -146,10 +158,10 @@
                     return false;
                 }
                 pf = (EmpInfoPdfSeal.substring(EmpInfoPdfSeal.lastIndexOf(".") + 1, EmpInfoPdfSeal.length)).toLowerCase();
-                if (pf == 'zip' || pf == 'rar') {
+                if (pf == 'zip' || pf == 'rar' || pf == 'pdf') {
                     return true;
                 } else {
-                    errorInfo.text("员工名单盖章文件请压缩后再上传！");
+                    errorInfo.text("员工名单盖章文件请上传PDF或者压缩文件！");
                     return false;
                 }
             }

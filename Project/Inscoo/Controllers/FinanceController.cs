@@ -93,9 +93,9 @@ namespace Inscoo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult List(int PageIndex = 1, int PageSize = 15, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null)
+        public ActionResult List(int PageIndex = 1, int PageSize = 15, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null, int differ = 0)
         {
-            var model = _cashFlow.GetListOfPager(PageIndex, PageSize, 0, oId, beginDate, endDate);
+            var model = _cashFlow.GetListOfPager(PageIndex, PageSize, 0, oId, beginDate, endDate, differ);
             var command = new PageCommand()
             {
                 PageIndex = model.PageIndex,

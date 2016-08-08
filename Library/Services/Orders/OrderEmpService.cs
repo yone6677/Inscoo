@@ -412,12 +412,12 @@ namespace Services.Orders
                     PdfPTable table;
                     PdfPCell cell;
                     var pdfWrite = PdfWriter.GetInstance(document, stream);
-                    var eventHd = new PageHeaderHandlerAddLogo();
+                   // var eventHd = new PageHeaderHandlerAddLogo();
 
                     document.SetMargins(30, 30, 40, 20);
                     document.Open();
-                    eventHd.AddHead(pdfWrite, document);
-                    pdfWrite.PageEvent = eventHd;
+                    //eventHd.AddHead(pdfWrite, document);
+                    //pdfWrite.PageEvent = eventHd;
                     document.Add(new Paragraph("付款通知书/Debit Note\n", OperationPDF.GetTitleFont()) { Alignment = PdfFormField.Q_CENTER, SpacingAfter = 20 });
 
                     table = new PdfPTable(2) { WidthPercentage = 100 };

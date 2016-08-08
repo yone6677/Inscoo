@@ -1201,41 +1201,6 @@ div:after {
 .health_box .health_box_header ul li.header_right {
   width: 60%;
   float: left;
-  /*.count-change{
-                    margin-top:20px;
-                    height:40px;
-                    padding-left:1em;
-                    div{
-                        float:left;
-                        height:28px;
-                        line-height:28px;
-
-                        .btn-reduce,.btn-add{
-                            display:inline-block;
-                            width:24px;
-                            text-align:center;
-                        
-                            border:1px solid #aaa;
-                            background:#f7f7f7;
-                            cursor:pointer;
-                            padding:1px 0;
-                        }
-                        .btn-reduce{
-                            border-right:none;
-                            margin-right:-4px;
-                        }
-                        .btn-add{
-                            border-left:none;
-                            margin-left:-4px;
-                        }
-                        input{
-                            width:60px;
-                            height:32px;
-                            border:1px solid #aaa;
-                            padding-left:5px;
-                        }
-                    }
-                }*/
 }
 .health_box .health_box_header ul li.header_right > ul {
   font-size: 20px;
@@ -1256,6 +1221,40 @@ div:after {
 }
 .health_box .health_box_header ul li.header_right > ul li b {
   font-size: 1.8em;
+}
+.health_box .health_box_header ul li.header_right .count-change {
+  margin-top: 20px;
+  height: 40px;
+  padding-left: 1em;
+}
+.health_box .health_box_header ul li.header_right .count-change div {
+  float: left;
+  height: 28px;
+  line-height: 28px;
+}
+.health_box .health_box_header ul li.header_right .count-change div .btn-reduce,
+.health_box .health_box_header ul li.header_right .count-change div .btn-add {
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+  border: 1px solid #aaa;
+  background: #f7f7f7;
+  cursor: pointer;
+  padding: 1px 0;
+}
+.health_box .health_box_header ul li.header_right .count-change div .btn-reduce {
+  border-right: none;
+  margin-right: -4px;
+}
+.health_box .health_box_header ul li.header_right .count-change div .btn-add {
+  border-left: none;
+  margin-left: -4px;
+}
+.health_box .health_box_header ul li.header_right .count-change div input {
+  width: 60px;
+  height: 32px;
+  border: 1px solid #aaa;
+  padding-left: 5px;
 }
 .health_box .health_box_header ul li.header_right .product-count {
   margin-top: 40px;

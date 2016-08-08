@@ -47,17 +47,16 @@
                 @Html.DisplayFor(modelItem => item.StatusDes)
             </td>
             <td>
-                @*@if (item.Status >= 4 && !User.IsInRole("InscooOperator"))
+                @if (item.Status > 4 || (!ViewBag.IsInscooOperator && item.Status == 4))
                 {
-                    @Html.ActionLink("查看订单信息", "AuditOrder", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize }, new { target = "_blank" })
-                    <span>|</span>
-                }*@
+                    @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
+                }
 
                 @if (ViewBag.IsInscooOperator)
                 {
                     if (item.Status == 4)
                     {
-                        @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize })
+                        @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })
                     }
                     else if (item.Status == 11)
                     {
@@ -70,9 +69,11 @@
                 }
                 else if (ViewBag.IsFinance)
                 {
+                    <span>|</span>
                     if (item.Status == 11)
                     {
-                        @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, pageCommand.PageIndex, pageCommand.PageSize })
+                        
+                        @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })
                     }
                     else if (item.Status == 17)
                     {
@@ -81,18 +82,24 @@
                 }
                 else
                 {
+                    if (item.Status <= 4)
+                    {
+                        @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                        <span>|</span>
+                    }
                     if (item.Status == 1)
                     {
-                        @Html.ActionLink("信息填写", "EntryInfo", new { item.MasterId })
+                        @Html.ActionLink("信息填写", "EntryInfo", new { item.MasterId, item.DateTicks })
                     }
                     else if (item.Status == 4)
                     {
-                        @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId })
+                        @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId, item.DateTicks })
                     }
                     else if (item.Status == 17)
                     {
                         <span>已付款</span>
                     }
+
                 }
             </td>
         </tr>

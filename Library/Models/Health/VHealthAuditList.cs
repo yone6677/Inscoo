@@ -10,6 +10,7 @@ namespace Models
     public class VHealthAuditList
     {
         public int MasterId { set; get; }
+        public string DateTicks { set; get; }
         [DisplayName("客户")]
         public string Author { set; get; }
         [DisplayName("产品类型")]

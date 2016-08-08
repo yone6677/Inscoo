@@ -109,9 +109,12 @@ namespace Services
             {
                 await Task.Run(() =>
                 {
-                    _fileService.DeleteFile(url);
+                    var path = AppDomain.CurrentDomain.BaseDirectory + url.Substring(1);
+                    if (!File.Exists(path)) return;
+                    File.Delete(path);
                 });
             }
+            //catch(conta)
             catch (Exception e)
             {
                 _loggerService.insert(e, LogLevel.Warning, "FileInfo：Delete");

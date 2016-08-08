@@ -11,7 +11,7 @@ namespace Models
     public class VFNConfirm
     {
         public int MasterId { set; get; }
-
+        public string DateTicks { set; get; }
         [Display(Name = "付款日期")]
         [Required]
         public DateTime FinancePayDate { set; get; }

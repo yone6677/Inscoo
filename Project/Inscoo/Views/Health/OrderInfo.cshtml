@@ -1,0 +1,120 @@
+﻿@model Models.VHealthAuditOrder
+
+@{
+    ViewBag.Title = "订单信息";
+    if (ViewBag.IsInline)
+    {
+        Layout = null;
+    }
+}
+@section head {
+    <style>
+        li {
+            width: 33%;
+        }
+    </style>
+}
+
+<div class="orderEntryInfoBody">
+    <p class="basic-information" style="margin-top: 70px;">
+        <i class="fa fa-edit fa-2x"></i>订单信息
+    </p>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Author, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Address, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+    <ul>
+        <li>
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })：
+        </li>
+        <li>
+            @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control  control-label" } })
+        </li>
+    </ul>
+</div>
+
+<p class="basic-information" style="margin-top: 70px;">
+    <i class="fa fa-edit fa-2x"></i>人员信息
+</p>
+@if (!string.IsNullOrEmpty(ViewBag.Mes))
+{
+    <div class="alert alert-danger text-center" style="width:100%">@ViewBag.Mes</div>
+}
+<div class="employeeInfo" id="dadaGrid">
+    @Html.Action("HealthPersons", new { Model.MasterId })
+</div>
+@if (!ViewBag.IsInline)
+{
+    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+        @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
+    </div>
+}
+@if (ViewBag.IsDelete)
+{
+    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+        @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-default" })
+        @Html.ActionLink("确认删除", "Delete", new { Model.MasterId, Model.DateTicks, Model.PageIndex, Model.PageSize }, new { @class = "btn btn-warning" })
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        jQuery(function () {
+            jQuery("#notPass").click(function () {
+                jQuery("#result").val(0);
+            });
+        })
+    </script>
+}

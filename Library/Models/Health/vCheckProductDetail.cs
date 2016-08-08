@@ -13,6 +13,10 @@ namespace Models
     {
         public int Id { set; get; }
         public int MasterId { set; get; }
+        [DisplayName("数量")]
+        [Required]
+        public int Count { set; get; }
+        public string DateTicks { set; get; }
         [DisplayName("产品类型")]
         public string ProductType { set; get; }
         public string ProductCode { set; get; }

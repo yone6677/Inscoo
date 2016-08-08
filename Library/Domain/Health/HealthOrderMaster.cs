@@ -9,6 +9,10 @@ namespace Domain
     public class HealthOrderMaster : BaseEntity
     {
         public string DateTicks { set; get; }
+        /// <summary>
+        /// 购买份数
+        /// </summary>
+        public int Count { set; get; }
         public int HealthCheckProductId { set; get; }
         /// <summary>
         /// 对外售价

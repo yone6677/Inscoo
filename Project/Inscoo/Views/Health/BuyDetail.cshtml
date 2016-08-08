@@ -1,0 +1,29 @@
+﻿@model Models.VBuyDetail
+
+@using (Html.BeginForm("BuyDetail", "Health", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ProductId)
+    @Html.HiddenFor(m => m.ProductType)
+    @Html.HiddenFor(m => m.ProductName)
+    @*<div class="form-group col-xs-10 col-xs-offset-1" style="margin-top:40px">
+            <label style="float:left;height:30px;line-height:30px">数量：</label>
+            <div class="col-xs-7">
+                @Html.TextBoxFor(m => m.Count, new { @class = "form-control" })
+            </div>
+        </div>*@
+    <div class="count-change col-xs-11 col-xs-offset-1 text-left" style="margin-top:40px">
+        <div>数量：</div>
+        <div class="wrap-input">
+            <span class="btn-reduce" onclick="reduce('#buy-num')">-</span>
+            @Html.TextBoxFor(m => m.Count, new { @id = "buy-num", @class = " text" })
+            <span class="btn-add" onclick="add('#buy-num')">+</span>
+
+            <span></span>
+        </div>
+    </div>
+    <div class="product-count col-xs-12">
+        @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
+        <input type="submit" value="直接购买" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+    </div>
+}

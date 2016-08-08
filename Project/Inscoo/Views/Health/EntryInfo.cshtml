@@ -5,7 +5,6 @@
 }
 @section head {
     <style>
-       
     </style>
 }
 <div class="orderConfirm">
@@ -29,7 +28,7 @@
 
 @using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data" }))
 {
-
+    @Html.HiddenFor(model => model.DateTicks)
     <p class="basic-information">
         <i class="fa fa-edit fa-2x"></i>详细信息填写
     </p>
@@ -60,14 +59,14 @@
 
         @if (TempData["error"] != null)
         {
-            <span class="text-danger" style="font-size: 1em ">错误：@TempData["error"]</span><br />
+            <span class="text-danger" style="font-size: 1em ">注意：@TempData["error"]</span><br />
         }
     </div>
 }
 @if (string.IsNullOrEmpty(Model.EmpInfoFileUrl))
 {
     <div class="orderConfirmBodyNext" style="text-align: center;">
-        @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+        @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId, Model.DateTicks }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
     </div>
 }
 else
@@ -77,9 +76,11 @@ else
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.MasterId)
+        @Html.HiddenFor(model => model.DateTicks)
+
         @Html.Hidden("isCompanySelect")
 
-   <hr>
+        <hr>
         <div class="orderEntryInfoBody">
             <p class="basic-information" style="margin-top: 20px;">
                 <i class="fa fa-edit fa-2x"></i>发票公司信息
@@ -89,7 +90,7 @@ else
                 <li>
                     @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
                 </li>
-                
+
                 <li>
                     @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
                     @if (Model.CompanyNameList != null)
@@ -119,7 +120,7 @@ else
                 </li>
                 <li>
                     @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                    
+
                 </li>
                 <li>
                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
@@ -139,7 +140,7 @@ else
             </ul>
         </div>
         <div class="orderConfirmBodyNext" style="text-align:center;">
-            @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+            @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId, Model.DateTicks }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
             <input type="submit" value="下一步" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
         </div>
     }

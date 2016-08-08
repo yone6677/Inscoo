@@ -73,8 +73,9 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Fatal, "删除文件失败");
-                throw e;
+                _loggerService.insert(e, LogLevel.Fatal, "删除文件失败" + url);
+                return;
+                // throw e;
             }
         }
 

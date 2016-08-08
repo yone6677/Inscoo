@@ -74,7 +74,8 @@ namespace Services
                     {
                         Author = author,
                         HealthCheckProductId = productId,
-                        Status = 1
+                        Status = 1,
+                        BaokuOrderCode = "HLTH" + DateTime.Now.Ticks.ToString()
                     };
 
                     _repHealthOrderMaster.Insert(master);
@@ -87,7 +88,7 @@ namespace Services
                 _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
             }
         }
-        public int AddHealthMaster(int productId, string author)
+        public HealthOrderMaster AddHealthMaster(int productId, string author, int count)
         {
             try
             {
@@ -101,15 +102,34 @@ namespace Services
                     CommissionRatio = GetCommissionRatio(author, p),
                     Author = author,
                     HealthCheckProductId = productId,
-                    Status = 1
+                    Status = 1,
+                    Count = count,
+                    BaokuOrderCode = "HLTH" + DateTime.Now.Ticks.ToString()
                 };
-                return _repHealthOrderMaster.InsertGetId(master);
+                _repHealthOrderMaster.Insert(master);
+                return master;
             }
 
             catch (Exception e)
             {
                 _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
                 throw new WarningException("操作失败");
+            }
+        }
+
+        public bool DeleteMaster(int masterID, string author)
+        {
+            try
+            {
+                var p = _repHealthOrderMaster.GetById(masterID);
+                if (p.Author == author) _repHealthOrderMaster.DeleteById(masterID, false, true);
+                return true;
+            }
+
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
+                return false;
             }
         }
         public List<VCheckProductList> GetHealthProducts(string uId)
@@ -187,24 +207,19 @@ namespace Services
                 return new List<VCheckProductList>();
             }
         }
-        public HealthOrderMaster GetHealthMaster(int id, string author)
-        {
-            try
-            {
-                return _repHealthOrderMaster.Table.FirstOrDefault(h => h.Id == id && h.Author == author);
-            }
-            catch (Exception e)
-            {
-                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
-                throw new WarningException("操作有误");
-            }
-        }
-        public HealthOrderMaster GetHealthMaster(int id)
+        public HealthOrderMaster GetHealthMaster(int id, string dateTicks = "", string author = "")
         {
             try
             {
                 var result = _repHealthOrderMaster.GetById(id);
-
+                if (!string.IsNullOrEmpty(author))
+                {
+                    if (result.Author != author) return null;
+                }
+                if (!string.IsNullOrEmpty(dateTicks))
+                {
+                    if (result.DateTicks != dateTicks) return null;
+                }
                 return result;
             }
             catch (Exception e)
@@ -233,6 +248,7 @@ namespace Services
                         //PhoneNumber = company.Phone,
                         //Address = company.Address,
                         CompanyId = company.Id,
+                        DateTicks = master.DateTicks,
                         EmpInfoFileUrl = master.PersonExcelPath
                     };
                 }
@@ -243,28 +259,29 @@ namespace Services
                 throw new WarningException("操作有误");
             }
         }
-        public VHealthAuditOrder GetHealthAuditOrder(int matserId)
+        public VHealthAuditOrder GetHealthAuditOrder(int matserId, string dateTicks)
         {
             try
             {
                 var master =
-                    _repHealthOrderMaster.Table.Include(h => h.HealthOrderDetails).Include(h => h.Company).AsNoTracking().FirstOrDefault(h => h.Id == matserId);
+                    _repHealthOrderMaster.Table.Include(h => h.Company).AsNoTracking().FirstOrDefault(h => h.Id == matserId && h.DateTicks == dateTicks);
                 if (master == null) { throw new WarningException("操作失败"); }
                 else
                 {
                     var company = master.Company;
+                    if (company == null) company = new Company();
                     return new VHealthAuditOrder()
                     {
                         MasterId = matserId,
-                        CompanyName = company.Name,
-                        Linkman = company.LinkMan,
-                        PhoneNumber = company.Phone,
-                        Address = company.Address,
+                        CompanyName = company.Name ?? "无",
+                        Linkman = company.LinkMan ?? "无",
+                        PhoneNumber = company.Phone ?? "无",
+                        Address = company.Address ?? "无",
                         Price = master.SellPrice,
-                        Count = master.HealthOrderDetails.Count,
-                        Amount = master.SellPrice * master.HealthOrderDetails.Count,
-                        DateTicks=master.DateTicks,
-                        Author=master.Author
+                        Count = master.Count,
+                        Amount = master.SellPrice * master.Count,
+                        DateTicks = master.DateTicks,
+                        Author = master.Author
                     };
                 }
             }
@@ -376,7 +393,7 @@ namespace Services
 
                 if (!list.Any()) throw new Exception();
                 var totalCount = list.Count();
-                var pList = from h in list.OrderBy(h => h.Id).OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
+                var pList = from h in list.OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
                             let p = h.HealthCheckProduct
                             select (new VHealthAuditList()
                             {
@@ -388,7 +405,8 @@ namespace Services
                                 StatusDes = GetHealthOrderStatus(h.Status),
                                 Status = h.Status,
                                 Author = h.Author,
-                                CreateTime = h.CreateTime
+                                CreateTime = h.CreateTime,
+                                DateTicks = h.DateTicks
                             });
 
                 return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
@@ -426,20 +444,20 @@ namespace Services
                 return null;
             }
         }
-        public VHealthConfirmPayment GetConfirmPayment(int masterId)
+        public VHealthConfirmPayment GetConfirmPayment(int masterId, string dateTicks)
         {
             try
             {
                 var master =
-                    _repHealthOrderMaster.Table.Include(h => h.HealthOrderDetails)
+                    _repHealthOrderMaster.Table
                         .AsNoTracking()
-                        .First(h => h.Id == masterId);
+                        .First(h => h.Id == masterId && h.DateTicks == dateTicks);
                 var result = new VHealthConfirmPayment()
                 {
                     MasterId = masterId,
                     Price = master.SellPrice,
-                    Count = master.HealthOrderDetails.Count,
-                    Amount = master.SellPrice * master.HealthOrderDetails.Count,
+                    Count = master.Count,
+                    Amount = master.SellPrice * master.Count,
                     PaymentNoticePdf = master.PaymentNoticePdf ?? "",
                     BaokuOrderCode = master.BaokuOrderCode ?? ""
                 };
@@ -474,12 +492,14 @@ namespace Services
                 return new SelectList(list, "Value", "Text", 1);
             }
         }
-        public int UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author)
+        public string UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author)
         {
             try
             {
                 if (empinfo != null && masterId > 0)
                 {
+                    var master = _repHealthOrderMaster.GetById(masterId);
+                    if (master.Author != author) throw new WarningException("无效操作");
                     //打开excel
                     var ep = new ExcelPackage(empinfo.InputStream);
                     var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
@@ -540,17 +560,26 @@ namespace Services
                     }
                     var result = _repHealthOrderDetail.InsertRange(list);
 
-                    var master = _repHealthOrderMaster.GetById(masterId);
+
                     if (!string.IsNullOrEmpty(master.PersonExcelPath))
                     {
                         _svArchive.DeleteFileBuUrl(master.PersonExcelPath);
                     }
-
+                    var errorMes = "";
+                    if (master.Count > list.Count)
+                    {
+                        errorMes = "上传人数小于购买人数,支付价格仍会按照购买人数计算.";
+                    }
+                    if (master.Count < list.Count)
+                    {
+                        master.Count = list.Count;
+                        errorMes = "上传人数大于购买人数,已自动将购买人数调整为实际上传人数.";
+                    }
                     master.PersonExcelPath = fileModel.Url;
                     _repHealthOrderMaster.Update(master);
 
 
-                    return result;
+                    return errorMes;
                 }
                 else
                 {
@@ -574,7 +603,7 @@ namespace Services
             _repHealthOrderMaster.Update(master);
         }
 
-        public async Task GetPaymentNoticePdfAsync(int masterId)
+        public async Task GetPaymentNoticePdfAsync(int masterId, string dateTicks)
         {
             try
             {
@@ -582,19 +611,19 @@ namespace Services
                 {
 
                 });
-                GetPaymentNoticePdf(masterId);
+                GetPaymentNoticePdf(masterId, dateTicks);
             }
             catch (Exception exc)
             {
                 _svLogger.insert(exc, LogLevel.Warning, "HealthService：GetPaymentNoticePdf");
             }
         }
-        public string GetPaymentNoticePdf(int masterId)
+        public string GetPaymentNoticePdf(int masterId, string dateTicks)
         {
             try
             {
-                var master = GetConfirmPayment(masterId);
-                var masterUp = GetHealthMaster(masterId);
+                var master = GetConfirmPayment(masterId, dateTicks);
+                var masterUp = GetHealthMaster(masterId, dateTicks: dateTicks);
                 if (!masterUp.CompanyId.HasValue) return null;
                 var paths = _svFile.GenerateFilePathBySuffix(".pdf");
                 masterUp.PaymentNoticePdf = "";
@@ -672,7 +701,7 @@ namespace Services
                 table.AddCell(new PdfPCell(new Phrase("中国工商银行武进路支行", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("1001213909200135268", font)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("转账备注：", font1)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase($"转账备注：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase(master.BaokuOrderCode, font)) { BorderWidth = 0 });
                 document.Add(table);
 
@@ -681,7 +710,7 @@ namespace Services
                 { IndentationLeft = 56 });
                 document.Add(
                     new Paragraph(
-                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode}", font)
+                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode ?? ""}", font)
                     {
                         IndentationLeft = 56
                     });

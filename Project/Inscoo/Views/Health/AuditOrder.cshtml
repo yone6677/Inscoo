@@ -2,11 +2,6 @@
 
 @{
     ViewBag.Title = "审核";
-    var isInscooOperator = User.IsInRole("InscooOperator");
-    if (!isInscooOperator)
-    {
-        Layout = null;
-    }
 }
 @section head {
     <style>
@@ -15,17 +10,14 @@
         }
     </style>
 }
-@if (isInscooOperator)
-{
-    <div class="orderConfirm">
-        <ul class="orderConfirmLi">
-            <li class="orderConfirmLiActive" style="width: 100%">
-                <i class="fa fa-edit fa-2x"></i>
-                审核
-            </li>
-        </ul>
-    </div>
-}
+<div class="orderConfirm">
+    <ul class="orderConfirmLi">
+        <li class="orderConfirmLiActive" style="width: 100%">
+            <i class="fa fa-edit fa-2x"></i>
+            审核
+        </li>
+    </ul>
+</div>
 @using (Html.BeginForm("AuditOrder", "Health", FormMethod.Post, new { @id = "EntryInfoForm" }))
 {
     @Html.AntiForgeryToken()
@@ -104,14 +96,11 @@
         </ul>
 
     </div>
-    if (isInscooOperator)
-    {
-        <div class="orderConfirmBodyNext" style="text-align:center;">
+    <div class="orderConfirmBodyNext" style="text-align:center;">
 
-            <input type="submit" value="审核通过" class="btn btn-primary" style="background-color: #38A6D9; border-color: #38A6D9" />
-            <input type="submit" id="notPass" value="审核不通过" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
-        </div>
-    }
+        <input type="submit" value="审核通过" class="btn btn-primary" style="background-color: #38A6D9; border-color: #38A6D9" />
+        <input type="submit" id="notPass" value="审核不通过" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+    </div>
 }
 <p class="basic-information" style="margin-top: 70px;">
     <i class="fa fa-edit fa-2x"></i>人员信息

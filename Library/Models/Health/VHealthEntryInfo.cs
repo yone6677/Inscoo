@@ -24,6 +24,7 @@ namespace Models
 
         public int CompanyId { set; get; }
         public int MasterId { set; get; }
+        public string DateTicks { set; get; }
         public string EmpInfoFileUrl { get; set; }
 
         [Display(Name = "返点信息")]

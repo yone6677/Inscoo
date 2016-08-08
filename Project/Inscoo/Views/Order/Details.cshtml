@@ -4,17 +4,73 @@
     ViewBag.Title = "订单详细";
 }
 <div class="orderDetails">
-    <h4 class="text-primary_color"><span>基本信息</span> <b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>基本信息</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     <dl >
-        
+        <dt>
+            @Html.DisplayNameFor(model => model.PolicyNumber)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PolicyNumber)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.OrderNum)：
         </dt>
         <dd>
             @Html.DisplayFor(model => model.OrderNum)
         </dd>
-        
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)：
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Linkman)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Linkman)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialNumber)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitialNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InsuranceNumber)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsuranceNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BusinessLicense)：
+        </dt>
+
+        <dd>
+            <a href=@Model.BusinessLicense target="_blank">查看</a>
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.StaffRange)：
         </dt>
@@ -32,78 +88,17 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CompanyName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Linkman)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Linkman)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BusinessLicense)：
-        </dt>
-
-        <dd>
-            <a href=@Model.BusinessLicense target="_blank">查看</a>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PolicyNumber)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PolicyNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.InsuranceNumber)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InsuranceNumber)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.State)：
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.InitialNumber)：
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InitialNumber)
-        </dd>
+        
     </dl>
 
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>保单信息</span> <b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>保单信息</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     <div>
      <dl>
         <dt>
@@ -127,6 +122,8 @@
         <dd>
             @Html.DisplayFor(model => model.Insurer)
         </dd>
+         <dt></dt>
+         <dd></dd>
         <dt>
             @Html.DisplayNameFor(model => model.AnnualExpense)：
         </dt>
@@ -189,7 +186,7 @@
     </table>
     </div>
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保批次</span> <b class="fa fa-hand-o-up toggle_switch_1" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>投保批次</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     @{
         if (Model.orderBatch.Count > 0)
         {
@@ -383,7 +380,7 @@
                         }
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>人员信息</span><b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>人员信息</span><b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     @using (Ajax.BeginForm("DetailsEmp", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "employeeInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -392,7 +389,7 @@
         </div>
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保人员变更信息</span><b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+    <h4 class="text-primary_color"><span>投保人员变更信息</span></h4>
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
@@ -567,7 +564,7 @@
 
         $(".toggle_switch").on("click", function () {
             $(this).parent().next().slideToggle();
-            $(this).toggleClass("fa-hand-o-down");
+            $(this).toggleClass("text-content-extend");
         });
         $(function () {
             $(".toggle_switch_1").on("click", function () {

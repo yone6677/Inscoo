@@ -1,5 +1,5 @@
 ﻿@model Models.Order.AuditOrderModel
-<h4 class="text-primary_color"><span>审核意见</span><b class="fa fa-hand-o-up toggle_switch" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer"></b></h4>
+<h4 class="text-primary_color"><span>审核意见</span></h4>
 @using (Html.BeginForm("AuditOrder", "Order", FormMethod.Post, new { @id = "AuditOrderForm" }))
 {
     @Html.AntiForgeryToken()

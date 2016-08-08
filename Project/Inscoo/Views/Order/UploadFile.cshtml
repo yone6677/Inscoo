@@ -162,24 +162,33 @@
 
     </div>
 </div>
-@using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    <div>
-        <a href="/Order/EntryInfo/@Model.Id ">返回</a>
+<div class="d2-box box main-width">
+    <div class="d3-box box-1">
+        <div class="main-width">
+            <div class="sort-all sort-basic">
+                @using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                    <div>
+                        <a href="/Order/EntryInfo/@Model.Id ">返回</a>
+                    </div>
+                    <div>
+                        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
+                        {
+                            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
+                        }
+                        else
+                        {
+                            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div>
-        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
-{
-            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
-        }
-        else
-        {
-            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
-        }
-    </div>
-}
+</div>
+
 
 
 <form onsubmit=""></form>

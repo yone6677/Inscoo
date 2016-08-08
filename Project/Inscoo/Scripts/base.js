@@ -242,9 +242,8 @@ $(function () {
     $(window).scroll(function () {
         var innerH = window.innerHeight;
         var oldTop = innerH / 2;
-        var t = $("body").scrollTop();
+        var t = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;;
         t = t + oldTop + "px";
-
         setTimeout(function () {
             $(".service-girl").css("top", t);
         }, 200);
@@ -280,7 +279,7 @@ $(function() {
         var pathName = window.location.pathname;
         var partialName = pathName.split("/");
         var Name = "/" + partialName[1] + "/" + partialName[2] + "/";
-        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/" || Name == "/Order/Details/") {
+        if (Name == "/Order/EntryInfo/" || Name == "/order/EntryInfo/"  || Name == "/Order/UploadFile/" || Name == "/Order/ConfirmPayment/") {
             var parent = $(".d2-box");
             var parentHeight = parent.offset().top;
             var innerHeight = window.innerHeight;

@@ -33,14 +33,23 @@
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
 @section Scripts {
-    <script>
-        jQuery(function () {
-            jQuery("#aMakeSure").click(function () {
+        <script>
+            function reduce(param) {
+                var Num = $(param).val();
+                if (Num >= 2) {
+                    Num--;
+                    $(param).val(Num);
+                } else {
+                    $(param).val("1");
+                }
+            }
 
-            });
-            MakeSure
-
-        });
-
-    </script>
-}
+            function add(param) {
+                var Num = $(param).val();
+                if (Num >= 1) {
+                    Num++;
+                    $(param).val(Num);
+                }
+            }
+        </script>
+    }

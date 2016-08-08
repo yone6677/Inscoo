@@ -10,6 +10,10 @@ namespace Models
     /// </summary>
     public class VBuyDetail
     {
+        public VBuyDetail()
+        {
+            Count = 1;
+        }
         [Required]
         public int ProductId { set; get; }
 

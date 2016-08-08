@@ -135,6 +135,7 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/order/BuyMore/') {
                 url = '/order/CompletedOrder';
             }
+          
         }
         if (bgColor == '/user/index') {
             if (urlNow == '/user/Edit/') {
@@ -143,6 +144,14 @@ function menuNav(name, csskey, cssvalue) {
         }
         if (bgColor == '/company/listindex') {
             if (urlNow == '/company/Edit/') {
+                url = bgColor;
+            }
+        }
+        if (bgColor == '/Finance/index') {
+            if (urlNow == '/Finance/Details/') {
+                url = bgColor;
+            }
+            if (urlNow == '/Finance/Settlement/') {
                 url = bgColor;
             }
         }

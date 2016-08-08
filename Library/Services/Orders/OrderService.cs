@@ -132,9 +132,13 @@ namespace Services.Orders
                 //根据角色获得列表
                 var user = _appUserService.GetCurrentUser();
                 var role = _appRoleService.FindByIdAsync(user.Roles.FirstOrDefault().RoleId).Name;
-                if (role == "InscooFinance" || role == "InscooOperator" || role == "Admin")
+                if (role == "InscooOperator" || role == "Admin")
                 {
 
+                }
+                else if (role == "InscooFinance")
+                {
+                    query = query.Where(q => q.State == 5);
                 }
                 else
                 {

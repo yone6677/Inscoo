@@ -157,29 +157,38 @@
     <div style="min-height:2em;width:90%;text-align:left;line-height:2em;margin:.5em auto;">
         <span style="color:#333">注意：重新上传会覆盖之前的文件！</span><br />
         <span style="color: gray">1.营业执照员工名单/投保单只能上传JPG/PNG/PDF/Doc/ZIP/RAR格式压缩文件</span><br />
-        <span style="color:gray">2.员工名单只能上传JPG/PNG/PDF/ZIP/RAR/7Z格式压缩文件</span><br />
+        <span style="color:gray">2.员工名单只能上传JPG/PNG/PDF/ZIP/RAR格式压缩文件</span><br />
         <span style="color:gray">3.如果文件超过2M,请将文件压缩后上传</span><br />
 
     </div>
 </div>
-@using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    <div>
-        <a href="/Order/EntryInfo/@Model.Id ">返回</a>
+<div class="d2-box box main-width">
+    <div class="d3-box box-1">
+        <div class="main-width">
+            <div class="sort-all sort-basic">
+                @using (Html.BeginForm("UploadFile", "Order", FormMethod.Post, new { @class = "orderConfirmBodyNext" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                    <div>
+                        <a href="/Order/EntryInfo/@Model.Id ">返回</a>
+                    </div>
+                    <div>
+                        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
+                        {
+                            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
+                        }
+                        else
+                        {
+                            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div>
-        @if (Model.HasBusinessLicense && Model.HasEmpInfoFilePDFSeal && Model.HasInsurancePolicy)
-{
-            <input type="submit" value="下一步" class="orderConfirmNextSubmit" />
-        }
-        else
-        {
-            <input type="button" value="下一步" onclick="msg()" class="orderConfirmNextSubmit" />
-        }
-    </div>
-}
+</div>
+
 
 
 <form onsubmit=""></form>

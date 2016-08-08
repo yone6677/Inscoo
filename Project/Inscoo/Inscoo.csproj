@@ -306,7 +306,6 @@
     <Content Include="Content\img\p4.jpg" />
     <Content Include="Content\img\tt.png" />
     <Content Include="Content\img\health\health_1_1.png" />
-    <Content Include="Content\img\health\health_1_2.png" />
     <Content Include="Content\img\health\health_1_3.png" />
     <Content Include="Content\img\health\health_1_4.png" />
     <Content Include="Content\img\health\health_1_5.png" />

@@ -448,7 +448,7 @@ body {
 }
 .inscoo-productTable tr:first-child span {
   color: #fff;
-  font-size: 0.5em;
+  font-size: 0.9em;
   display: inline-block;
   height: 25px;
   vertical-align: text-bottom;
@@ -520,7 +520,7 @@ body {
 }
 .customProduct_purchaseul [data-toggle='tooltip'] {
   color: #fff;
-  font-size: 0.5em;
+  font-size: 0.9em;
   display: inline-block;
   height: 25px;
   vertical-align: text-bottom;
@@ -721,12 +721,14 @@ body {
   line-height: 28px;
   float: left;
 }
+.orderEntryInfoBody ul li [value="上传"] {
+  margin-bottom: 5px;
+}
 .orderEntryInfoBody ul li:first-child {
   /*text-align: right;*/
 }
 .orderEntryInfoBody ul li:nth-child(even) input {
   width: 100%;
-  margin: 0 auto;
 }
 .orderEntryInfoBody ul li:last-child {
   text-align: left;
@@ -808,7 +810,6 @@ body {
 }
 .buyMoreFile ul li:nth-child(even) [type="submit"] {
   width: 20%;
-  margin-top: -3px;
 }
 .buyMoreFile ul li:nth-child(5) {
   width: 20%;
@@ -1137,6 +1138,7 @@ div:after {
   padding: 5px;
   margin-top: 5px;
   border: 1px solid #aaa;
+  border-radius: 10px;
 }
 .health_box .health_project .health_detail li.health_content .content_left {
   width: 100%;
@@ -1199,6 +1201,41 @@ div:after {
 .health_box .health_box_header ul li.header_right {
   width: 60%;
   float: left;
+  /*.count-change{
+                    margin-top:20px;
+                    height:40px;
+                    padding-left:1em;
+                    div{
+                        float:left;
+                        height:28px;
+                        line-height:28px;
+
+                        .btn-reduce,.btn-add{
+                            display:inline-block;
+                            width:24px;
+                            text-align:center;
+                        
+                            border:1px solid #aaa;
+                            background:#f7f7f7;
+                            cursor:pointer;
+                            padding:1px 0;
+                        }
+                        .btn-reduce{
+                            border-right:none;
+                            margin-right:-4px;
+                        }
+                        .btn-add{
+                            border-left:none;
+                            margin-left:-4px;
+                        }
+                        input{
+                            width:60px;
+                            height:32px;
+                            border:1px solid #aaa;
+                            padding-left:5px;
+                        }
+                    }
+                }*/
 }
 .health_box .health_box_header ul li.header_right > ul {
   font-size: 20px;
@@ -1681,10 +1718,13 @@ div:after {
 }
 .entryInfoUpload ul li {
   margin-bottom: 1em;
-  height: auto;
+  height: 3em;
   line-height: 3em;
   float: left;
   text-align: left;
+}
+.entryInfoUpload ul li [value='上传'] {
+  margin-bottom: 5px;
 }
 .entryInfoUpload ul li:nth-child(even) {
   width: 50%;
@@ -1739,4 +1779,10 @@ div:after {
 .table-header-blur tr:first-child {
   background: #24A9E4;
   color: #fff;
+}
+.text-content-pack::after {
+  content: "收起";
+}
+.text-content-extend::after {
+  content: "展开";
 }

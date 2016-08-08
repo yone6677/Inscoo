@@ -513,7 +513,7 @@ body {
             color:#fff;
             span{
                 color:#fff;
-                font-size:0.5em;
+                font-size:0.9em;
                 display:inline-block;
                 height:25px;
                 vertical-align:text-bottom;
@@ -596,7 +596,7 @@ body {
     height:73px;
     [data-toggle='tooltip']{
         color: #fff;
-        font-size: 0.5em;
+        font-size: 0.9em;
         display: inline-block;
         height: 25px;
         vertical-align: text-bottom;
@@ -829,6 +829,9 @@ body {
             height: 28px;
             line-height: 28px;
             float: left;
+            [value="上传"]{
+                margin-bottom:5px;
+            }
         }
 
         li:first-child {
@@ -837,7 +840,6 @@ body {
         li:nth-child(even) {
             input {
                 width: 100%;
-                margin: 0 auto;
             }
         }
         
@@ -927,7 +929,6 @@ body {
            text-align:left;
             [type="submit"]{
                width:20%;
-               margin-top:-3px;
            }
        }
        li:nth-child(5){
@@ -1313,6 +1314,7 @@ div:after{
                 padding:5px;
                 margin-top:5px;
                 border:1px solid #aaa;
+                border-radius:10px;
                 .content_left{
                     width:100%;
                     text-align:left;
@@ -1401,6 +1403,41 @@ div:after{
                         }
                     }         
                 }
+                /*.count-change{
+                    margin-top:20px;
+                    height:40px;
+                    padding-left:1em;
+                    div{
+                        float:left;
+                        height:28px;
+                        line-height:28px;
+
+                        .btn-reduce,.btn-add{
+                            display:inline-block;
+                            width:24px;
+                            text-align:center;
+                        
+                            border:1px solid #aaa;
+                            background:#f7f7f7;
+                            cursor:pointer;
+                            padding:1px 0;
+                        }
+                        .btn-reduce{
+                            border-right:none;
+                            margin-right:-4px;
+                        }
+                        .btn-add{
+                            border-left:none;
+                            margin-left:-4px;
+                        }
+                        input{
+                            width:60px;
+                            height:32px;
+                            border:1px solid #aaa;
+                            padding-left:5px;
+                        }
+                    }
+                }*/
                 .product-count{
                     margin-top:40px;
                     overflow:hidden;
@@ -1722,13 +1759,16 @@ div:after{
     color: #444;
     background: #eee;
     border-color: #ccc;
-    text-decoration: none
+    text-decoration: none;
+
 }
 .lab{
      height:28px;
      line-height:28px;
      margin-left:5px;
-}
+ }    
+
+
 
 /*首页index*/
 .index_flow{
@@ -1897,10 +1937,14 @@ div:after{
             height:8em;
             li{
                 margin-bottom:1em;
-                height:auto;
+                height:3em;
                 line-height:3em;
                 float:left;
                 text-align:left;
+                [value='上传']{
+                    margin-bottom:5px;
+                    
+                }
             }
              li:nth-child(even) {
                 width:50%;
@@ -1965,4 +2009,10 @@ div:after{
         background:#24A9E4;
         color:#fff;
     }
+}
+.text-content-pack::after{
+    content:"收起";
+}
+.text-content-extend::after{
+    content:"展开";
 }

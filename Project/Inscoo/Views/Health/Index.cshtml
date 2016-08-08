@@ -8,7 +8,7 @@
     @foreach (var type in ViewBag.ProductTypeName)
     {
         <div class="health_project">
-            <p>@type</p>
+            <div class="describe_name">@type</div>
             @foreach (var p in Model.Where(m => m.ProductTypeName == type))
             {
                 <ul class="health_detail">

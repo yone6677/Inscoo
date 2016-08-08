@@ -242,6 +242,10 @@
     <Compile Include="Migrations\201608050935073_AlterCompany_AlterCodeLength.Designer.cs">
       <DependentUpon>201608050935073_AlterCompany_AlterCodeLength.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608080618171_AlertTableHealthMaster.cs" />
+    <Compile Include="Migrations\201608080618171_AlertTableHealthMaster.Designer.cs">
+      <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -347,6 +351,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608050935073_AlterCompany_AlterCodeLength.resx">
       <DependentUpon>201608050935073_AlterCompany_AlterCodeLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608080618171_AlertTableHealthMaster.resx">
+      <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,32 +58,53 @@ namespace Inscoo.Controllers
             ViewBag.Product = new VCheckProductDetail() { Id = targetP.Id, CheckProductPic = targetP.CheckProductPic, PrivilegePrice = targetP.PrivilegePrice, PublicPrice = targetP.PublicPrice, ProductName = targetP.ProductName };
             return View(products);
         }
-
+        [AllowAnonymous]
+        public PartialViewResult BuyDetail(int productId, string productName, string productType)
+        {
+            var buyDetail = new VBuyDetail() { ProductId = productId, ProductName = productName, ProductType = productType };
+            return PartialView(buyDetail);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BuyDetail(VBuyDetail model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("MakeSure", new { model.ProductId, model.Count });
+            }
+            return RedirectToAction("BuyInfo", new { model.ProductName, model.ProductType });
+        }
         /// <summary>
         /// 购买流程-方案确认
         /// </summary>
         /// <param name="productId"></param>
         ///  /// <param name="masterId"></param>
         /// <returns></returns>
-        public ActionResult MakeSure(int productId = -1, int masterId = -1)
+        public ActionResult MakeSure(int count = -1, int productId = -1, int masterId = -1, string dateTicks = "-1")
         {
-
-            if (masterId != -1)//返回逻辑
+            try
             {
-                productId = _svHealth.GetHealthMaster(masterId).HealthCheckProductId;
+                var model = new VCheckProductDetail();
+                Domain.HealthOrderMaster master = new Domain.HealthOrderMaster();
+                if (masterId != -1)//返回逻辑
+                {
+                    master = _svHealth.GetHealthMaster(masterId, dateTicks: dateTicks);
+                    productId = master.HealthCheckProductId;
+                }
+                model = _svHealth.GetHealthProductById(productId, User.Identity.GetUserId());
+                model.MasterId = masterId;
+                model.DateTicks = dateTicks;
+                model.Count = count == -1 ? master.Count : count;
+                return View(model);
             }
-            var model = _svHealth.GetHealthProductById(productId, User.Identity.GetUserId());
-            model.MasterId = masterId;
-            return View(model);
+            catch (Exception)
+            {
+                return RedirectToAction("index");
+            }
         }
 
-        /// <summary>
-        /// 购买流程-信息填写
-        /// </summary>
-        /// <param name="productId"></param>
-        ///   /// <param name="masterId"></param>
-        /// <returns></returns>
-        public ActionResult EntryInfo(int productId = -1, int masterId = -1)
+        public ActionResult EntryInfo(int count = -1, string dateTicks = "", int productId = -1, int masterId = -1)
         {
             try
             {
@@ -91,7 +112,9 @@ namespace Inscoo.Controllers
                 if (masterId == -1)
                 {
                     var model = new VHealthEntryInfo();
-                    model.MasterId = _svHealth.AddHealthMaster(productId, User.Identity.Name);
+                    var master = _svHealth.AddHealthMaster(productId, User.Identity.Name, count);
+                    model.MasterId = master.Id;
+                    model.DateTicks = master.DateTicks;
                     model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
                     return View(model);
                 }
@@ -112,56 +135,109 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EntryInfo(VHealthEntryInfo model)
         {
-
-            if (ModelState.IsValid)
+            try
             {
 
+                if (ModelState.IsValid)
+                {
 
-                var master = _svHealth.GetHealthMaster(model.MasterId, User.Identity.Name);
-                var IsGetPaymentNoticePdf = !master.CompanyId.HasValue;
-                var companyList = Request.Form["isCompanySelect"];
-                if (companyList == "false")
-                {
-                    master.CompanyId =
-                        _svCompany.AddNewCompany(
-                            new vCompanyAdd()
-                            {
-                                Name = model.CompanyName,
-                                Address = model.Address,
-                                Email = "",
-                                LinkMan = model.Linkman,
-                                Phone = model.PhoneNumber
-                            }, User.Identity.GetUserId());
-                }
-                else
-                {
-                    master.CompanyId = Convert.ToInt32(Request.Form["CompanyId"]);
-                }
-                master.Status = 4;
 
-                if (IsGetPaymentNoticePdf)
-                {
-                    _svHealth.GetPaymentNoticePdfAsync(master.Id);
+                    var master = _svHealth.GetHealthMaster(model.MasterId, author: User.Identity.Name);
+                    var IsGetPaymentNoticePdf = !master.CompanyId.HasValue;
+                    var companyList = Request.Form["isCompanySelect"];
+                    if (companyList == "false")
+                    {
+                        master.CompanyId =
+                            _svCompany.AddNewCompany(
+                                new vCompanyAdd()
+                                {
+                                    Name = model.CompanyName,
+                                    Address = model.Address,
+                                    Email = "",
+                                    LinkMan = model.Linkman,
+                                    Phone = model.PhoneNumber
+                                }, User.Identity.GetUserId());
+                    }
+                    else
+                    {
+                        master.CompanyId = Convert.ToInt32(Request.Form["CompanyId"]);
+                    }
+                    master.Status = 4;
+
+                    if (IsGetPaymentNoticePdf)
+                    {
+                        _svHealth.GetPaymentNoticePdfAsync(master.Id, model.DateTicks);
+                    }
+                    _svHealth.UpdateMaster(master);
+
                 }
-                _svHealth.UpdateMaster(master);
+                return RedirectToAction("ConfirmPayment", new { model.MasterId, model.DateTicks });
 
             }
-            return RedirectToAction("ConfirmPayment", new { model.MasterId });
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
         }
-
         /// <summary>
         /// OP  审核订单
         /// </summary>
         /// <param name="masterId"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
+        /// <param name="isLookInfo">是否是查看订单信息</param>
         /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult AuditOrder(int masterId, int pageIndex = 1, int pageSize = 15)
+        public ActionResult OrderInfo(int masterId, string dateTicks, bool isInline = false, bool isDelete = false, int pageIndex = 1, int pageSize = 15, string mes = "")
         {
             try
             {
-                var model = _svHealth.GetHealthAuditOrder(masterId);
+                var model = _svHealth.GetHealthAuditOrder(masterId, dateTicks);
+                model.PageSize = pageSize;
+                model.PageIndex = pageIndex;
+                ViewBag.IsInline = isInline;
+                ViewBag.IsDelete = isDelete;
+                ViewBag.Mes = mes;
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("AuditListSearch", new { masterId });
+            }
+        }
+        [AllowAnonymous]
+        public ActionResult Delete(int masterId, string dateTicks, int pageIndex = 1, int pageSize = 15)
+        {
+            try
+            {
+                var result = _svHealth.DeleteMaster(masterId, User.Identity.Name);
+                if (result)
+                {
+                    return RedirectToAction("AuditListSearch", new { pageIndex, pageSize });
+                }
+                else
+                {
+                    throw new Exception("操作失败");
+                }
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("OrderInfo", new { masterId, dateTicks, isDelete = true, pageIndex, pageSize });
+            }
+        }
+        /// <summary>
+        /// OP  审核订单
+        /// </summary>
+        /// <param name="masterId"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="isLookInfo">是否是查看订单信息</param>
+        /// <returns></returns>
+        public ActionResult AuditOrder(int masterId, string dateTicks, int pageIndex = 1, int pageSize = 15)
+        {
+            try
+            {
+                var model = _svHealth.GetHealthAuditOrder(masterId, dateTicks);
                 model.PageIndex = pageIndex;
                 model.PageSize = pageSize;
                 return View(model);
@@ -190,12 +266,12 @@ namespace Inscoo.Controllers
         }
 
         //财务确认收款
-        public ActionResult FnComfirm(int masterId, int pageIndex = 1, int pageSize = 15)
+        public ActionResult FnComfirm(int masterId, string dateTicks, int pageIndex = 1, int pageSize = 15)
         {
             try
             {
-                var model = new VFNConfirm() { MasterId = masterId, PageIndex = pageIndex, PageSize = pageSize };
-                model.FinanceAmount = _svHealth.GetConfirmPayment(masterId).Amount;
+                var model = new VFNConfirm() { MasterId = masterId, DateTicks = dateTicks, PageIndex = pageIndex, PageSize = pageSize };
+                model.FinanceAmount = _svHealth.GetConfirmPayment(masterId, dateTicks).Amount;
                 return View(model);
 
             }
@@ -212,7 +288,7 @@ namespace Inscoo.Controllers
             if (ModelState.IsValid)
             {
                 if (model.FinancePayDate > DateTime.Now) return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
-                var master = _svHealth.GetHealthMaster(model.MasterId);
+                var master = _svHealth.GetHealthMaster(model.MasterId, dateTicks: model.DateTicks);
 
                 master.FinanceAmount = model.FinanceAmount;
                 master.FinanceBankSerialNumber = model.FinanceBankSerialNumber;
@@ -221,7 +297,7 @@ namespace Inscoo.Controllers
                 master.FinanceConfirmDate = DateTime.Now;
                 master.FinanceConfirmer = User.Identity.Name;
                 master.Status = 17;
-                master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
+                //master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
                 _svHealth.UpdateMaster(master);
 
                 var mailContent = $"体检订单：{ master.BaokuOrderCode}已确认付款";
@@ -272,12 +348,13 @@ namespace Inscoo.Controllers
         /// <param name="masterId"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult UploadEmp(HttpPostedFileBase empinfo, int masterId)
+        public ActionResult UploadEmp(HttpPostedFileBase empinfo, int masterId, string dateTicks)
         {
             try
             {
-                _svHealth.UploadEmpExcel(empinfo, masterId, User.Identity.Name);
-                _svHealth.GetPaymentNoticePdfAsync(masterId);
+                var mes = _svHealth.UploadEmpExcel(empinfo, masterId, User.Identity.Name);
+                if (!string.IsNullOrEmpty(mes)) TempData["error"] = mes;
+                _svHealth.GetPaymentNoticePdfAsync(masterId, dateTicks);
             }
             catch (WarningException e)
             {
@@ -289,23 +366,23 @@ namespace Inscoo.Controllers
                 TempData["error"] = "上传失败！";
 
             }
-            return RedirectToAction("EntryInfo", new { masterId });
+            return RedirectToAction("EntryInfo", new { masterId, dateTicks });
         }
         /// <summary>
         /// 确认付款
         /// </summary>
         /// <param name="masterId"></param>
         /// <returns></returns>
-        public ActionResult ConfirmPayment(int masterId)
+        public ActionResult ConfirmPayment(int masterId, string dateTicks)
         {
             if (masterId > 0)
             {
-                var model = _svHealth.GetConfirmPayment(masterId);
+                var model = _svHealth.GetConfirmPayment(masterId, dateTicks);
                 if (model != null)
                 {
                     if (string.IsNullOrEmpty(model.PaymentNoticePdf))//还未产生付款通知书
                     {
-                        model.PaymentNoticePdf = _svHealth.GetPaymentNoticePdf(masterId);
+                        model.PaymentNoticePdf = _svHealth.GetPaymentNoticePdf(masterId, dateTicks);
                     }
                     return View(model);
                 }

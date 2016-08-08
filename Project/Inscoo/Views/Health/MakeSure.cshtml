@@ -42,21 +42,27 @@
             </div>
         </div>
         <div class="form-group ">
-            @Html.LabelFor(model => model.ProductName, new {@class = "control-label col-xs-5 text-right"})
+            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-xs-5 text-right" })
             <div class="col-xs-7 ">
                 <label class="control-label ">@Model.ProductName</label>
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PublicPrice, new {@class = "control-label col-xs-5 text-right"})
+            @Html.LabelFor(model => model.PublicPrice, new { @class = "control-label col-xs-5 text-right" })
             <div class="col-xs-7">
                 <label class="control-label ">￥@Model.PublicPrice</label>
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PrivilegePrice, new {@class = "control-label col-xs-5 text-right"})
+            @Html.LabelFor(model => model.PrivilegePrice, new { @class = "control-label col-xs-5 text-right" })
             <div class="col-xs-7">
                 <label class="control-label ">￥@Model.PrivilegePrice</label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Count, new { @class = "control-label col-xs-5 text-right" })
+            <div class="col-xs-7">
+                <label class="control-label ">@Model.Count</label>
             </div>
         </div>
     </div>
@@ -64,7 +70,7 @@
 
         @Html.ActionLink("返回购买信息", "BuyInfo", new { id = Model.Id, Model.ProductName, Model.ProductType }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
 
-        @Html.ActionLink("下一步", "EntryInfo", new { productId = Model.Id, masterId = Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+        @Html.ActionLink("下一步", "EntryInfo", new { productId = Model.Id, masterId = Model.MasterId, Model.DateTicks, Model.Count }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
     </div>
 </div>
 @section Scripts {

@@ -523,6 +523,8 @@
     <Content Include="Views\Finance\CashFlowDetails.cshtml" />
     <Content Include="Views\Finance\Settlement.cshtml" />
     <Content Include="Views\Finance\CashFlowDtl.cshtml" />
+    <Content Include="Views\Health\OrderInfo.cshtml" />
+    <Content Include="Views\Health\BuyDetail.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

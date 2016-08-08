@@ -850,7 +850,7 @@ namespace Services.Orders
 
                     var mesContent = mes.ToString();
 
-                    float x = reader3.GetPageSize(1).Width / 2;
+                    float x = 70;
                     float y = reader3.GetPageSize(1).GetTop(20) - 170;
 
                     if (hasSafeguardType13 || hasSafeguardType10)
@@ -859,26 +859,30 @@ namespace Services.Orders
                         {
                             Phrase mesPhrase = new Phrase($"住院赔付比例为{ratioSafeguardType13}", font);
                             ColumnText.ShowTextAligned(
-                        stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                        stamper.GetOverContent(1), Element.ALIGN_LEFT,
                         mesPhrase, x, y, 0);
                         }
                         if (hasSafeguardType10)
                         {
-                            Phrase mesPhrase = new Phrase($"住院/门诊赔付比例为{ratioSafeguardType10}（该保障产品的赔付比例）,生育责任限额5000元，免赔3000元", font);
+                            Phrase mesPhrase = new Phrase($"住院/门诊赔付比例为{ratioSafeguardType10}", font);
                             ColumnText.ShowTextAligned(
-                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                    stamper.GetOverContent(1), Element.ALIGN_LEFT,
                     mesPhrase, x, y - 15, 0);
+                             mesPhrase = new Phrase($"生育责任限额5000元，免赔3000元", font);
+                            ColumnText.ShowTextAligned(
+                    stamper.GetOverContent(1), Element.ALIGN_LEFT,
+                    mesPhrase, x, y - 30, 0);
                         }
                         Phrase mesPhrase1 = new Phrase("无其他特别约定", font);
                         ColumnText.ShowTextAligned(
-                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
-                    mesPhrase1, x, y - 30, 0);
+                    stamper.GetOverContent(1), Element.ALIGN_LEFT,
+                    mesPhrase1, x, y - 45, 0);
                     }
                     else
                     {
                         Phrase mesPhrase = new Phrase("无特别约定", font);
                         ColumnText.ShowTextAligned(
-                    stamper.GetOverContent(1), Element.ALIGN_CENTER,
+                    stamper.GetOverContent(1), Element.ALIGN_LEFT,
                     mesPhrase, x, y, 0);
                     }
 

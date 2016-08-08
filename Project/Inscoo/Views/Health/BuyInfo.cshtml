@@ -26,12 +26,21 @@
                         </div>
                     }
                 </div>
-                <div class="product-count col-xs-12">
-                    @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("直接购买", "MakeSure", new { productId = product.Id }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
-                </div>
+                @Html.Action("buyDetail", new { productId = product.Id, product.ProductName, product.ProductType })
             </li>
         </ul>
     </div>
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
+@section Scripts {
+    <script>
+        jQuery(function () {
+            jQuery("#aMakeSure").click(function () {
+
+            });
+            MakeSure
+
+        });
+
+    </script>
+}

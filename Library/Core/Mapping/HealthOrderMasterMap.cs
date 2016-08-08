@@ -8,6 +8,7 @@ namespace Core.Mapping
         public HealthOrderMasterMap()
         {
             Property(h => h.Author).IsRequired();
+            Property(h => h.BaokuOrderCode).IsRequired().HasMaxLength(30);
             Property(h => h.DateTicks).IsRequired().HasMaxLength(30);
             Property(h => h.CheckBeginTime).IsOptional();
             Property(h => h.CheckEndTime).IsOptional();

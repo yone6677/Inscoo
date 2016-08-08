@@ -110,7 +110,7 @@ namespace Services.Finance
             }
             return null;
         }
-        public List<CashFlow> GetList(int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null)
+        public List<CashFlow> GetList(int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null, int differ = 0)
         {
             try
             {
@@ -123,6 +123,10 @@ namespace Services.Finance
                 {
                     query = query.Where(q => q.OType == type);
                 }
+                if (differ > 0)
+                {
+                    query = query.Where(q => q.Difference != 0);
+                }
                 if (beginDate.HasValue)
                 {
                     query = query.Where(q => q.ChangeTime >= beginDate.Value);
@@ -132,6 +136,7 @@ namespace Services.Finance
                     query = query.Where(q => q.ChangeTime <= endDate.Value);
                 }
 
+
                 return query.ToList();
             }
             catch (Exception e)
@@ -140,11 +145,11 @@ namespace Services.Finance
             }
             return new List<CashFlow>();
         }
-        public IPagedList<CashFlowModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null)
+        public IPagedList<CashFlowModel> GetListOfPager(int pageIndex = 1, int pageSize = 15, int type = 0, int oId = 0, DateTime? beginDate = null, DateTime? endDate = null, int differ = 0)
         {
             try
             {
-                var query = GetList(type);
+                var query = GetList(type, oId, beginDate, endDate, differ);
                 if (query.Count > 0)
                 {
                     return new PagedList<CashFlowModel>(query.Select(s => new CashFlowModel()

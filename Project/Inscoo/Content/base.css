@@ -1225,7 +1225,7 @@ div:after {
 .health_box .health_box_header ul li.header_right .count-change {
   margin-top: 20px;
   height: 40px;
-  padding-left: 1em;
+  padding-left: 2em;
 }
 .health_box .health_box_header ul li.header_right .count-change div {
   float: left;
@@ -1257,7 +1257,7 @@ div:after {
   padding-left: 5px;
 }
 .health_box .health_box_header ul li.header_right .product-count {
-  margin-top: 40px;
+  margin-top: 20px;
   overflow: hidden;
 }
 .health_box .health_box_header ul li.header_right .product-count div {

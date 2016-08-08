@@ -1257,7 +1257,10 @@ div:after {
   padding-left: 5px;
 }
 .health_box .health_box_header ul li.header_right .product-count {
-  margin-top: 20px;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 10px;
+  text-align: right;
   overflow: hidden;
 }
 .health_box .health_box_header ul li.header_right .product-count div {

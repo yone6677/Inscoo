@@ -320,13 +320,13 @@ namespace Services
                 IQueryable<HealthOrderMaster> list;
                 if (search.IsInscooOperator)//如果是operator，查询所有已填写信息的订单
                 {
-                    if (search.ListType == 2)// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
+                    if (search.ListType == "2")// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
                     {
                         list =
                             _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 4)
                             .AsNoTracking();
                     }
-                    else if (search.ListType == 3)
+                    else if (search.ListType == "3")
                     {
                         list =
                             _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11 || h.Status == 14)
@@ -343,13 +343,13 @@ namespace Services
                 }
                 else if (search.IsFinance)//如果是财务，查询所有已审核的订单
                 {
-                    if (search.ListType == 6)// 6已确认 5 未确认
+                    if (search.ListType == "6")// 6已确认 5 未确认
                     {
                         list =
                             _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 17)
                             .AsNoTracking();
                     }
-                    else if (search.ListType == 5)
+                    else if (search.ListType == "5")
                     {
                         list =
                             _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11)
@@ -367,19 +367,26 @@ namespace Services
                 else//如果不是operator，查询所有当前用户已填写信息的订单
                 {
 
-                    if (search.ListType == 1)
+                    if (search.ListType == "1")
                     {
                         list =
                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
                                .AsNoTracking()
                                .Where(h => h.Author == uName && h.Status < 4);
                     }
-                    else if (search.ListType == 4)
+                    else if (search.ListType == "4")
                     {
                         list =
                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
                                .AsNoTracking()
                                .Where(h => h.Author == uName && h.Status >= 4);
+                    }
+                    else if (search.ListType == "1|4" || search.ListType == null)
+                    {
+                        list =
+                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                               .AsNoTracking()
+                               .Where(h => h.Author == uName);
                     }
                     else
                     {
@@ -487,9 +494,10 @@ namespace Services
             }
             else
             {
+                list.Add(new SelectListItem() { Value = "1|4", Text = "全部" });
                 list.Add(new SelectListItem() { Value = "1", Text = "未填写" });
                 list.Add(new SelectListItem() { Value = "4", Text = "已填写" });
-                return new SelectList(list, "Value", "Text", 1);
+                return new SelectList(list, "Value", "Text");
             }
         }
         public string UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author)

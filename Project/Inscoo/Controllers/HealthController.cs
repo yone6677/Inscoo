@@ -405,7 +405,7 @@ namespace Inscoo.Controllers
 
             return View(model);
         }
-        public PartialViewResult AuditListData(bool isInscooOperator, bool isFinance, int listType, int pageIndex = 1, int pageSize = 15)
+        public PartialViewResult AuditListData(bool isInscooOperator, bool isFinance, string listType, int pageIndex = 1, int pageSize = 15)
         {
             //var isInscooOperator = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooOperator");
             ViewBag.IsInscooOperator = isInscooOperator;

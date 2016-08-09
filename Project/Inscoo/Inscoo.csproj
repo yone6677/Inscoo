@@ -319,6 +319,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\base.less" />
+    <Content Include="Archive\Template\TuiBaoExcelTemplate.xlsx" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -524,6 +525,8 @@
     <Content Include="Views\Finance\CashFlowDtl.cshtml" />
     <Content Include="Views\Health\OrderInfo.cshtml" />
     <Content Include="Views\Health\BuyDetail.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceDetailSearch.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceDetailList.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

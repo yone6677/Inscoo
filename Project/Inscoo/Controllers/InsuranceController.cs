@@ -26,10 +26,12 @@ namespace Inscoo.Controllers
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IProductService _productService;
         private readonly IArchiveService _archiveService;
+        private readonly ICarInsuranceService _svCarInsuranceService;
         private readonly IPermissionService _svPermissionService;
         private readonly IAppUserService _appUserService;
-        public InsuranceController(IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService, IArchiveService archiveService, IPermissionService svPermissionService, IAppUserService appUserService)
+        public InsuranceController(ICarInsuranceService svCarInsuranceService, IMixProductService mixProductService, IGenericAttributeService genericAttributeService, IProductService productService, IArchiveService archiveService, IPermissionService svPermissionService, IAppUserService appUserService)
         {
+            _svCarInsuranceService = svCarInsuranceService;
             _mixProductService = mixProductService;
             _genericAttributeService = genericAttributeService;
             _productService = productService;
@@ -140,25 +142,27 @@ namespace Inscoo.Controllers
             return null;
         }
 
-        public ActionResult CarInscuranceSearch()
+        public ActionResult CarInscuranceSearch(int fileType = 0)
         {
             //ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
             var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
             ViewBag.CanCreate = roles.Contains("CarInscuranceCustomer");
+            ViewBag.FileType = fileType;
             return View();
         }
 
         [AllowAnonymous]
-        public PartialViewResult CarInscuranceList(int pageIndex = 1, int pageSize = 15)
+        public PartialViewResult CarInscuranceList(int fileType, int pageIndex = 1, int pageSize = 15)
         {
             var uId = User.Identity.GetUserId();
             var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
             var canEdit = roles.Contains("CarInscuranceCustomer");
             ViewBag.CanEdit = canEdit;
+            ViewBag.FileType = fileType;
             if (!canEdit) uId = "-1";//车险用户可以编辑，只能查看自己上传的文件。车险公司不能编辑，但可以查看所有。
 
             //出admin外，其他用户只能看到自己创建的用户
-            IPagedList<vCarInsuranceList> list = _archiveService.GetCarInsuranceExcel(pageIndex, pageSize, uId);
+            IPagedList<vCarInsuranceList> list = _archiveService.GetCarInsuranceExcel(fileType, pageIndex, pageSize, uId);
 
             var command = new PageCommand()
             {
@@ -171,43 +175,101 @@ namespace Inscoo.Controllers
 
             return PartialView(list);
         }
-        public ActionResult CarInscuranceCreate(string excelId)
+        [AllowAnonymous]
+        public ActionResult CarInscuranceDetailSearch()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public PartialViewResult CarInscuranceDetailList()
+        {
+            var model = new CarInsuranceDetailSearchModel();
+            IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, 1, 15);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public PartialViewResult CarInscuranceDetailList(CarInsuranceDetailSearchModel model, int pageIndex = 1, int pageSize = 15)
+        {
+            
+            IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, pageIndex, pageSize);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        public ActionResult CarInscuranceCreate(string excelId, int fileType = 0)
         {
             ViewBag.ExcelId = excelId;
+            ViewBag.FileType = fileType;
             return View();
         }
 
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CarInscuranceCreate(HttpPostedFileBase excel, string excelId)
+        public ActionResult CarInscuranceCreate(HttpPostedFileBase excel, string excelId, int fileType)
         {
             try
             {
                 ViewBag.ExcelId = excelId;
+                ViewBag.FileType = fileType;
                 string mailContent, path;
-                if (string.IsNullOrEmpty(excelId))
+                if (fileType == 0)
                 {
-                    path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
-                       User.Identity.Name);
-                    mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
+                    if (string.IsNullOrEmpty(excelId))
+                    {
+                        path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
+                           User.Identity.Name, fileType);
+                        mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
+                    }
+                    else
+                    {
+                        mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
+                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                    }
+                    var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                    MailService.SendMailAsync(new MailQueue()
+                    {
+                        MQTYPE = "UploadCarInscurance",
+                        MQSUBJECT = "上传车险通知",
+                        MQMAILCONTENT = "",
+                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILTO = string.Join(";", mailTo),
+                        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
+                    });
                 }
-                else
+                else if (fileType == 1)
                 {
-                    mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
-                    path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
-                }
-                var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
-                MailService.SendMailAsync(new MailQueue()
-                {
-                    MQTYPE = "UploadCarInscurance",
-                    MQSUBJECT = "上传车险通知",
-                    MQMAILCONTENT = "",
-                    MQMAILFRM = "redy.yone@inscoo.com",
-                    MQMAILTO = string.Join(";", mailTo),
-                    MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
-                });
+                    if (string.IsNullOrEmpty(excelId))
+                    {
+                        path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
+                           User.Identity.Name, fileType);
+                    }
+                    else
+                    {
+                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                    }
 
+                }
                 ViewBag.Mes = "上传成功";
             }
             catch (Exception e)

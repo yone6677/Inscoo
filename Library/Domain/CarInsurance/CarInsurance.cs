@@ -8,6 +8,10 @@ namespace Domain
     {
         public string UniqueKey { set; get; }
         public string AppUserId { set; get; }
+        /// <summary>
+        /// 文件类型。0车险，
+        /// </summary>
+        public int FileType { set; get; }
         public int ExcelId { set; get; }
         public int? EinsuranceId { set; get; }
         /// <summary>

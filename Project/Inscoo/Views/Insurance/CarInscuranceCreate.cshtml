@@ -1,10 +1,18 @@
 ﻿@{
-    ViewBag.Title = "上传车险Excel";
+    if (ViewBag.FileType == 0)
+    {
+        ViewBag.Title = "上传车险Excel";
+    }
+    else
+    {
+        ViewBag.Title = "上传退保车险Excel清单";
+    }
 }
 @using (Html.BeginForm("CarInscuranceCreate", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="excelId" name="excelId" value="@ViewBag.ExcelId" />
+    <input type="hidden" id="fileType" name="fileType" value="@ViewBag.FileType" />
     <div class="form-horizontal formCreate">
         <br />
 
@@ -15,6 +23,12 @@
                     <input type="file" name="excel" id="excel" required="" />+ 浏览
                 </a>
                 <span class="lab" style="height: 28px; line-height: 28px;"></span>
+                @if (ViewBag.FileType == 1)
+                {
+                    <a href="~/Archive/Template/TuiBaoExcelTemplate.xlsx" style="margin-left:10px">
+                        下载模板
+                    </a>
+                }
             </div>
         </div>
         <div class="form-group">

@@ -98,6 +98,7 @@
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
+    <Compile Include="Mapping\CarInsuranceDetailMap.cs" />
     <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
     <Compile Include="Mapping\CashFlowDetailsMap.cs" />
@@ -246,6 +247,10 @@
     <Compile Include="Migrations\201608080618171_AlertTableHealthMaster.Designer.cs">
       <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608090812225_AddTableCarInsuranceDetail.cs" />
+    <Compile Include="Migrations\201608090812225_AddTableCarInsuranceDetail.Designer.cs">
+      <DependentUpon>201608090812225_AddTableCarInsuranceDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -354,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608080618171_AlertTableHealthMaster.resx">
       <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608090812225_AddTableCarInsuranceDetail.resx">
+      <DependentUpon>201608090812225_AddTableCarInsuranceDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

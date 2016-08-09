@@ -149,6 +149,8 @@
     <Compile Include="Api\Claim\IClaimFileApiService.cs" />
     <Compile Include="Archives\ArchiveService.cs" />
     <Compile Include="Archives\IArchiveService.cs" />
+    <Compile Include="CarInsurance\CarInsuranceService.cs" />
+    <Compile Include="CarInsurance\ICarInsuranceService.cs" />
     <Compile Include="Claim\ClaimService.cs" />
     <Compile Include="Claim\IClaimService.cs" />
     <Compile Include="Common\GenericAttributeService.cs" />

@@ -474,24 +474,24 @@
                                             <td>
                                                 <div class="programme-details-four programme-details-four-130">
                                                     <table class="insurance-detail">
-                                                            <tr>
-                                                                <th>保障内容</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="height:100px;text-align:left;text-indent:2em;padding:0 5px;">工伤残疾保障：一次性伤残就业补助金</td>
-                                                            </tr>
+                                                        <tr>
+                                                            <th>保障内容</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="height:100px;text-align:left;text-indent:2em;padding:0 5px;">工伤残疾保障：一次性伤残就业补助金</td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="programme-details-four programme-details-four-130">
                                                     <table class="insurance-detail">
-                                                            <tr>
-                                                                <th>赔付比例</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="height:100px;text-align:left;text-indent:2em;padding:0 5px;">因工致残被鉴定为五至十级伤残的，按照江苏省工伤保险条例第103号中规定的金额和标准进行给付</td>
-                                                            </tr>
+                                                        <tr>
+                                                            <th>赔付比例</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="height:100px;text-align:left;text-indent:2em;padding:0 5px;">因工致残被鉴定为五至十级伤残的，按照江苏省工伤保险条例第103号中规定的金额和标准进行给付</td>
+                                                        </tr>
                                                     </table>
                                                 </div>
 
@@ -501,9 +501,9 @@
                                 </div>
                             </div>
                         </td>
-                        
+
                         <td style="width:20%;background:#F5F5F5">
-                           <p class="programme-clause">
+                            <p class="programme-clause">
                                 @Html.ActionLink("立即购买", "ListIndex", "WZHuman", new { }, new { @class = "btn btn-success" })
                             </p>
                             @*<a href="http://www.inscoo.com/Archive/InsuranceFiles/v21.pdf" target="_blank">保险条款</a>*@
@@ -591,12 +591,21 @@
                             </div>
                         </td>
 
-                        
+
                         <td style="width:20%;background:#F5F5F5">
-                            <p><a href="#" class="btn btn-default">数据上传</a></p>
-                            <p><a href="#" class="">查看保险清单</a></p>
-                            
-                            <p class="programme-clause"><a href="#" class="btn btn-success">退保</a></p>
+                            <p>
+                                @Html.ActionLink("数据上传", "CarInscuranceSearch", new { }, new { @class = "btn btn-default" })
+                                @*<a href="#" class="btn btn-default">数据上传</a>*@
+                            </p>
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("查看保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "" })
+                            </p>
+
+                            <p class="programme-clause">
+                                @Html.ActionLink("退保", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-default" })
+                                @*<a href="#" class="btn btn-success">退保</a>*@
+                            </p>
                             <a href="http://www.inscoo.com/Archive/InsuranceFiles/v21.pdf" target="_blank">保险条款</a>
                         </td>
                     </tr>

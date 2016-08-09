@@ -81,7 +81,7 @@ namespace Services
         /// <param name="userId"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName);
+        string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName, int fileType);
         /// <summary>
         /// 上传电子表单
         /// </summary>
@@ -121,7 +121,7 @@ namespace Services
         /// <param name="pageSize"></param>
         /// <param name="createrId"></param>
         /// <returns></returns>
-        IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1");
+        IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int fileType, int pageIndex, int pageSize, string createrId = "-1");
 
         string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId);
     }

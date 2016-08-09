@@ -41,7 +41,7 @@
                 @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
                     <span>|</span>
-                    @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId })
+                    @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId, ViewBag.FileType                    })
                     <span>|</span>
                     @Html.ActionLink("删除", "CarInscuranceDelete", new { insuranceId = item.InsuranceId })
                 }

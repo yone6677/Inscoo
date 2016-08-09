@@ -537,15 +537,17 @@
                             </div>
                         </td>
                         <td style="width:60%">
-                            <div class="inscooCase-title-right look-more">
+                            @*<div class="inscooCase-title-right look-more">
                                 <h3>营运车乘意险</h3>
                                 <p>
                                     <span class="fa-left">请查看具体赔付方案</span>
                                 </p>
-                            </div>
-                            <div class="panel inscooCase inscooCase-extend look-more-hide" id="programme_1">
+                            </div>*@
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
                                 <div class="inscooCase-title-right inscooCase-title-right-title">
-                                    <p style="text-align:center">营运车乘意险</p>
+                                    <p style="text-align:center">营运车乘意险 
+                                        <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank" style="font-size:0.8em">保险条款</a>
+                                    </p>
                                 </div>
                                 <div>
                                     <table class="programme-details" style="margin-top:10px;color:#111;">
@@ -594,19 +596,19 @@
 
                         <td style="width:20%;background:#F5F5F5">
                             <p>
-                                @Html.ActionLink("数据上传", "CarInscuranceSearch", new { }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("数据上传", "CarInscuranceSearch", new { }, new { @class = "btn btn-success" })
                                 @*<a href="#" class="btn btn-default">数据上传</a>*@
                             </p>
                             <p>
                                 @*<a href="#" class="">查看保险清单</a>*@
-                                @Html.ActionLink("查看保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "" })
+                                @Html.ActionLink("查看清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
                             </p>
 
                             <p class="programme-clause">
-                                @Html.ActionLink("退保", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("退保", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
                                 @*<a href="#" class="btn btn-success">退保</a>*@
                             </p>
-                            <a href="http://www.inscoo.com/Archive/InsuranceFiles/v21.pdf" target="_blank">保险条款</a>
+                            
                         </td>
                     </tr>
                 </tbody>

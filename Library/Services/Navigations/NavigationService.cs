@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Models.Navigation;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -281,6 +282,19 @@ namespace Services
                 _loggerService.insert(e, LogLevel.Warning, "Nav：GetAll");
                 return new List<NavigationModel>();
             }
+        }
+
+        public HomeIndexModel GetHomeIndexModel(string uName)
+        {
+            var model = new HomeIndexModel();
+            using (var db = _navRepository.DatabaseContext)
+            {
+                model.InsuranceOrderCount = db.Set<Domain.Orders.Order>().Where(o => o.Author == uName && !o.IsDeleted).Count();
+                model.InsurancePersonCount = db.Set<Domain.Orders.OrderEmployee>().Where(o => o.Author == uName && !o.IsDeleted).Count();
+                model.HealthOrderCount = db.Set<Domain.HealthOrderMaster>().Where(o => o.Author == uName && !o.IsDeleted).Count();
+                model.HealthPersonCount = db.Set<Domain.HealthOrderDetail>().Where(o => o.Author == uName && !o.IsDeleted).Count();
+            }
+            return model;
         }
     }
 }

@@ -53,7 +53,8 @@ namespace Inscoo.Controllers
         {
             //var productSeries = _appUserService.GetProdSeries(User.Identity.GetUserId()).Select(p => p.Text).ToList();
             //ViewBag.ProductSeries = productSeries;
-            return View();
+            var model = _navService.GetHomeIndexModel(User.Identity.Name);
+            return View(model);
         }
         public ActionResult About()
         {

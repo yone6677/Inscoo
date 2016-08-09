@@ -564,7 +564,9 @@ namespace Services
                         item.CompanyName = Cells["I" + i].Value == null ? "" : Cells["I" + i].Value.ToString().Trim();
                         item.DepartMent = Cells["J" + i].Value == null ? "" : Cells["J" + i].Value.ToString().Trim();
                         item.Chair = Cells["K" + i].Value == null ? "" : Cells["K" + i].Value.ToString().Trim();
+                        item.Author = author;
                         list.Add(item);
+
                     }
                     var result = _repHealthOrderDetail.InsertRange(list);
 

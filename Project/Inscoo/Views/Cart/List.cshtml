@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Models.Cart.CartModel>
+<table class="table shoppingCart">
+    <tr>
+        <th width="10%">
+            <input type="checkbox" onclick="selectProd(this, 'cartCheckBox')" /> 全选
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            var priceName = "price_" + item.Id;
+            var countName = "count_" + item.Id;
+            var subTotalName = "subTotal_" + item.Id;
+            <tr>
+                <td>
+                    <input type="checkbox" value="@item.Id" name="cartCheckBox" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PName)
+                </td>
+                <td>
+                    <input type="hidden" value="@item.Price" id="@priceName" />
+                    @Html.DisplayFor(modelitem => item.Price)
+                </td>
+                <td>
+                    <input type="number" class="cart-total" id=@countName onchange="checkNum(this,'@item.Id')" value="@item.Total" min="1" max="9999" />
+                </td>
+                <td>
+                    <span id=@subTotalName>@item.Amount</span>
+                </td>
+                <td>
+                    @Html.ActionLink("删除", "Delete", new { id = item.Id }, new { @class = "text-danger" })
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div class="cart-floatbar text-right row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-4 cart-amount">
+        总额：
+        @{
+            <span id="amount">0.00</span>
+            <input type="hidden" name="postData" id="postData" value="" />
+        }
+
+    </div>
+    <div class="text-right col-md-2">
+        <a class="btn btn-danger">购买选中</a>
+    </div>
+</div>
+<script>
+    function selectProd(e, subCheck) {
+        var checks = document.getElementsByName(subCheck);
+        var num = checks.length;
+        for (var i = 0; i < num; i++) {
+            checks[i].checked = e.checked;
+        }
+        getAmount();
+    }
+    function checkNum(e, i) {
+        var num = e.value;
+        if (num < 1) {
+            e.value = 1;
+        }
+        if (num > 9999) {
+            e.value = 9999;
+        }
+        getSubTotal(i);
+    }
+    function getSubTotal(e) {
+        var price = document.getElementById('price_' + e + '').value;
+        var count = document.getElementById('count_' + e).value;
+        var subTotal = price * count;
+        document.getElementById('subTotal_' + e).innerText = subTotal.toFixed(2);
+        getAmount();
+    }
+    function getAmount() {
+        var checkBox = document.getElementsByName('cartCheckBox');
+        var selectedVal = '';
+        for (var i = 0; i < checkBox.length; i++) {
+            if (checkBox[i].checked)
+                selectedVal += checkBox[i].value + ',';
+        }
+        if (selectedVal.length > 1) {
+            var ary = selectedVal.split(',');
+            var amount = 0;
+            for (var i = 0; i < ary.length; i++) {
+                if (ary[i] != '') {
+                    var price = $('#price_' + ary[i]).val();//document.getElementById('price_' + ary[i] + '').value;
+                    var count = document.getElementById('count_' + ary[i]).value;
+                    var subTotal = price * count;
+                    amount += subTotal;
+                }
+            }
+            document.getElementById('amount').innerText = amount.toFixed(2);
+        }
+        else {
+            document.getElementById('amount').innerText = '0.00';
+        }
+    }
+</script>

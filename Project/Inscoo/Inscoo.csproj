@@ -314,6 +314,12 @@
     <Content Include="Content\index.css" />
     <Content Include="Content\js\bootstrap-datepicker.js" />
     <Content Include="Content\js\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="Content\shoppingCart.css">
+      <DependentUpon>shoppingCart.less</DependentUpon>
+    </Content>
+    <Content Include="Content\shoppingCart.min.css">
+      <DependentUpon>shoppingCart.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -341,6 +347,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\STSONG.TTF" />
+    <Content Include="Content\shoppingCart.less" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
@@ -385,6 +392,7 @@
     <Compile Include="Controllers\ApiController\BaseApiController.cs" />
     <Compile Include="Controllers\ApiController\ClaimApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\WZHumanController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -524,6 +532,8 @@
     <Content Include="Views\Finance\CashFlowDtl.cshtml" />
     <Content Include="Views\Health\OrderInfo.cshtml" />
     <Content Include="Views\Health\BuyDetail.cshtml" />
+    <Content Include="Views\Cart\List.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

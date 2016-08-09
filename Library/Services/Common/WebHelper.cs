@@ -1,6 +1,7 @@
 ﻿using Models.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -321,6 +322,7 @@ namespace Services
             return str5;
         }
         #endregion
+        #region 获取枚举类型
         /// <summary>
         /// 获取枚举描述
         /// </summary>
@@ -335,5 +337,65 @@ namespace Services
             System.ComponentModel.DescriptionAttribute da = (System.ComponentModel.DescriptionAttribute)objs[0];
             return da.Description;
         }
+        #endregion
+        #region 加解密cookie
+        private static Byte[] IV_64
+        {
+            get
+            {
+                return new byte[] { 55, 103, 246, 79, 36, 99, 167, 3 };
+            }
+        }
+        private static Byte[] KEY_64
+        {
+            get
+            {
+                return new byte[] { 42, 16, 93, 156, 78, 4, 218, 32 };
+            }
+        }
+        public string EncryptCookie(string name)//标准的DES加密  关键字、数据加密
+        {
+            //#region DES加密算法
+            if (name != "")
+            {
+                DESCryptoServiceProvider cryptoProvider = new DESCryptoServiceProvider();
+                MemoryStream ms = new MemoryStream();
+                CryptoStream cs = new
+                    CryptoStream(ms, cryptoProvider.CreateEncryptor(KEY_64, IV_64), CryptoStreamMode.Write);
+                StreamWriter sw = new StreamWriter(cs);
+                sw.Write(name);
+                sw.Flush();
+                cs.FlushFinalBlock();
+                ms.Flush();
+
+                //再转换为一个字符串
+                return Convert.ToBase64String(ms.GetBuffer(), 0, Int32.Parse(ms.Length.ToString()));
+            }
+            else
+            {
+                return "";
+            }
+        }
+        public string DecryptCookie(string temp)//标准的DES解密
+        {
+            //#region DES 解密算法
+            if (temp != "")
+            {
+                DESCryptoServiceProvider cryptoProvider = new DESCryptoServiceProvider();
+                //从字符串转换为字节组
+                Byte[] buffer = Convert.FromBase64String(temp);
+                MemoryStream ms = new MemoryStream(buffer);
+                CryptoStream cs = new
+                    CryptoStream(ms, cryptoProvider.CreateDecryptor(KEY_64, IV_64), CryptoStreamMode.Read);
+                StreamReader sr = new StreamReader(cs);
+                return sr.ReadToEnd();
+            }
+            else
+            {
+                return "";
+            }
+            //#endregion
+        }
+        #endregion
     }
 }

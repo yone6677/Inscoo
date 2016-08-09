@@ -1,4 +1,14 @@
-﻿<div class="Search">
+﻿@{
+    if (ViewBag.FileType == 0)
+    {
+        ViewBag.Title = "车险列表";
+    }
+    else
+    {
+        ViewBag.Title = "车险退保列表";
+    }
+}
+<div class="Search">
     <dl>
         @*<dt>
                 角色
@@ -18,7 +28,7 @@
             {
             @*<dt></dt>*@
             <dd>
-                <p>  @Html.ActionLink("新建", "CarInscuranceCreate", "Insurance", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+                <p>  @Html.ActionLink("新建", "CarInscuranceCreate", new { ViewBag.FileType }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
             </dd>
         }
 
@@ -27,9 +37,9 @@
 </div>
 @using (Ajax.BeginForm("CarInscuranceList", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
 {
-
+    <input type="hidden" id="fileType" name="fileType" value="@ViewBag.FileType" />
     <div id="dadaGrid">
-        @Html.Action("CarInscuranceList")
+        @Html.Action("CarInscuranceList", new { ViewBag.FileType })
     </div>
 }
 

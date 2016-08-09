@@ -59,10 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarInsurance\CarInsuranceDetail.cs" />
     <Compile Include="Claim\ClaimFileFromWechatItem.cs" />
     <Compile Include="Claim\ClaimFromWechatItem.cs" />
     <Compile Include="Claim\ClaimManagementDetail.cs" />
-    <Compile Include="File\CarInsurance.cs" />
+    <Compile Include="CarInsurance\CarInsurance.cs" />
     <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\BusinessLicense.cs" />
     <Compile Include="File\Archive.cs" />

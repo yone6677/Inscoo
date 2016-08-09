@@ -81,6 +81,7 @@ namespace Inscoo
             builder.RegisterType<CashFlowService>().As<ICashFlowService>().InstancePerDependency();
             builder.RegisterType<CashFlowDetailsService>().As<ICashFlowDetailsService>().InstancePerDependency();
             builder.RegisterType<WZHumanService>().As<IWZHumanService>().InstancePerDependency();
+            builder.RegisterType<CarInsuranceService>().As<ICarInsuranceService>().InstancePerDependency();
         }
     }
 }

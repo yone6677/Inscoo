@@ -291,7 +291,7 @@ namespace Inscoo.Controllers
                             return RedirectToAction("Index", new { successMes = "修改成功" });
                         else
                         {
-                            throw new Exception();
+                            throw new Exception("角色创建失败");
                         }
                     }
                     else

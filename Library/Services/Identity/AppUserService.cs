@@ -57,7 +57,12 @@ namespace Services
         {
             try
             {
-                _userManager.RemoveFromRole(uid, roleName);
+                var roles = _userManager.GetRoles(uid);
+                var isRolesRemoved = _userManager.RemoveFromRoles(uid, roles.ToArray());
+                if (!isRolesRemoved.Succeeded)
+                {
+                    return false;
+                }
                 var result = _userManager.AddToRole(uid, roleName);
                 if (result.Succeeded)
                 {

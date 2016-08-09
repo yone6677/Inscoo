@@ -85,6 +85,7 @@
     <Compile Include="CarInsurance\CarInsuranceDetailSearchModel.cs" />
     <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />
     <Compile Include="Claim\vClaimManagementDetailList.cs" />
+    <Compile Include="Common\HomeIndexModel.cs" />
     <Compile Include="Common\MailQueue.cs" />
     <Compile Include="Common\GenericAttributeModel.cs" />
     <Compile Include="Company\vCompanyList.cs" />

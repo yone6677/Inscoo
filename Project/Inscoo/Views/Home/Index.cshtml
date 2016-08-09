@@ -1,4 +1,4 @@
-﻿
+﻿@model Models.HomeIndexModel
 @{
     ViewBag.Title = "欢迎进入保酷";
 }
@@ -16,8 +16,8 @@
                 <p class="col-xs-7">在保人数量</p>
             </div>
             <div>
-                <b class="col-xs-5">26</b>
-                <span class="col-xs-7">260</span>
+                <b class="col-xs-5">@Model.InsuranceOrderCount</b>
+                <span class="col-xs-7">@Model.InsurancePersonCount</span>
             </div>
         </div>
         <div class="guide_2">
@@ -30,8 +30,8 @@
                 <p class="col-xs-7">服务总数量</p>
             </div>
             <div>
-                <b class="col-xs-5">26</b>
-                <span class="col-xs-7">260</span>
+                <b class="col-xs-5">@Model.HealthOrderCount</b>
+                <span class="col-xs-7">@Model.HealthPersonCount</span>
             </div>
         </div>
         @*<div class="guide_3"></div>
@@ -78,8 +78,8 @@
                 </div>
             </a>
         </li>
-       
-      
+
+
         <li class="ln_middle">
             <a href="#">
                 <div class="front">

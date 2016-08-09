@@ -28,7 +28,7 @@
 
 @using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data" }))
 {
-    @Html.HiddenFor(model => model.DateTicks)
+    <input type="hidden" name="DateTicks" value="@Model.DateTicks" />
     <p class="basic-information">
         <i class="fa fa-edit fa-2x"></i>详细信息填写
     </p>

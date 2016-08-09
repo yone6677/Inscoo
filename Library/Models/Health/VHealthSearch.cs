@@ -11,7 +11,7 @@ namespace Models
         /// <summary>
         /// 列表类型 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
         /// </summary>
-        public int ListType { set; get; }
+        public string ListType { set; get; }
         public SelectList ListTypeList { set; get; }
         [DisplayName("客户")]
         public string UserName { set; get; }

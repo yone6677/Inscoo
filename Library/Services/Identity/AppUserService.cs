@@ -27,9 +27,11 @@ namespace Services
         private readonly IAuthenticationManager _authenticationManager;
         private readonly ILoggerService _loggerService;
         private readonly IRepository<GenericAttribute> _rpGenericAttribute;
-        public AppUserService(ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
+        private readonly IRepository<WZHumanMaster> _rpWZHumanMaster;
+        public AppUserService(IRepository<WZHumanMaster> rpWZHumanMaster, ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
             IAuthenticationManager authenticationManager, IRepository<GenericAttribute> rpGenericAttribute)
         {
+            _rpWZHumanMaster = rpWZHumanMaster;
             _userManager = userManager;
             _appRoleManager = appRoleManager;
             _loggerService = loggerService;
@@ -62,20 +64,19 @@ namespace Services
                     if (roleName == "WZHumanCustomer" || roleName == "WZHumanAssistant")//吴中人力资源要角色在WZHumanMaster表中新增一条记录
                     {
                         var user = _userManager.FindById(uid);
-                        using (var db = _rpGenericAttribute.DatabaseContext)
+
+                        var item = _rpWZHumanMaster.Table.SingleOrDefault(w => w.Account == user.UserName);
+                        if (item != null)//已存在
                         {
-                            var item = db.Set<WZHumanMaster>().SingleOrDefault(w => w.Account == user.UserName);
-                            if (item != null)//已存在
-                            {
-                                item.Account = user.UserName;
-                                item.CompanyName = user.CompanyName;
-                                return _rpGenericAttribute.DatabaseContext.SaveChanges() > 0;
-                            }
-                            else
-                            {
-                                db.Set<WZHumanMaster>().Add(new WZHumanMaster() { Account = user.UserName, CompanyName = user.CompanyName, Author = "Admin" });
-                                return _rpGenericAttribute.DatabaseContext.SaveChanges() > 0;
-                            }
+                            item.Account = user.UserName;
+                            item.CompanyName = user.CompanyName;
+                            _rpWZHumanMaster.Update(item);
+                            return true;
+                        }
+                        else
+                        {
+                            var id = _rpWZHumanMaster.InsertGetId(new WZHumanMaster() { Account = user.UserName, CompanyName = user.CompanyName, Author = "Admin" });
+                            return id > 0;
                         }
                     }
                     return true;

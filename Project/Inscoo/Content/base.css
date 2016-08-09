@@ -1568,74 +1568,151 @@ div:after {
   margin-left: 5px;
 }
 /*首页index*/
-.index_flow {
+.index-guide {
   width: 100%;
-  margin-top: 20px;
+  height: auto;
+  border: 1px solid #ddd;
 }
-.index_flow:after {
+.index-guide:after {
   content: '';
   display: block;
   clear: both;
 }
-.index_flow li {
+.index-guide .guide_1,
+.index-guide .guide_2,
+.index-guide .guide_3,
+.index-guide .guide_4 {
   float: left;
-  width: 32%;
+  width: 40%;
+  background: #f7f7f7;
+  margin: 20px 5%;
   margin-bottom: 20px;
-  box-sizing: border-box;
-  min-height: 170px;
-}
-.index_flow li > a {
-  display: block;
-  width: 100%;
-  height: 220px;
-  position: relative;
-  color: #111;
-}
-.index_flow li > a > .front {
-  width: 100%;
-  z-index: 2;
-  background: #eee;
-}
-.index_flow li > a > .front span {
-  display: block;
-}
-.index_flow li > a > .front img {
-  width: 100%;
-}
-.index_flow li > a > .back {
-  width: 100%;
-  z-index: 1;
-  height: 100%;
-  background: #f6f6f6;
-}
-.index_flow li > a > .back h3 {
-  margin-top: 10px;
-  color: #f00;
-}
-.index_flow li > a .front {
-  transform: rotateY(0deg);
-}
-.index_flow li > a .back {
-  transform: rotateY(180deg);
   text-align: center;
 }
-.index_flow li > a .front,
-.index_flow li > a .back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  backface-visibility: hidden;
-  transition: all 0.6s ease 0s;
+.index-guide .guide_1,
+.index-guide .guide_2 {
+  height: 190px;
+  padding: 10px 20px;
 }
-.index_flow li > a:hover .front {
-  transform: rotateY(180deg);
+.index-guide .guide_1 p,
+.index-guide .guide_2 p {
+  font-weight: bold;
+  padding: 0;
 }
-.index_flow li > a:hover .back {
-  transform: rotateY(0deg);
+.index-guide .guide_1 h3,
+.index-guide .guide_2 h3 {
+  height: 98px;
+  line-height: 98px;
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.6em;
+  padding: 0;
 }
-.index_flow li.ln_middle {
-  margin: 0 2% 20px 2%;
+.index-guide .guide_1 b,
+.index-guide .guide_2 b,
+.index-guide .guide_1 span,
+.index-guide .guide_2 span {
+  font-size: 1.2em;
+  font-weight: bold;
 }
+.index-guide .guide_1 b,
+.index-guide .guide_2 b {
+  color: #e4393c;
+}
+.index-guide .guide_1 span,
+.index-guide .guide_2 span {
+  color: #24A9E4;
+}
+.index-guide .guide_3,
+.index-guide .guide_4 {
+  height: 100px;
+}
+.index_guide_img {
+  width: 100%;
+}
+.index_guide_img img {
+  margin-top: 20px;
+  width: 100%;
+}
+.index_guide_details {
+  width: 100%;
+}
+.index_guide_details img {
+  width: 100%;
+}
+/*.index_flow{
+    width:100%;
+    margin-top:20px;
+    &:after{
+        content:'';
+        display:block;
+        clear:both;
+    }
+
+    li{
+        float:left;
+        width:32%;
+        margin-bottom:20px;
+        box-sizing:border-box;
+        min-height:170px;
+        >a{
+            display:block;
+            width:100%;
+            height:220px;
+            position:relative;
+            color:#111;
+            >.front{
+                width:100%;
+                z-index: 2; 
+                background: #eee;
+                span{
+                    display:block;
+                }
+                img{
+                    width:100%;
+                }
+            }
+            >.back{
+                width:100%; 
+                z-index: 1; 
+                height: 100%; 
+                background: #f6f6f6;
+                h3{
+                    margin-top:10px;
+                    color:#f00;
+                }
+            }
+            .front{
+                transform:rotateY(0deg);   
+            }
+            .back{
+                transform:rotateY(180deg);     
+                text-align:center;
+            }
+            
+            
+            .front,.back{
+               position: absolute; 
+               top: 0; 
+               left:0; 
+               backface-visibility:hidden; 
+               transition:all 0.6s ease 0s;
+               
+            }
+            &:hover{
+                .front{
+                    transform:rotateY(180deg);
+                }
+                .back{
+                 transform:rotateY(0deg);
+             }
+            }
+        }
+    }
+    li.ln_middle{
+        margin:0 2% 20px 2%;
+    }
+}*/
 /*项目名词解释*/
 .btn-explain {
   vertical-align: middle;

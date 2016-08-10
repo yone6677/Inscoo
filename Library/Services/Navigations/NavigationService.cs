@@ -132,7 +132,7 @@ namespace Services
                     var roleIds = _svAppRole.Roles().Where(r => roles.Contains(r.Name)).Select(r => r.Id).AsNoTracking().ToList();
                     var navs = from p in _navRepository.DatabaseContext.Set<Permission>().Include(n => n.Navigation).AsNoTracking()
                                let n = p.Navigation
-                               where (roleIds.Contains(p.roleId) && p.Navigation.isShow && !p.IsDeleted)
+                               where (roleIds.Contains(p.roleId) && p.Navigation.isShow && !n.IsDeleted && !p.IsDeleted)
                                select (n);
 
                     return navs.OrderBy(n => n.sequence).ToList();

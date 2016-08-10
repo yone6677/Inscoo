@@ -19,7 +19,7 @@ namespace Domain
         /// </summary>
         public string EOrderCode { set; get; }
         public string Status { set; get; }
-
+        public string PdfFileName { set; get; }
         public virtual AppUser AppUser { set; get; }
 
         public virtual FileInfo Excel { set; get; }

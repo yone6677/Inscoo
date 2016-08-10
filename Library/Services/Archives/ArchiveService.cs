@@ -187,7 +187,8 @@ namespace Services
                                 EinsuranceUrl = ei == null ? "" : ei.Url,
                                 Status = c.Status ?? "",
                                 EOrderCode = c.EOrderCode ?? "",
-                                UniqueKey = c.UniqueKey ?? ""
+                                UniqueKey = c.UniqueKey ?? "",
+                                PdfFileName = c.PdfFileName ?? ""
                             }).ToList();
 
                 return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);

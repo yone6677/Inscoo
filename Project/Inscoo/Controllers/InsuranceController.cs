@@ -252,7 +252,7 @@ namespace Inscoo.Controllers
                         MQTYPE = "UploadCarInscurance",
                         MQSUBJECT = "上传车险通知",
                         MQMAILCONTENT = "",
-                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILFRM = "service@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
                         MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
                     });
@@ -311,7 +311,7 @@ namespace Inscoo.Controllers
                         MQTYPE = "UploadCarInscurance",
                         MQSUBJECT = "上传车险电子保单通知",
                         MQMAILCONTENT = "",
-                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILFRM = "service@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
                         MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
 

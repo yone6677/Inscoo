@@ -22,6 +22,7 @@ namespace Models
 
 
         public string ExceUrl { get; set; }
+        public string PdfFileName { get; set; }
         public DateTime ExceCreateTime { set; get; }
         public string ExceCreateUser { set; get; }
         /// <summary>

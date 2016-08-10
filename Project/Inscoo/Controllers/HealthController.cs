@@ -307,7 +307,7 @@ namespace Inscoo.Controllers
                     MQTYPE = "HealthOrder",
                     MQSUBJECT = "体检订单确认付款通知",
                     MQMAILCONTENT = "",
-                    MQMAILFRM = "redy.yone@inscoo.com",
+                    MQMAILFRM = "service@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = ""
 

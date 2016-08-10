@@ -7,7 +7,7 @@ namespace Services.Orders
 {
     public interface IOrderEmpService
     {
-        bool Insert(OrderEmployee item);
+       
         bool DeleteById(int id);
         bool Update(OrderEmployee item);
         /// <summary>
@@ -31,5 +31,8 @@ namespace Services.Orders
         /// <param name="oid"></param>
         /// <returns></returns>
         List<string> GetPolicyPdf(int oid);
+
+        bool Insert(OrderEmployee item);
+        bool InsertRange(List<OrderEmployee> items);
     }
 }

@@ -195,7 +195,7 @@ namespace Inscoo.Controllers
                         MQTYPE = "UploadWZHuman",
                         MQSUBJECT = "上传保险人员名单",
                         MQMAILCONTENT = "",
-                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILFRM = "service@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
                         MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
                     });

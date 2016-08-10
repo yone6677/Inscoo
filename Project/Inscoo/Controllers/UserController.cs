@@ -171,6 +171,17 @@ namespace Inscoo.Controllers
                 {
                     if (ForRole(user, model.Roles))
                     {
+                        var mailContent = string.Format("<p><b>(用户名)</b>,您好：{0}</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
+                        MailService.SendMail(new MailQueue()
+                        {
+                            MQTYPE = "保酷账号",
+                            MQSUBJECT = "保酷账号",
+                            MQMAILCONTENT = mailContent,
+                            MQMAILFRM = "service@inscoo.com",
+                            MQMAILTO = user.Email,
+                            MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
+
+                        });
                         return RedirectToAction("Index", new { successMes = "添加成功" });
                     }
                 }

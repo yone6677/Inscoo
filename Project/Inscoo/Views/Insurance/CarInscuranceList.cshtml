@@ -10,9 +10,12 @@
         @*<th>
                 上传人
             </th>*@
-        <th>
-            电子保单号码
-        </th>
+        @if (ViewBag.FileType == 0)
+        {
+            <th>
+                电子保单号码
+            </th>
+        }
         <th style="min-width: 180px">
             操作
         </th>
@@ -31,21 +34,27 @@
             @*<td>
                     @Html.DisplayFor(modelItem => item.ExceCreateUser)
                 </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.EOrderCode)
-            </td>
 
+            @if (ViewBag.FileType == 0)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.EOrderCode)
+                </td>
+            }
 
             <td>
-                <a href="@item.ExceUrl" target="blank">下载</a>
+                <a href="@item.ExceUrl" target="blank">投保单下载</a>
                 @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
-                    <span>|</span>
-                    @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId, ViewBag.FileType                    })
+                    if (ViewBag.FileType == 0)
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId, ViewBag.FileType })
+                    }
                     <span>|</span>
                     @Html.ActionLink("删除", "CarInscuranceDelete", new { insuranceId = item.InsuranceId })
                 }
-                else
+                else if (ViewBag.FileType == 0)
                 {
                     if (item.Status == "A")
                     {
@@ -64,8 +73,14 @@
                         <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
                     }
-                }
 
+
+                }
+                @if (!string.IsNullOrEmpty(@item.PdfFileName))
+                {
+                    <span>|</span>
+                    <a href="@item.PdfFileName" target="blank">PDF下载</a>
+                }
             </td>
 
 

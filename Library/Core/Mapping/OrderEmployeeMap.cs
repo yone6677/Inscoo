@@ -8,7 +8,7 @@ namespace Core.Mapping
         public OrderEmployeeMap()
         {
             ToTable("OrderEmployees");
-            Property(o => o.Author).IsOptional().HasMaxLength(64);
+            Property(o => o.Author).IsRequired().HasMaxLength(64);
             Property(o => o.BankCard).IsOptional().HasMaxLength(64);
             Property(o => o.BankName).IsOptional().HasMaxLength(32);
             Property(o => o.BirBirthday).IsRequired();

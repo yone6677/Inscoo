@@ -8,6 +8,7 @@ namespace Core.Mapping
         public HealthOrderDetailMap()
         {
             Property(h => h.Birthday).IsOptional();
+            Property(h => h.Author).IsRequired();
             HasRequired(h => h.HealthOrderMaster).WithMany(h => h.HealthOrderDetails).HasForeignKey(h => h.HealthOrderMasterId);
         }
     }

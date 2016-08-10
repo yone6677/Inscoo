@@ -328,6 +328,27 @@
     <Content Include="Global.asax" />
     <Content Include="Content\base.less" />
     <Content Include="Archive\Template\TuiBaoExcelTemplate.xlsx" />
+    <Content Include="Archive\InsuranceFiles\A0.pdf" />
+    <Content Include="Archive\InsuranceFiles\A1.pdf" />
+    <Content Include="Archive\InsuranceFiles\A10.pdf" />
+    <Content Include="Archive\InsuranceFiles\A11.pdf" />
+    <Content Include="Archive\InsuranceFiles\A12.pdf" />
+    <Content Include="Archive\InsuranceFiles\A2.pdf" />
+    <Content Include="Archive\InsuranceFiles\A3.pdf" />
+    <Content Include="Archive\InsuranceFiles\A4.pdf" />
+    <Content Include="Archive\InsuranceFiles\A5.pdf" />
+    <Content Include="Archive\InsuranceFiles\A6.pdf" />
+    <Content Include="Archive\InsuranceFiles\A7.pdf" />
+    <Content Include="Archive\InsuranceFiles\A8.pdf" />
+    <Content Include="Archive\InsuranceFiles\A9.pdf" />
+    <Content Include="Archive\InsuranceFiles\V21.pdf" />
+    <Content Include="Archive\InsuranceFiles\V22.pdf" />
+    <Content Include="Archive\InsuranceFiles\V23.pdf" />
+    <Content Include="Archive\InsuranceFiles\中高端医疗保险投保单（计划一）.pdf" />
+    <Content Include="Archive\InsuranceFiles\中高端医疗保险投保单（计划三）.pdf" />
+    <Content Include="Archive\InsuranceFiles\中高端医疗保险投保单（计划二）.pdf" />
+    <Content Include="Archive\InsuranceFiles\永安雇主责任投保单.pdf" />
+    <Content Include="Archive\InsuranceFiles\驾乘险条款.pdf" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

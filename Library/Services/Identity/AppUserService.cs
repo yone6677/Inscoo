@@ -250,7 +250,7 @@ namespace Services
                 if (!string.IsNullOrEmpty(role))
                 {
                     var rId = _appRoleManager.FindByName(role).Id;
-                    user = user.Where(s => s.Roles.Any(r => r.RoleId == roleId)).ToList();
+                    user = user.Where(s => s.Roles.Any(r => r.RoleId == rId)).ToList();
                 }
                 if (!string.IsNullOrEmpty(roleId))
                 {
@@ -499,8 +499,17 @@ namespace Services
                        .ToList();
             if (!isAdmin)
             {
-                var items = _userManager.FindByIdAsync(uId).Result.ProdSeries.Split(';');
-                list = list.Where(l => items.Contains(l.Value)).ToList();
+                var u = _userManager.FindById(uId);
+                if (!string.IsNullOrEmpty(u.ProdSeries))
+                {
+                    var items = u.ProdSeries.Split(';');
+                    list = list.Where(l => items.Contains(l.Value)).ToList();
+                }
+                else
+                {
+                    list.Clear();
+                    //list.Add(new { Key = "没有", Value = "nothing" });
+                }
             }
             return new SelectList(list, "Value", "Key");
         }

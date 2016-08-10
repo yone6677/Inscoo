@@ -446,7 +446,7 @@ body {
   background: #24A9E4;
   color: #fff;
 }
-.inscoo-productTable tr:first-child span {
+.inscoo-productTable tr:first-child span span {
   color: #fff;
   font-size: 0.9em;
   display: inline-block;

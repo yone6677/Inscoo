@@ -230,6 +230,7 @@ a.loginButton {
 
 .floor1 {
     background: url(imgIndex/bg1.jpg) no-repeat center;
+    background-size:cover;
 }
 /*.floor1 img{
     width:100%;

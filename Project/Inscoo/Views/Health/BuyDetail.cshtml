@@ -22,8 +22,16 @@
             <span></span>
         </div>
     </div>
-    <div class="product-count col-xs-12">
+    <div class="product-count col-xs-12" style="margin-left:1rem;">
         @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
         <input type="submit" value="直接购买" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+        <a class="btn btn-danger" onclick="addToCart('@Model.ProductId')"><span class="fa fa-cart-plus"></span>&nbsp; 加入购物车</a>
     </div>
 }
+<script>
+    function addToCart(e) {
+        var pNum = $('#buy-num').val();//document.getElementById('Count').value;
+        var url = '/Cart/Add?id=' + e + '&num=' + pNum;
+        location.href = url;
+    }
+</script>

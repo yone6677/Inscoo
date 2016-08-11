@@ -32,6 +32,7 @@ namespace Inscoo.Infrastructure
             return false;
         }
         public override void OnAuthorization(AuthorizationContext filterContext)
+
         {
             if (filterContext.HttpContext.User.Identity.Name == "Admin") return;
             string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";

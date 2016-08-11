@@ -71,6 +71,7 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="Common\GenericAttribute.cs" />
     <Compile Include="Company\Company.cs" />
+    <Compile Include="Health\HealthFile.cs" />
     <Compile Include="WZHuman\WZHumanMaster.cs" />
     <Compile Include="Finance\CashFlow.cs" />
     <Compile Include="Finance\CashFlowDetails.cs" />

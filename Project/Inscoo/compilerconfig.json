@@ -14,5 +14,9 @@
   {
     "outputFile": "Content/css/datepicker3.css",
     "inputFile": "Content/css/datepicker3.less"
+  },
+  {
+    "outputFile": "Content/shoppingCart.css",
+    "inputFile": "Content/shoppingCart.less"
   }
 ]

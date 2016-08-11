@@ -367,7 +367,7 @@
                     @{
                         for (var i = 1; i < id; i++)
                         {
-                            <li><a href="#">@i</a></li>
+                            <li><a href="#" class="selected_haha">@i</a></li>
                         }
                     }
                     <li>
@@ -551,6 +551,14 @@
                 var t = $("[id^='id_']");
                 for (var i = 0; i < t.length; i++) {
                     $(t[i]).removeClass("inscoo").css("display", 'none');
+                    $("#nav-pagination li a").css({
+                        "background": "#fff",
+                        "color": "#337ab7"
+                    });
+                    $(target).children().css({
+                        "background": "#24A9E4",
+                        "color": "#fff"
+                    });
                     $(t[text - 1]).css("display", "block").addClass("inscoo");
                 }
             }
@@ -559,7 +567,11 @@
             var num = $("[id^='id_']").length;
             $("[id^='id_']").css("display", 'none');
             $("#id_" + num).css("display", "block").addClass("inscoo");
-
+            $("#nav-pagination li a.selected_haha:last").css({
+                "background": "#24A9E4",
+                "color":"#fff"
+            });
+            console.log($("#nav-pagination li a.selected_haha:last").text());
             $("#nav-pagination").on("click", togglePage);
         })
 
@@ -569,8 +581,7 @@
         });
         $(function () {
             $(".toggle_switch_1").on("click", function () {
-               
-                $(".inscoo").slideToggle();
+               $(".inscoo").slideToggle();
             });
         })
     </script>

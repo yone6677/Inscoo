@@ -23,61 +23,12 @@
         </li>
     </ul>
 </div>
-
-
-
-@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data" }))
-{
-    <input type="hidden" name="DateTicks" value="@Model.DateTicks" />
-    <p class="basic-information">
-        <i class="fa fa-edit fa-2x"></i>详细信息填写
-    </p>
-    <ul>
-        <li>
-            1.请下载员工名单模板并按模板格式填写：
-        </li>
-        <li>
-            <a href="~/Archive/Template/health/体检上传表格.xlsx" target="_blank" class="btn btn-default">下载模板</a>
-        </li>
-        <li>
-            2.请上传填写完成的员工名单
-        </li>
-        <li>
-            <input type="hidden" value=@Model.MasterId name="masterId" />
-            <a href="javascript:;" class="a-upload">
-                <input type="file" id="empinfo" required name="empinfo" />+ 浏览
-            </a>
-            <span class="lab" style="height:28px;line-height:28px;"></span>
-            <input type="submit" value="上传" class="btn btn-default" />
-        </li>
-
-    </ul>
-    <div style="width:80%;margin:1em auto;line-height:2em;text-align:left;">
-        <span style="color:#5cb85c">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
-    </div>
-    <div style="width:80%;margin:0 auto;line-height:2em;text-align:left;">
-
-        @if (TempData["error"] != null)
-        {
-            <span class="text-danger" style="font-size: 1em ">注意：@TempData["error"]</span><br />
-        }
-    </div>
-}
-@if (string.IsNullOrEmpty(Model.EmpInfoFileUrl))
-{
-    <div class="orderConfirmBodyNext" style="text-align: center;">
-        @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId, Model.DateTicks }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
-    </div>
-}
-else
-{
+@{ 
     using (Html.BeginForm("EntryInfo", "Health", FormMethod.Post, new { @id = "EntryInfoForm" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.MasterId)
         @Html.HiddenFor(model => model.DateTicks)
-
         @Html.Hidden("isCompanySelect")
 
         <hr>
@@ -140,7 +91,6 @@ else
             </ul>
         </div>
         <div class="orderConfirmBodyNext" style="text-align:center;">
-            @Html.ActionLink("上一步", "MakeSure", new { masterId = Model.MasterId, Model.DateTicks }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
             <input type="submit" value="下一步" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
         </div>
     }

@@ -99,6 +99,7 @@
     <Compile Include="Mapping\AppRoleMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceDetailMap.cs" />
+    <Compile Include="Mapping\HealthFileMap.cs" />
     <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
     <Compile Include="Mapping\CashFlowDetailsMap.cs" />

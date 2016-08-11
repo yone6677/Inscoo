@@ -26,6 +26,10 @@ namespace Models
 
         [DisplayName("合计金额")]
         public decimal Amount { get; set; }
+        [DisplayName("下单时间")]
+        public DateTime CreateTime { get; set; }
+        [DisplayName("体检项目名称")]
+        public string prodName { get; set; }
 
         public int PageIndex { get; set; }
         public int PageSize { get; set; }

@@ -84,5 +84,7 @@ namespace Services
         /// <param name="enumValue"></param>
         /// <returns></returns>
         string GetEnumDescription(Enum enumValue);
+        string EncryptCookie(string name);
+        string DecryptCookie(string temp);
     }
 }

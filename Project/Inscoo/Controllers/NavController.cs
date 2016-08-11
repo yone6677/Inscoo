@@ -106,6 +106,7 @@ namespace Inscoo.Controllers
                     if (item != null)
                     {
                         isExist = true;
+                        item = _navService.GetById(item.Id);
                     }
                 }
                 if (item == null)

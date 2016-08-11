@@ -111,6 +111,10 @@ namespace Domain
         /// 付款通知书PDF
         /// </summary>
         public string PaymentNoticePdf { set; get; }
+        /// <summary>
+        /// 失效日期
+        /// </summary>
+        public DateTime Expire { get; set; }
 
         public virtual HealthCheckProduct HealthCheckProduct { set; get; }
         /// <summary>
@@ -118,5 +122,6 @@ namespace Domain
         /// </summary>
         public virtual Company Company { set; get; }
         public virtual IList<HealthOrderDetail> HealthOrderDetails { set; get; }
+        public virtual IList<HealthFile> HealthFile { get; set; }
     }
 }

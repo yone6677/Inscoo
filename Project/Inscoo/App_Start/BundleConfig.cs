@@ -43,9 +43,12 @@ namespace Inscoo
                  "~/Content/css/bootstrap-datepicker.css",
                  "~/Content/bootstrap-theme.css",
                     "~/Content/bootstrap.css"));
+
             bundles.Add(new StyleBundle("~/Content/FontAwesome").Include(
                     "~/Content/font-awesome.css"));
-
+            //购物车页面
+            bundles.Add(new StyleBundle("~/Content/shoppingCart").Include(
+                    "~/Content/shoppingCart.css"));
         }
     }
 }

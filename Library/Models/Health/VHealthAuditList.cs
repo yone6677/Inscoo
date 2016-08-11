@@ -29,5 +29,13 @@ namespace Models
 
         [DisplayName("填写时间")]
         public DateTime CreateTime { set; get; }
+        /// <summary>
+        /// 购买数量
+        /// </summary>
+        public int Count { get; set; }
+        /// <summary>
+        /// 已有人员数量
+        /// </summary>
+        public int EmpSum { get; set; }
     }
 }

@@ -2,37 +2,25 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.IO;
-using System.Data.Entity.Infrastructure;
-using System.Web.UI.WebControls;
 using OfficeOpenXml;
 using Core.Data;
 using Domain;
 using Models;
 using Core.Pager;
 using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
-using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Core;
-using Domain.Orders;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
-using iTextSharp.text.pdf.draw;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataHandler.Encoder;
 using Models.Infrastructure;
-using Models.Order;
-using NPOI.SS.Formula.Functions;
 using Services.FileHelper;
+using Models.Cart;
 
 namespace Services
 {
@@ -41,6 +29,7 @@ namespace Services
         private readonly IRepository<HealthCheckProduct> _repHealthProduct;
         private readonly IRepository<HealthOrderDetail> _repHealthOrderDetail;
         private readonly IRepository<HealthOrderMaster> _repHealthOrderMaster;
+        private readonly IRepository<HealthFile> _repHealthFile;
         private readonly IRepository<Company> _repCompany;
         private readonly IArchiveService _svArchive;
         private readonly ILoggerService _svLogger;
@@ -48,7 +37,10 @@ namespace Services
         private readonly IFileService _svFile;
         private readonly AppUserManager _userManager;
         private readonly AppRoleManager _roleManager;
-        public HealthService(IRepository<Company> repCompany, IAuthenticationManager svAuthentication, IFileService svFile, IRepository<HealthOrderMaster> repHealthOrderMaster, ILoggerService svLogger, IArchiveService svArchive, IRepository<HealthOrderDetail> repHealthOrderDetail, AppRoleManager roleManager, AppUserManager userManager, IRepository<HealthCheckProduct> repHealthProduct)
+        public HealthService(IRepository<Company> repCompany, IAuthenticationManager svAuthentication, IFileService svFile,
+            IRepository<HealthOrderMaster> repHealthOrderMaster, ILoggerService svLogger, IArchiveService svArchive,
+            IRepository<HealthOrderDetail> repHealthOrderDetail, AppRoleManager roleManager, AppUserManager userManager,
+            IRepository<HealthCheckProduct> repHealthProduct, IRepository<HealthFile> repHealthFile)
         {
             _repCompany = repCompany;
             _svAuthentication = svAuthentication;
@@ -60,6 +52,7 @@ namespace Services
             _svArchive = svArchive;
             _svLogger = svLogger;
             _svFile = svFile;
+            _repHealthFile = repHealthFile;
         }
 
 
@@ -107,6 +100,60 @@ namespace Services
                     BaokuOrderCode = "HLTH" + DateTime.Now.Ticks.ToString()
                 };
                 _repHealthOrderMaster.Insert(master);
+                return master;
+            }
+
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
+                throw new WarningException("操作失败");
+            }
+        }
+        public List<HealthOrderMaster> GetByTicks(string ticks, string author)
+        {
+            try
+            {
+                var query = _repHealthOrderMaster.Table.Where(q => q.DateTicks == ticks);
+                if (!string.IsNullOrEmpty(author))
+                {
+                    query = query.Where(q => q.Author == author);
+                }
+                if (query.Any())
+                {
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, userName: author);
+            }
+            return new List<HealthOrderMaster>();
+        }
+        public List<HealthOrderMaster> AddHealthMaster(List<CartBuyModel> model, string author)
+        {
+            try
+            {
+                var dateTicks = DateTime.Now.Ticks.ToString();
+                var master = new List<HealthOrderMaster>();
+                foreach (var m in model)
+                {
+                    var p = _repHealthProduct.GetById(m.Id);
+                    var item = new HealthOrderMaster()
+                    {
+                        DateTicks = dateTicks,
+                        PublicPrice = p.PublicPrice,
+                        SellPrice = GetPrivilegePrice(author, p),
+                        CommissionMethod = p.CommissionMethod,
+                        CommissionRatio = GetCommissionRatio(author, p),
+                        Author = author,
+                        HealthCheckProductId = m.Id,
+                        Status = 1,
+                        Count = m.Count,
+                        BaokuOrderCode = "HLTH" + dateTicks
+                    };
+                    _repHealthOrderMaster.Insert(item);
+                    master.Add(item);
+                }
                 return master;
             }
 
@@ -281,7 +328,9 @@ namespace Services
                         Count = master.Count,
                         Amount = master.SellPrice * master.Count,
                         DateTicks = master.DateTicks,
-                        Author = master.Author
+                        Author = master.Author,
+                        CreateTime = master.CreateTime,
+                        prodName = master.HealthCheckProduct.ProductName
                     };
                 }
             }
@@ -413,7 +462,9 @@ namespace Services
                                 Status = h.Status,
                                 Author = h.Author,
                                 CreateTime = h.CreateTime,
-                                DateTicks = h.DateTicks
+                                DateTicks = h.DateTicks,
+                                Count = h.Count,
+                                EmpSum = h.HealthOrderDetails.Count
                             });
 
                 return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
@@ -461,9 +512,9 @@ namespace Services
                         .First(h => h.Id == masterId && h.DateTicks == dateTicks);
                 var result = new VHealthConfirmPayment()
                 {
-                    MasterId = masterId,
-                    Price = master.SellPrice,
-                    Count = master.Count,
+                    //MasterId = masterId,
+                    //Price = master.SellPrice,
+                    //Count = master.Count,
                     Amount = master.SellPrice * master.Count,
                     PaymentNoticePdf = master.PaymentNoticePdf ?? "",
                     BaokuOrderCode = master.BaokuOrderCode ?? ""
@@ -514,15 +565,18 @@ namespace Services
                     if (worksheet == null)
                         throw new WarningException("上传的文件内容不能为空");
                     var rowNumber = worksheet.Dimension.Rows;
-                    var minInsuranceNumber = 0;
-
-                    //若有旧数据先删除
-                    var oldInfo = _repHealthOrderDetail.Table.Where(h => h.HealthOrderMasterId == masterId);
-                    if (oldInfo.Any())
+                    var empAvai = master.Count - master.HealthOrderDetails.Count;//未上传的人数
+                    if ((rowNumber - 1) > empAvai)
                     {
-                        _repHealthOrderDetail.Delete(oldInfo);
-
+                        throw new WarningException($"人数超出范围,体检人数为 {master.Count} ，最多可再上传 {empAvai} 人，请检查文件");
                     }
+                    //若有旧数据先删除
+                    //var oldInfo = _repHealthOrderDetail.Table.Where(h => h.HealthOrderMasterId == masterId);
+                    //if (oldInfo.Any())
+                    //{
+                    //    _repHealthOrderDetail.Delete(oldInfo);
+
+                    //}
 
                     var fileModel = _svArchive.InsertFileInfo(empinfo, author);
 
@@ -570,25 +624,30 @@ namespace Services
                     }
                     var result = _repHealthOrderDetail.InsertRange(list);
 
-
-                    if (!string.IsNullOrEmpty(master.PersonExcelPath))
+                    var empFile = new HealthFile()
                     {
-                        _svArchive.DeleteFileBuUrl(master.PersonExcelPath);
-                    }
+                        FId = fileModel.Id,
+                        Author = author,
+                        HId = master.Id
+                    };
+                    _repHealthFile.Insert(empFile);
+
+                    //if (!string.IsNullOrEmpty(master.PersonExcelPath))
+                    //{
+                    //    _svArchive.DeleteFileBuUrl(master.PersonExcelPath);
+                    //}
                     var errorMes = "";
-                    if (master.Count > list.Count)
-                    {
-                        errorMes = "上传人数小于购买人数,支付价格仍会按照购买人数计算.";
-                    }
-                    if (master.Count < list.Count)
-                    {
-                        master.Count = list.Count;
-                        errorMes = "上传人数大于购买人数,已自动将购买人数调整为实际上传人数.";
-                    }
-                    master.PersonExcelPath = fileModel.Url;
-                    _repHealthOrderMaster.Update(master);
-
-
+                    //if (master.Count > list.Count)
+                    //{
+                    //    errorMes = "上传人数小于购买人数,支付价格仍会按照购买人数计算.";
+                    //}
+                    //if (master.Count < list.Count)
+                    //{
+                    //    master.Count = list.Count;
+                    //    errorMes = "上传人数大于购买人数,已自动将购买人数调整为实际上传人数.";
+                    //}
+                    //master.PersonExcelPath = fileModel.Url;
+                    //_repHealthOrderMaster.Update(master);
                     return errorMes;
                 }
                 else
@@ -613,7 +672,7 @@ namespace Services
             _repHealthOrderMaster.Update(master);
         }
 
-        public async Task GetPaymentNoticePdfAsync(int masterId, string dateTicks)
+        public async Task GetPaymentNoticePdfAsync(string dateTicks)
         {
             try
             {
@@ -621,31 +680,40 @@ namespace Services
                 {
 
                 });
-                GetPaymentNoticePdf(masterId, dateTicks);
+                GetPaymentNoticePdf(dateTicks);
             }
             catch (Exception exc)
             {
                 _svLogger.insert(exc, LogLevel.Warning, "HealthService：GetPaymentNoticePdf");
             }
         }
-        public string GetPaymentNoticePdf(int masterId, string dateTicks)
+        public string GetPaymentNoticePdf(string dateTicks)
         {
             try
             {
-                var master = GetConfirmPayment(masterId, dateTicks);
-                var masterUp = GetHealthMaster(masterId, dateTicks: dateTicks);
-                if (!masterUp.CompanyId.HasValue) return null;
+                var query = _repHealthOrderMaster.Table.Where(q => q.DateTicks == dateTicks);
+                var userName = _svAuthentication.User.Identity.Name;
+                query = query.Where(q => q.Author == userName);
+                if (!query.Any())
+                    return null;
+                //var master = GetConfirmPayment(masterId, dateTicks);
+                //var masterUp = GetHealthMaster(masterId, dateTicks: dateTicks);
+                if (!query.FirstOrDefault().CompanyId.HasValue) return null;
                 var paths = _svFile.GenerateFilePathBySuffix(".pdf");
-                masterUp.PaymentNoticePdf = "";
-                masterUp.PaymentNoticePdf = @"../.." + paths[1];
-                UpdateMaster(masterUp);
+                var newTab = query.ToList();
+                foreach (var q in newTab)
+                {
+                    var item = _repHealthOrderMaster.GetById(q.Id);
+                    item.PaymentNoticePdf = "";
+                    item.PaymentNoticePdf = @"../.." + paths[1];
+                    _repHealthOrderMaster.Update(item);
+                }
+                //  _repHealthOrderMaster.Update(query);
                 var stream = new FileStream(paths[0], FileMode.Create);
                 var baseFont = OperationPDF.GetBaseFont();
                 var font = OperationPDF.GetFont();
                 var document = new Document();
-                Paragraph paragraph;
                 PdfPTable table;
-                PdfPCell cell;
                 var pdfWrite = PdfWriter.GetInstance(document, stream);
                 var eventHd = new PageHeaderHandlerAddLogo();
 
@@ -661,7 +729,7 @@ namespace Services
 
                 table = new PdfPTable(2) { WidthPercentage = 100 };
                 table.AddCell(
-                    new PdfPCell(new Phrase(string.Format($"尊贵的 Dear valued member：{masterUp.Company.Name}"), font))
+                    new PdfPCell(new Phrase(string.Format($"尊贵的 Dear valued member：{query.FirstOrDefault().Company.Name}"), font))
                     {
                         BorderWidth = 0,
                         HorizontalAlignment = PdfFormField.Q_LEFT
@@ -681,23 +749,44 @@ namespace Services
                     {
                         IndentationLeft = 20
                     });
-
-                table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
-                table.SetWidths(new int[2] { 30, 70 });
                 var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
-                table.AddCell(new PdfPCell(new Phrase("单价：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase(master.Price.ToString(CultureInfo.InvariantCulture), font))
+                #region table
+                table = new PdfPTable(5) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[5] { 20, 25, 20, 15, 20 });
+                table.SpacingBefore = 30;
+                table.WidthPercentage = 100;
+                table.AddCell(new Phrase("产品", font1));
+                table.AddCell(new Phrase("体检单位", font1));
+                table.AddCell(new Phrase("单价", font1));
+                table.AddCell(new Phrase("数量", font1));
+                table.AddCell(new Phrase("合计", font1));
+                foreach (var item in query)
                 {
-                    BorderWidth = 0
-                });
-                table.AddCell(new PdfPCell(new Phrase("购买份数：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase(master.Count.ToString(), font)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("合计金额：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase(master.Amount.ToString(CultureInfo.InvariantCulture), font))
-                {
-                    BorderWidth = 0
-                });
+                    var product = item.HealthCheckProduct;
+                    table.AddCell(new Phrase(product.ProductName, font));
+                    table.AddCell(new Phrase(product.CompanyName, font));
+                    table.AddCell(new Phrase(item.SellPrice.ToString(), font));
+                    table.AddCell(new Phrase(item.Count.ToString(), font));
+                    table.AddCell(new Phrase((item.Count * item.SellPrice).ToString(), font));
+                }
                 document.Add(table);
+                #endregion
+                //table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
+                //table.SetWidths(new int[2] { 30, 70 });
+
+                //table.AddCell(new PdfPCell(new Phrase("单价：", font1)) { BorderWidth = 0 });
+                //table.AddCell(new PdfPCell(new Phrase(master.Price.ToString(CultureInfo.InvariantCulture), font))
+                //{
+                //    BorderWidth = 0
+                //});
+                //table.AddCell(new PdfPCell(new Phrase("购买份数：", font1)) { BorderWidth = 0 });
+                //table.AddCell(new PdfPCell(new Phrase(master.Count.ToString(), font)) { BorderWidth = 0 });
+                //table.AddCell(new PdfPCell(new Phrase("合计金额：", font1)) { BorderWidth = 0 });
+                //table.AddCell(new PdfPCell(new Phrase(master.Amount.ToString(CultureInfo.InvariantCulture), font))
+                //{
+                //    BorderWidth = 0
+                //});
+                //document.Add(table);
 
 
                 document.Add(
@@ -712,7 +801,7 @@ namespace Services
                 table.AddCell(new PdfPCell(new Phrase("银行帐号：", font1)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("1001213909200135268", font)) { BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase($"转账备注：", font1)) { BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase(master.BaokuOrderCode, font)) { BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(query.FirstOrDefault().BaokuOrderCode, font)) { BorderWidth = 0 });
                 document.Add(table);
 
                 document.Add(new Paragraph("RMB Bank Account Information：",
@@ -720,7 +809,7 @@ namespace Services
                 { IndentationLeft = 56 });
                 document.Add(
                     new Paragraph(
-                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {master.BaokuOrderCode ?? ""}", font)
+                        $"Company Name: 上海皓为商务咨询有限公司\nBank Name: 中国工商银行武进路支行 \nAccount No.: 1001213909200135268  \nRemark: {query.FirstOrDefault().BaokuOrderCode ?? ""}", font)
                     {
                         IndentationLeft = 56
                     });
@@ -805,7 +894,19 @@ namespace Services
                 return "";
             }
         }
-
+        public bool InsertHealthFile(HealthFile item)
+        {
+            try
+            {
+                _repHealthFile.Insert(item);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _svLogger.insert(e, LogLevel.Warning, "HealthService：InsertHealthFile");
+            }
+            return false;
+        }
 
         #region private
 

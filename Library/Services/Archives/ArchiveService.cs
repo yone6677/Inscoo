@@ -155,7 +155,8 @@ namespace Services
         {
             try
             {
-                return _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+                var list=_archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+                return list;
             }
             catch (Exception e)
             {

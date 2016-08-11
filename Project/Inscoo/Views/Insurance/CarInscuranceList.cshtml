@@ -76,7 +76,7 @@
 
 
                 }
-                @if (!string.IsNullOrEmpty(@item.PdfFileName))
+                @if (!string.IsNullOrEmpty(@item.PdfFileName) && User.IsInRole("CarInscuranceCompany"))
                 {
                     <span>|</span>
                     <a href="@item.PdfFileName" target="blank">PDF下载</a>

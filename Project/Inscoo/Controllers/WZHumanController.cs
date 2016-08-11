@@ -180,6 +180,7 @@ namespace Inscoo.Controllers
         {
             try
             {
+                var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                 var userName = User.Identity.Name;
                 string mailContent, path;
                 path = _svArchive.InsertWZInsurants(excel, userName, masterId, memo);
@@ -188,7 +189,6 @@ namespace Inscoo.Controllers
                 {
                     mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
 
-                    var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                     var mailTo = isFirstUpload ? _svGenericAttribute.GetByGroup("WZHumanEmail").Select(c => c.Value) : _svGenericAttribute.GetByGroup("WZHumanEmailMaintain").Select(c => c.Value);
                     MailService.SendMailAsync(new MailQueue()
                     {

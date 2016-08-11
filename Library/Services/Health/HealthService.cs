@@ -134,6 +134,7 @@ namespace Services
             try
             {
                 var dateTicks = DateTime.Now.Ticks.ToString();
+                var Expire = DateTime.Now.AddDays(30);
                 var master = new List<HealthOrderMaster>();
                 foreach (var m in model)
                 {
@@ -149,7 +150,8 @@ namespace Services
                         HealthCheckProductId = m.Id,
                         Status = 1,
                         Count = m.Count,
-                        BaokuOrderCode = "HLTH" + dateTicks
+                        BaokuOrderCode = "HLTH" + dateTicks,
+                        Expire = Expire
                     };
                     _repHealthOrderMaster.Insert(item);
                     master.Add(item);
@@ -316,6 +318,21 @@ namespace Services
                 else
                 {
                     var company = master.Company;
+                    var servicePeriod = "";
+                    if (master.FinancePayDate.HasValue)
+                    {
+                        servicePeriod = master.FinancePayDate.Value.ToShortDateString() + "至";
+                        if (master.ServicePeriod.HasValue)
+                        {
+                            servicePeriod += master.ServicePeriod.Value.ToShortDateString();
+                        }
+                    }
+                    var ticksGroup = from g in master.HealthOrderDetails group g by new { g.Ticks } into a select new { ticks = a.Key.Ticks };
+                    var longTicks = new List<long>();
+                    foreach (var t in ticksGroup)
+                    {
+                        longTicks.Add(t.ticks);
+                    }
                     if (company == null) company = new Company();
                     return new VHealthAuditOrder()
                     {
@@ -330,7 +347,10 @@ namespace Services
                         DateTicks = master.DateTicks,
                         Author = master.Author,
                         CreateTime = master.CreateTime,
-                        prodName = master.HealthCheckProduct.ProductName
+                        prodName = master.HealthCheckProduct.ProductName,
+                        Expire = master.Expire,
+                        ServicePeriod = servicePeriod,
+                        ticksGroup = longTicks
                     };
                 }
             }
@@ -340,11 +360,11 @@ namespace Services
                 throw new WarningException("操作有误");
             }
         }
-        public IPagedList<HealthOrderDetail> GetHealthOrderDetails(int pageIndex, int pageSize, int masterId)
+        public IPagedList<HealthOrderDetail> GetHealthOrderDetails(int pageIndex, int pageSize, int masterId, long ticks)
         {
             try
             {
-                var list = _repHealthOrderDetail.TableNoTracking.Where(h => h.HealthOrderMasterId == masterId);
+                var list = _repHealthOrderDetail.TableNoTracking.Where(h => h.HealthOrderMasterId == masterId && h.Ticks == ticks);
                 if (!list.Any()) throw new Exception();
                 return new PagedList<HealthOrderDetail>(list.ToList(), pageIndex, pageSize);
             }
@@ -464,7 +484,8 @@ namespace Services
                                 CreateTime = h.CreateTime,
                                 DateTicks = h.DateTicks,
                                 Count = h.Count,
-                                EmpSum = h.HealthOrderDetails.Count
+                                EmpSum = h.HealthOrderDetails.Count,
+                                FinConfirmDate = h.FinanceConfirmDate
                             });
 
                 return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
@@ -585,6 +606,7 @@ namespace Services
                     if (Cells["A1"].Value.ToString().Trim() != "姓名" || Cells["B1"].Value.ToString().Trim() != "性别(男/女)" || Cells["C1"].Value.ToString().Trim() != "出生日期" || Cells["D1"].Value.ToString().Trim() != "证件号码" || Cells["E1"].Value.ToString().Trim() != "婚姻状况" || Cells["F1"].Value.ToString().Trim() != "移动电话" || Cells["G1"].Value.ToString().Trim() != "邮箱地址" || Cells["H1"].Value.ToString().Trim() != "所在城市" || Cells["I1"].Value.ToString().Trim() != "公司名称" || Cells["J1"].Value.ToString().Trim() != "部门" || Cells["K1"].Value.ToString().Trim() != "职位")
                         throw new WarningException("请检查上传文件和下载模板是否拥有相同的列");
                     var list = new List<HealthOrderDetail>();
+                    var dateTicks = DateTime.Now.Ticks;
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
@@ -604,7 +626,6 @@ namespace Services
 
                         if (Cells["B" + i].Value.ToString().Trim() != "男" && Cells["B" + i].Value.ToString().Trim() != "女")
                             throw new WarningException($"第{i}行 [性别] 只能是男或者女");
-
                         var item = new HealthOrderDetail();
                         item.HealthOrderMasterId = masterId;//批次号
                         item.Name = Cells["A" + i].Value.ToString().Trim();
@@ -619,6 +640,7 @@ namespace Services
                         item.DepartMent = Cells["J" + i].Value == null ? "" : Cells["J" + i].Value.ToString().Trim();
                         item.Chair = Cells["K" + i].Value == null ? "" : Cells["K" + i].Value.ToString().Trim();
                         item.Author = author;
+                        item.Ticks = dateTicks;
                         list.Add(item);
 
                     }

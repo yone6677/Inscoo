@@ -17,6 +17,7 @@ namespace Core.Mapping
             Property(h => h.FinanceConfirmDate).IsOptional();
             Property(h => h.FinancePayDate).IsOptional();
             Property(h => h.Expire).HasColumnType("datetime2");
+            Property(h => h.ServicePeriod).IsOptional().HasColumnType("datetime2");
             HasOptional(h => h.Company).WithMany().HasForeignKey(h => h.CompanyId);
             HasRequired(h => h.HealthCheckProduct).WithMany().HasForeignKey(h => h.HealthCheckProductId);
             HasMany(h => h.HealthFile).WithOptional().HasForeignKey(f => f.HId);

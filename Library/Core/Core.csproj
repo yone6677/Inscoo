@@ -260,6 +260,14 @@
     <Compile Include="Migrations\201608100552129_AddColumnPsffileAtCar.Designer.cs">
       <DependentUpon>201608100552129_AddColumnPsffileAtCar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608110612330_healthfile.cs" />
+    <Compile Include="Migrations\201608110612330_healthfile.Designer.cs">
+      <DependentUpon>201608110612330_healthfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608110631381_health1431.cs" />
+    <Compile Include="Migrations\201608110631381_health1431.Designer.cs">
+      <DependentUpon>201608110631381_health1431.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -377,6 +385,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608100552129_AddColumnPsffileAtCar.resx">
       <DependentUpon>201608100552129_AddColumnPsffileAtCar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608110612330_healthfile.resx">
+      <DependentUpon>201608110612330_healthfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608110631381_health1431.resx">
+      <DependentUpon>201608110631381_health1431.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

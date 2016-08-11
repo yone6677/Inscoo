@@ -91,17 +91,19 @@ namespace Inscoo.Controllers
                 var model = new List<VCheckProductDetail>();
                 if (cartTmpData == null)
                 {
+                    cartTmpData = "[{\"Id\":" + productId + ",\"Count\":" + count + "}]";
                     var item = new VCheckProductDetail();
                     Domain.HealthOrderMaster master = new Domain.HealthOrderMaster();
                     if (masterId != -1)//返回逻辑
                     {
                         master = _svHealth.GetHealthMaster(masterId, dateTicks: dateTicks);
                         productId = master.HealthCheckProductId;
+                        item.MasterId = masterId;
+                        item.DateTicks = dateTicks;
+                        item.Count = master.Count;
                     }
                     item = _svHealth.GetHealthProductById(productId, User.Identity.GetUserId());
-                    item.MasterId = masterId;
-                    item.DateTicks = dateTicks;
-                    item.Count = count == -1 ? master.Count : count;
+                    item.Count = count;
                     item.SubTotal = item.Count * item.PrivilegePrice;
                     model.Add(item);
                 }
@@ -350,6 +352,7 @@ namespace Inscoo.Controllers
                 master.FinanceConfirmDate = DateTime.Now;
                 master.FinanceConfirmer = User.Identity.Name;
                 master.Status = 17;
+                master.ServicePeriod = model.FinancePayDate.AddDays(180);
                 //master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
                 _svHealth.UpdateMaster(master);
 
@@ -377,11 +380,11 @@ namespace Inscoo.Controllers
         /// <param name="pageSize">15</param>
         /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult HealthPersons(int masterId, int pageIndex = 1, int pageSize = 15)
+        public ActionResult HealthPersons(int masterId, long ticks, int pageIndex = 1, int pageSize = 15)
         {
             if (masterId > 0)
             {
-                var model = _svHealth.GetHealthOrderDetails(pageIndex, pageSize, masterId);
+                var model = _svHealth.GetHealthOrderDetails(pageIndex, pageSize, masterId, ticks);
                 var command = new PageCommand()
                 {
                     PageIndex = model.PageIndex,
@@ -493,6 +496,7 @@ namespace Inscoo.Controllers
                 TotalPages = list.TotalPages
             };
             ViewBag.pageCommand = command;
+            ViewBag.author = User.Identity.Name;
             return PartialView(list);
         }
         [HttpPost]

@@ -48,64 +48,73 @@
             </td>
             <td>
                 @{
-                    if (item.Count > item.EmpSum)
+                    if (item.CreateTime.AddDays(30) < DateTime.Now && !item.FinConfirmDate.HasValue)
                     {
-                        <span>@Html.ActionLink("上传名单", "UploadEmp")</span>
-                    }
-                }
-                @if (item.Status > 4 || (!ViewBag.IsInscooOperator && item.Status == 4))
-                {
-                    @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
-                }
-
-                @if (ViewBag.IsInscooOperator)
-                {
-                    if (item.Status == 4)
-                    {
-                        @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })
-                    }
-                    else if (item.Status == 11)
-                    {
-                        <span class="text-success">审核通过</span>
-                    }
-                    else if (item.Status == 14)
-                    {
-                        <span class="text-warning">审核未通过</span>
-                    }
-                }
-                else if (ViewBag.IsFinance)
-                {
-                    <span>|</span>
-                    if (item.Status == 11)
-                    {
-
-                        @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })
-                    }
-                    else if (item.Status == 17)
-                    {
-                        <span class="text-success">已确认</span>
-                    }
-                }
-                else
-                {
-                    if (item.Status <= 4)
-                    {
+                        <span style="color:red;">30天未付款,已过期 |</span>
                         @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
-                        <span>|</span>
                     }
-                    if (item.Status == 1)
+                    else
                     {
-                        @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks })
-                    }
-                    else if (item.Status == 4)
-                    {
-                        @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId, item.DateTicks })
-                    }
-                    else if (item.Status == 17)
-                    {
-                        <span>已付款</span>
-                    }
+                        if (item.Count > item.EmpSum && item.CreateTime.AddDays(60) > DateTime.Now && item.Author == ViewBag.author)
+                        {
+                            <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
+                        }
 
+                        if (item.Status > 4 || (!ViewBag.IsInscooOperator && item.Status == 4))
+                        {
+                            @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
+                        }
+
+                        if (ViewBag.IsInscooOperator)
+                        {
+                            if (item.Status == 4)
+                            {
+                                @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })
+                            }
+                            else if (item.Status == 11)
+                            {
+                                <span class="text-success">审核通过</span>
+                            }
+                            else if (item.Status == 14)
+                            {
+                                <span class="text-warning">审核未通过</span>
+                            }
+                        }
+                        else if (ViewBag.IsFinance)
+                        {
+                            <span>|</span>
+                            if (item.Status == 11)
+                            {
+
+                                @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })
+                            }
+                            else if (item.Status == 17)
+                            {
+                                <span class="text-success">已确认</span>
+                            }
+                        }
+                        else
+                        {
+                            if (item.Status <= 4)
+                            {
+                                @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                                <span>|</span>
+                            }
+                            if (item.Status == 1)
+                            {
+                                @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks })
+                            }
+                            else if (item.Status == 4)
+                            {
+                                @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId, item.DateTicks })
+                            }
+                            else if (item.Status == 17)
+                            {
+                                <span>已付款</span>
+                            }
+
+                        }
+                    }
                 }
             </td>
         </tr>

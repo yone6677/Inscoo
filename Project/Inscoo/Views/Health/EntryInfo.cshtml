@@ -95,13 +95,13 @@
         </div>
     }
 
-    using (Ajax.BeginForm("HealthPersons", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
+    @*using (Ajax.BeginForm("HealthPersons", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { id = "searchForm" }))
     {
         @Html.Hidden("MasterId", Model.MasterId)
         <div class="employeeInfo" id="dadaGrid">
             @Html.Action("HealthPersons", new { Model.MasterId })
         </div>
-    }
+    }*@
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

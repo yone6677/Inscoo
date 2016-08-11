@@ -112,10 +112,13 @@ namespace Domain
         /// </summary>
         public string PaymentNoticePdf { set; get; }
         /// <summary>
-        /// 失效日期
+        /// 失效日期 为createTime.AddDays(30)
         /// </summary>
         public DateTime Expire { get; set; }
-
+        /// <summary>
+        /// 服务有效期, 为FinancePayDate.AddDays(180)
+        /// </summary>
+        public DateTime? ServicePeriod { get; set; }
         public virtual HealthCheckProduct HealthCheckProduct { set; get; }
         /// <summary>
         /// 发票公司

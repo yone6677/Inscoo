@@ -35,5 +35,17 @@ namespace Models
         public int PageSize { get; set; }
         [DisplayName("下单人")]
         public string Author { set; get; }
+
+        /// <summary>
+        /// 服务有效期
+        /// </summary>
+        [DisplayName("服务有效期")]
+        public string ServicePeriod { get; set; }
+        [DisplayName("过期时间")]
+        public DateTime Expire { get; set; }
+        /// <summary>
+        /// 人员上传批次
+        /// </summary>
+        public List<long> ticksGroup { get; set; }
     }
 }

@@ -48,7 +48,7 @@ namespace Services
         HealthOrderMaster GetHealthMaster(int id, string dateTicks = "", string author = "");
         VHealthEntryInfo GetHealthEntryInfo(int matserId, string author);
         VHealthAuditOrder GetHealthAuditOrder(int matserId, string dateTicks);
-        IPagedList<HealthOrderDetail> GetHealthOrderDetails(int pageIndex, int pageSize, int masterId);
+        IPagedList<HealthOrderDetail> GetHealthOrderDetails(int pageIndex, int pageSize, int masterId, long ticks);
 
         /// <summary>
         /// 

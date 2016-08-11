@@ -22,16 +22,16 @@
                 <input type="text" name="memo" id="memo" placeholder="" class="form-control" />
             </dd>
             <dt></dt>
-            <dd>
+            <dd style="padding-left:1.5em;">
                 @if (TempData["errorMes"] != null)
                 {
                     if (TempData["errorMes"].ToString() == "上传成功")
                     {
-                        <span class="text-success" tyle="font-size:25px">上传成功</span>
+                        <span class="text-success" tyle="font-size:25px;">上传成功</span>
                     }
                     else
                     {
-                        <span class="text-danger" tyle="font-size:25px">@TempData["errorMes"].ToString()</span>
+                        <span class="text-danger" tyle="font-size:25px;">@TempData["errorMes"].ToString()</span>
                     }
                 }
             </dd>
@@ -50,7 +50,7 @@
 {
 
     <input type="hidden" name="MasterId" value="@ViewBag.MasterId" />
-    <div class="Search " style="background-color:#24a9e4">
+    <div class="Search " style="">
         <dl style="width:100%">
             <dt>
                 上传人

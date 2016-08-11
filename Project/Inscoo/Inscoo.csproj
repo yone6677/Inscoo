@@ -565,6 +565,8 @@
     <Content Include="Views\Cart\List.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Health\UploadEmp.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceDetailList.cshtml" />
+    <Content Include="Views\Insurance\CarInscuranceDetailSearch.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

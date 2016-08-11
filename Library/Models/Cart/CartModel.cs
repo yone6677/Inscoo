@@ -16,5 +16,7 @@ namespace Models.Cart
         public decimal Amount { get; set; }
         [Display(Name ="产品")]
         public string PName { get; set; }
+        [Display(Name = "体检单位")]
+        public string CompanyName { get; set; }
     }
 }

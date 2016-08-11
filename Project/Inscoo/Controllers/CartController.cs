@@ -53,7 +53,8 @@ namespace Inscoo.Controllers
                         UserId = uId,
                         Id = id,
                         Amount = prod.PrivilegePrice * num,
-                        Price = prod.PrivilegePrice
+                        Price = prod.PrivilegePrice,
+                        CompanyName = prod.CompanyName
                     };
                     list.Add(item);
                     var cartJson = JsonConvert.SerializeObject(list);
@@ -84,6 +85,7 @@ namespace Inscoo.Controllers
                     item.Total += num;
                     item.Amount = item.Total * prod.PrivilegePrice;
                     item.CreateTime = DateTime.Now;
+                    item.CompanyName = prod.CompanyName;
                     cartList.Add(item);
                     var cartJson = JsonConvert.SerializeObject(cartList);
                     var encryStr = _webHelper.EncryptCookie(cartJson);
@@ -125,5 +127,20 @@ namespace Inscoo.Controllers
             }
             return RedirectToAction("Index");
         }
+        //[HttpPost]
+        public ActionResult Buy(string shoppingCart)
+        {
+            try
+            {
+                TempData["cartTmpData"] = shoppingCart;
+                return RedirectToAction("MakeSure", "Health", null);
+                //var cartList = JsonConvert.DeserializeObject<List<CartBuyModel>>(shoppingCart);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
+        }
     }
+
 }

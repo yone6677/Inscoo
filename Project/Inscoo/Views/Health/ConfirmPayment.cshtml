@@ -24,26 +24,55 @@
         <li></li>
         <li>订单信息</li>
     </ul>
-    <dl style="height:auto;">
-        <dt>
-            @Html.DisplayNameFor(model => model.Price) :
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price) 元/人
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Count) :
-        </dt>
-        <dd>
-            @Model.Count 份
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount) :
-        </dt>
-        <dd>
-            <b style="font-size:1.5em;color:#e4393c">@Html.DisplayFor(model => model.Amount)</b> 元
-        </dd>
-    </dl>
+    @if (Model.prodList.Any())
+    {
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().CompanyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().PublicPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().PrivilegePrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.prodList.FirstOrDefault().SubTotal)
+                </th>
+            </tr>
+
+            @foreach (var item in Model.prodList)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PublicPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PrivilegePrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.SubTotal)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
 </div>
 <div class="confirmPayment">
     <ul>
@@ -82,8 +111,6 @@
     </p>
 </div>
 <div class="orderConfirmBodyNext" style="text-align:center;">
-    @Html.ActionLink("上一步", "EntryInfo", new { Model.MasterId }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
+    @Html.ActionLink("上一步", "EntryInfo", new { ticks = Model.Ticks }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
     @Html.ActionLink("完成", "AuditListSearch", new { }, new { @class = "btn btn-primary", style = "background-color: #38A6D9;border-color: #38A6D9 " })
-
-
 </div>

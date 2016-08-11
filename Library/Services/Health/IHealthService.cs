@@ -20,6 +20,8 @@ namespace Services
         Task AddHealthMasterAsync(int productId, string author);
 
         HealthOrderMaster AddHealthMaster(int productId, string author, int count);
+        List<HealthOrderMaster> AddHealthMaster(List<Models.Cart.CartBuyModel> model, string author);
+        List<HealthOrderMaster> GetByTicks(string ticks, string author = null);
 
         bool DeleteMaster(int masterID, string author);
         /// <summary>
@@ -59,9 +61,10 @@ namespace Services
         IPagedList<VHealthAuditList> GetHealthAuditList(int pageIndex, int pageSize, string uName, VHealthSearch search);
         VHealthConfirmPayment GetConfirmPayment(int masterId, string dateTicks);
         SelectList GetListType(string uId);
-        string GetPaymentNoticePdf(int masterId, string dateTicks);
-        Task GetPaymentNoticePdfAsync(int masterId, string dateTicks);
+        string GetPaymentNoticePdf(string dateTicks);
+        Task GetPaymentNoticePdfAsync(string dateTicks);
         string UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author);
         void UpdateMaster(HealthOrderMaster master);
+        bool InsertHealthFile(HealthFile item);
     }
 }

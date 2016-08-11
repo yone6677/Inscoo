@@ -40,13 +40,19 @@
                 @item.Author.Split('@')[0]
             </td>
             <td>
-                @item.CreateTime.ToShortDateString()
+                @item.CreateTime
             </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.StatusDes)
             </td>
             <td>
+                @{
+                    if (item.Count > item.EmpSum)
+                    {
+                        <span>@Html.ActionLink("上传名单", "UploadEmp")</span>
+                    }
+                }
                 @if (item.Status > 4 || (!ViewBag.IsInscooOperator && item.Status == 4))
                 {
                     @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
@@ -72,7 +78,7 @@
                     <span>|</span>
                     if (item.Status == 11)
                     {
-                        
+
                         @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })
                     }
                     else if (item.Status == 17)
@@ -89,7 +95,7 @@
                     }
                     if (item.Status == 1)
                     {
-                        @Html.ActionLink("信息填写", "EntryInfo", new { item.MasterId, item.DateTicks })
+                        @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks })
                     }
                     else if (item.Status == 4)
                     {
@@ -103,7 +109,7 @@
                 }
             </td>
         </tr>
-    }
+                    }
 
 </table>
 @Html.Pager(pageCommand)

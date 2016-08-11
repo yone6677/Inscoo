@@ -523,7 +523,7 @@ namespace Services
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-            _authenticationManager.SignIn(new AuthenticationProperties() { ExpiresUtc = DateTime.UtcNow.AddDays(1), IsPersistent = isPersistent }, identity);//默认6小时内不需要再次登陆
+            _authenticationManager.SignIn(new AuthenticationProperties() { ExpiresUtc = DateTime.UtcNow.AddHours(6), IsPersistent = isPersistent }, identity);//默认6小时内不需要再次登陆
         }
         public void SignOut()
         {

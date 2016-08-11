@@ -8,6 +8,9 @@
             @Html.DisplayNameFor(model => model.PName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
@@ -29,10 +32,13 @@
             var subTotalName = "subTotal_" + item.Id;
             <tr>
                 <td>
-                    <input type="checkbox" value="@item.Id" name="cartCheckBox" />
+                    <input type="checkbox" value="@item.Id" name="cartCheckBox" onclick="getAmount()" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
                 </td>
                 <td>
                     <input type="hidden" value="@item.Price" id="@priceName" />
@@ -54,7 +60,6 @@
 
 <div class="cart-floatbar text-right row">
     <div class="col-md-2">
-
     </div>
     <div class="col-md-2">
 
@@ -71,10 +76,26 @@
 
     </div>
     <div class="text-right col-md-2">
-        <a class="btn btn-danger">购买选中</a>
+        <a class="btn btn-danger" onclick="buy()">购买选中</a>
     </div>
 </div>
 <script>
+    function buy() {
+        var postStr = $('#postData').val();
+        if (postStr.length > 0) {
+            var url = '/Cart/Buy?shoppingCart=' + postStr;
+            location.href = url;
+            //$.ajax({
+            //    url: '/Cart/Buy',
+            //    data: 'shoppingCart=' + postStr,
+            //    type: 'post',
+            //    async: false,
+            //    success: function (dada) {
+            //        console.log(dada);
+            //    }
+            //});
+        }
+    }
     function selectProd(e, subCheck) {
         var checks = document.getElementsByName(subCheck);
         var num = checks.length;
@@ -110,15 +131,23 @@
         if (selectedVal.length > 1) {
             var ary = selectedVal.split(',');
             var amount = 0;
+            var postStr = '';
             for (var i = 0; i < ary.length; i++) {
                 if (ary[i] != '') {
-                    var price = $('#price_' + ary[i]).val();//document.getElementById('price_' + ary[i] + '').value;
+                    var price = $('#price_' + ary[i]).val();
                     var count = document.getElementById('count_' + ary[i]).value;
                     var subTotal = price * count;
                     amount += subTotal;
+                    if (i == (ary.length - 2) || ary.length == 2) {
+                        postStr += '{"Id":' + ary[i] + ',"Count":' + count + '}';
+                    }
+                    else {
+                        postStr += '{"Id":' + ary[i] + ',"Count":' + count + '},';
+                    }
                 }
             }
             document.getElementById('amount').innerText = amount.toFixed(2);
+            document.getElementById('postData').value = '[' + postStr + ']';
         }
         else {
             document.getElementById('amount').innerText = '0.00';

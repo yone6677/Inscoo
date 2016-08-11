@@ -82,6 +82,7 @@
     <Compile Include="Api\Order\OrderListApi.cs" />
     <Compile Include="BaseApiModel.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Cart\CartBuyModel.cs" />
     <Compile Include="Cart\CartModel.cs" />
     <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />
     <Compile Include="Claim\vClaimManagementDetailList.cs" />

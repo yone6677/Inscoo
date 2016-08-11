@@ -29,6 +29,12 @@ namespace Models
         public decimal PublicPrice { set; get; }
         [DisplayName("优惠后价格")]
         public decimal PrivilegePrice { set; get; }
+        [DisplayName("小计(元)")]
+        public decimal SubTotal { get; set; }
+        /// <summary>
+        /// 产品的数量和id
+        /// </summary>
+        public string prodStr { get; set; }
 
         public string CheckProductPic { set; get; }
 

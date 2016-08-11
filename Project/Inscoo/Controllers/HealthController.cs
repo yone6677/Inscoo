@@ -13,6 +13,8 @@ using Models;
 using Models.Infrastructure;
 using Models.Order;
 using Services;
+using Newtonsoft.Json;
+using Models.Cart;
 
 namespace Inscoo.Controllers
 {
@@ -85,17 +87,48 @@ namespace Inscoo.Controllers
         {
             try
             {
-                var model = new VCheckProductDetail();
-                Domain.HealthOrderMaster master = new Domain.HealthOrderMaster();
-                if (masterId != -1)//返回逻辑
+                var cartTmpData = TempData["cartTmpData"];
+                var model = new List<VCheckProductDetail>();
+                if (cartTmpData == null)
                 {
-                    master = _svHealth.GetHealthMaster(masterId, dateTicks: dateTicks);
-                    productId = master.HealthCheckProductId;
+                    var item = new VCheckProductDetail();
+                    Domain.HealthOrderMaster master = new Domain.HealthOrderMaster();
+                    if (masterId != -1)//返回逻辑
+                    {
+                        master = _svHealth.GetHealthMaster(masterId, dateTicks: dateTicks);
+                        productId = master.HealthCheckProductId;
+                    }
+                    item = _svHealth.GetHealthProductById(productId, User.Identity.GetUserId());
+                    item.MasterId = masterId;
+                    item.DateTicks = dateTicks;
+                    item.Count = count == -1 ? master.Count : count;
+                    item.SubTotal = item.Count * item.PrivilegePrice;
+                    model.Add(item);
                 }
-                model = _svHealth.GetHealthProductById(productId, User.Identity.GetUserId());
-                model.MasterId = masterId;
-                model.DateTicks = dateTicks;
-                model.Count = count == -1 ? master.Count : count;
+                else
+                {
+                    var cartList = JsonConvert.DeserializeObject<List<CartBuyModel>>(cartTmpData.ToString());
+                    if (cartList.Count > 0)
+                    {
+                        foreach (var c in cartList)
+                        {
+                            var item = new VCheckProductDetail();
+                            var master = new Domain.HealthOrderMaster();
+                            //if (masterId != -1)//返回逻辑
+                            //{
+                            //    master = _svHealth.GetHealthMaster(masterId, dateTicks: dateTicks);
+                            //    productId = master.HealthCheckProductId;
+                            //}
+                            item = _svHealth.GetHealthProductById(c.Id, User.Identity.GetUserId());
+                            item.MasterId = c.Id;
+                            item.DateTicks = dateTicks;
+                            item.Count = c.Count;
+                            item.SubTotal = item.Count * item.PrivilegePrice;
+                            model.Add(item);
+                        }
+                    }
+                }
+                ViewBag.cartTmpData = cartTmpData;
                 return View(model);
             }
             catch (Exception)
@@ -104,31 +137,47 @@ namespace Inscoo.Controllers
             }
         }
 
-        public ActionResult EntryInfo(int count = -1, string dateTicks = "", int productId = -1, int masterId = -1)
+        public ActionResult EntryInfo(string prodStr = null, string ticks = null)
         {
             try
             {
+                var model = new VHealthEntryInfo();
+                if (!string.IsNullOrEmpty(prodStr))
+                {
+                    var cartList = JsonConvert.DeserializeObject<List<CartBuyModel>>(prodStr);
+                    var healthList = _svHealth.AddHealthMaster(cartList, User.Identity.Name);
 
-                if (masterId == -1)
-                {
-                    var model = new VHealthEntryInfo();
-                    var master = _svHealth.AddHealthMaster(productId, User.Identity.Name, count);
-                    model.MasterId = master.Id;
-                    model.DateTicks = master.DateTicks;
                     model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
-                    return View(model);
+                    model.DateTicks = healthList.FirstOrDefault().DateTicks;
                 }
-                else
+                if (!string.IsNullOrEmpty(ticks))
                 {
-                    var model = _svHealth.GetHealthEntryInfo(masterId, User.Identity.Name);
-                    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId(), model.CompanyId);
-                    return View(model);
+                    var healthList = _svHealth.GetByTicks(ticks, User.Identity.Name);
+                    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
+                    model.DateTicks = ticks;
                 }
+                return View(model);
+                //if (masterId == -1)
+                //{
+                //    var model = new VHealthEntryInfo();
+                //    var master = _svHealth.AddHealthMaster(productId, User.Identity.Name, count);
+                //    model.MasterId = master.Id;
+                //    model.DateTicks = master.DateTicks;
+                //    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
+                //    return View(model);
+                //}
+                //else
+                //{
+                //    var model = _svHealth.GetHealthEntryInfo(masterId, User.Identity.Name);
+                //    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId(), model.CompanyId);
+                //    return View(model);
+                //}
 
             }
             catch (Exception)
             {
-                return RedirectToAction("MakeSure", new { productId, masterId });
+                TempData["cartTmpData"] = prodStr;
+                return RedirectToAction("MakeSure");
             }
         }
         [HttpPost]
@@ -137,41 +186,45 @@ namespace Inscoo.Controllers
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-
-
-                    var master = _svHealth.GetHealthMaster(model.MasterId, author: User.Identity.Name);
-                    var IsGetPaymentNoticePdf = !master.CompanyId.HasValue;
-                    var companyList = Request.Form["isCompanySelect"];
-                    if (companyList == "false")
+                    if (!string.IsNullOrEmpty(model.DateTicks))
                     {
-                        master.CompanyId =
-                            _svCompany.AddNewCompany(
-                                new vCompanyAdd()
-                                {
-                                    Name = model.CompanyName,
-                                    Address = model.Address,
-                                    Email = "",
-                                    LinkMan = model.Linkman,
-                                    Phone = model.PhoneNumber
-                                }, User.Identity.GetUserId());
-                    }
-                    else
-                    {
-                        master.CompanyId = Convert.ToInt32(Request.Form["CompanyId"]);
-                    }
-                    master.Status = 4;
+                        var healthList = _svHealth.GetByTicks(model.DateTicks, User.Identity.Name);
+                        foreach (var healthItem in healthList)
+                        {
+                            var master = _svHealth.GetHealthMaster(healthItem.Id, author: User.Identity.Name);
+                            var IsGetPaymentNoticePdf = !master.CompanyId.HasValue;
+                            var companyList = Request.Form["isCompanySelect"];
+                            if (companyList == "false")
+                            {
+                                master.CompanyId =
+                                    _svCompany.AddNewCompany(
+                                        new vCompanyAdd()
+                                        {
+                                            Name = model.CompanyName,
+                                            Address = model.Address,
+                                            Email = "",
+                                            LinkMan = model.Linkman,
+                                            Phone = model.PhoneNumber
+                                        }, User.Identity.GetUserId());
+                            }
+                            else
+                            {
+                                master.CompanyId = Convert.ToInt32(Request.Form["CompanyId"]);
+                            }
+                            master.Status = 4;
 
-                    if (IsGetPaymentNoticePdf)
-                    {
-                        _svHealth.GetPaymentNoticePdfAsync(master.Id, model.DateTicks);
+                            if (IsGetPaymentNoticePdf)
+                            {
+                                _svHealth.GetPaymentNoticePdfAsync(model.DateTicks);
+                            }
+                            _svHealth.UpdateMaster(master);
+                        }
                     }
-                    _svHealth.UpdateMaster(master);
 
                 }
-                return RedirectToAction("ConfirmPayment", new { model.MasterId, model.DateTicks });
+                return RedirectToAction("ConfirmPayment", new { model.DateTicks });
 
             }
             catch (Exception)
@@ -341,6 +394,14 @@ namespace Inscoo.Controllers
             }
             return null;
         }
+        public ActionResult UploadEmp(int id)
+        {
+
+            var order = _svHealth.GetHealthMaster(id);
+            ViewBag.id = id;
+            ViewBag.ticks = order.DateTicks;
+            return View();
+        }
         /// <summary>
         /// 上传名单
         /// </summary>
@@ -348,13 +409,12 @@ namespace Inscoo.Controllers
         /// <param name="masterId"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult UploadEmp(HttpPostedFileBase empinfo, int masterId, string dateTicks)
+        public ActionResult UploadEmp(HttpPostedFileBase empinfo, int id, string ticks)
         {
             try
             {
-                var mes = _svHealth.UploadEmpExcel(empinfo, masterId, User.Identity.Name);
+                var mes = _svHealth.UploadEmpExcel(empinfo, id, User.Identity.Name);
                 if (!string.IsNullOrEmpty(mes)) TempData["error"] = mes;
-                _svHealth.GetPaymentNoticePdfAsync(masterId, dateTicks);
             }
             catch (WarningException e)
             {
@@ -364,26 +424,38 @@ namespace Inscoo.Controllers
             catch (Exception e)
             {
                 TempData["error"] = "上传失败！";
-
             }
-            return RedirectToAction("EntryInfo", new { masterId, dateTicks });
+            return RedirectToAction("OrderInfo", new { masterId = id, dateTicks = ticks });
         }
         /// <summary>
         /// 确认付款
         /// </summary>
         /// <param name="masterId"></param>
         /// <returns></returns>
-        public ActionResult ConfirmPayment(int masterId, string dateTicks)
+        public ActionResult ConfirmPayment(string dateTicks)
         {
-            if (masterId > 0)
+            if (!string.IsNullOrEmpty(dateTicks))
             {
-                var model = _svHealth.GetConfirmPayment(masterId, dateTicks);
-                if (model != null)
+                var item = _svHealth.GetByTicks(dateTicks, User.Identity.Name);
+                if (item != null)
                 {
-                    if (string.IsNullOrEmpty(model.PaymentNoticePdf))//还未产生付款通知书
+                    if (string.IsNullOrEmpty(item.FirstOrDefault().PaymentNoticePdf))//还未产生付款通知书
                     {
-                        model.PaymentNoticePdf = _svHealth.GetPaymentNoticePdf(masterId, dateTicks);
+                        item.FirstOrDefault().PaymentNoticePdf = _svHealth.GetPaymentNoticePdf(dateTicks);
                     }
+                    var model = new VHealthConfirmPayment();
+                    model.Amount = item.Sum(i => i.SellPrice);
+                    model.PaymentNoticePdf = item.FirstOrDefault().PaymentNoticePdf;
+                    model.Ticks = item.FirstOrDefault().DateTicks;
+                    model.prodList = new List<VCheckProductDetail>();
+                    foreach (var p in item)
+                    {
+                        var prod = _svHealth.GetHealthProductById(p.HealthCheckProductId, User.Identity.GetUserId());
+                        prod.Count = p.Count;
+                        prod.SubTotal = prod.Count * prod.PrivilegePrice;
+                        model.prodList.Add(prod);
+                    }
+
                     return View(model);
                 }
             }

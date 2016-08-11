@@ -12,6 +12,7 @@ using Services.Orders;
 using Services.Products;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -682,162 +683,180 @@ namespace Inscoo.Controllers
         [HttpPost]
         public ActionResult UploadEmp(HttpPostedFileBase empinfo, int Id)
         {
-            var result = "";
-            if (empinfo != null && Id > 0)
+            try
             {
-                try
+
+                if (empinfo != null && Id > 0)
                 {
-                    var order = _orderService.GetById(Id);
-                    //打开excel
-                    var ep = new ExcelPackage(empinfo.InputStream);
-                    var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
-                    if (worksheet == null)
-                        result = "上传的文件内容不能为空";
-                    var rowNumber = worksheet.Dimension.Rows;
-                    var minInsuranceNumber = 0;
-                    int StaffRange = 0;
-                    if (order.StaffRange.Trim() == "0")
+                    try
                     {
-                        StaffRange = 0;
-                    }
-                    else
-                    {
-                        StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
-                    }
-                    switch (StaffRange)
-                    {
-                        case 0:
-                            minInsuranceNumber = 1;
-                            break;
-                        case 1:
-                            minInsuranceNumber = 3;
-                            break;
-                        case 2:
-                            minInsuranceNumber = 5;
-                            break;
-                        case 3:
-                            minInsuranceNumber = 11;
-                            break;
-                        case 4:
-                            minInsuranceNumber = 31;
-                            break;
-                        case 5:
-                            minInsuranceNumber = 51;
-                            break;
-                        case 6:
-                            minInsuranceNumber = 100;
-                            break;
-                    }
-
-                    if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
-                    {
-                        TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
-                        return RedirectToAction("EntryInfo", new { id = order.Id });
-                    }
-                    var batch = _orderBatchService.GetByOrderId(Id);
-                    //若有旧数据先删除
-                    var oldInfo = _orderEmpService.GetListByOid(Id);
-                    if (oldInfo != null && oldInfo.Any())
-                    {
-                        foreach (var s in oldInfo)
+                        var order = _orderService.GetById(Id);
+                        //打开excel
+                        var ep = new ExcelPackage(empinfo.InputStream);
+                        var worksheet = ep.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                            throw new WarningException("上传的文件内容不能为空");
+                        var rowNumber = worksheet.Dimension.Rows;
+                        var minInsuranceNumber = 0;
+                        int StaffRange = 0;
+                        if (order.StaffRange.Trim() == "0")
                         {
-                            _orderEmpService.DeleteById(s.Id);
-                        }
-                    }
-                    var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
-
-                    //读取excel数据
-                    var Cells = worksheet.Cells;
-                    if (Cells["A1"].Value.ToString() != "姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "出生日期" || Cells["E1"].Value.ToString() != "性别" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "手机" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString() != "社保（有/无）")
-                        result = "上传的文件不正确";
-                    var eList = new List<OrderEmployeeModel>();//先把资料写入临时List,以便判断是否正确
-                    for (var i = 2; i <= rowNumber; i++)
-                    {
-                        if (Cells["A" + i].Value == null)
-                            break;
-                        var item = new OrderEmployeeModel();
-                        item.BId = batch.Id;//批次号
-                        item.Premium = order.AnnualExpense;
-                        item.Name = Cells["A" + i].Value.ToString().Trim();
-                        item.IDType = Cells["B" + i].Value.ToString().Trim();
-                        item.IDNumber = Cells["C" + i].Value.ToString().Trim();
-                        try
-                        {
-                            item.Birthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
-                        }
-                        catch
-                        {
-                            throw new Exception("请检查第 " + i + " 行资料,出生日期填写有误,示例 :2008/7/15 或者 2008-7-15");
-                        }
-                        item.Sex = Cells["E" + i].Value.ToString().Trim();
-                        item.BankCard = Cells["F" + i].Value.ToString().Trim();
-                        item.BankName = Cells["G" + i].Value.ToString().Trim();
-                        if (Cells["H" + i].Value != null)
-                        {
-                            item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
-                        }
-                        if (Cells["I" + i].Value != null)
-                        {
-                            item.Email = Cells["I" + i].Value.ToString().Trim();
-                        }
-                        item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
-                        item.StartDate = order.StartDate;
-                        item.EndDate = order.EndDate;
-                        bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
-                        if (idCon)
-                        {
-                            throw new Exception("请检查第 " + i + " 行资料,此人员证件号码重复");
+                            StaffRange = 0;
                         }
                         else
                         {
-                            eList.Add(item);
+                            StaffRange = int.Parse(_genericAttributeService.GetByKey(order.StaffRange, "StaffRange").Value);
                         }
-                    }
-                    foreach (var e in eList)
-                    {
-                        var item = new OrderEmployee();
-                        item.batch_Id = e.BId;
-                        item.Premium = e.Premium;// order.AnnualExpense;
-                        item.PMCode = PMType.PM00.ToString();
-                        item.PMName = _webHelper.GetEnumDescription(PMType.PM00);
-                        item.Relationship = "本人";
-                        item.Name = e.Name;
-                        item.IDType = e.IDType;
-                        item.IDNumber = e.IDNumber;
-                        item.BirBirthday = e.Birthday;
-                        item.Sex = e.Sex;
-                        item.BankCard = e.BankCard;
-                        item.BankName = e.BankName;
-                        item.PhoneNumber = e.PhoneNumber;
-                        item.Email = e.Email;
-                        item.HasSocialSecurity = e.HasSocialSecurity;
-                        item.StartDate = e.StartDate;
-                        item.EndDate = e.EndDate;
-                        if (!_orderEmpService.Insert(item))
+                        switch (StaffRange)
                         {
-                            throw new Exception("上传失败,请稍后再试");
+                            case 0:
+                                minInsuranceNumber = 1;
+                                break;
+                            case 1:
+                                minInsuranceNumber = 3;
+                                break;
+                            case 2:
+                                minInsuranceNumber = 5;
+                                break;
+                            case 3:
+                                minInsuranceNumber = 11;
+                                break;
+                            case 4:
+                                minInsuranceNumber = 31;
+                                break;
+                            case 5:
+                                minInsuranceNumber = 51;
+                                break;
+                            case 6:
+                                minInsuranceNumber = 100;
+                                break;
                         }
+
+                        if (minInsuranceNumber > (rowNumber - 1))//如果最小人数大于上传人数，则需重新选择
+                        {
+                            TempData["error"] = string.Format("您选择的方案投保人数为{0},上传的人数为{1}人，请重新上传或者删除此订单重新选择。", order.StaffRange, (rowNumber - 1));
+                            return RedirectToAction("EntryInfo", new { id = order.Id });
+                        }
+                        var batch = _orderBatchService.GetByOrderId(Id);
+                        //若有旧数据先删除
+                        var oldInfo = _orderEmpService.GetListByOid(Id);
+                        if (oldInfo != null && oldInfo.Any())
+                        {
+                            foreach (var s in oldInfo)
+                            {
+                                _orderEmpService.DeleteById(s.Id);
+                            }
+                        }
+                        var fileModel = _archiveService.Insert(empinfo, FileType.EmployeeInfo.ToString(), Id);
+
+                        //读取excel数据
+                        var Cells = worksheet.Cells;
+                        if (Cells["A1"].Value.ToString() != "姓名" || Cells["B1"].Value.ToString() != "证件类型" || Cells["C1"].Value.ToString() != "证件号码" || Cells["D1"].Value.ToString() != "出生日期" || Cells["E1"].Value.ToString() != "性别" || Cells["F1"].Value.ToString() != "银行账号" || Cells["G1"].Value.ToString() != "开户行" || Cells["H1"].Value.ToString() != "手机" || Cells["I1"].Value.ToString() != "邮箱" || Cells["J1"].Value.ToString().Trim() != "社保（有/无）")
+                            throw new WarningException("上传的文件不正确");
+                        var eList = new List<OrderEmployeeModel>();//先把资料写入临时List,以便判断是否正确
+                        for (var i = 2; i <= rowNumber; i++)
+                        {
+                            if (Cells["A" + i].Value == null)
+                                break;
+                            var item = new OrderEmployeeModel();
+                            item.BId = batch.Id;//批次号
+                            item.Premium = order.AnnualExpense;
+                            item.Name = Cells["A" + i].Value.ToString().Trim();
+                            item.IDType = Cells["B" + i].Value.ToString().Trim();
+                            item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                            try
+                            {
+                                item.Birthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
+                            }
+                            catch
+                            {
+                                throw new WarningException("请检查第 " + i + " 行资料,出生日期填写有误,示例 :2008/7/15 或者 2008-7-15");
+                            }
+                            item.Sex = Cells["E" + i].Value.ToString().Trim();
+                            item.BankCard = Cells["F" + i].Value.ToString().Trim();
+                            item.BankName = Cells["G" + i].Value.ToString().Trim();
+                            if (Cells["H" + i].Value != null)
+                            {
+                                item.PhoneNumber = Cells["H" + i].Value.ToString().Trim();
+                            }
+                            if (Cells["I" + i].Value != null)
+                            {
+                                item.Email = Cells["I" + i].Value.ToString().Trim();
+                            }
+                            item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                            item.StartDate = order.StartDate;
+                            item.EndDate = order.EndDate;
+                            bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
+                            if (idCon)
+                            {
+                                throw new WarningException("请检查第 " + i + " 行资料,此人员证件号码重复");
+                            }
+                            else
+                            {
+                                eList.Add(item);
+                            }
+                        }
+                        var list = new List<OrderEmployee>();
+                        foreach (var e in eList)
+                        {
+                            var item = new OrderEmployee();
+                            item.batch_Id = e.BId;
+                            item.Premium = e.Premium;// order.AnnualExpense;
+                            item.PMCode = PMType.PM00.ToString();
+                            item.PMName = _webHelper.GetEnumDescription(PMType.PM00);
+                            item.Relationship = "本人";
+                            item.Name = e.Name;
+                            item.IDType = e.IDType;
+                            item.IDNumber = e.IDNumber;
+                            item.BirBirthday = e.Birthday;
+                            item.Sex = e.Sex;
+                            item.BankCard = e.BankCard;
+                            item.BankName = e.BankName;
+                            item.PhoneNumber = e.PhoneNumber;
+                            item.Email = e.Email;
+                            item.HasSocialSecurity = e.HasSocialSecurity;
+                            item.StartDate = e.StartDate;
+                            item.EndDate = e.EndDate;
+                            item.Author = User.Identity.Name;
+                            list.Add(item);
+                        }
+                        if (!_orderEmpService.InsertRange(list))
+                        {
+                            throw new WarningException("上传失败,请检查文件内容,请稍后再试");
+                        }
+                        var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
+                        order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
+                        order.InitialNumber = InsuranceNumber;//初始人数
+                        _orderService.Update(order);
+                        //定单批次
+                        var orderBatch = _orderBatchService.GetByOrderId(Id);
+                        if (orderBatch != null)
+                        {
+                            orderBatch.EmpInfoFile = fileModel;
+                            _orderBatchService.Update(orderBatch);
+                        }
+                        return RedirectToAction("EntryInfo", new { id = Id });
+                        /****/
                     }
-                    var InsuranceNumber = _orderEmpService.GetListByOid(Id).Count;//实际上传人数
-                    order.InsuranceNumber = InsuranceNumber; //更新订单主表投保人数
-                    order.InitialNumber = InsuranceNumber;//初始人数
-                    _orderService.Update(order);
-                    //定单批次
-                    var orderBatch = _orderBatchService.GetByOrderId(Id);
-                    if (orderBatch != null)
+                    catch (WarningException we)
                     {
-                        orderBatch.EmpInfoFile = fileModel;
-                        _orderBatchService.Update(orderBatch);
+                        throw we;
                     }
-                    return RedirectToAction("EntryInfo", new { id = Id });
-                    /****/
+                    catch (Exception e)
+                    {
+                        throw new WarningException("上传失败,请稍后再试");
+                    }
                 }
-                catch (Exception e)
-                {
-                    result = e.Message;
-                }
+
             }
-            TempData["error"] = result;
+            catch (WarningException we)
+            {
+                TempData["error"] = we.Message;
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = "操作失败！";
+            }
             return RedirectToAction("EntryInfo", new { id = Id });
         }
 
@@ -1204,6 +1223,33 @@ namespace Inscoo.Controllers
                             model.PaymentNoticeUrl = ls[1];
                             order.State = 4;//付款通知书已下载
                             _orderService.Update(order);
+
+
+                            var mailContent = string.Format("<p><b>(用户名)</b>,您好：{0}</p><div style=\"text - indent: 4em; \"><p>您的订单<b>{1}</b>已经确认，请在付款日期之内付款，以便我们及时为您提供服务，保障您的权益。</p><p>关于订单付款的具体事宜，请您参见附件《付款通知书》。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作和生活愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>", order.Author, order.OrderNum);
+                            MailService.SendMail(new MailQueue()
+                            {
+                                MQTYPE = "付款通知",
+                                MQSUBJECT = $"保酷产品付款通知——订单<{order.OrderNum}>",
+                                MQMAILCONTENT = mailContent,
+                                MQMAILFRM = "service@inscoo.com",
+                                MQMAILTO = order.Author,
+                                MQFILE = AppDomain.CurrentDomain.BaseDirectory + model.PaymentNoticeUrl.Substring(1)
+
+                            });
+
+                            //通知运营审核
+                            mailContent = string.Format("<p>订单<b>{0}</b>待审核，请尽快审核。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作愉快，顺祝商祺！</p><br/><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>", order.OrderNum);
+                            var mailTo = _appUserService.GetUserList(pageSize: 100, role: "InscooOperator").Select(u => u.Name); ;
+                            MailService.SendMail(new MailQueue()
+                            {
+                                MQTYPE = "运营审核",
+                                MQSUBJECT = $"待审核：订单<{order.OrderNum}>",
+                                MQMAILCONTENT = mailContent,
+                                MQMAILFRM = "service@inscoo.com",
+                                MQMAILTO = string.Join(";", mailTo),
+                                MQFILE = ""
+
+                            });
                         }
                     }
                     else
@@ -1219,6 +1265,8 @@ namespace Inscoo.Controllers
                     model.MonthPrice = double.Parse((order.AnnualExpense / 12).ToString());
                     model.Quantity = order.InsuranceNumber;
                     model.Amount = order.AnnualExpense * order.InsuranceNumber;
+
+
                     return View(model);
                 }
             }
@@ -1604,6 +1652,72 @@ namespace Inscoo.Controllers
                 }
                 if (_orderBatchService.Update(batch) && _orderService.Update(order))
                 {
+                    if (order.State == 9)//确认shou款
+                    {
+                        var mailContent = string.Format("<p><b>{0}</b>,您好：</p><div style=\"text - indent: 4em; \"><p>您的订单<b>{1}</b>已确认收款，我们将尽快按照订单要求为您提供服务。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>", order.Author, order.OrderNum);
+                        MailService.SendMail(new MailQueue()
+                        {
+                            MQTYPE = "财务确认收款",
+                            MQSUBJECT = $"订单<{order.OrderNum}>收款确认通知书",
+                            MQMAILCONTENT = mailContent,
+                            MQMAILFRM = "service@inscoo.com",
+                            MQMAILTO = order.Author,
+                            MQFILE = ""
+
+                        });
+
+                        var mailTo = _appUserService.GetUserList(pageSize: 100, roleId: "DC184FF0-4B40-4389-89E9-13F0BFE0A20C").Where(m => m.CompanyName == order.Insurer).Select(u => u.Name);
+                        mailContent = string.Format("<p><b>{0}</b>,您好：</p><div style=\"text - indent: 4em; \"><p><b>{1}</b>已确认收款，请尽快登录平台完成投保操作。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作和生活愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>", mailTo, order.OrderNum);
+                        MailService.SendMail(new MailQueue()
+                        {
+                            MQTYPE = "财务确认收款",
+                            MQSUBJECT = $"订单<{order.OrderNum}>已付款",
+                            MQMAILCONTENT = mailContent,
+                            MQMAILFRM = "service@inscoo.com",
+                            MQMAILTO = string.Join(";", mailTo),
+                            MQFILE = ""
+
+                        });
+                    }
+                    if (order.State == 6)//订单完成
+                    {
+                        var empLoyees = _orderEmpService.GetListByOid(order.Id);
+                        var mailContent = string.Format("<p><b>{0}</b>,您好：</p><div style=\"text - indent: 4em; \"><p>您的订单<{1}>已经确认承保。</p><p>保单号：<b>{2}</b></p><p>保障人数：<b>{3}</b></p><p>保障有效期：<b>{4}</b>到<b>{5}</b></p><br><p>近期即将为您寄出保单及发票，敬请查收。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作愉快，顺祝商祺！</p><br/></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>", order.Author, order.OrderNum, order.PolicyNumber, empLoyees.Count, order.StartDate.ToShortDateString(), order.EndDate.ToShortDateString());
+                        MailService.SendMail(new MailQueue()
+                        {
+                            MQTYPE = "保险公司确认保单号",
+                            MQSUBJECT = $"保单<{order.PolicyNumber}>承保完成",
+                            MQMAILCONTENT = mailContent,
+                            MQMAILFRM = "service@inscoo.com",
+                            MQMAILTO = order.Author,
+                            MQFILE = ""
+
+                        });
+
+                        mailContent = $"<p>亲爱的用户,您好：</p><div style=\"text - indent: 4em; \"><p>贵公司已帮您投保了<b>{order.Name})</b>,</p><p>保险福利保单<b>{order.PolicyNumber}</b>,</p><p>请关注微信公众服务号<b>保酷科技</b>并完成身份认证（扫描下方二维码即可），即可查询保险福利信息以及理赔服务指南。</p><p>感谢您的支持与理解！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>祝您工作愉快，顺祝商祺！</p><br/></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow: hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\" alt=\"\" style=\"float: left;\"/><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\"/></p><p>上海皓为商务咨询有限公司</p>";
+
+                        var mailTo = empLoyees.Select(o => o.Email);
+                        for (int i = 0; i <= mailTo.Count() / 100; i++)
+                        {
+                            var mTo = mailTo.Skip(100 * i).Take(100);
+                            MailService.SendMail(new MailQueue()
+                            {
+                                MQTYPE = "保险理赔服务说明",
+                                MQSUBJECT = "保险理赔服务说明",
+                                MQMAILCONTENT = mailContent,
+                                MQMAILFRM = "service@inscoo.com",
+                                MQMAILBCC = string.Join(";", mTo),
+                                MQMAILTO = " ",
+                                MQFILE = ""
+
+                            });
+                        }
+
+
+
+
+                    }
+
                     return Redirect("/Order/Details/" + model.OId);
                 }
             }

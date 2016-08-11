@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Domain.CarInsuranceDetail>
+
+<div style="width:130%">
+    <table class="table table-bordered text-left">
+        <tr style="background-color:#24A9E4;color:#fff;">
+            <th>
+                投保人
+            </th>
+            <th>
+                车牌
+            </th>
+            <th>
+                车辆识别号
+            </th>
+            <th>
+                车主身份号码或组织机构代码
+            </th>
+            <th>
+                电话
+            </th>
+            <th>
+                座位数
+            </th>
+            <th>
+                保费
+            </th>
+            <th>
+                日期
+            </th>
+            @*<th>
+                    退保日期
+                </th>*@
+        </tr>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @item.InsuredName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredCarNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredCarID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredCompanyID)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredTel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredSetNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsuredExpense)
+            </td>
+            <td>
+                @if (item.InsuredBeginDate.HasValue)
+                    {
+                        <span>    @item.InsuredBeginDate.Value.ToShortDateString()</span>
+                        }
+            </td>
+            @*<td>
+                    @if (item.InsuredEndingDate.HasValue)
+                    {
+                        <span>    @item.InsuredEndingDate.Value.ToShortDateString()</span>
+                    }
+
+                </td>*@
+        </tr>
+            }
+        }
+    </table>
+    @{
+        PageCommand command = ViewBag.pageCommand;
+        @Html.Pager(command)
+    }
+</div>

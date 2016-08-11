@@ -360,7 +360,7 @@ namespace Inscoo.Controllers
                     MQTYPE = "HealthOrder",
                     MQSUBJECT = "体检订单确认付款通知",
                     MQMAILCONTENT = "",
-                    MQMAILFRM = "redy.yone@inscoo.com",
+                    MQMAILFRM = "service@inscoo.com",
                     MQMAILTO = string.Join(";", mailTo),
                     MQFILE = ""
 
@@ -477,7 +477,7 @@ namespace Inscoo.Controllers
 
             return View(model);
         }
-        public PartialViewResult AuditListData(bool isInscooOperator, bool isFinance, int listType, int pageIndex = 1, int pageSize = 15)
+        public PartialViewResult AuditListData(bool isInscooOperator, bool isFinance, string listType, int pageIndex = 1, int pageSize = 15)
         {
             //var isInscooOperator = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooOperator");
             ViewBag.IsInscooOperator = isInscooOperator;

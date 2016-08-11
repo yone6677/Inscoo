@@ -98,7 +98,7 @@ namespace Inscoo.Controllers
                 MQTYPE = "ResetPassword",
                 MQSUBJECT = "重设密码",
                 MQMAILCONTENT = "点击<a href=\"" + callbackUrl + "\">链接</a>重设密码",
-                MQMAILFRM = "redy.yone@inscoo.com",
+                MQMAILFRM = "service@inscoo.com",
                 MQMAILTO = user.Email,
             });
             return RedirectToAction("ForgotPasswordConfirmation", "Account");

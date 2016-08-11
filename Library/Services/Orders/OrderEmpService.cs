@@ -155,6 +155,19 @@ namespace Services.Orders
                 return false;
             }
         }
+        public bool InsertRange(List<OrderEmployee> items)
+        {
+            try
+            {
+                _orderEmpRepository.Insert(items);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "OrderEmpService：Insert");
+                return false;
+            }
+        }
         public List<OrderEmployee> GetListByBid(int bid)
         {
             try
@@ -412,7 +425,7 @@ namespace Services.Orders
                     PdfPTable table;
                     PdfPCell cell;
                     var pdfWrite = PdfWriter.GetInstance(document, stream);
-                   // var eventHd = new PageHeaderHandlerAddLogo();
+                    // var eventHd = new PageHeaderHandlerAddLogo();
 
                     document.SetMargins(30, 30, 40, 20);
                     document.Open();
@@ -868,7 +881,7 @@ namespace Services.Orders
                             ColumnText.ShowTextAligned(
                     stamper.GetOverContent(1), Element.ALIGN_LEFT,
                     mesPhrase, x, y - 15, 0);
-                             mesPhrase = new Phrase($"生育责任限额5000元，免赔3000元", font);
+                            mesPhrase = new Phrase($"生育责任限额5000元，免赔3000元", font);
                             ColumnText.ShowTextAligned(
                     stamper.GetOverContent(1), Element.ALIGN_LEFT,
                     mesPhrase, x, y - 30, 0);

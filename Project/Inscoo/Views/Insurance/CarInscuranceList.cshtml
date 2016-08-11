@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Models.vCarInsuranceList>
-<table class="table table-bordered">
+<table class="table table-bordered text-left">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
             文件名
@@ -7,12 +7,15 @@
         <th>
             上传时间
         </th>
-        <th>
-            上传人
-        </th>
-        <th>
-            电子保单号码
-        </th>
+        @*<th>
+                上传人
+            </th>*@
+        @if (ViewBag.FileType == 0)
+        {
+            <th>
+                电子保单号码
+            </th>
+        }
         <th style="min-width: 180px">
             操作
         </th>
@@ -22,29 +25,36 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ExcelName)
+                @{ string name = item.ExcelName.Substring(0, item.ExcelName.Length - 15);}
+                <span>@name</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExceCreateTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExceCreateUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EOrderCode)
-            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.ExceCreateUser)
+                </td>*@
 
+            @if (ViewBag.FileType == 0)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.EOrderCode)
+                </td>
+            }
 
             <td>
-                <a href="@item.ExceUrl" target="blank">下载</a>
+                <a href="@item.ExceUrl" target="blank">投保单下载</a>
                 @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
-                    <span>|</span>
-                    @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId })
+                    if (ViewBag.FileType == 0)
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId, ViewBag.FileType })
+                    }
                     <span>|</span>
                     @Html.ActionLink("删除", "CarInscuranceDelete", new { insuranceId = item.InsuranceId })
                 }
-                else
+                else if (ViewBag.FileType == 0)
                 {
                     if (item.Status == "A")
                     {
@@ -63,14 +73,20 @@
                         <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
                     }
-                }
 
+
+                }
+                @if (!string.IsNullOrEmpty(@item.PdfFileName) && User.IsInRole("CarInscuranceCompany"))
+                {
+                    <span>|</span>
+                    <a href="@item.PdfFileName" target="blank">PDF下载</a>
+                }
             </td>
 
 
 
         </tr>
-    }
+                    }
 </table>
 @{
     PageCommand command = ViewBag.pageCommand;

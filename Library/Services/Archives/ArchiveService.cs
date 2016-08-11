@@ -155,7 +155,8 @@ namespace Services
         {
             try
             {
-                return _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+                var list=_archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+                return list;
             }
             catch (Exception e)
             {
@@ -163,14 +164,14 @@ namespace Services
             }
             return null;
         }
-        public IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int pageIndex, int pageSize, string createrId = "-1")
+        public IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int fileType, int pageIndex, int pageSize, string createrId = "-1")
         {
             try
             {
                 //var s = _rpCarInsurance.Table.FirstOrDefault().CarInsuranceEinsurances;
                 var listOri =
                     _rpCarInsurance.Entities.Include(c => c.Einsurance).Include(c => c.Excel)
-                        .Where(c => !c.IsDeleted && (c.AppUserId == createrId || createrId == "-1")).OrderByDescending(o => o.Id)
+                        .Where(c => !c.IsDeleted && c.FileType == fileType && (c.AppUserId == createrId || createrId == "-1")).OrderByDescending(o => o.Id)
                        .AsNoTracking().ToList();
                 var list = (from c in listOri
                             let excel = c.Excel
@@ -187,7 +188,8 @@ namespace Services
                                 EinsuranceUrl = ei == null ? "" : ei.Url,
                                 Status = c.Status ?? "",
                                 EOrderCode = c.EOrderCode ?? "",
-                                UniqueKey = c.UniqueKey ?? ""
+                                UniqueKey = c.UniqueKey ?? "",
+                                PdfFileName = c.PdfFileName ?? ""
                             }).ToList();
 
                 return new PagedList<vCarInsuranceList>(list.ToList(), pageIndex, pageSize);
@@ -448,7 +450,7 @@ namespace Services
             }
             return 0;
         }
-        public string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName)
+        public string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName, int fileType)
         {
             try
             {
@@ -466,8 +468,8 @@ namespace Services
                             Url = model.Path + model.Name + model.Postfix,
                             EditTime = DateTime.Now,
                         },
-                        AppUserId = userId
-
+                        AppUserId = userId,
+                        FileType = fileType
                     };
                     item.Status = "A";
                     item.UniqueKey = DateTime.Now.Ticks.ToString();

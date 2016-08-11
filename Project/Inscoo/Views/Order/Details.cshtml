@@ -556,8 +556,9 @@
             }
         }
         $(function () {
+            var num = $("[i25545.d^='id_']").length;
             $("[id^='id_']").css("display", 'none');
-            $("#id_1").css("display", "block").addClass("inscoo");
+            $("#id_" + num).css("display", "block").addClass("inscoo");
 
             $("#nav-pagination").on("click", togglePage);
         })
@@ -574,3 +575,4 @@
         })
     </script>
 }
+

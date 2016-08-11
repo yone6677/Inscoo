@@ -247,6 +247,18 @@
     <Compile Include="Migrations\201608080618171_AlertTableHealthMaster.Designer.cs">
       <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608090812225_AddTableCarInsuranceDetail.cs" />
+    <Compile Include="Migrations\201608090812225_AddTableCarInsuranceDetail.Designer.cs">
+      <DependentUpon>201608090812225_AddTableCarInsuranceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608090944566_SetAuthorRequied.cs" />
+    <Compile Include="Migrations\201608090944566_SetAuthorRequied.Designer.cs">
+      <DependentUpon>201608090944566_SetAuthorRequied.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608100552129_AddColumnPsffileAtCar.cs" />
+    <Compile Include="Migrations\201608100552129_AddColumnPsffileAtCar.Designer.cs">
+      <DependentUpon>201608100552129_AddColumnPsffileAtCar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -355,6 +367,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608080618171_AlertTableHealthMaster.resx">
       <DependentUpon>201608080618171_AlertTableHealthMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608090812225_AddTableCarInsuranceDetail.resx">
+      <DependentUpon>201608090812225_AddTableCarInsuranceDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608090944566_SetAuthorRequied.resx">
+      <DependentUpon>201608090944566_SetAuthorRequied.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608100552129_AddColumnPsffileAtCar.resx">
+      <DependentUpon>201608100552129_AddColumnPsffileAtCar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

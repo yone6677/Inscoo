@@ -116,9 +116,11 @@ namespace Inscoo.Controllers
 
                         if (ForRole(user, "WZHumanCustomer"))
                         {
-                            TempData["errorMes"] = "添加成功";
-
                             return RedirectToAction("ListIndex", new { pageIndex });
+                        }
+                        else
+                        {
+                            TempData["errorMes"] = "添加失败";
                         }
                     }
                 }
@@ -178,6 +180,7 @@ namespace Inscoo.Controllers
         {
             try
             {
+                var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                 var userName = User.Identity.Name;
                 string mailContent, path;
                 path = _svArchive.InsertWZInsurants(excel, userName, masterId, memo);
@@ -186,14 +189,13 @@ namespace Inscoo.Controllers
                 {
                     mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
 
-                    var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                     var mailTo = isFirstUpload ? _svGenericAttribute.GetByGroup("WZHumanEmail").Select(c => c.Value) : _svGenericAttribute.GetByGroup("WZHumanEmailMaintain").Select(c => c.Value);
                     MailService.SendMailAsync(new MailQueue()
                     {
                         MQTYPE = "UploadWZHuman",
                         MQSUBJECT = "上传保险人员名单",
                         MQMAILCONTENT = "",
-                        MQMAILFRM = "redy.yone@inscoo.com",
+                        MQMAILFRM = "service@inscoo.com",
                         MQMAILTO = string.Join(";", mailTo),
                         MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
                     });

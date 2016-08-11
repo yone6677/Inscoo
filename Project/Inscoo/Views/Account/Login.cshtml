@@ -45,13 +45,19 @@
                                 <span class="icon2"></span>
                                 @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
+                            <div style="width:100%;height:40px;line-height:40px;">
+                                <span style="display:inline-block; width:30%;float:left"><input type="text" style="width:100%;height:40px;line-height:40px;text-indent:5px;" name="name" value="" placeholder="验证码"/></span>
+                                <span style="display:inline-block; width:30%;margin:0 4%;float:left;height:40px;line-height:40px;">ddsfdsds</span>
+                                <span style="display:inline-block; width:32%;float:left;"><a href="#" style="color:#24A9E4">看不清?换一张</a></span>
+                            </div>
                             <div style="color:red;text-align:center;width:100%;line-height:2em;">
                                 @if (Model != null)
                                 {
                                     <span> @Model.Result</span>
                                 }
                             </div>
-                            <div style="margin-bottom:5px;">
+                            
+                            <div style="margin:10px 0;">
                                 <div style="float:left;">
                                     @Html.CheckBoxFor(m => m.RememberMe, new { @class = "", title = "6小时之内将自动登陆" })
                                     @*<input type="checkbox" name="RememberMe" id="RememberMe" checked="checked" style="vertical-align:middle;margin-bottom:2px;margin-top:-1px;margin-right:3px;" title="6小时之内将自动登陆" />*@记住密码

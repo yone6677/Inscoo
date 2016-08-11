@@ -1,12 +1,55 @@
-﻿
+﻿@model Models.HomeIndexModel
 @{
     ViewBag.Title = "欢迎进入保酷";
 }
 
 <div>
     <h2 style="text-align:center">欢迎进入保酷</h2>
-    <img src="../../../Content/imgIndex/index_photo.png" alt="Alternate Text" style="width:100%"/>
-    <ul class="index_flow">
+    <div class="index-guide">
+        <div class="guide_1">
+            <div>
+                <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_1.png" alt="Alternate Text" /></p>
+                <h3 class="col-xs-7">我的保险计划</h3>
+            </div>
+            <div>
+                <p class="col-xs-5">有效保单数</p>
+                <p class="col-xs-7">在保人数量</p>
+            </div>
+            <div>
+                <b class="col-xs-5">@Model.InsuranceOrderCount</b>
+                <span class="col-xs-7">@Model.InsurancePersonCount</span>
+            </div>
+        </div>
+        <div class="guide_2">
+            <div>
+                <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_2.png" alt="Alternate Text" /></p>
+                <h3 class="col-xs-7">我的健康服务</h3>
+            </div>
+            <div>
+                <p class="col-xs-5">服务订单数</p>
+                <p class="col-xs-7">服务总数量</p>
+            </div>
+            <div>
+                <b class="col-xs-5">@Model.HealthOrderCount</b>
+                <span class="col-xs-7">@Model.HealthPersonCount</span>
+            </div>
+        </div>
+        @*<div class="guide_3"></div>
+        <div class="guide_4"></div>*@
+        
+    </div>
+    <div class="index_guide_img">
+        <img src="../../../Content/imgIndex/index_guide_3.png" alt="Alternate Text" /><br>
+        <img src="../../../Content/imgIndex/index_guide_4.png" alt="Alternate Text" />
+    </div>
+    <div class="index_guide_details">
+        <div class="describe_name" style="color:#116EAE;font-size:1.5em;">理赔申请 Claim Application</div>
+        <img src="../../../Content/imgIndex/index_guide_5.png" alt="Alternate Text" />
+        <div class="describe_name" style="color:#116EAE;font-size:1.5em;">理赔流程 Claim Process</div>
+        <img src="../../../Content/imgIndex/index_guide_6.png" alt="Alternate Text" />
+    </div>
+    <div style="height:100px;"></div>
+    <!--<ul class="index_flow">
         @*@if (ViewBag.ProductSeries.Contains("中高端医疗"))
         {
         }
@@ -35,8 +78,8 @@
                 </div>
             </a>
         </li>
-       
-      
+
+
         <li class="ln_middle">
             <a href="#">
                 <div class="front">
@@ -79,5 +122,5 @@
                 </div>
             </a>
         </li>
-    </ul>
+    </ul>-->
 </div>

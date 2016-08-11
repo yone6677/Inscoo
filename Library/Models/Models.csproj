@@ -86,6 +86,7 @@
     <Compile Include="Cart\CartModel.cs" />
     <Compile Include="Claim\vClaimManagementDetailListSearch.cs" />
     <Compile Include="Claim\vClaimManagementDetailList.cs" />
+    <Compile Include="Common\HomeIndexModel.cs" />
     <Compile Include="Common\MailQueue.cs" />
     <Compile Include="Common\GenericAttributeModel.cs" />
     <Compile Include="Company\vCompanyList.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Infrastructure\LogsModel.cs" />
     <Compile Include="Infrastructure\PMTypecs.cs" />
     <Compile Include="Infrastructure\SaveResultModel.cs" />
-    <Compile Include="Insurance\vCarInsuranceList.cs" />
+    <Compile Include="CarInsurance\vCarInsuranceList.cs" />
     <Compile Include="Insurance\CustomProductModel.cs" />
     <Compile Include="Insurance\ProductListModel.cs" />
     <Compile Include="Insurance\RecommendationModel.cs" />

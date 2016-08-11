@@ -512,17 +512,19 @@ body {
             background :#24A9E4;
             color:#fff;
             span{
-                color:#fff;
-                font-size:0.9em;
-                display:inline-block;
-                height:25px;
-                vertical-align:text-bottom;
+                span{
+                    color:#fff;
+                    font-size:0.9em;
+                    display:inline-block;
+                    height:25px;
+                    vertical-align:text-bottom;
+                }
             }
             
             &:hover{
             background-color:#24A9E4;
-        }
-        }
+            }
+         }
         th {
             text-align: center;
             line-height: 3.2em;
@@ -1774,7 +1776,68 @@ div:after{
 
 
 /*首页index*/
-.index_flow{
+.index-guide{
+    width:100%;
+    height:auto;
+    border:1px solid #ddd;
+    &:after{
+        content:'';
+        display:block;
+        clear:both;
+    }
+    .guide_1,.guide_2,.guide_3,.guide_4{
+        float:left;
+        width:40%;
+        background:#DAEEDC;
+        margin:20px 5%;
+        margin-bottom:20px;
+        text-align:center;
+    }
+    .guide_1,.guide_2{
+        height:190px;
+        padding:10px 20px;
+        p{
+            font-weight:bold;
+            padding:0;
+        }
+        h3{
+            height:98px;
+            line-height:98px;
+            margin:0;
+            font-weight:bold;
+            font-size:1.6em;
+            padding:0;
+        }
+        b,span{
+            font-size:1.2em;
+            font-weight:bold;
+        }
+        b{
+            color:#e4393c;
+        }
+        span{
+            color:@iscooBlue;
+        }
+    }
+    .guide_3,.guide_4{
+        height:100px;
+    }
+    
+}
+.index_guide_img{
+    width:100%;
+    img{
+        margin-top:20px;
+        width:100%;
+    }
+}
+.index_guide_details{
+    width:100%;
+    img{
+        width:100%;
+    }
+}
+/*.index_flow{
     width:100%;
     margin-top:20px;
     &:after{
@@ -1846,7 +1909,7 @@ div:after{
     li.ln_middle{
         margin:0 2% 20px 2%;
     }
-}
+}*/
 
 /*项目名词解释*/
 .btn-explain{

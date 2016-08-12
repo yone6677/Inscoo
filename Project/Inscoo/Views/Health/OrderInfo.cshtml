@@ -90,8 +90,7 @@
     </dl>
 </div>
 
-
-<p class="basic-information" style="margin-top: 70px;">
+<p class="basic-information">
     <i class="fa fa-edit fa-2x"></i>人员信息
 </p>
 @if (!string.IsNullOrEmpty(ViewBag.Mes))
@@ -120,7 +119,7 @@
 }
 @if (ViewBag.IsDelete)
 {
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+    <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-default" })
         @Html.ActionLink("确认删除", "Delete", new { Model.MasterId, Model.DateTicks, Model.PageIndex, Model.PageSize }, new { @class = "btn btn-warning" })
     </div>

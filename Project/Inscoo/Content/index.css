@@ -1079,6 +1079,7 @@ a.forgetPwd {
     }   
 }
 @media screen and (max-width:991px) and (min-width:768px) {
+    
     .wrapper {
         margin: 0 auto;
         overflow: hidden;
@@ -1206,6 +1207,9 @@ a.forgetPwd {
 }
 
 @media screen and (max-width:767px) {
+    .phonecall{
+        display:none;
+    }
     .wrapper {
         margin: 0 auto;
         overflow: hidden;

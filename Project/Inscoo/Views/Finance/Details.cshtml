@@ -2,10 +2,7 @@
 @{
     ViewBag.Title = "账目明细";
 }
-<div>
-    @Html.ActionLink("返回列表", "Index", null, new { @class= "btn btn-success " })
-</div>
-<br />
+
 @using (Ajax.BeginForm("CashFlowDetails", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
 {
     @Html.AntiForgeryToken()
@@ -14,3 +11,7 @@
         @Html.Action("CashFlowDetails", new { cid = ViewBag.id })
     </div>
 }
+<br />
+<div style="text-align:center">
+    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-success " })
+</div>

@@ -9,15 +9,15 @@
     @Html.AntiForgeryToken()
     <p>
         @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-success " })
-        <div class="form-group">
+        <div class="form-group ">
             <label for="keyGroup">KeyGroup</label>
             <input type="text" class="form-control" name="keyGroup" placeholder="KeyGroup" />
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-default" value="Search" onclick="restPagerIndex()" />
         </div>
-    </p>
-    <div id="dadaGrid">
+    </p> 
+    <div id="dadaGrid" class="table-responsive">
         @Html.Action("List")
     </div>
 }

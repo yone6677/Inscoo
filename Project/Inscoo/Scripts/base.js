@@ -83,8 +83,8 @@ function menuNav(name, csskey, cssvalue) {
     var bgColor = "";
     $(name).each(function () {
         bgColor = $(this).attr("href");
-
         var urlNow = '/' + url.split('/')[1] + '/' + url.split('/')[2] + '/';
+        //console.log(urlNow);
         if (bgColor == '/Insurance/CustomizeProduct') {
             if (url == '/Order/Buy') {
                 url = '/order/ordertopay';
@@ -100,21 +100,46 @@ function menuNav(name, csskey, cssvalue) {
                 url = '/order/ordertopay';
             }
         }
-        if (bgColor == '/health/index') {
+      
+        if (bgColor == '/Health/Index') {
             if (urlNow == '/health/BuyInfo/') {
                 url = '/health/index';
             }
-            if (urlNow.indexOf('/health/MakeSure') != -1) {
-                url = '/health/index';
+            if (urlNow.indexOf('/Health/BuyInfo') != -1) {
+                url = '/Health/Index';
             }
-            if (urlNow.indexOf("/EntryInfo?productId") != -1) {
-                url = '/health/index';
+            if (urlNow.indexOf("/Health/MakeSure") != -1) {
+                url = '/Health/Index';
+            }
+            if (urlNow.indexOf("/Health/EntryInfo") != -1) {
+                url = '/Health/Index';
             }
             if (urlNow.indexOf("/Health/ConfirmPayment") != -1) {
-                url = '/health/index';
+                url = '/Health/Index';
+            }
+            //if (urlNow.indexOf("/Health") != -1) {
+            //    url = '/Health/Index';
+            //}
+            
+        }
+        if (bgColor == "/Health/AuditListSearch") {
+            if (urlNow == '/Health/UploadEmp/') {
+                url = '/Health/AuditListSearch';
+            }
+            if (urlNow.indexOf("/Health/OrderInfo") != -1) {
+                url = '/Health/AuditListSearch';
+            }
+            if (urlNow.indexOf("/Health/AuditListSearch") != -1) {
+                url = '/Health/AuditListSearch';
             }
         }
-      
+        if (bgColor == "/Cart/Index") {
+           
+            if (urlNow.indexOf("/Cart") != -1) {
+                url = '/Cart/Index';
+            }
+            
+        }
         if (bgColor == '/Order/completedorder') {
             if (urlNow == '/Order/Details/') {
                 url = bgColor;
@@ -154,6 +179,10 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/Finance/Settlement/') {
                 url = bgColor;
             }
+            if (urlNow == '/Finance/CashFlowDtl/') {
+                url = bgColor;
+            }
+            
         }
         if (bgColor == '/Nav/index') {
             if (urlNow == '/Nav/Details/') {

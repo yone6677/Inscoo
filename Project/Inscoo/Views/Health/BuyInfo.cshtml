@@ -7,35 +7,33 @@
     VCheckProductDetail product = ViewBag.Product;
 }
 <div class="health_box">
-    <div class="health_box_header">
-        <ul class="">
-            <li class="header_left">
-                <img src="@product.CheckProductPic" />
-            </li>
-            <li class="header_right">
-                <h3><span>@product.ProductName</span></h3>
-                <ul>
-                    <li>仅售：<b>￥@Convert.ToInt32(product.PrivilegePrice)</b></li>
-                    <li>市场价：<span style="text-decoration:line-through;">￥@Convert.ToInt32(product.PublicPrice) </span></li>
-                </ul>
-                <div class="text-left" style="padding-left:10%;">
-
-                    @foreach (var item in Model)
+    <ul class="health_box_header">
+        <li class="header_left">
+            <img src="@product.CheckProductPic" />
+        </li>
+        <li class="header_right">
+            <h3 style="margin-top:0"><span>@product.ProductName</span></h3>
+            <ul>
+                <li style="border-right:1px solid #eee;">仅售：<b>￥@Convert.ToInt32(product.PrivilegePrice)</b></li>
+                <li>市场价：<span>￥@Convert.ToInt32(product.PublicPrice) </span></li>
+            </ul>
+            <div class="text-left" style="padding-left:10%;">
+                <span style="float:left;height:36px;line-height:36px;">可选品牌：</span>
+                @foreach (var item in Model)
+                {
+                    if (product.Id == item.Id)
                     {
-                        if (product.Id == item.Id)
-                        {
-                            @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand health-prod-brand-active" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand" })
-                        }
+                        @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand health-prod-brand-active" })
                     }
-                </div>
-                @Html.Action("buyDetail", new { productId = product.Id, product.ProductName, product.ProductType })
-            </li>
-        </ul>
-    </div>
+                    else
+                    {
+                        @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand" })
+                    }
+                }
+            </div>
+            @Html.Action("buyDetail", new { productId = product.Id, product.ProductName, product.ProductType })
+        </li>
+    </ul>
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
 @section Scripts {

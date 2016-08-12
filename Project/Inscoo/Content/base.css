@@ -1186,23 +1186,23 @@ div:after {
   padding: 20px;
   border: 1px solid #aaa;
   text-align: center;
-}
-.health_box .health_box_header ul {
   overflow: hidden;
 }
-.health_box .health_box_header ul li.header_left {
+.health_box .health_box_header li.header_left {
   width: 40%;
   background: #f5f5f5;
   float: left;
+  min-height: 266px;
+  line-height: 266px;
 }
-.health_box .health_box_header ul li.header_left img {
+.health_box .health_box_header li.header_left img {
   width: 100%;
 }
-.health_box .health_box_header ul li.header_right {
+.health_box .health_box_header li.header_right {
   width: 60%;
   float: left;
 }
-.health_box .health_box_header ul li.header_right > ul {
+.health_box .health_box_header li.header_right > ul {
   font-size: 20px;
   overflow: hidden;
   width: 80%;
@@ -1210,7 +1210,7 @@ div:after {
   border-radius: 6px;
   margin: 20px auto;
 }
-.health_box .health_box_header ul li.header_right > ul li {
+.health_box .health_box_header li.header_right > ul li {
   float: left;
   line-height: 50px;
   height: 50px;
@@ -1219,21 +1219,21 @@ div:after {
   background: #24A9E4;
   font-weight: bold;
 }
-.health_box .health_box_header ul li.header_right > ul li b {
+.health_box .health_box_header li.header_right > ul li b {
   font-size: 1.8em;
 }
-.health_box .health_box_header ul li.header_right .count-change {
+.health_box .health_box_header li.header_right .count-change {
   margin-top: 20px;
   height: 40px;
-  padding-left: 2em;
+  padding-left: 10%;
 }
-.health_box .health_box_header ul li.header_right .count-change div {
+.health_box .health_box_header li.header_right .count-change div {
   float: left;
   height: 28px;
   line-height: 28px;
 }
-.health_box .health_box_header ul li.header_right .count-change div .btn-reduce,
-.health_box .health_box_header ul li.header_right .count-change div .btn-add {
+.health_box .health_box_header li.header_right .count-change div .btn-reduce,
+.health_box .health_box_header li.header_right .count-change div .btn-add {
   display: inline-block;
   width: 24px;
   text-align: center;
@@ -1242,28 +1242,31 @@ div:after {
   cursor: pointer;
   padding: 1px 0;
 }
-.health_box .health_box_header ul li.header_right .count-change div .btn-reduce {
+.health_box .health_box_header li.header_right .count-change div .btn-reduce {
   border-right: none;
   margin-right: -4px;
 }
-.health_box .health_box_header ul li.header_right .count-change div .btn-add {
+.health_box .health_box_header li.header_right .count-change div .btn-add {
   border-left: none;
   margin-left: -4px;
 }
-.health_box .health_box_header ul li.header_right .count-change div input {
+.health_box .health_box_header li.header_right .count-change div input {
   width: 60px;
   height: 32px;
   border: 1px solid #aaa;
   padding-left: 5px;
 }
-.health_box .health_box_header ul li.header_right .product-count {
-  width: 80%;
+.health_box .health_box_header li.header_right .product-count {
+  width: 100%;
   margin-left: 10%;
   margin-top: 10px;
-  text-align: right;
+  text-align: center;
   overflow: hidden;
 }
-.health_box .health_box_header ul li.header_right .product-count div {
+.health_box .health_box_header li.header_right .product-count .btn {
+  margin-bottom: 10px;
+}
+.health_box .health_box_header li.header_right .product-count div {
   float: right;
   margin-right: 100px;
   padding: 5px 20px;
@@ -1272,7 +1275,7 @@ div:after {
   cursor: pointer;
   border-radius: 5px;
 }
-.health_box .health_box_header ul li.header_right .product-count div i {
+.health_box .health_box_header li.header_right .product-count div i {
   margin-right: 10px;
 }
 .health_box .product_detail {
@@ -1731,60 +1734,67 @@ div:after {
   border-top-color: #aaa;
 }
 /*客服部分*/
-.service-girl {
-  width: 9%;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  margin-top: -200px;
-  z-index: 2000;
-  background: #f7f7f7;
-  border: 1px solid #aaa;
-  text-align: center;
-  /*&.out{
-        right:-150px;
-    }*/
+@media screen and (min-width: 900px) {
+  .service-girl {
+    width: 9%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -200px;
+    z-index: 2000;
+    background: #f7f7f7;
+    border: 1px solid #aaa;
+    text-align: center;
+    /*&.out{
+            right:-150px;
+        }*/
+  }
+  .service-girl .service-girl-title {
+    background: #f7f7f7;
+    color: #A31A47;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  .service-girl .service-type p {
+    text-align: left;
+    text-indent: 2em;
+    margin: 10px 0;
+  }
+  .service-girl .service-type span {
+    margin: 10px 0;
+    display: inline-block;
+    width: 100%;
+    padding-left: 10%;
+    text-align: left;
+    color: #111;
+  }
+  .service-girl .service-type b {
+    display: block;
+    color: #3F43B3;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #aaa;
+  }
+  .service-girl .service-type b a {
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: #A31A47;
+    color: #fff;
+  }
+  .service-girl .service-type b a:hover {
+    text-decoration: none;
+  }
+  .service-girl .service-type b a:visited {
+    text-decoration: none;
+  }
+  .service-girl .service-type b a:link {
+    text-decoration: none;
+  }
 }
-.service-girl .service-girl-title {
-  background: #f7f7f7;
-  color: #A31A47;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-bottom: 1px solid #ddd;
-}
-.service-girl .service-type p {
-  text-align: left;
-  text-indent: 2em;
-  margin: 10px 0;
-}
-.service-girl .service-type span {
-  margin: 10px 0;
-  display: inline-block;
-  width: 100%;
-  padding-left: 10%;
-  text-align: left;
-  color: #111;
-}
-.service-girl .service-type b {
-  display: block;
-  color: #3F43B3;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #aaa;
-}
-.service-girl .service-type b a {
-  padding: 5px 10px;
-  border-radius: 3px;
-  background: #A31A47;
-  color: #fff;
-}
-.service-girl .service-type b a:hover {
-  text-decoration: none;
-}
-.service-girl .service-type b a:visited {
-  text-decoration: none;
-}
-.service-girl .service-type b a:link {
-  text-decoration: none;
+@media screen and (max-width: 900px) {
+  .service-girl {
+    display: none;
+  }
 }
 .entryInfoUpload {
   width: 100%;
@@ -1874,10 +1884,12 @@ div:after {
   border: 1px solid #ccc;
   float: left;
   color: #666;
+  margin-right: 10px;
 }
 .health-prod-brand:hover {
   text-decoration: none;
 }
 .health-prod-brand-active {
-  border: 1px solid #e4393c;
+  border: 1px solid #ff6407;
+  background: url("../../Content/imgIndex/tri.png") no-repeat bottom right;
 }

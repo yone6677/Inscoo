@@ -1448,14 +1448,14 @@ div:after {
         padding: 20px;
         border: 1px solid #aaa;
         text-align: center;
-
-        ul {
-            overflow: hidden;
+        overflow: hidden;
 
             li.header_left {
                 width: 40%;
                 background: #f5f5f5;
                 float: left;
+                min-height:266px;
+                line-height:266px;
 
                 img {
                     width: 100%;
@@ -1492,7 +1492,7 @@ div:after {
                 .count-change {
                     margin-top: 20px;
                     height: 40px;
-                    padding-left: 2em;
+                    padding-left: 10%;
 
                     div {
                         float: left;
@@ -1529,12 +1529,14 @@ div:after {
                 }
 
                 .product-count {
-                    width: 80%;
+                    width: 100%;
                     margin-left: 10%;
                     margin-top: 10px;
-                    text-align: right;
+                    text-align: center;
                     overflow: hidden;
-
+                    .btn{
+                        margin-bottom:10px;
+                    }
                     div {
                         float: right;
                         margin-right: 100px;
@@ -1550,7 +1552,7 @@ div:after {
                     }
                 }
             }
-        }
+        
     }
     /*体检详情页*/
     .product_detail {
@@ -2070,72 +2072,78 @@ div:after {
 
 
 /*客服部分*/
-.service-girl {
-    width: 9%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -200px;
-    z-index: 2000;
-    background: #f7f7f7;
-    border: 1px solid #aaa;
-    text-align: center;
-    /*&.out{
-        right:-150px;
-    }*/
-    .service-girl-title {
+@media screen and (min-width:900px){
+    .service-girl {
+        width: 9%;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -200px;
+        z-index: 2000;
         background: #f7f7f7;
-        color: #A31A47;
-        font-weight: bold;
-        padding: 5px 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .service-type {
-
-        p {
-            text-align: left;
-            text-indent: 2em;
-            margin: 10px 0;
+        border: 1px solid #aaa;
+        text-align: center;
+        /*&.out{
+            right:-150px;
+        }*/
+        .service-girl-title {
+            background: #f7f7f7;
+            color: #A31A47;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-bottom: 1px solid #ddd;
         }
 
-        span {
-            margin: 10px 0;
-            display: inline-block;
-            width: 100%;
-            padding-left: 10%;
-            text-align: left;
-            color: #111;
-        }
+        .service-type {
 
-        b {
-            display: block;
-            color: #3F43B3;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed #aaa;
+            p {
+                text-align: left;
+                text-indent: 2em;
+                margin: 10px 0;
+            }
 
-            a {
-                padding: 5px 10px;
-                border-radius: 3px;
-                background: #A31A47;
-                color: #fff;
+            span {
+                margin: 10px 0;
+                display: inline-block;
+                width: 100%;
+                padding-left: 10%;
+                text-align: left;
+                color: #111;
+            }
 
-                &:hover {
-                    text-decoration: none;
-                }
+            b {
+                display: block;
+                color: #3F43B3;
+                padding-bottom: 20px;
+                border-bottom: 1px dashed #aaa;
 
-                &:visited {
-                    text-decoration: none;
-                }
+                a {
+                    padding: 5px 10px;
+                    border-radius: 3px;
+                    background: #A31A47;
+                    color: #fff;
 
-                &:link {
-                    text-decoration: none;
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    &:visited {
+                        text-decoration: none;
+                    }
+
+                    &:link {
+                        text-decoration: none;
+                    }
                 }
             }
         }
     }
 }
-
+@media screen and (max-width:900px){
+    .service-girl {
+        display:none;
+    }
+}
 .entryInfoUpload {
     width: 100%;
     overflow: hidden;
@@ -2246,6 +2254,7 @@ div:after {
     border: 1px solid #ccc;
     float: left;
     color: #666;
+    margin-right:10px;
 }
 
 .health-prod-brand:hover {
@@ -2253,5 +2262,6 @@ div:after {
 }
 
 .health-prod-brand-active {
-    border: 1px solid #e4393c;
+    border: 1px solid #ff6407;
+    background: url("../../Content/imgIndex/tri.png") no-repeat bottom right;
 }

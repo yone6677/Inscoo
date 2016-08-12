@@ -165,7 +165,7 @@ namespace Inscoo.Controllers
                             for (var i = 0; i < cartList.Count; i++)
                             {
                                 shoppingCart.Remove(shoppingCart.Where(s => s.Id == cartList[i].Id).FirstOrDefault());
-                                
+
                                 if (shoppingCart.Any())
                                 {
                                     cookie.Expires = DateTime.Now.AddDays(7);
@@ -173,7 +173,7 @@ namespace Inscoo.Controllers
                                 else
                                 {
                                     cookie.Expires = DateTime.Now.AddDays(-1);
-                                }                            
+                                }
                             }
                             var cartJson = JsonConvert.SerializeObject(shoppingCart);
                             var encryStr = _webHelper.EncryptCookie(cartJson);
@@ -410,9 +410,16 @@ namespace Inscoo.Controllers
                     TotalPages = model.TotalPages
                 };
                 ViewBag.pageCommand = command;
+                ViewBag.id = masterId;
+                ViewBag.ticks = ticks;
                 return PartialView(model);
             }
             return null;
+        }
+        public ActionResult DeleteEmp(int id, string MasterId, string DateTicks)
+        {
+            _svHealth.DeleteHealthEmp(id);
+            return RedirectToAction("OrderInfo", new { masterId = MasterId, dateTicks = DateTicks });
         }
         public ActionResult UploadEmp(int id)
         {
@@ -439,11 +446,13 @@ namespace Inscoo.Controllers
             catch (WarningException e)
             {
                 TempData["error"] = e.Message;
+                return RedirectToAction("UploadEmp", new { id = id });
 
             }
             catch (Exception e)
             {
                 TempData["error"] = "上传失败！";
+                return RedirectToAction("UploadEmp", new { id = id });
             }
             return RedirectToAction("OrderInfo", new { masterId = id, dateTicks = ticks });
         }

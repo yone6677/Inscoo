@@ -11,6 +11,9 @@
                             编号
                         </th>
                         <th>
+                            操作
+                        </th>
+                        <th>
                             姓名
                         </th>
                         <th>
@@ -47,47 +50,50 @@
 
                     @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @num
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @{
+                        <tr>
+                            <td>
+                                @num
+                            </td>
+                            <td>
+                                @Html.ActionLink("删除", "DeleteEmp", new { id = item.Id, MasterId = ViewBag.id, DateTicks = ViewBag.ticks })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @{
                                     var sex = item.Sex ? "男" : "女";
-                            }
-                            @sex
-                        </td>
-                        <td>
-                            @item.Birthday.Value.ToShortDateString()
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Marriage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CompanyName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DepartMent)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Chair)
-                        </td>
-                    </tr>
+                                }
+                                @sex
+                            </td>
+                            <td>
+                                @item.Birthday.Value.ToShortDateString()
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Marriage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepartMent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Chair)
+                            </td>
+                        </tr>
                                         num++;
                                     }
                 </table>

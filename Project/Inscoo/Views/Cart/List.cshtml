@@ -2,13 +2,13 @@
 <table class="table shoppingCart">
     <tr>
         <th width="10%">
-            <input type="checkbox" onclick="selectProd(this, 'cartCheckBox')" /> 全选
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PName)
+            <input type="checkbox" onclick="selectProd(this, 'cartCheckBox')" id="selectAll" checked="checked" /> 全选
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -32,13 +32,14 @@
             var subTotalName = "subTotal_" + item.Id;
             <tr>
                 <td>
-                    <input type="checkbox" value="@item.Id" name="cartCheckBox" onclick="getAmount()" />
+                    <input type="checkbox" value="@item.Id" name="cartCheckBox" onclick="getAmount()" checked="checked" />
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompanyName)
                 </td>
                 <td>
                     <input type="hidden" value="@item.Price" id="@priceName" />
@@ -79,78 +80,3 @@
         <a class="btn btn-danger" onclick="buy()">购买选中</a>
     </div>
 </div>
-<script>
-    function buy() {
-        var postStr = $('#postData').val();
-        if (postStr.length > 0) {
-            var url = '/Cart/Buy?shoppingCart=' + postStr;
-            location.href = url;
-            //$.ajax({
-            //    url: '/Cart/Buy',
-            //    data: 'shoppingCart=' + postStr,
-            //    type: 'post',
-            //    async: false,
-            //    success: function (dada) {
-            //        console.log(dada);
-            //    }
-            //});
-        }
-    }
-    function selectProd(e, subCheck) {
-        var checks = document.getElementsByName(subCheck);
-        var num = checks.length;
-        for (var i = 0; i < num; i++) {
-            checks[i].checked = e.checked;
-        }
-        getAmount();
-    }
-    function checkNum(e, i) {
-        var num = e.value;
-        if (num < 1) {
-            e.value = 1;
-        }
-        if (num > 9999) {
-            e.value = 9999;
-        }
-        getSubTotal(i);
-    }
-    function getSubTotal(e) {
-        var price = document.getElementById('price_' + e + '').value;
-        var count = document.getElementById('count_' + e).value;
-        var subTotal = price * count;
-        document.getElementById('subTotal_' + e).innerText = subTotal.toFixed(2);
-        getAmount();
-    }
-    function getAmount() {
-        var checkBox = document.getElementsByName('cartCheckBox');
-        var selectedVal = '';
-        for (var i = 0; i < checkBox.length; i++) {
-            if (checkBox[i].checked)
-                selectedVal += checkBox[i].value + ',';
-        }
-        if (selectedVal.length > 1) {
-            var ary = selectedVal.split(',');
-            var amount = 0;
-            var postStr = '';
-            for (var i = 0; i < ary.length; i++) {
-                if (ary[i] != '') {
-                    var price = $('#price_' + ary[i]).val();
-                    var count = document.getElementById('count_' + ary[i]).value;
-                    var subTotal = price * count;
-                    amount += subTotal;
-                    if (i == (ary.length - 2) || ary.length == 2) {
-                        postStr += '{"Id":' + ary[i] + ',"Count":' + count + '}';
-                    }
-                    else {
-                        postStr += '{"Id":' + ary[i] + ',"Count":' + count + '},';
-                    }
-                }
-            }
-            document.getElementById('amount').innerText = amount.toFixed(2);
-            document.getElementById('postData').value = '[' + postStr + ']';
-        }
-        else {
-            document.getElementById('amount').innerText = '0.00';
-        }
-    }
-</script>

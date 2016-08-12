@@ -6,4 +6,75 @@
     @Styles.Render("~/Content/shoppingCart")
 }
 @Html.Action("List")
+@section scripts{
 
+    <script>
+        $(function () {
+            getAmount();
+        })
+        function buy() {
+            var postStr = $('#postData').val();
+            if (postStr.length > 0) {
+                var url = '/Cart/Buy?shoppingCart=' + postStr;
+                location.href = url;
+            }
+        }
+        function selectProd(e, subCheck) {
+            var checks = document.getElementsByName(subCheck);
+            var num = checks.length;
+            for (var i = 0; i < num; i++) {
+                checks[i].checked = e.checked;
+            }
+            getAmount();
+        }
+        function checkNum(e, i) {
+            var num = e.value;
+            if (num < 1) {
+                e.value = 1;
+            }
+            if (num > 9999) {
+                e.value = 9999;
+            }
+            getSubTotal(i);
+        }
+        function getSubTotal(e) {
+            var price = document.getElementById('price_' + e + '').value;
+            var count = document.getElementById('count_' + e).value;
+            var subTotal = price * count;
+            document.getElementById('subTotal_' + e).innerText = subTotal.toFixed(2);
+            getAmount();
+        }
+        function getAmount() {
+            var checkBox = document.getElementsByName('cartCheckBox');
+            var selectedVal = '';
+            for (var i = 0; i < checkBox.length; i++) {
+                if (checkBox[i].checked)
+                    selectedVal += checkBox[i].value + ',';
+            }
+            if (selectedVal.length > 1) {
+                var ary = selectedVal.split(',');
+                var amount = 0;
+                var postStr = '';
+                for (var i = 0; i < ary.length; i++) {
+                    if (ary[i] != '') {
+                        var price = $('#price_' + ary[i]).val();
+                        var count = document.getElementById('count_' + ary[i]).value;
+                        var subTotal = price * count;
+                        amount += subTotal;
+                        if (i == (ary.length - 2) || ary.length == 2) {
+                            postStr += '{"Id":' + ary[i] + ',"Count":' + count + '}';
+                        }
+                        else {
+                            postStr += '{"Id":' + ary[i] + ',"Count":' + count + '},';
+                        }
+                    }
+                }
+                document.getElementById('amount').innerText = amount.toFixed(2);
+                document.getElementById('postData').value = '[' + postStr + ']';
+            }
+            else {
+                document.getElementById('amount').innerText = '0.00';
+            }
+        }
+    </script>
+}

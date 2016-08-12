@@ -2,7 +2,7 @@
     ViewBag.Title = "上传人员名单";
 }
 
-@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadEmp", "Health", FormMethod.Post, new { @class = " entryInfoUpload", enctype = "multipart/form-data", id = "entryInfoUpload" }))
 {
     <input type="hidden" name="id" id="id" value="@ViewBag.id" />
     <input type="hidden" name="ticks" id="ticks" value="@ViewBag.ticks" />
@@ -24,7 +24,7 @@
                 <input type="file" id="empinfo" required name="empinfo" />+ 浏览
             </a>
             <span class="lab" style="height:28px;line-height:28px;"></span>
-            <input type="submit" value="上传" class="btn btn-default" />
+            <input type="button" onclick="CheckEmpFile()" value="上传" class="btn btn-default" />
         </li>
 
     </ul>
@@ -32,10 +32,29 @@
         <span style="color:#5cb85c">注:如果名单上传错误，请重新上传，新上传文件会把原文件替代</span>
     </div>
     <div style="width:80%;margin:0 auto;line-height:2em;text-align:left;">
-
+        <span class="text-danger" id="error"></span>
         @if (TempData["error"] != null)
         {
             <span class="text-danger" style="font-size: 1em ">注意：@TempData["error"]</span><br />
         }
     </div>
+}
+@section Scripts {
+    <script>
+        function CheckEmpFile() {
+            var empFile = $("#empinfo").val();
+            if (empFile == '') {
+                $('#error').text('未选择任何文件');
+            }
+            else {
+                var emp = (empFile.substring(empFile.lastIndexOf(".") + 1, empFile.length)).toLowerCase();
+                if (emp == 'xlsx' || emp == 'xls') {
+                    $('#entryInfoUpload').submit();
+                }
+                else {
+                    $('#error').text('请上传正确的Excel人员信息文件,' + emp + '为不支持的格式');
+                }
+            }
+        }
+    </script>
 }

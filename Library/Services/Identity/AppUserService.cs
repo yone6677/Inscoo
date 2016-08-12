@@ -693,7 +693,8 @@ namespace Services
             {
                 var model = GetAccountEncryByCode(encry.AccountEncryCode.Trim());
                 if (model == null) return false;
-                if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
+                //if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
+                if (model.EncryBeginDate.Value.Date > DateTime.Now.Date)
                 {
                     throw new WarningException("您的邀请码不可用");
                 }

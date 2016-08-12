@@ -13,6 +13,7 @@ namespace Services.Common
     {
 
         static List<IdentifyCode> IdentifyCodes;
+        static Object obj = new object();
         /// <summary>
         /// 生成验证码
         /// </summary>
@@ -24,28 +25,32 @@ namespace Services.Common
             {
                 IdentifyCodes = new List<IdentifyCode>();
             }
-            if (IdentifyCodes.Count < 100 || IsForceRefresh)
+            lock (obj)
             {
-                IdentifyCodes.Clear();
-                var dir = AppDomain.CurrentDomain.BaseDirectory + "Archive/identity/";
-                if (Directory.Exists(dir))
+                if (IdentifyCodes.Count < 100 || IsForceRefresh)
                 {
-                    Directory.Delete(dir, true);
-                    Directory.CreateDirectory(dir);
-                }
-                else
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                var help = new IdentifyCodeHelp();
-                for (int i = 0; i < 100; i++)
-                {
-                    var icode = help.GenerateCheckCodes(5);
-                    var stream = help.CreateCheckCodeImage(icode, i);
-                    IdentifyCodes.Add(new IdentifyCode() { Code = icode, Stream = stream });
-                }
+                    IdentifyCodes.ForEach(i => i.Stream.Dispose());
+                    IdentifyCodes.Clear();
+                    var dir = AppDomain.CurrentDomain.BaseDirectory + "Archive/identity/";
+                    if (Directory.Exists(dir))
+                    {
+                        Directory.Delete(dir, true);
+                        Directory.CreateDirectory(dir);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    var help = new IdentifyCodeHelp();
+                    for (int i = 0; i < 100; i++)
+                    {
+                        var icode = help.GenerateCheckCodes(5);
+                        var stream = help.CreateCheckCodeImage(icode, i);
+                        IdentifyCodes.Add(new IdentifyCode() { Code = icode, Stream = stream });
+                    }
 
-            };
+                };
+            }
             var index = new Random().Next(0, 99);
             var item = IdentifyCodes[index];
             code = item.Code;
@@ -104,7 +109,7 @@ namespace Services.Common
                 return null;
             int iWordWidth = 17;
             int iImageWidth = checkCode.Length * iWordWidth;
-            Bitmap image = new Bitmap(iImageWidth, 25);
+            Bitmap image = new Bitmap(iImageWidth, 30);
             Graphics g = Graphics.FromImage(image);
 
             try

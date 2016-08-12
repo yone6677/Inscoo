@@ -367,7 +367,7 @@
                     @{
                         for (var i = 1; i < id; i++)
                         {
-                            <li><a href="#" class="selected_haha">@i</a></li>
+                            <li><a href="javascript:" class="selected_haha">@i</a></li>
                         }
                     }
                     <li>
@@ -571,7 +571,6 @@
                 "background": "#24A9E4",
                 "color":"#fff"
             });
-            console.log($("#nav-pagination li a.selected_haha:last").text());
             $("#nav-pagination").on("click", togglePage);
         })
 

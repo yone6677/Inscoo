@@ -154,6 +154,10 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow == '/Finance/Settlement/') {
                 url = bgColor;
             }
+            if (urlNow == '/Finance/CashFlowDtl/') {
+                url = bgColor;
+            }
+            
         }
         if (bgColor == '/Nav/index') {
             if (urlNow == '/Nav/Details/') {

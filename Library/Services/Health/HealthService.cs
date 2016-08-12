@@ -842,21 +842,21 @@ namespace Services
                 document.Add(new LineSeparator());
                 document.Add(new Paragraph() { SpacingAfter = 20 });
 
-                var yinzhangParagraph =
-                    new Paragraph("           上海皓为商务咨询有限公司                             签章：", font)
-                    {
-                        SpacingBefore = -70,
-                        SpacingAfter = 70
-                    };
+                //var yinzhangParagraph =
+                //    new Paragraph("           上海皓为商务咨询有限公司                             签章：", font)
+                //    {
+                //        SpacingBefore = -70,
+                //        SpacingAfter = 70
+                //    };
                 var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
                 var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
                 yinZhangImage.Alignment = Element.ALIGN_RIGHT;
-                yinZhangImage.ScaleAbsoluteWidth(80);
-                yinZhangImage.ScaleAbsoluteHeight(80);
+                //yinZhangImage.ScaleAbsoluteWidth(80);
+                //yinZhangImage.ScaleAbsoluteHeight(80);
                 //yinZhangImage.SpacingBefore = 50;
                 yinZhangImage.IndentationRight = 40;
                 document.Add(yinZhangImage);
-                document.Add(yinzhangParagraph);
+                //document.Add(yinzhangParagraph);
 
                 #endregion
 
@@ -888,7 +888,7 @@ namespace Services
                 list.Add(
                     new iTextSharp.text.ListItem(
                         new Phrase(
-                            "3.	请在转账时添加上述转账备注，以便更快地确认您的付款。\nPlease add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.",
+                            "请在转账时添加上述转账备注，以便更快地确认您的付款。\nPlease add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.",
                             font)));
 
                 list.Add(

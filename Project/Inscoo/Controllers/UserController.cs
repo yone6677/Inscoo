@@ -17,6 +17,7 @@ using Core.Pager;
 using Microsoft.Ajax.Utilities;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace Inscoo.Controllers
 {
@@ -36,6 +37,7 @@ namespace Inscoo.Controllers
             _svPermissionService = svPermissionService;
 
         }
+        #region User
         // GET: User
         public ActionResult Index(string erorrMes, string successMes)
         {
@@ -73,6 +75,7 @@ namespace Inscoo.Controllers
             //ViewBag.CanDelete = _svPermissionService.HasPermissionByUser(72, User.Identity.GetUserId());
             return PartialView(list);
         }
+
         // GET: User/Details/5
         public ActionResult Details(int id)
         {
@@ -188,7 +191,172 @@ namespace Inscoo.Controllers
             }
             return RedirectToAction("Index", new { errorMes = "添加失败" });
         }
+        #endregion
 
+        #region CreateAccountCode
+        public ActionResult TIndex(string erorrMes, string successMes)
+        {
+            ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
+            var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            ViewBag.CanCreate = !(roles.Contains("InsuranceCompany") && roles.Count == 1);
+
+            ViewData["ErorrMes"] = erorrMes;
+            ViewData["SuccessMes"] = successMes;
+
+            return View();
+        }
+
+        public ActionResult TList(string roleId, string company, int pageIndex = 1, int pageSize = 15)
+        {
+            var uId = User.Identity.GetUserId();
+
+            //出admin外，其他用户只能看到自己创建的用户
+            var list = _appUserService.GetCreateAccountList(pageIndex, pageSize, company, roleId);
+
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        public ActionResult TCreate(int id = -1)
+        {
+            var model = new TRegisterModel();
+            if (id != -1)
+            {
+                model = _appUserService.GetTRegisterModelById(id);
+            }
+            var uId = User.Identity.GetUserId();
+            var roles = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Name", model.Roles);
+            var user = _appUserService.FindById(User.Identity.GetUserId());
+            ViewBag.maxRebate = user.Rebate;
+            model.RoleSelects = roles;
+
+
+            var CommissionMethods = _svGenericAttribute.GetSelectListByGroup("CommissionMethod", "");
+            var CommissionMethodsSelected = CommissionMethods.FirstOrDefault(i => i.Value == model.CommissionMethod);
+            if (CommissionMethodsSelected != null)
+            {
+                CommissionMethodsSelected.Selected = true;
+            }
+
+            model.CommissionMethods = CommissionMethods;
+            ViewBag.ProdSeriesList = _appUserService.GetProdSeries(uId);
+            ViewBag.ProdInsurancesList = _appUserService.GetProdInsurances(uId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TCreate(TRegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.EncryBeginDate > model.EncryEndDate)
+                {
+                    return RedirectToAction("TIndex", new { errorMes = "日期不正确" });
+                }
+                var uId = User.Identity.GetUserId();
+                var ProdSeries = "";
+                if (model.ProdSeries != null)
+                {
+                    foreach (var item in model.ProdSeries)
+                    {
+                        ProdSeries += item + ';';
+                    }
+                }
+                var ProdInsurance = "";
+                if (model.ProdInsurances != null)
+                {
+                    foreach (var item in model.ProdInsurances)
+                    {
+                        ProdInsurance += item + ';';
+                    }
+                }
+
+                //if (model.CommissionMethod != null)
+                //{
+                //    var u = _appUserService.FindById(User.Identity.GetUserId());
+                //    model.CommissionMethod = _svGenericAttribute.GetByKey(value: u.CommissionMethod).Value;
+                //}
+                var user = new CreateAccountCode()
+                {
+                    AccountEncryCode = GetAccountEncryCode(),
+                    EncryBeginDate = model.EncryBeginDate,
+                    EncryEndDate = model.EncryEndDate,
+                    EncryCompanyName = model.CompanyName,
+                    EncryTiYong = model.TiYong,
+                    EncryFanBao = model.FanBao,
+                    Author = User.Identity.Name,
+                    EncryCommissionMethod = model.CommissionMethod,
+                    EncryRebate = model.Rebate,
+                    EncrySeries = ProdSeries,
+                    EncryInsurance = ProdInsurance,
+                    EncryMemo = model.Memo,
+                    EncryCreateID = User.Identity.GetUserId(),
+                    EncryRoleName = model.Roles
+                };
+                var result = _appUserService.AddCreateAccountCode(user);
+                if (result)
+                {
+                    return RedirectToAction("TIndex", new { successMes = "添加成功" });
+                }
+            }
+            return RedirectToAction("TIndex", new { errorMes = "添加失败" });
+        }
+        [AllowAnonymous]
+        public ActionResult EncryInfo()
+        {
+            var model = new EncryInfoModel();
+            return PartialView(model);
+        }
+
+        // POST: EncryInfo/Create
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EncryInfo(EncryInfoModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Session["IdentifyCode"].ToString() != Request.Form["IdentifyCode"])
+                    {
+                        model.Mes = "验证码不正确";
+                        return View(model);
+                    }
+                    model.Password = ConfigurationManager.AppSettings["newPwd"];
+                    var result = await _appUserService.CreateUserByEncry(model);
+                    if (result)
+                    {
+                        model.Mes = "激活成功";
+                    }
+                    else
+                    {
+                        model.Mes = "激活失败";
+                    }
+                }
+            }
+            catch (WarningException e)
+            {
+                model.Mes = e.Message;
+            }
+            catch (Exception e)
+            {
+                model.Mes = "激活失败";
+            }
+
+            return View(model);
+        }
+        #endregion
         [AllowAnonymous]
         public JsonResult IsUserExist(string email)
         {
@@ -402,5 +570,11 @@ namespace Inscoo.Controllers
             return View();
         }
 
+        #region private
+        string GetAccountEncryCode()
+        {
+            return "";
+        }
+        #endregion
     }
 }

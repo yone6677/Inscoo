@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - Inscoo</title>
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/bootstrap")
+
+    @Styles.Render("~/Content/index")
+
+    @RenderSection("head", required: false)
+</head>
+<body>
+    <div class="contain" style="overflow-y:visible ">
+        <div class="slider">
+            <div class="floor floor1">
+                <div class="box">
+                    <div class="hello">
+                        <span class="fontGreen">Hi 我是保酷</span><br>
+                        <span class="fontBlack">您企业的健康与保险专家</span>
+                    </div>
+                    <div class="loginWrp" style="width:50%">
+                        <h4>@ViewBag.Title</h4>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/index")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

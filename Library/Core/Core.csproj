@@ -97,6 +97,7 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
+    <Compile Include="Mapping\CreateAccountCodeMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceDetailMap.cs" />
     <Compile Include="Mapping\HealthFileMap.cs" />
@@ -268,6 +269,10 @@
     <Compile Include="Migrations\201608110631381_health1431.Designer.cs">
       <DependentUpon>201608110631381_health1431.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608120808077_AddTableCreateAccountCode.cs" />
+    <Compile Include="Migrations\201608120808077_AddTableCreateAccountCode.Designer.cs">
+      <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -391,6 +396,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608110631381_health1431.resx">
       <DependentUpon>201608110631381_health1431.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608120808077_AddTableCreateAccountCode.resx">
+      <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

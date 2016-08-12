@@ -154,6 +154,7 @@
     <Compile Include="Claim\ClaimService.cs" />
     <Compile Include="Claim\IClaimService.cs" />
     <Compile Include="Common\GenericAttributeService.cs" />
+    <Compile Include="Common\IdentifyCodeHelp.cs" />
     <Compile Include="Common\IGenericAttributeService.cs" />
     <Compile Include="Common\MailService.cs" />
     <Compile Include="Company\CompanyService.cs" />

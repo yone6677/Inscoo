@@ -4,13 +4,16 @@ using System;
 namespace Domain
 
 {
-    //public partial class CreateAccountCode : BaseEntity
-    public partial class CreateAccountCode
+    public partial class CreateAccountCode : BaseEntity
     {
         public CreateAccountCode()
         {
-            //CreateTime = DateTime.Now;
-            //IsDeleted = false;
+            CreateTime = DateTime.Now;
+            IsDeleted = false;
+            IsUsed = false;
+            EncryFanBao = false;
+            EncryTiYong = false;
+            EncryRebate = 0;
         }
         /// <summary>
         /// 加密字符串
@@ -19,7 +22,11 @@ namespace Domain
         /// <summary>
         /// 用户是否已使用
         /// </summary>
-        public string IsUsed { set; get; }
+        public bool IsUsed { set; get; }
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public string EncryCreateID { set; get; }
         /// <summary>
         /// 有效开始日期
         /// </summary>

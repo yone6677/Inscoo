@@ -184,7 +184,6 @@
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <Content Include="Archive\Template\hwyz.jpg" />
     <Content Include="Archive\Template\jinliananZhang.jpg" />
-    <Content Include="Archive\Template\jinliananZhang1.jpg" />
     <Content Include="Archive\Template\jinliananZhizhao.png" />
     <Content Include="Archive\Template\RenYuanXinXiGengGaiMuBan.xlsx" />
     <Content Include="Archive\Template\ShangChuanRenYuanXinXi.xlsx" />
@@ -315,6 +314,7 @@
     <Content Include="Content\img\p2.jpg" />
     <Content Include="Content\img\p3.jpg" />
     <Content Include="Content\img\p4.jpg" />
+    <Content Include="Content\img\p5.jpg" />
     <Content Include="Content\img\tt.png" />
     <Content Include="Content\img\health\health_1_1.png" />
     <Content Include="Content\img\health\health_1_3.png" />
@@ -585,6 +585,11 @@
     <Content Include="Views\WZHuman\Create.cshtml" />
     <Content Include="Views\WZHuman\ListData.cshtml" />
     <Content Include="Views\WZHuman\ListIndex.cshtml" />
+    <Content Include="Views\User\TCreate.cshtml" />
+    <Content Include="Views\User\TIndex.cshtml" />
+    <Content Include="Views\User\TList.cshtml" />
+    <Content Include="Views\User\EncryInfo.cshtml" />
+    <Content Include="Views\Shared\_Layout1.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

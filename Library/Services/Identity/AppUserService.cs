@@ -17,6 +17,7 @@ using System.Web.Mvc;
 using Core;
 using Core.Data;
 using Domain.Common;
+using System.ComponentModel;
 
 namespace Services
 {
@@ -28,7 +29,8 @@ namespace Services
         private readonly ILoggerService _loggerService;
         private readonly IRepository<GenericAttribute> _rpGenericAttribute;
         private readonly IRepository<WZHumanMaster> _rpWZHumanMaster;
-        public AppUserService(IRepository<WZHumanMaster> rpWZHumanMaster, ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
+        private readonly IRepository<CreateAccountCode> _rpCreateAccountCode;
+        public AppUserService(IRepository<CreateAccountCode> rpCreateAccountCode, IRepository<WZHumanMaster> rpWZHumanMaster, ILoggerService loggerService, AppUserManager userManager, AppRoleManager appRoleManager,
             IAuthenticationManager authenticationManager, IRepository<GenericAttribute> rpGenericAttribute)
         {
             _rpWZHumanMaster = rpWZHumanMaster;
@@ -37,6 +39,7 @@ namespace Services
             _loggerService = loggerService;
             _authenticationManager = authenticationManager;
             _rpGenericAttribute = rpGenericAttribute;
+            _rpCreateAccountCode = rpCreateAccountCode;
         }
 
 
@@ -593,5 +596,192 @@ namespace Services
                 return null;
             }
         }
+
+        #region CreateAccountCode
+        public bool AddCreateAccountCode(CreateAccountCode model)
+        {
+            try
+            {
+                model.AccountEncryCode = GetAccountEncryCode();
+                return _rpCreateAccountCode.InsertGetId(model) > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+        public string GetAccountEncryCode()
+        {
+            try
+            {
+                var dt = DateTime.Now.Ticks.ToString().Substring(9);
+                var isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
+                while (isExist)
+                {
+                    dt = DateTime.Now.Ticks.ToString().Substring(9);
+                    isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
+                }
+                return dt;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        public CreateAccountCode GetAccountEncryByCode(string code)
+        {
+            try
+            {
+                var item = _rpCreateAccountCode.Table.FirstOrDefault(c => c.AccountEncryCode == code);
+
+                return item;
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
+
+        }
+        public CreateAccountCode GetAccountEncryById(int id)
+        {
+            try
+            {
+                var item = _rpCreateAccountCode.GetById(id);
+
+                return item;
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
+
+        }
+        public TRegisterModel GetTRegisterModelById(int id)
+        {
+            try
+            {
+                var ss = _rpCreateAccountCode.TableNoTracking.Where(i => i.Id == id).ToList();
+                var item = ss.Select(i => new TRegisterModel
+                {
+                    CommissionMethod = i.EncryCommissionMethod,
+                    Roles = i.EncryRoleName,
+                    CompanyName = i.EncryCompanyName,
+                    ProdSeries = i.EncrySeries.Split(';'),
+                    FanBao = i.EncryFanBao,
+                    TiYong = i.EncryTiYong,
+                    EncryBeginDate = i.EncryBeginDate,
+                    EncryEndDate = i.EncryEndDate,
+                    Id = i.Id,
+                    Memo = i.EncryMemo,
+                    ProdInsurances = i.EncryInsurance.Split(';')
+
+                });
+
+                return item.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
+
+        }
+        public async Task<bool> CreateUserByEncry(EncryInfoModel encry)
+        {
+            try
+            {
+                var model = GetAccountEncryByCode(encry.AccountEncryCode.Trim());
+                if (model == null) return false;
+                if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
+                {
+                    throw new WarningException("您的邀请码不可用");
+                }
+                if (model.EncryEndDate.HasValue)
+                {
+                    if (model.EncryEndDate < DateTime.Now)
+                    {
+                        throw new WarningException("您的邀请码已过期");
+                    }
+                }
+                var user = new AppUser()
+                {
+                    //BankName = model.BankName,
+                    //BankNumber = model.BankNumber,
+                    UserName = encry.Email,
+                    Email = encry.Email,
+                    PhoneNumber = encry.Phone,
+                    LinkMan = encry.LinkMan,
+                    CompanyName = encry.CompanyName,
+
+                    TiYong = model.EncryTiYong,
+                    FanBao = model.EncryFanBao,
+                    CreaterId = model.EncryCreateID,
+                    Changer = model.EncryCreateID,
+                    CommissionMethod = model.EncryCommissionMethod,
+                    Rebate = model.EncryRebate,
+                    ProdSeries = model.EncrySeries,
+                    ProdInsurance = model.EncryInsurance
+
+                };
+                var result = await CreateAsync(user, user.UserName, encry.Password);
+                if (result.Succeeded)
+                {
+                    var isDddRole = DeleteBeforeRoleAndNew(user.Id, model.EncryRoleName);
+                    if (isDddRole)
+                    {
+                        model.IsUsed = true;
+                        _rpCreateAccountCode.Update(model);
+                        var mailContent = string.Format("<p><b>(用户名)</b>,您好：{0}</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
+                        MailService.SendMail(new MailQueue()
+                        {
+                            MQTYPE = "保酷账号",
+                            MQSUBJECT = "保酷账号",
+                            MQMAILCONTENT = mailContent,
+                            MQMAILFRM = "service@inscoo.com",
+                            MQMAILTO = user.Email,
+                            MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
+
+                        });
+                        return true;
+                    }
+
+                }
+
+                return false;
+            }
+            catch (DbEntityValidationException e)
+            {
+                _loggerService.insert(e, LogLevel.Error, "AppUserService:CreateUserByEncry");
+                throw e;
+            }
+        }
+        public IPagedList<CreateAccountCode> GetCreateAccountList(int pageIndex, int pageSize, string company, string roleId)
+        {
+            try
+            {
+                var model = new List<UserModel>();
+                var user = _rpCreateAccountCode.TableNoTracking.ToList();
+
+                if (!string.IsNullOrEmpty(roleId))
+                {
+                    var rolename = _appRoleManager.FindById(roleId).Name;
+                    user = user.Where(s => s.EncryRoleName == rolename).ToList();
+                }
+                if (!string.IsNullOrEmpty(company))
+                {
+                    user = user.Where(s => s.EncryCompanyName == company).ToList();
+                }
+
+
+                return new PagedList<CreateAccountCode>(user.OrderByDescending(i => i.Id).ToList(), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Information, "AppUserService:GetCreateAccountList");
+            }
+            return null;
+        }
+        #endregion
     }
 }

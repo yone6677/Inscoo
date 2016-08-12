@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "账户管理";
+}
+
+
+
+@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
+{
+
+    <div class="Search">
+        <dl style="width:100%">
+            <dt style="width:10%">
+                角色
+            </dt>
+            <dd style="width:22%">
+                @Html.DropDownList("RoleId", ViewBag.RoleId as List<SelectListItem>, "全部")
+            </dd>
+            <dt style="width:10%">企业名称</dt>
+            <dd style="width:22%">
+                <input type="text" name="Company" value="" placeholder="企业名称" />
+            </dd>
+            <dt style="width:10%"></dt>
+            <dd style="width:25%;float:right">
+                <p> <input type="submit" value="查找" /></p>
+            </dd>
+        </dl>
+        <dl style="width:100%">
+            @if (ViewBag.CanCreate)
+            {
+                <dt></dt>
+                <dd style="float:right;width:25%;">
+                    <p>  @Html.ActionLink("新建用户", "TCreate", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+                </dd>
+            }
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+
+
+    <div id="dadaGrid">
+        @Html.Action("TList")
+    </div>
+}

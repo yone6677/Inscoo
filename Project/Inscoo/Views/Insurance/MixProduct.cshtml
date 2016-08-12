@@ -538,14 +538,15 @@
                         </td>
                         <td style="width:60%">
                             @*<div class="inscooCase-title-right look-more">
-                                <h3>营运车乘意险</h3>
-                                <p>
-                                    <span class="fa-left">请查看具体赔付方案</span>
-                                </p>
-                            </div>*@
+                                    <h3>营运车乘意险</h3>
+                                    <p>
+                                        <span class="fa-left">请查看具体赔付方案</span>
+                                    </p>
+                                </div>*@
                             <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
                                 <div class="inscooCase-title-right inscooCase-title-right-title">
-                                    <p style="text-align:center">营运车乘意险 
+                                    <p style="text-align:center">
+                                        营运车乘意险
                                     </p>
                                 </div>
                                 <div>
@@ -602,7 +603,7 @@
                             @if (User.IsInRole("CarInscuranceCustomer"))
                             {
                                 <p>
-                                    @Html.ActionLink("数据上传", "CarInscuranceSearch", new { }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink("数据上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
                                     @*<a href="#" class="btn btn-default">数据上传</a>*@
                                 </p>
                                 <p class="programme-clause">

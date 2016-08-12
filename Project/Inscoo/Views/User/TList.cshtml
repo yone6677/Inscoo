@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Domain.CreateAccountCode>
+<table class="table table-bordered table-style-control">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            企业
+        </th>
+        <th>
+            邀请码
+        </th>
+        <th>
+            角色
+        </th>
+        <th>
+            有效开始日期
+        </th>
+        <th>
+            有效结束日期
+        </th>
+        <th>
+            是否被使用
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EncryCompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountEncryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EncryRoleName)
+                </td>
+                <td>
+                    @if (item.EncryBeginDate.HasValue)
+                    {
+                        <span>  @item.EncryBeginDate.Value.ToShortDateString()</span>
+                    }
+                </td>
+                <td>
+                    @if (item.EncryEndDate.HasValue)
+                    {
+                        <span>  @item.EncryEndDate.Value.ToShortDateString()</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsUsed)
+                </td>
+                <td>
+                    @Html.ActionLink("查看", "TCreate", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    }
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

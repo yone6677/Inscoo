@@ -1,0 +1,121 @@
+﻿@model Models.User.EncryInfoModel
+
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "激活账户";
+
+}
+@section head {
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal formCreate">
+        <br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if (!string.IsNullOrEmpty(Model.Mes))
+        {
+            if (Model.Mes == "激活成功")
+            {
+                <div class="alert alert-success">
+                    @Model.Mes
+                    <p>
+                        您的账号是 @Model.Email
+                        <br />
+                        初始密码为 @Model.Password
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">@Model.Mes</div>
+            }
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccountEncryCode, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.AccountEncryCode, new { htmlAttributes = new { @class = "form-control inputDate" } })
+                @Html.ValidationMessageFor(model => model.AccountEncryCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LinkMan, htmlAttributes: new { @class = "control-label col-md-3" })
+
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.LinkMan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LinkMan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-3"><input type="text" style="width:100%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" /></div>
+            <div class="col-md-3">
+                <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" />
+                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4">看不清?换一张</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-6">
+                <input type="submit" value="激活" class="btn btn-info" />
+                @Html.ActionLink("返回", "Login", "Account", new { }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function () {
+            TongleWhenRoleChange();
+            jQuery(".chosen-select").chosen();
+        });
+        jQuery("#Roles")
+            .change(function () {
+                TongleWhenRoleChange();
+            });
+
+        function TongleWhenRoleChange() {
+            var value = jQuery("#Roles").val();
+            //console.log(value);
+            //console.log(value == "PartnerChannel");
+            if (value == "PartnerChannel") {
+                jQuery("#roleChange").show();
+            } else {
+                jQuery("#roleChange").hide();
+            }
+        }
+
+        function IdentifyCodeChange() {
+            var img = document.getElementById("imgIdentifyCode");
+            var src = img.getAttribute("src") + "?";
+            img.setAttribute("src", src);
+        };
+
+    </script>
+}

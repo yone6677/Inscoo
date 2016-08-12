@@ -64,6 +64,14 @@ namespace Services
         Task<IdentityResult> UpdateAsync(AppUser user);
         bool Update(AppUser user);
         Task<IdentityResult> UpdateSecurityStampAsync(AppUser user);
-
+        #region CreateAccountCode
+        bool AddCreateAccountCode(CreateAccountCode model);
+        string GetAccountEncryCode();
+        CreateAccountCode GetAccountEncryByCode(string code);
+        CreateAccountCode GetAccountEncryById(int id);
+        TRegisterModel GetTRegisterModelById(int id);
+        Task<bool> CreateUserByEncry(EncryInfoModel encry);
+        IPagedList<CreateAccountCode> GetCreateAccountList(int pageIndex, int pageSize, string company, string roleId);
+        #endregion
     }
 }

@@ -8,6 +8,11 @@ using Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Linq;
+using System.Collections.Generic;
+using System.Net.Mime;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Inscoo.Controllers
 {
@@ -38,7 +43,34 @@ namespace Inscoo.Controllers
             {
                 ViewBag.ReturnUrl = returnUrl;
             }
+
             return View();
+        }
+        [AllowAnonymous]
+        public FileContentResult IdentifyCode(string returnUrl = null)
+        {
+            try
+            {
+                Response.ClearContent();
+                string code;
+                var stream = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code);
+                byte[] image = new byte[stream.Length];
+                stream.Read(image, 0, (int)stream.Length);
+                Session.Add("IdentifyCode", code);
+                stream.Close();
+                return new FileContentResult(image, "image/Jpeg");
+            }
+            catch (Exception)
+            {
+                string code;
+                var stream = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code, true);
+                byte[] image = new byte[stream.Length];
+                stream.Read(image, 0, (int)stream.Length);
+                Session.Add("IdentifyCode", code);
+                stream.Close();
+                return new FileContentResult(image, "image/Jpeg"); 
+            }
+
         }
         //
         // POST: /Account/Login
@@ -47,9 +79,14 @@ namespace Inscoo.Controllers
         public ActionResult Login(LoginModel model, string returnUrl)
         {
             //查看验证未通过原因
-           //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
+                if (Session["IdentifyCode"].ToString() != Request.Form["IdentifyCode"])
+                {
+                    model.Result = "验证码不正确";
+                    return View(model);
+                }
                 var user = _appUserService.Find(model.UserName, model.Password);
                 if (user != null)
                 {

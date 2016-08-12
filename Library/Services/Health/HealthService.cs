@@ -777,12 +777,14 @@ namespace Services
                     });
                 var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
 
-                table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
-                table.SetWidths(new int[2] { 50, 50 });
+                table = new PdfPTable(4) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[4] { 15, 35, 15, 35 });
                 table.SpacingBefore = 10;
                 table.WidthPercentage = 100;
-                table.AddCell(new PdfPCell(new Phrase("订单号: \n Policy No" + query.FirstOrDefault().BaokuOrderCode, font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
-                table.AddCell(new PdfPCell(new Phrase("订单有效期: \n Payment Period" + query.FirstOrDefault().CreateTime.ToLongDateString() + "-" + query.FirstOrDefault().Expire.ToLongDateString(), font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("订单号: \n Policy No", font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(query.FirstOrDefault().BaokuOrderCode, font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("订单有效期: \n Payment Period", font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase(query.FirstOrDefault().CreateTime.ToLongDateString() + "-" + query.FirstOrDefault().Expire.ToLongDateString(), font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
                 document.Add(table);
                 #region table
                 decimal amount = 0;

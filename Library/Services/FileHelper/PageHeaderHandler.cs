@@ -39,4 +39,19 @@ namespace Services
             //writer.
         }
     }
+    public class PageHeaderHandlerAddLine : PdfPageEventHelper
+    {
+        public override void OnStartPage(PdfWriter writer, Document document)
+        {
+            AddHead(writer, document);
+        }
+
+        public void AddHead(PdfWriter writer, Document document)
+        {
+            PdfContentByte cb = writer.DirectContent;
+
+            new LineSeparator().DrawLine(cb, document.Left, document.Right, document.Top + 10);
+
+        }
+    }
 }

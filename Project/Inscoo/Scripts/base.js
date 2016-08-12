@@ -117,9 +117,9 @@ function menuNav(name, csskey, cssvalue) {
             if (urlNow.indexOf("/Health/ConfirmPayment") != -1) {
                 url = '/Health/Index';
             }
-            if (urlNow.indexOf("/Health") != -1) {
-                url = '/Health/Index';
-            }
+            //if (urlNow.indexOf("/Health") != -1) {
+            //    url = '/Health/Index';
+            //}
             
         }
         if (bgColor == "/Health/AuditListSearch") {

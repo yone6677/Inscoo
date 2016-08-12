@@ -182,6 +182,7 @@
     <Content Include="Archive\Template\health\haoweiYinZhang.jpg" />
     <Content Include="Archive\Template\health\logo.png" />
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
+    <Content Include="Archive\Template\hwyz.jpg" />
     <Content Include="Archive\Template\jinliananZhang.jpg" />
     <Content Include="Archive\Template\jinliananZhang1.jpg" />
     <Content Include="Archive\Template\jinliananZhizhao.png" />

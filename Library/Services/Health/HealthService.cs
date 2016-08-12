@@ -777,11 +777,18 @@ namespace Services
                     });
                 var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
 
+                table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[2] { 50, 50 });
+                table.SpacingBefore = 10;
+                table.WidthPercentage = 100;
+                table.AddCell(new PdfPCell(new Phrase("订单号: \n Policy No" + query.FirstOrDefault().BaokuOrderCode, font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("订单有效期: \n Payment Period" + query.FirstOrDefault().CreateTime.ToLocalTime() + "-" + query.FirstOrDefault().Expire.ToLongDateString(), font)) { VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                document.Add(table);
                 #region table
                 decimal amount = 0;
                 table = new PdfPTable(4) { HorizontalAlignment = Element.ALIGN_CENTER };
                 table.SetWidths(new int[4] { 30, 23, 22, 25 });
-                table.SpacingBefore = 30;
+                table.SpacingBefore = 10;
                 table.WidthPercentage = 100;
                 table.AddCell(new PdfPCell(new Phrase("服务项目 \n Policy Type", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
                 table.AddCell(new PdfPCell(new Phrase("单价(人民币) \n Price(RMB)", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
@@ -828,7 +835,7 @@ namespace Services
 
 
                 #region 印章
-                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
+                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\hwyz.jpg";
                 var yinZhangImage = Image.GetInstance(imgSrc);
                 yinZhangImage.Alignment = Element.ALIGN_RIGHT;
                 table = new PdfPTable(1) { SpacingBefore = 5 };

@@ -37,5 +37,9 @@ namespace Models
         /// 已有人员数量
         /// </summary>
         public int EmpSum { get; set; }
+        /// <summary>
+        /// 财务确认时间
+        /// </summary>
+        public DateTime? FinConfirmDate { get; set; }
     }
 }

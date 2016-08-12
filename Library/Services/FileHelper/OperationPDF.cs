@@ -18,7 +18,7 @@ namespace Services.FileHelper
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             return basefont;
         }
-        public static Font GetFont(string path = "STSONG.ttf", int fontSize = 12, int style = 0)
+        public static Font GetFont(string path = "STSONG.ttf", float fontSize = 12, int style = 0)
         {
             path = AppDomain.CurrentDomain.BaseDirectory + @"fonts\" + path;
             var basefont = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);

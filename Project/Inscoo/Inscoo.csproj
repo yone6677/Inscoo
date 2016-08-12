@@ -183,6 +183,7 @@
     <Content Include="Archive\Template\health\logo.png" />
     <Content Include="Archive\Template\health\体检上传表格.xlsx" />
     <Content Include="Archive\Template\jinliananZhang.jpg" />
+    <Content Include="Archive\Template\jinliananZhang1.jpg" />
     <Content Include="Archive\Template\jinliananZhizhao.png" />
     <Content Include="Archive\Template\RenYuanXinXiGengGaiMuBan.xlsx" />
     <Content Include="Archive\Template\ShangChuanRenYuanXinXi.xlsx" />
@@ -378,6 +379,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\STSONG.TTF" />
     <Content Include="Content\shoppingCart.less" />
+    <Content Include="fonts\msyhbd.ttf" />
+    <Content Include="fonts\msyh.ttf" />
+    <Content Include="fonts\ARIAL.TTF" />
     <None Include="Properties\PublishProfiles\config.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />

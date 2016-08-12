@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+
 namespace Domain
 {
     public class HealthOrderDetail : BaseEntity
@@ -59,6 +55,7 @@ namespace Domain
         /// 登录预约处理时间
         /// </summary>
         public string ProcessDate { set; get; }
+        public long Ticks { get; set; }
 
         public virtual HealthOrderMaster HealthOrderMaster { set; get; }
 

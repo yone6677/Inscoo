@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
 
 namespace Models
 {
     public class VHealthOrderDetail
     {
+        /// <summary>
+        /// 体检订单Id
+        /// </summary>
+        public int HealthOrderMasterId { set; get; }
         public string Name { set; get; }
-        public string Sex { set; get; }
+        public bool Sex { set; get; }
         public DateTime? Birthday { set; get; }
 
         /// <summary>
@@ -46,6 +44,19 @@ namespace Models
         /// 职位
         /// </summary>
         public string Chair { set; get; }
-      
+        /// <summary>
+        /// 登录预约系统帐号
+        /// </summary>
+        public string OrderAccount { set; get; }
+        /// <summary>
+        /// 登录预约系统密码
+        /// </summary>
+        public string OrderPassword { set; get; }
+        /// <summary>
+        /// 登录预约处理时间
+        /// </summary>
+        public string ProcessDate { set; get; }
+        public long Ticks { get; set; }
+
     }
 }

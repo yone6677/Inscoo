@@ -312,8 +312,9 @@ namespace Services
         {
             try
             {
-                var master =
-                    _repHealthOrderMaster.Table.Include(h => h.Company).AsNoTracking().FirstOrDefault(h => h.Id == matserId && h.DateTicks == dateTicks);
+                var master = _repHealthOrderMaster.GetById(matserId);
+                //var master =
+                //    _repHealthOrderMaster.Table.Include(h => h.Company).AsNoTracking().FirstOrDefault(h => h.Id == matserId && h.DateTicks == dateTicks);
                 if (master == null) { throw new WarningException("操作失败"); }
                 else
                 {
@@ -327,7 +328,7 @@ namespace Services
                             servicePeriod += master.ServicePeriod.Value.ToShortDateString();
                         }
                     }
-                    var ticksGroup = from g in master.HealthOrderDetails group g by new { g.Ticks } into a select new { ticks = a.Key.Ticks };
+                    var ticksGroup = from g in master.HealthOrderDetails.Where(d => d.IsDeleted == false) group g by new { g.Ticks } into a select new { ticks = a.Key.Ticks };
                     var longTicks = new List<long>();
                     foreach (var t in ticksGroup)
                     {
@@ -586,7 +587,9 @@ namespace Services
                     if (worksheet == null)
                         throw new WarningException("上传的文件内容不能为空");
                     var rowNumber = worksheet.Dimension.Rows;
-                    var empAvai = master.Count - master.HealthOrderDetails.Count;//未上传的人数
+                    var emp = master.HealthOrderDetails.Where(d => d.IsDeleted == false);
+                    var empCount = emp.Any() ? emp.Count() : 0;
+                    var empAvai = master.Count - empCount;//未上传的人数
                     if ((rowNumber - 1) > empAvai)
                     {
                         throw new WarningException($"人数超出范围,体检人数为 {master.Count} ，最多可再上传 {empAvai} 人，请检查文件");
@@ -734,15 +737,16 @@ namespace Services
                 var stream = new FileStream(paths[0], FileMode.Create);
                 var baseFont = OperationPDF.GetBaseFont();
                 var font = OperationPDF.GetFont();
+                var fontBold = OperationPDF.GetFont("msyh.ttf", 10, Font.BOLD);
                 var document = new Document();
                 PdfPTable table;
                 var pdfWrite = PdfWriter.GetInstance(document, stream);
-                var eventHd = new PageHeaderHandlerAddLogo();
+                // var eventHd = new PageHeaderHandlerAddLogo();
 
                 document.SetMargins(30, 30, 40, 20);
                 document.Open();
-                eventHd.AddHead(pdfWrite, document);
-                pdfWrite.PageEvent = eventHd;
+                //eventHd.AddHead(pdfWrite, document);
+                //pdfWrite.PageEvent = eventHd;
                 document.Add(new Paragraph("付款通知书/Debit Note\n", OperationPDF.GetTitleFont())
                 {
                     Alignment = PdfFormField.Q_CENTER,
@@ -772,44 +776,30 @@ namespace Services
                         IndentationLeft = 20
                     });
                 var font1 = OperationPDF.GetFont(fontSize: 12, style: Font.BOLD);
+
                 #region table
-                table = new PdfPTable(5) { HorizontalAlignment = Element.ALIGN_CENTER };
-                table.SetWidths(new int[5] { 20, 25, 20, 15, 20 });
+                decimal amount = 0;
+                table = new PdfPTable(4) { HorizontalAlignment = Element.ALIGN_CENTER };
+                table.SetWidths(new int[4] { 30, 23, 22, 25 });
                 table.SpacingBefore = 30;
                 table.WidthPercentage = 100;
-                table.AddCell(new Phrase("产品", font1));
-                table.AddCell(new Phrase("体检单位", font1));
-                table.AddCell(new Phrase("单价", font1));
-                table.AddCell(new Phrase("数量", font1));
-                table.AddCell(new Phrase("合计", font1));
+                table.AddCell(new PdfPCell(new Phrase("服务项目 \n Policy Type", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("单价(人民币) \n Price(RMB)", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("数量 \n Quantity", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new Phrase("合计(人民币) \n Sum(RMB)", font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
                 foreach (var item in query)
                 {
                     var product = item.HealthCheckProduct;
-                    table.AddCell(new Phrase(product.ProductName, font));
-                    table.AddCell(new Phrase(product.CompanyName, font));
-                    table.AddCell(new Phrase(item.SellPrice.ToString(), font));
-                    table.AddCell(new Phrase(item.Count.ToString(), font));
-                    table.AddCell(new Phrase((item.Count * item.SellPrice).ToString(), font));
+                    table.AddCell(new PdfPCell(new Phrase(product.ProductName, font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase(item.SellPrice.ToString(), font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase(item.Count.ToString(), font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, BorderWidth = 0 });
+                    table.AddCell(new PdfPCell(new Phrase((item.Count * item.SellPrice).ToString(), font)) { BackgroundColor = new BaseColor(236, 242, 250), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, BorderWidth = 0 });
+                    amount += item.Count * item.SellPrice;
                 }
+                table.AddCell(new PdfPCell(new PdfPCell() { Phrase = new Phrase("总金额(人民币)Total Amount(RMB)", font) }) { BackgroundColor = new BaseColor(146, 205, 220), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
+                table.AddCell(new PdfPCell(new PdfPCell() { Colspan = 3, Phrase = new Phrase(amount.ToString(), font) }) { BackgroundColor = new BaseColor(146, 205, 220), VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER, MinimumHeight = 30, BorderWidth = 0 });
                 document.Add(table);
                 #endregion
-                //table = new PdfPTable(2) { HorizontalAlignment = Element.ALIGN_CENTER };
-                //table.SetWidths(new int[2] { 30, 70 });
-
-                //table.AddCell(new PdfPCell(new Phrase("单价：", font1)) { BorderWidth = 0 });
-                //table.AddCell(new PdfPCell(new Phrase(master.Price.ToString(CultureInfo.InvariantCulture), font))
-                //{
-                //    BorderWidth = 0
-                //});
-                //table.AddCell(new PdfPCell(new Phrase("购买份数：", font1)) { BorderWidth = 0 });
-                //table.AddCell(new PdfPCell(new Phrase(master.Count.ToString(), font)) { BorderWidth = 0 });
-                //table.AddCell(new PdfPCell(new Phrase("合计金额：", font1)) { BorderWidth = 0 });
-                //table.AddCell(new PdfPCell(new Phrase(master.Amount.ToString(CultureInfo.InvariantCulture), font))
-                //{
-                //    BorderWidth = 0
-                //});
-                //document.Add(table);
-
 
                 document.Add(
                     new Paragraph(@"请将款项总额汇入以下账号/ Please remit the total amount to the following bank account	", font) { SpacingAfter = 20, SpacingBefore = 20 });
@@ -835,76 +825,112 @@ namespace Services
                     {
                         IndentationLeft = 56
                     });
-                var fontUnderline = OperationPDF.GetFont(style: Font.UNDERLINE);
 
-                document.Add(new Paragraph() { SpacingAfter = 10 });
+
                 #region 印章
-                document.Add(new LineSeparator());
-                document.Add(new Paragraph() { SpacingAfter = 20 });
-
-                //var yinzhangParagraph =
-                //    new Paragraph("           上海皓为商务咨询有限公司                             签章：", font)
-                //    {
-                //        SpacingBefore = -70,
-                //        SpacingAfter = 70
-                //    };
-                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\health\haoweiYinZhang.jpg";
-                var yinZhangImage = iTextSharp.text.Image.GetInstance(imgSrc);
+                var imgSrc = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\jinliananZhang.jpg";
+                var yinZhangImage = Image.GetInstance(imgSrc);
                 yinZhangImage.Alignment = Element.ALIGN_RIGHT;
-                //yinZhangImage.ScaleAbsoluteWidth(80);
-                //yinZhangImage.ScaleAbsoluteHeight(80);
-                //yinZhangImage.SpacingBefore = 50;
-                yinZhangImage.IndentationRight = 40;
-                document.Add(yinZhangImage);
-                //document.Add(yinzhangParagraph);
-
+                table = new PdfPTable(1) { SpacingBefore = 5 };
+                var cell = new PdfPCell(yinZhangImage) { BorderWidth = 0, HorizontalAlignment = Element.ALIGN_RIGHT };
+                table.AddCell(cell);
+                document.Add(table);
+                //document.Add(new LineSeparator());
+                document.Add(new Paragraph() { SpacingAfter = 20 });
                 #endregion
 
+                var fontUnderline = OperationPDF.GetFont("msyh.ttf", 10);
 
-                table = new PdfPTable(1) { SpacingAfter = 20, SpacingBefore = 20, WidthPercentage = 100 };
-                var fontWhite = OperationPDF.GetFont();
+                fontUnderline.Color = BaseColor.RED;
+                document.Add(new Phrase("最后付款日期/ Date of payment due:      ", fontUnderline));
+                fontUnderline.SetStyle(Font.UNDERLINE);
+                document.Add(new Phrase(query.FirstOrDefault().Expire.ToLongDateString(), fontUnderline));
+
+
+
+                document.NewPage();
+                table = new PdfPTable(1) { WidthPercentage = 100, SpacingAfter = 20 };
+                var fontWhite = OperationPDF.GetFont("msyh.ttf", 11);
                 fontWhite.Color = BaseColor.WHITE;
-                table.AddCell(new PdfPCell(
-                    new Phrase(
-                        "请在付款前仔细阅读以下注意事项\nPlease read the following notice carefully before processing the payment",
-                        fontWhite))
-                { BackgroundColor = BaseColor.BLACK, HorizontalAlignment = Element.ALIGN_CENTER });
+                fontWhite.SetStyle(Font.BOLD);
+                var paragraph = new Paragraph("请在付款前仔细阅读以下注意事项\n", fontWhite)
+                {
+                    Leading = 20
+                };
+                table.AddCell(new PdfPCell(paragraph)
+                { BackgroundColor = new BaseColor(79, 129, 189), BorderWidth = 0, MinimumHeight = 25, VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER });
+                paragraph = new Paragraph("Please read the following notice carefully before processing the payment", fontWhite)
+                {
+                    Leading = 20
+                };
+                table.AddCell(new PdfPCell(paragraph)
+                { BackgroundColor = new BaseColor(79, 129, 189), BorderWidth = 0, MinimumHeight = 25, VerticalAlignment = Element.ALIGN_MIDDLE, HorizontalAlignment = Element.ALIGN_CENTER });
                 document.Add(table);
 
-                document.Add(new Phrase("注意事项/Notes：", font1));
                 var list = new List(List.ORDERED);
-                list.Add(
-                    new iTextSharp.text.ListItem(
-                        new Phrase(
-                            "请在最后付款日期之前付款，以便保险公司及时承担相应的保险责任。\nPlease make sure that the premium be finalized before the date of the payment date, so that the insurance company shall undertake the insurance liability accordingly.",
-                            font)));
+                paragraph = new Paragraph("请在最后付款日期之前付款，以便保险公司及时承担相应的保险责任。", font)
+                {
+                    Leading = 22
+                };
+                paragraph.Add(new Paragraph("Please make sure that the premium be finalized before the date of the payment date, so that the insurance company shall undertake the insurance liability accordingly.", font)
+                {
+                    Leading = 17
+                });
+                list.Add(new ListItem(paragraph));
 
-                list.Add(
-                    new iTextSharp.text.ListItem(
-                        new Phrase(
-                            "如遇汇款时汇款金额与付款通知书不符，请及时通知，以免造成不必要的麻烦。\nTo avoid trouble may happens, please inform us when your the amount not in accordance with Debit Note.",
-                            font)));
 
-                list.Add(
-                    new iTextSharp.text.ListItem(
-                        new Phrase(
-                            "请在转账时添加上述转账备注，以便更快地确认您的付款。\nPlease add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.",
-                            font)));
+                paragraph = new Paragraph("如遇汇款时汇款金额与付款通知书不符，请及时通知，以免造成不必要的麻烦。", font)
+                {
+                    Leading = 22
+                };
+                paragraph.Add(new Paragraph("To avoid trouble may happens, please inform us when your the amount not in accordance with Debit Note.", font)
+                {
+                    Leading = 17
+                });
+                list.Add(new ListItem(paragraph));
 
-                list.Add(
-                    new iTextSharp.text.ListItem(
-                        new Phrase(
-                            "若最后付款人与申请表中填写的不同，将以最后付款人名称开具发票。任何情况下发票不能重新开具。\nIf the name of the final payer is different from the one used in your application, please inform us as soon as possible, otherwise the new name will be used for the issue of invoice.Please be noted that the insurance invoice cannot be reissued in any circumstances.",
-                            font)));
+                paragraph = new Paragraph("请在转账时添加上述转账备注，以便更快地确认您的付款。", font)
+                {
+                    Leading = 22
+                };
+                paragraph.Add(new Paragraph("Please add the above remark in the payment transfer, so that we can confirm the payment as soon as possible.", font)
+                {
+                    Leading = 17
+                });
+                list.Add(new ListItem(paragraph));
+                var phrase = new Phrase("若最后付款人与申请表中填写的不同，将以最后付款人名称开具发票。任何情况下发票不能重新开具。", font);
+                phrase.Add(new Phrase("不能重新开具。", fontBold));
+                paragraph = new Paragraph(phrase)
+                {
+                    Leading = 22
+                };
+                phrase = new Phrase("If the name of the final payer is different from the one used in your application, please inform us as soon as possible, otherwise the new name will be used for the issue of invoice.Please be noted that the insurance invoice", font);
+                phrase.Add(new Phrase(" cannot ", fontBold));
+                phrase.Add(new Phrase("be reissued in any circumstances.", font));
+                paragraph.Add(new Paragraph(phrase)
+                {
+                    Leading = 17
+                });
 
-                list.Add(
-                    new iTextSharp.text.ListItem(
-                        new Phrase(
-                            "请在付款时填写我司账户全称，以免因付款不成功给您带来不便。\nPlease fill out FULL ACCOUNT NAME provided above when arranging the payment to avoid unsuccessful transfer.",
-                            font)));
+                list.Add(new ListItem(paragraph));
+
+                phrase = new Phrase("请在付款时填写我司", font);
+                phrase.Add(new Phrase("账户全称", fontBold));
+                phrase.Add(new Phrase("，以免因付款不成功给您带来不便。", font));
+                paragraph = new Paragraph(phrase)
+                {
+                    Leading = 22
+                };
+                phrase = new Phrase("Please fill out", font);
+                phrase.Add(new Phrase(" FULL ACCOUNT NAME ", fontBold));
+                phrase.Add(new Phrase("provided above when arranging the payment to avoid unsuccessful transfer.", font));
+                paragraph.Add(new Paragraph(phrase)
+                {
+                    Leading = 17
+                });
+                list.Add(new ListItem(paragraph));
 
                 document.Add(list);
-
                 document.Close();
 
                 return @"../.." + paths[1];
@@ -929,7 +955,19 @@ namespace Services
             }
             return false;
         }
-
+        public bool DeleteHealthEmp(int id)
+        {
+            try
+            {
+                var emp = _repHealthOrderDetail.GetById(id);
+                _repHealthOrderDetail.Delete(emp);
+            }
+            catch (Exception e)
+            {
+                _svLogger.insert(e, LogLevel.Warning, "HealthService：DeleteHealthEmp");
+            }
+            return false;
+        }
         #region private
 
         decimal GetPrivilegePrice(AppRole role, HealthCheckProduct product)

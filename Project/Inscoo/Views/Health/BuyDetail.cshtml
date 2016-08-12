@@ -6,14 +6,8 @@
     @Html.HiddenFor(m => m.ProductId)
     @Html.HiddenFor(m => m.ProductType)
     @Html.HiddenFor(m => m.ProductName)
-    @*<div class="form-group col-xs-10 col-xs-offset-1" style="margin-top:40px">
-            <label style="float:left;height:30px;line-height:30px">数量：</label>
-            <div class="col-xs-7">
-                @Html.TextBoxFor(m => m.Count, new { @class = "form-control" })
-            </div>
-        </div>*@
-    <div class="count-change col-xs-11 col-xs-offset-1 text-left">
-        <div>数量：</div>
+    <div class="count-change text-left">
+        <div>数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量：</div>
         <div class="wrap-input">
             <span class="btn-reduce" onclick="reduce('#buy-num')">-</span>
             @Html.TextBoxFor(m => m.Count, new { @id = "buy-num", @class = " text" })

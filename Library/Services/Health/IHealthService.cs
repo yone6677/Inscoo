@@ -66,5 +66,6 @@ namespace Services
         string UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author);
         void UpdateMaster(HealthOrderMaster master);
         bool InsertHealthFile(HealthFile item);
+        bool DeleteHealthEmp(int id);
     }
 }

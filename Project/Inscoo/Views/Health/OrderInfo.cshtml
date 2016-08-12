@@ -7,117 +7,90 @@
         Layout = null;
     }
 }
-@section head {
-    <style>
-        li {
-            width: 33%;
-        }
-    </style>
-}
-
-<div class="orderEntryInfoBody">
-    <p class="basic-information" style="margin-top: 70px;">
-        <i class="fa fa-edit fa-2x"></i>订单信息
-    </p>
-    <ul>
-        <li>
+<div class="orderDetails">
+    <h4 class="text-primary_color"><span>订单信息</span></h4>
+    <dl>
+        <dt>
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Author, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Address, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+
+        <dt>
             @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+
+        <dt>
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+
+        <dt>
             @Html.LabelFor(model => model.prodName, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.prodName, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+
+        <dt>
             @Html.LabelFor(model => model.CreateTime, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.CreateTime, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+
+        <dt>
             @Html.LabelFor(model => model.Expire, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.Expire, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
-    <ul>
-        <li>
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.ServicePeriod, htmlAttributes: new { @class = "control-label" })：
-        </li>
-        <li>
+        </dt>
+        <dd>
             @Html.DisplayFor(model => model.ServicePeriod, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </li>
-    </ul>
+        </dd>
+    </dl>
 </div>
 
-<p class="basic-information" style="margin-top: 70px;">
+<p class="basic-information">
     <i class="fa fa-edit fa-2x"></i>人员信息
 </p>
 @if (!string.IsNullOrEmpty(ViewBag.Mes))
@@ -132,7 +105,7 @@
             {
                 int num = i + 1;
                 <p>第 @num 次上传人员清单</p>
-                @Html.Action("HealthPersons", new { masterId = Model.MasterId, ticks = Model.ticksGroup[i] })
+                @Html.Action("HealthPersons", new { masterId = Model.MasterId, ticks = Model.ticksGroup[i], })
             }
         }
     }
@@ -140,13 +113,13 @@
 </div>
 @if (!ViewBag.IsInline)
 {
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+    <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
     </div>
 }
 @if (ViewBag.IsDelete)
 {
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+    <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-default" })
         @Html.ActionLink("确认删除", "Delete", new { Model.MasterId, Model.DateTicks, Model.PageIndex, Model.PageSize }, new { @class = "btn btn-warning" })
     </div>

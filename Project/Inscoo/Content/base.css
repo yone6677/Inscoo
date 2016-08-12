@@ -1731,60 +1731,67 @@ div:after {
   border-top-color: #aaa;
 }
 /*客服部分*/
-.service-girl {
-  width: 9%;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  margin-top: -200px;
-  z-index: 2000;
-  background: #f7f7f7;
-  border: 1px solid #aaa;
-  text-align: center;
-  /*&.out{
-        right:-150px;
-    }*/
+@media screen and (min-width: 900px) {
+  .service-girl {
+    width: 9%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -200px;
+    z-index: 2000;
+    background: #f7f7f7;
+    border: 1px solid #aaa;
+    text-align: center;
+    /*&.out{
+            right:-150px;
+        }*/
+  }
+  .service-girl .service-girl-title {
+    background: #f7f7f7;
+    color: #A31A47;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  .service-girl .service-type p {
+    text-align: left;
+    text-indent: 2em;
+    margin: 10px 0;
+  }
+  .service-girl .service-type span {
+    margin: 10px 0;
+    display: inline-block;
+    width: 100%;
+    padding-left: 10%;
+    text-align: left;
+    color: #111;
+  }
+  .service-girl .service-type b {
+    display: block;
+    color: #3F43B3;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #aaa;
+  }
+  .service-girl .service-type b a {
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: #A31A47;
+    color: #fff;
+  }
+  .service-girl .service-type b a:hover {
+    text-decoration: none;
+  }
+  .service-girl .service-type b a:visited {
+    text-decoration: none;
+  }
+  .service-girl .service-type b a:link {
+    text-decoration: none;
+  }
 }
-.service-girl .service-girl-title {
-  background: #f7f7f7;
-  color: #A31A47;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-bottom: 1px solid #ddd;
-}
-.service-girl .service-type p {
-  text-align: left;
-  text-indent: 2em;
-  margin: 10px 0;
-}
-.service-girl .service-type span {
-  margin: 10px 0;
-  display: inline-block;
-  width: 100%;
-  padding-left: 10%;
-  text-align: left;
-  color: #111;
-}
-.service-girl .service-type b {
-  display: block;
-  color: #3F43B3;
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #aaa;
-}
-.service-girl .service-type b a {
-  padding: 5px 10px;
-  border-radius: 3px;
-  background: #A31A47;
-  color: #fff;
-}
-.service-girl .service-type b a:hover {
-  text-decoration: none;
-}
-.service-girl .service-type b a:visited {
-  text-decoration: none;
-}
-.service-girl .service-type b a:link {
-  text-decoration: none;
+@media screen and (max-width: 900px) {
+  .service-girl {
+    display: none;
+  }
 }
 .entryInfoUpload {
   width: 100%;

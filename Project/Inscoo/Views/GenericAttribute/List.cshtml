@@ -22,20 +22,26 @@
     @foreach (var item in Model)
     {
         <tr style="text-align:left">
-            <td>
-               
+            <td style="vertical-align:middle">
                 @Html.ActionLink(item.Key, "Details", new { id = item.Id })
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
+            <td style="vertical-align:middle">
+               @{
+                   string str = item.Value;
+                   string[] d = str.Split(';');
+                   foreach (var num in d)
+                   {
+                    <p>@Html.DisplayFor(modelItem => num)</p>
+                   }
+                }
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.KeyGroup)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.Sequence)
             </td>
-            <td>
+            <td style="vertical-align:middle">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
         </tr>

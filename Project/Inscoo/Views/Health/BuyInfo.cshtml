@@ -15,7 +15,7 @@
             <h3 style="margin-top:0"><span>@product.ProductName</span></h3>
             <ul>
                 <li style="border-right:1px solid #eee;">仅售：<b>￥@Convert.ToInt32(product.PrivilegePrice)</b></li>
-                <li>市场价：<span>￥@Convert.ToInt32(product.PublicPrice) </span></li>
+                <li>市场价：<span style="text-decoration:line-through;">￥@Convert.ToInt32(product.PublicPrice) </span></li>
             </ul>
             <div class="text-left" style="padding-left:10%;">
                 <span style="float:left;height:36px;line-height:36px;">可选品牌：</span>

@@ -32,10 +32,10 @@ namespace Inscoo.Controllers
             {
                 var decryptJson = _webHelper.DecryptCookie(cartCookie.Value);
                 cartList = JsonConvert.DeserializeObject<List<CartModel>>(decryptJson);
-                if (cartList.Any())
-                {
-                    cartList = cartList.Where(c => c.UserId == User.Identity.GetUserId()).ToList();
-                }
+                //if (cartList.Any())
+                //{
+                //    cartList = cartList.Where(c => c.UserId == User.Identity.GetUserId()).ToList();
+                //}
             }
             return PartialView(cartList);
         }

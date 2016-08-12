@@ -125,6 +125,15 @@ namespace Services
                             navs.Remove(item);
                         }
                     }
+                    var nav = navs.Where(i => i.action == "TIndex").ToList();
+                    if (nav.Any())
+                    {
+                        foreach (var item in nav)
+                        {
+                            navs.Remove(item);
+                        }
+                    }
+
                     return navs.OrderBy(n => n.sequence).ToList();
                 }
                 else

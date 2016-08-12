@@ -24,13 +24,15 @@ namespace Inscoo.Controllers
         private readonly ICompanyService _svCompany;
         private readonly AppUserManager _svAppUserManager;
         private readonly IGenericAttributeService _genericAttributeService;
+        private readonly IWebHelper _webHelper;
 
-        public HealthController(IGenericAttributeService genericAttributeService, AppUserManager svAppUserManager, ICompanyService svCompany, IHealthService svHealth)
+        public HealthController(IGenericAttributeService genericAttributeService, AppUserManager svAppUserManager, ICompanyService svCompany, IHealthService svHealth, IWebHelper webHelper)
         {
             _genericAttributeService = genericAttributeService;
             _svAppUserManager = svAppUserManager;
             _svHealth = svHealth;
             _svCompany = svCompany;
+            _webHelper = webHelper;
         }
 
         // GET: Health
@@ -147,10 +149,41 @@ namespace Inscoo.Controllers
                 if (!string.IsNullOrEmpty(prodStr))
                 {
                     var cartList = JsonConvert.DeserializeObject<List<CartBuyModel>>(prodStr);
-                    var healthList = _svHealth.AddHealthMaster(cartList, User.Identity.Name);
+                    if (cartList.Count > 0)
+                    {
+                        var healthList = _svHealth.AddHealthMaster(cartList, User.Identity.Name);
+                        model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
+                        model.DateTicks = healthList.FirstOrDefault().DateTicks;
 
-                    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
-                    model.DateTicks = healthList.FirstOrDefault().DateTicks;
+                        var cartCookie = Request.Cookies["InscooCart"];
+                        var shoppingCart = new List<CartModel>();
+                        if (cartCookie != null)
+                        {
+                            var decryptJson = _webHelper.DecryptCookie(cartCookie.Value);
+                            shoppingCart = JsonConvert.DeserializeObject<List<CartModel>>(decryptJson);
+                            var cookie = new HttpCookie("InscooCart");
+                            for (var i = 0; i < cartList.Count; i++)
+                            {
+                                shoppingCart.Remove(shoppingCart.Where(s => s.Id == cartList[i].Id).FirstOrDefault());
+                                
+                                if (shoppingCart.Any())
+                                {
+                                    cookie.Expires = DateTime.Now.AddDays(7);
+                                }
+                                else
+                                {
+                                    cookie.Expires = DateTime.Now.AddDays(-1);
+                                }                            
+                            }
+                            var cartJson = JsonConvert.SerializeObject(shoppingCart);
+                            var encryStr = _webHelper.EncryptCookie(cartJson);
+                            cookie.Value = encryStr;
+                            cookie.HttpOnly = true;
+                            Response.Cookies.Add(cookie);
+                        }
+
+                    }
+
                 }
                 if (!string.IsNullOrEmpty(ticks))
                 {
@@ -159,22 +192,6 @@ namespace Inscoo.Controllers
                     model.DateTicks = ticks;
                 }
                 return View(model);
-                //if (masterId == -1)
-                //{
-                //    var model = new VHealthEntryInfo();
-                //    var master = _svHealth.AddHealthMaster(productId, User.Identity.Name, count);
-                //    model.MasterId = master.Id;
-                //    model.DateTicks = master.DateTicks;
-                //    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId());
-                //    return View(model);
-                //}
-                //else
-                //{
-                //    var model = _svHealth.GetHealthEntryInfo(masterId, User.Identity.Name);
-                //    model.CompanyNameList = _svCompany.GetCompanySelectlistByUserId(User.Identity.GetUserId(), model.CompanyId);
-                //    return View(model);
-                //}
-
             }
             catch (Exception)
             {

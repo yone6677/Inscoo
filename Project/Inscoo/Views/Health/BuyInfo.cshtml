@@ -1,5 +1,5 @@
 ﻿@using Models
-@model List<Models.VCheckProductList>
+@model List<VCheckProductList>
 @{
     ViewBag.Title = "体检详细信息";
 }
@@ -18,12 +18,18 @@
                     <li>仅售：<b>￥@Convert.ToInt32(product.PrivilegePrice)</b></li>
                     <li>市场价：<span>￥@Convert.ToInt32(product.PublicPrice) </span></li>
                 </ul>
-                <div class="col-xs-10 col-xs-offset-1 text-left">
+                <div class="text-left" style="padding-left:10%;">
+
                     @foreach (var item in Model)
                     {
-                        <div class="col-xs-5">
-                            @Html.RadioButton("rbCompanyName", item.Id, item.Id == product.Id) @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { })
-                        </div>
+                        if (product.Id == item.Id)
+                        {
+                            @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand health-prod-brand-active" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink(item.CompanyName, "BuyInfo", new { item.ProductType, item.Id, item.ProductName }, new { @class = "health-prod-brand" })
+                        }
                     }
                 </div>
                 @Html.Action("buyDetail", new { productId = product.Id, product.ProductName, product.ProductType })
@@ -33,23 +39,23 @@
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
 @section Scripts {
-        <script>
-            function reduce(param) {
-                var Num = $(param).val();
-                if (Num >= 2) {
-                    Num--;
-                    $(param).val(Num);
-                } else {
-                    $(param).val("1");
-                }
+    <script>
+        function reduce(param) {
+            var Num = $(param).val();
+            if (Num >= 2) {
+                Num--;
+                $(param).val(Num);
+            } else {
+                $(param).val("1");
             }
+        }
 
-            function add(param) {
-                var Num = $(param).val();
-                if (Num >= 1) {
-                    Num++;
-                    $(param).val(Num);
-                }
+        function add(param) {
+            var Num = $(param).val();
+            if (Num >= 1) {
+                Num++;
+                $(param).val(Num);
             }
-        </script>
-    }
+        }
+    </script>
+}

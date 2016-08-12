@@ -92,13 +92,13 @@
                         }
                     }
                     function changeCon(c) {
-                        var prodType = $("#" + "ProductType_" + c).val();
+                        var prodType = $('input[name="ProductType_' + c + '"]:checked').val();
+                        console.log(c + '/' + prodType);
                         getProduct(c, prodType);
                     }
                     function getProduct(e, p) {
                         if (p == "0") {
-                            var radioName = "ProductType_" + e;
-                            p = $("#" + radioName).val();
+                            var p = $('input[name="ProductType_' + e + '"]:checked').val()
                         }
                         var stuffsNum = $("#StaffsNumber_" + e).val();
                         $.ajax({

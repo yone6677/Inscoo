@@ -105,7 +105,7 @@
             {
                 int num = i + 1;
                 <p>第 @num 次上传人员清单</p>
-                @Html.Action("HealthPersons", new { masterId = Model.MasterId, ticks = Model.ticksGroup[i] })
+                @Html.Action("HealthPersons", new { masterId = Model.MasterId, ticks = Model.ticksGroup[i], })
             }
         }
     }

@@ -587,7 +587,9 @@ namespace Services
                     if (worksheet == null)
                         throw new WarningException("上传的文件内容不能为空");
                     var rowNumber = worksheet.Dimension.Rows;
-                    var empAvai = master.Count - master.HealthOrderDetails.Count;//未上传的人数
+                    var emp = master.HealthOrderDetails.Where(d => d.IsDeleted == false);
+                    var empCount = emp.Any() ? emp.Count() : 0;
+                    var empAvai = master.Count - empCount;//未上传的人数
                     if ((rowNumber - 1) > empAvai)
                     {
                         throw new WarningException($"人数超出范围,体检人数为 {master.Count} ，最多可再上传 {empAvai} 人，请检查文件");

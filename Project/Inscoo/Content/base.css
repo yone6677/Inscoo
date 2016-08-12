@@ -594,7 +594,7 @@ body {
   overflow: hidden;
 }
 .orderConfirmBody dl .dd-product-style ul {
-  width: 50%!important;
+  width: 50% !important;
   float: left;
   margin: 5px 0;
 }
@@ -792,7 +792,7 @@ body {
 }
 .buyMoreFile ul li {
   height: auto;
-  min-height: 40px ;
+  min-height: 40px;
   float: left;
 }
 .buyMoreFile ul li:nth-child(odd) {
@@ -1026,7 +1026,7 @@ div:after {
   box-shadow: 0 1px 0 #eee;
   color: #000;
   font-size: 1.1em;
-  font-weight: normal!important;
+  font-weight: normal !important;
 }
 .orderDetails dl dd {
   width: 30%;
@@ -1425,8 +1425,8 @@ div:after {
 .fixck {
   font-family: Arial, Verdana, sans-serif !important;
   font-size: 12px !important;
-  color: #222!important;
-  line-height: normal!important;
+  color: #222 !important;
+  line-height: normal !important;
 }
 .product_rule .product_rule_content {
   width: 100%;
@@ -1864,4 +1864,20 @@ div:after {
 }
 .text-content-extend::after {
   content: "展开";
+}
+.health-prod-brand {
+  display: block;
+  height: 3rem;
+  line-height: 3rem;
+  width: 8rem;
+  text-align: center;
+  border: 1px solid #ccc;
+  float: left;
+  color: #666;
+}
+.health-prod-brand:hover {
+  text-decoration: none;
+}
+.health-prod-brand-active {
+  border: 1px solid #e4393c;
 }

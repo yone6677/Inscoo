@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Models.Common.GenericAttributeModel>
-<table class="table table-bordered">
+<table class="table table-bordered table-header-blur">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Key)
@@ -21,8 +21,9 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr style="text-align:left">
             <td>
+               
                 @Html.ActionLink(item.Key, "Details", new { id = item.Id })
             </td>
             <td>

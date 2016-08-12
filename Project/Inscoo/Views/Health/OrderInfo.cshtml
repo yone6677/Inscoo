@@ -9,14 +9,23 @@
 }
 @section head {
     <style>
-        li {
-            width: 33%;
+        .basic-information{
+            margin-top:10px;
+        }
+        .orderEntryInfoBody>ul{
+            margin-bottom:0;
+            height:35px;
+            line-height:35px;
+        }
+        .orderEntryInfoBody>ul>li:first-child{
+            width:30%;
+            text-align:right;
         }
     </style>
 }
 
 <div class="orderEntryInfoBody">
-    <p class="basic-information" style="margin-top: 70px;">
+    <p class="basic-information">
         <i class="fa fa-edit fa-2x"></i>订单信息
     </p>
     <ul>
@@ -117,7 +126,7 @@
     </ul>
 </div>
 
-<p class="basic-information" style="margin-top: 70px;">
+<p class="basic-information">
     <i class="fa fa-edit fa-2x"></i>人员信息
 </p>
 @if (!string.IsNullOrEmpty(ViewBag.Mes))
@@ -140,13 +149,13 @@
 </div>
 @if (!ViewBag.IsInline)
 {
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+    <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
     </div>
 }
 @if (ViewBag.IsDelete)
 {
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+    <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-default" })
         @Html.ActionLink("确认删除", "Delete", new { Model.MasterId, Model.DateTicks, Model.PageIndex, Model.PageSize }, new { @class = "btn btn-warning" })
     </div>

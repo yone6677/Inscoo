@@ -1,14 +1,10 @@
 ﻿@model Models.VHealthAuditOrder
-
 @{
-    ViewBag.Title = "订单信息";
-    if (ViewBag.IsInline)
-    {
-        Layout = null;
-    }
+    ViewBag.Title = "订单审核";
 }
+
 <div class="orderDetails">
-    <h4 class="text-primary_color"><span>订单信息</span></h4>
+    <h4 class="text-primary_color"><span>基本信息</span></h4>
     <dl>
         <dt>
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
@@ -42,30 +38,10 @@
         </dd>
 
         <dt>
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })：
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </dd>
-        <dt>
-            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label" })：
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Count, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </dd>
-
-        <dt>
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })：
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control  control-label" } })
-        </dd>
-
-        <dt>
-            @Html.LabelFor(model => model.prodName, htmlAttributes: new { @class = "control-label" })：
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.prodName, new { htmlAttributes = new { @class = "form-control  control-label" } })
         </dd>
 
         <dt>
@@ -89,42 +65,79 @@
         </dd>
     </dl>
 </div>
-
-<p class="basic-information">
-    <i class="fa fa-edit fa-2x"></i>人员信息
-</p>
-@if (!string.IsNullOrEmpty(ViewBag.Mes))
-{
-    <div class="alert alert-danger text-center" style="width:100%">@ViewBag.Mes</div>
-}
-<div class="employeeInfo" id="dadaGrid">
-    @{
-        if (Model.ticksGroup.Any())
+<div class="orderDetails">
+    <h4 class="text-primary_color"><span>体检项目</span></h4>
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                体检单位
+            </th>
+            <th>
+                产品名称
+            </th>
+            <th>
+                市场价
+            </th>
+            <th>
+                优惠后价格
+            </th>
+            <th>
+                数量
+            </th>
+            <th>
+                小计(元)
+            </th>
+        </tr>
+        @if (Model.product.Any())
         {
-            for (var i = 0; i < Model.ticksGroup.Count; i++)
+            foreach (var item in Model.product)
             {
-                int num = i + 1;
-                <p>第 @num 次上传人员清单</p>
-                @Html.Action("HealthPersons", new { masterId = Model.MasterId, ticks = Model.ticksGroup[i], })
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PublicPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.PrivilegePrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.SubTotal)
+                    </td>
+                </tr>
             }
         }
-    }
-
+    </table>
 </div>
-@if (!ViewBag.IsInline)
-{
-    <div class="orderConfirmBodyNext">
-        @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
-    </div>
-}
-@if (ViewBag.IsDelete)
-{
-    <div class="orderConfirmBodyNext">
-        @Html.ActionLink("确认删除", "Delete", new { Model.MasterId, Model.DateTicks, Model.PageIndex, Model.PageSize }, new { @class = "btn btn-warning" })
-    </div>
-}
+<div class="orderDetails">
+    <h4 class="text-primary_color"><span>审核</span></h4>
+    @if (Model.IsInscooOperator && Model.State == 4 || Model.State == 7)
+    {
+        using (Html.BeginForm("AuditOrder", "Health", FormMethod.Post, new { @id = "EntryInfoForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.DateTicks)
+            <input type="hidden" name="result" id="result" value="1" />
+            <div class="orderConfirmBodyNext" style="text-align:center;">
+                <input type="submit" value="审核通过" class="btn btn-primary" style="background-color: #38A6D9; border-color: #38A6D9" />
+                <input type="submit" id="notPass" value="审核不通过" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
+            </div>
+        }
+    }
+    @if (Model.IsFinance && Model.State == 11)
+    {
+        @Html.Action("FnComfirm", new { ticks = Model.DateTicks });
+    }
+</div>
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     <script>
         jQuery(function () {
             jQuery("#notPass").click(function () {

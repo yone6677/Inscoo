@@ -47,5 +47,12 @@ namespace Models
         /// 人员上传批次
         /// </summary>
         public List<long> ticksGroup { get; set; }
+        public List<VCheckProductDetail> product { get; set; }
+        public bool IsInscooOperator { get; set; }
+        public bool IsFinance { get; set; }
+        /// <summary>
+        /// 订单状态 7:付款确认 11:OP审核通过 14:OP审核未通过 17:确认收款
+        /// </summary>
+        public decimal State { get; set; }
     }
 }

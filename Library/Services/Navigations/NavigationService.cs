@@ -125,6 +125,15 @@ namespace Services
                             navs.Remove(item);
                         }
                     }
+                    var nav = navs.Where(i => i.action == "TIndex").ToList();
+                    if (nav.Any())
+                    {
+                        foreach (var item in nav)
+                        {
+                            navs.Remove(item);
+                        }
+                    }
+
                     return navs.OrderBy(n => n.sequence).ToList();
                 }
                 else
@@ -287,14 +296,38 @@ namespace Services
         public HomeIndexModel GetHomeIndexModel(string uName)
         {
             var model = new HomeIndexModel();
-            using (var db = _navRepository.DatabaseContext)
-            {
-                model.InsuranceOrderCount = db.Set<Domain.Orders.Order>().Where(o => o.Author == uName && !o.IsDeleted).Count();
-                model.InsurancePersonCount = db.Set<Domain.Orders.OrderEmployee>().Where(o => o.Author == uName && !o.IsDeleted).Count();
-                model.HealthOrderCount = db.Set<Domain.HealthOrderMaster>().Where(o => o.Author == uName && !o.IsDeleted).Count();
-                model.HealthPersonCount = db.Set<Domain.HealthOrderDetail>().Where(o => o.Author == uName && !o.IsDeleted).Count();
-            }
+            var db = _navRepository.DatabaseContext;
+            var orders = db.Set<Domain.Orders.Order>().Where(o => o.Author == uName && !o.IsDeleted && o.State == 6);
+            var batches = db.Set<Domain.Orders.OrderBatch>().Where(o => o.Author == uName && !o.IsDeleted && orders.Any(i => i.Id == o.order_Id));
+            model.InsuranceOrderCount = orders.Count();
+            model.InsurancePersonCount = db.Set<Domain.Orders.OrderEmployee>().Where(o => batches.Any(i => i.Id == o.batch_Id) && !o.IsDeleted).Count();
+
+            var helathOrders = db.Set<Domain.HealthOrderMaster>().Where(o => o.Author == uName && !o.IsDeleted && o.Status == 17);
+            model.HealthOrderCount = helathOrders.Count();
+            model.HealthPersonCount = db.Set<Domain.HealthOrderDetail>().Where(o => o.Author == uName && !o.IsDeleted && helathOrders.Any(i => i.Id == o.HealthOrderMasterId)).Count();
+
             return model;
+        }
+        public void HasOrderPermission(string uId, out bool insurant, out bool health)
+        {
+            try
+            {
+                var db = _navRepository.DatabaseContext;
+                var permissionRoleIds = db.Set<Domain.Permission>().Where(p => p.NavigationId == 56).Select(p => p.roleId).ToList();
+                var permissionHealthRoleIds = db.Set<Domain.Permission>().Where(p => p.Navigation.url == "Health/Index").Select(p => p.roleId).ToList();
+                var roleNames = _svAppUser.GetRolesByUserId(uId);
+                var roleIds = db.Roles.Where(i => roleNames.Any(n => n == i.Name)).Select(i => i.Id);
+
+                insurant = roleIds.Any(r => permissionRoleIds.Contains(r));
+                health = roleIds.Any(r => permissionHealthRoleIds.Contains(r));
+
+            }
+            catch (Exception e)
+            {
+                insurant = false;
+                health = false;
+            }
+
         }
     }
 }

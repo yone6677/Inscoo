@@ -53,22 +53,16 @@ namespace Inscoo.Controllers
             {
                 Response.ClearContent();
                 string code;
-                var stream = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code);
-                byte[] image = new byte[stream.Length];
-                stream.Read(image, 0, (int)stream.Length);
+                var image = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code);
                 Session.Add("IdentifyCode", code);
-                stream.Close();
-                return new FileContentResult(image, "image/Jpeg");
+                return File(image, "image/Jpeg");
             }
             catch (Exception)
             {
                 string code;
-                var stream = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code, true);
-                byte[] image = new byte[stream.Length];
-                stream.Read(image, 0, (int)stream.Length);
+                var image = Services.Common.IdentifyCodeHelp.GetIdentifyCode(out code, true);
                 Session.Add("IdentifyCode", code);
-                stream.Close();
-                return new FileContentResult(image, "image/Jpeg"); 
+                return File(image, "image/Jpeg");
             }
 
         }
@@ -82,10 +76,13 @@ namespace Inscoo.Controllers
             //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                if (Session["IdentifyCode"].ToString() != Request.Form["IdentifyCode"])
+                if (Services.Common.IdentifyCodeHelp.IsIdentityCodeUsed)
                 {
-                    model.Result = "验证码不正确";
-                    return View(model);
+                    if (Session["IdentifyCode"].ToString() != Request.Form["IdentifyCode"])
+                    {
+                        model.Result = "验证码不正确";
+                        return View(model);
+                    }
                 }
                 var user = _appUserService.Find(model.UserName, model.Password);
                 if (user != null)

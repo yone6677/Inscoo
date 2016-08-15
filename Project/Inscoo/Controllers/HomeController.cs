@@ -54,6 +54,19 @@ namespace Inscoo.Controllers
             //var productSeries = _appUserService.GetProdSeries(User.Identity.GetUserId()).Select(p => p.Text).ToList();
             //ViewBag.ProductSeries = productSeries;
             var model = _navService.GetHomeIndexModel(User.Identity.Name);
+            bool insurant = false;
+            bool health = false;
+            if (User.Identity.Name.Equals("Admin", StringComparison.CurrentCultureIgnoreCase))
+            {
+                insurant = true;
+                health = true;
+            }
+            else
+            {
+                _navService.HasOrderPermission(User.Identity.GetUserId(), out insurant, out health);
+            }
+            ViewBag.HasOrderPermission = insurant;
+            ViewBag.HasHealthOrderPermission = health;
             return View(model);
         }
         public ActionResult About()

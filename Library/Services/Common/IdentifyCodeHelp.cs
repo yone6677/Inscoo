@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -11,46 +12,61 @@ namespace Services.Common
 {
     public class IdentifyCodeHelp
     {
-
+        IdentifyCodeHelp()
+        {
+            IsIdentityCodeUsed = Convert.ToBoolean(ConfigurationManager.AppSettings["UseIdentityCode"]);
+        }
         static List<IdentifyCode> IdentifyCodes;
+        static Object obj = new object();
+        static bool isIdentityCodeUsed;
+        public static bool IsIdentityCodeUsed
+        {
+            set;
+            get;
+        }
         /// <summary>
         /// 生成验证码
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static Stream GetIdentifyCode(out string code, bool IsForceRefresh = false)
+        public static Byte[] GetIdentifyCode(out string code, bool IsForceRefresh = false)
         {
             if (IdentifyCodes == null)
             {
                 IdentifyCodes = new List<IdentifyCode>();
             }
-            if (IdentifyCodes.Count < 100 || IsForceRefresh)
+            lock (obj)
             {
-                IdentifyCodes.Clear();
-                var dir = AppDomain.CurrentDomain.BaseDirectory + "Archive/identity/";
-                if (Directory.Exists(dir))
+                if (IdentifyCodes.Count < 100 || IsForceRefresh)
                 {
-                    Directory.Delete(dir, true);
-                    Directory.CreateDirectory(dir);
-                }
-                else
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                var help = new IdentifyCodeHelp();
-                for (int i = 0; i < 100; i++)
-                {
-                    var icode = help.GenerateCheckCodes(5);
-                    var stream = help.CreateCheckCodeImage(icode, i);
-                    IdentifyCodes.Add(new IdentifyCode() { Code = icode, Stream = stream });
-                }
+                    IdentifyCodes.Clear();
+                    var dir = AppDomain.CurrentDomain.BaseDirectory + "Archive/identity/";
+                    if (Directory.Exists(dir))
+                    {
+                        Directory.Delete(dir, true);
+                        Directory.CreateDirectory(dir);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    var help = new IdentifyCodeHelp();
+                    for (int i = 0; i < 100; i++)
+                    {
+                        var icode = help.GenerateCheckCodes(5);
+                        var stream = help.CreateCheckCodeImage(icode, i);
+                        Byte[] bytes = new Byte[stream.Length];
+                        stream.Read(bytes, 0, (int)stream.Length);
+                        IdentifyCodes.Add(new IdentifyCode() { Code = icode, Bytes = bytes });
+                        stream.Dispose();
+                    }
 
-            };
+                };
+            }
             var index = new Random().Next(0, 99);
             var item = IdentifyCodes[index];
             code = item.Code;
-            return item.Stream;
-            //.CreateCheckCodeImage(GenerateCheckCodes(4));
+            return item.Bytes;
         }
 
         public void ShowAuthCode(Stream stream, out string code)
@@ -104,7 +120,7 @@ namespace Services.Common
                 return null;
             int iWordWidth = 17;
             int iImageWidth = checkCode.Length * iWordWidth;
-            Bitmap image = new Bitmap(iImageWidth, 25);
+            Bitmap image = new Bitmap(iImageWidth, 30);
             Graphics g = Graphics.FromImage(image);
 
             try
@@ -204,7 +220,7 @@ namespace Services.Common
     class IdentifyCode
     {
         public String Code { set; get; }
-        public Stream Stream { set; get; }
+        public Byte[] Bytes { set; get; }
 
     }
 }

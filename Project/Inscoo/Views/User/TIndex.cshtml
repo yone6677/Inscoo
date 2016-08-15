@@ -1,10 +1,10 @@
 ﻿@{
-    ViewBag.Title = "账户管理";
+    ViewBag.Title = "建账代码管理";
 }
 
 
 
-@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
+@using (Ajax.BeginForm("TList", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
 {
 
     <div class="Search">
@@ -29,7 +29,7 @@
             {
                 <dt></dt>
                 <dd style="float:right;width:25%;">
-                    <p>  @Html.ActionLink("新建用户", "TCreate", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+                    <p>  @Html.ActionLink("新建建账代码", "TCreate", "User", new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
                 </dd>
             }
         </dl>

@@ -55,10 +55,10 @@
                                 @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
                             <div style="width:100%;height:40px;line-height:40px;">
-                                <span style="display:inline-block; width:30%;float:left"><input type="text" style="width:100%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" /></span>
+                                <span style="display:inline-block; width:30%;float:left"><input type="text" style="width:100%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" required /></span>
 
-                                <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" />
-                                <span style="display:inline-block; width:32%;"><a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4">看不清?换一张</a></span>
+                                <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" style="vertical-align:middle;width:28%" />
+                                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:42%;display:inline-block">看不清?换一张</a>
                             </div>
                             <div style="color:red;text-align:center;width:100%;line-height:2em;">
                                 @if (Model != null)
@@ -75,9 +75,10 @@
                                 @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd", style = "float:right;text-decoration:none" })
                                 <div style="clear:both"></div>
                             </div>
-
-                            <input type="submit" class="submitBtn" value="登录">
-
+                            <div style="text-align:right">
+                                <input type="submit" class="submitBtn" value="登录" style="display:inline-block;">
+                                <a href="../user/EncryInfo" style="margin-left:10%;">免费注册</a>
+                            </div>
                         }
                     </div>
                 </div>
@@ -428,7 +429,6 @@
                             </ul>
                             <ul class="ulist">
                                 <li class="title">帮助Help</li>
-                                <li><a href="../user/EncryInfo">激活账号</a></li>
                                 <li><a href="javascript:;">新手指南</a></li>
                                 <li><a href="../About/Question">常见问题</a></li>
                                 <li><a href="../About/serveOrder">服务协议</a></li>

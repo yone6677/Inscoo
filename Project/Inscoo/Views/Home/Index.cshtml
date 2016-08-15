@@ -6,38 +6,44 @@
 <div>
     <h2 style="text-align:center">欢迎进入保酷</h2>
     <div class="index-guide">
-        <div class="guide_1">
-            <div>
-                <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_1.png" alt="Alternate Text" /></p>
-                <h3 class="col-xs-7">我的保险计划</h3>
+        @if (ViewBag.HasOrderPermission)
+        {
+            <div class="guide_1" onclick="JumpToOrderIndex()" style="cursor:pointer">
+                <div>
+                    <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_1.png" alt="Alternate Text" /></p>
+                    <h3 class="col-xs-7">我的保险计划</h3>
+                </div>
+                <div>
+                    <p class="col-xs-5">有效保单数</p>
+                    <p class="col-xs-7">在保人数量</p>
+                </div>
+                <div>
+                    <b class="col-xs-5">@Model.InsuranceOrderCount</b>
+                    <span class="col-xs-7">@Model.InsurancePersonCount</span>
+                </div>
             </div>
-            <div>
-                <p class="col-xs-5">有效保单数</p>
-                <p class="col-xs-7">在保人数量</p>
+        }
+        @if (ViewBag.HasHealthOrderPermission)
+        {
+            <div class="guide_2" onclick="JumpToHealthIndex()" style="cursor:pointer">
+                <div>
+                    <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_2.png" alt="Alternate Text" /></p>
+                    <h3 class="col-xs-7">我的健康服务</h3>
+                </div>
+                <div>
+                    <p class="col-xs-5">服务订单数</p>
+                    <p class="col-xs-7">服务总数量</p>
+                </div>
+                <div>
+                    <b class="col-xs-5">@Model.HealthOrderCount</b>
+                    <span class="col-xs-7">@Model.HealthPersonCount</span>
+                </div>
             </div>
-            <div>
-                <b class="col-xs-5">@Model.InsuranceOrderCount</b>
-                <span class="col-xs-7">@Model.InsurancePersonCount</span>
-            </div>
-        </div>
-        <div class="guide_2">
-            <div>
-                <p class="col-xs-5"><img src="../../../Content/imgIndex/index_guide_2.png" alt="Alternate Text" /></p>
-                <h3 class="col-xs-7">我的健康服务</h3>
-            </div>
-            <div>
-                <p class="col-xs-5">服务订单数</p>
-                <p class="col-xs-7">服务总数量</p>
-            </div>
-            <div>
-                <b class="col-xs-5">@Model.HealthOrderCount</b>
-                <span class="col-xs-7">@Model.HealthPersonCount</span>
-            </div>
-        </div>
-        @*<div class="guide_3"></div>
-        <div class="guide_4"></div>*@
-        
+            @*<div class="guide_3"></div>
+                <div class="guide_4"></div>*@
+        }
     </div>
+
     <div class="index_guide_img">
         <img src="../../../Content/imgIndex/index_guide_3.png" alt="Alternate Text" /><br>
         <img src="../../../Content/imgIndex/index_guide_4.png" alt="Alternate Text" />
@@ -124,3 +130,14 @@
         </li>
     </ul>-->
 </div>
+
+@section Scripts {
+    <script>
+        function JumpToHealthIndex() {
+            self.location = "/health/AuditListSearch";
+        }
+        function JumpToOrderIndex() {
+            self.location = "/order/index";
+        }
+    </script>
+}

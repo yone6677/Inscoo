@@ -611,89 +611,14 @@ namespace Services
             }
 
         }
-        public string GetAccountEncryCode()
-        {
-            try
-            {
-                var dt = DateTime.Now.Ticks.ToString().Substring(9);
-                var isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
-                while (isExist)
-                {
-                    dt = DateTime.Now.Ticks.ToString().Substring(9);
-                    isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
-                }
-                return dt;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-        }
-        public CreateAccountCode GetAccountEncryByCode(string code)
-        {
-            try
-            {
-                var item = _rpCreateAccountCode.Table.FirstOrDefault(c => c.AccountEncryCode == code);
-
-                return item;
-            }
-            catch (Exception e)
-            {
-                throw null;
-            }
-
-        }
-        public CreateAccountCode GetAccountEncryById(int id)
-        {
-            try
-            {
-                var item = _rpCreateAccountCode.GetById(id);
-
-                return item;
-            }
-            catch (Exception e)
-            {
-                throw null;
-            }
-
-        }
-        public TRegisterModel GetTRegisterModelById(int id)
-        {
-            try
-            {
-                var ss = _rpCreateAccountCode.TableNoTracking.Where(i => i.Id == id).ToList();
-                var item = ss.Select(i => new TRegisterModel
-                {
-                    CommissionMethod = i.EncryCommissionMethod,
-                    Roles = i.EncryRoleName,
-                    CompanyName = i.EncryCompanyName,
-                    ProdSeries = i.EncrySeries.Split(';'),
-                    FanBao = i.EncryFanBao,
-                    TiYong = i.EncryTiYong,
-                    EncryBeginDate = i.EncryBeginDate,
-                    EncryEndDate = i.EncryEndDate,
-                    Id = i.Id,
-                    Memo = i.EncryMemo,
-                    ProdInsurances = i.EncryInsurance.Split(';')
-
-                });
-
-                return item.FirstOrDefault();
-            }
-            catch (Exception e)
-            {
-                throw null;
-            }
-
-        }
         public async Task<bool> CreateUserByEncry(EncryInfoModel encry)
         {
             try
             {
                 var model = GetAccountEncryByCode(encry.AccountEncryCode.Trim());
                 if (model == null) return false;
-                if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
+                //if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
+                if (model.EncryBeginDate.Value.Date > DateTime.Now.Date)
                 {
                     throw new WarningException("您的邀请码不可用");
                 }
@@ -732,7 +657,7 @@ namespace Services
                     {
                         model.IsUsed = true;
                         _rpCreateAccountCode.Update(model);
-                        var mailContent = string.Format("<p><b>(用户名)</b>,您好：{0}</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
+                        var mailContent = string.Format("<p><b>{0}</b>,您好：</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
                         MailService.SendMail(new MailQueue()
                         {
                             MQTYPE = "保酷账号",
@@ -740,7 +665,7 @@ namespace Services
                             MQMAILCONTENT = mailContent,
                             MQMAILFRM = "service@inscoo.com",
                             MQMAILTO = user.Email,
-                            MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
+                            //MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
 
                         });
                         return true;
@@ -756,6 +681,107 @@ namespace Services
                 throw e;
             }
         }
+
+
+        public string GetAccountEncryCode()
+        {
+            try
+            {
+                var dt = DateTime.Now.Ticks.ToString().Substring(9);
+                var isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
+                while (isExist)
+                {
+                    dt = DateTime.Now.Ticks.ToString().Substring(9);
+                    isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
+                }
+                return dt;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+        public CreateAccountCode GetCreateAccountCode(int id)
+        {
+            try
+            {
+                var item = _rpCreateAccountCode.GetById(id);
+                return item;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public bool DeleteAccountCode(int id)
+        {
+            try
+            {
+                _rpCreateAccountCode.DeleteById(id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public bool UpdateAccountCode(CreateAccountCode model)
+        {
+            try
+            {
+                _rpCreateAccountCode.Update(model);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public CreateAccountCode GetAccountEncryByCode(string code)
+        {
+            try
+            {
+                var item = _rpCreateAccountCode.Table.FirstOrDefault(c => c.AccountEncryCode == code);
+
+                return item;
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
+
+        }
+        public TRegisterModel GetTRegisterModelById(int id)
+        {
+            try
+            {
+                var ss = _rpCreateAccountCode.TableNoTracking.Where(i => i.Id == id).ToList();
+                var item = ss.Select(i => new TRegisterModel
+                {
+                    CommissionMethod = i.EncryCommissionMethod,
+                    Roles = i.EncryRoleName,
+                    CompanyName = i.EncryCompanyName,
+                    ProdSeries = i.EncrySeries.Split(';'),
+                    FanBao = i.EncryFanBao,
+                    TiYong = i.EncryTiYong,
+                    EncryBeginDate = i.EncryBeginDate,
+                    EncryEndDate = i.EncryEndDate,
+                    Id = i.Id,
+                    Memo = i.EncryMemo,
+                    ProdInsurances = i.EncryInsurance.Split(';'),
+                    Rebate=i.EncryRebate
+                });
+
+                return item.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw null;
+            }
+
+        }
+
         public IPagedList<CreateAccountCode> GetCreateAccountList(int pageIndex, int pageSize, string company, string roleId)
         {
             try

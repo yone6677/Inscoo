@@ -20,12 +20,27 @@
         @Html.ActionLink("返回产品页", "Index", new { }, new { @class = "btn btn-default" })
         <input type="submit" value="直接购买" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />
         <a class="btn btn-danger" onclick="addToCart('@Model.ProductId')"><span class="fa fa-cart-plus"></span>&nbsp; 加入购物车</a>
+        <span class="fa fa-cart-plus fa-2x" id="shoppingCart" style="color:red;display:none;"></span>
     </div>
 }
 <script>
     function addToCart(e) {
-        var pNum = $('#buy-num').val();//document.getElementById('Count').value;
-        var url = '/Cart/Add?id=' + e + '&num=' + pNum;
-        location.href = url;
+        var pNum = $('#buy-num').val();
+        $.ajax({
+            url: '/Cart/Add',
+            data: { 'id': '' + e + '', 'num': '' + pNum + '' },
+            type: 'post',
+            success: function (data) {
+                var cartIcon = $('#shoppingCart');
+                cartIcon.css('position', 'fixed');
+                cartIcon.show();
+                cartIcon.animate({
+                    left:'200px'
+                }, 1200, function () {
+                    cartIcon.hide();
+                    location.reload();
+                });
+            }
+        });
     }
 </script>

@@ -1,62 +1,57 @@
-﻿@using Newtonsoft.Json
-@model Models.VFNConfirm
+﻿@model Models.VFNConfirm
 
 @{
-    ViewBag.Title = "财务确认";
+    Layout = null;
 }
 
 @using (Html.BeginForm("FNComfirm", "Health", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.MasterId)
     @Html.HiddenFor(m => m.DateTicks)
-    @Html.HiddenFor(m => m.PageIndex)
-    @Html.HiddenFor(m => m.PageSize)
-<div class="form-horizontal" style="font-size:13px;">
-    <div class="form-group">
-        @Html.LabelFor(model => model.FinancePayDate, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            <input type="text" class="form-control inputDate" name="FinancePayDate" id="FinancePayDate" value="@DateTime.Now.ToShortDateString()" />
-            @*@Html.EditorFor(model => model., new { htmlAttributes = new { @, value = Model.FinancePayDate.ToShortTimeString() } })*@
-            @Html.ValidationMessageFor(model => model.FinancePayDate, "", new { @class = "text-danger" })
+    <div class="form-horizontal" style="font-size:13px;">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FinancePayDate, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <input type="text" class="form-control inputDate" name="FinancePayDate" id="FinancePayDate" value="@DateTime.Now.ToShortDateString()" />
+                @*@Html.EditorFor(model => model., new { htmlAttributes = new { @, value = Model.FinancePayDate.ToShortTimeString() } })*@
+                @Html.ValidationMessageFor(model => model.FinancePayDate, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FinanceAmount, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FinanceAmount, new { htmlAttributes = new { @class = "form-control",@readonly= "readonly"  }
+                })
+                @Html.ValidationMessageFor(model => model.FinanceAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.FinanceAmount, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            @Html.EditorFor(model => model.FinanceAmount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FinanceAmount, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FinanceBankSerialNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FinanceBankSerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FinanceBankSerialNumber, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.FinanceBankSerialNumber, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            @Html.EditorFor(model => model.FinanceBankSerialNumber, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FinanceBankSerialNumber, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FinanceMemo, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FinanceMemo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FinanceMemo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
+            @Html.ActionLink("返回列表", "AuditListSearch", null, htmlAttributes: new { @class = "btn btn-default" })
+            <input type="submit" value="确认收款" class="btn btn-info" />
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.FinanceMemo, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            @Html.EditorFor(model => model.FinanceMemo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FinanceMemo, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="orderConfirmBodyNext" style="position:fixed;margin-left:25%;bottom:20px;">
-        @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, htmlAttributes: new { @class = "btn btn-default" })
-        <input type="submit" value="确认收款" class="btn btn-info" />
-    </div>
-</div>
 }
-@Html.Action("OrderInfo", new { Model.MasterId, Model.DateTicks, isInline = true });
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-    jQuery(function () {
-        $('#FinancePayDate').datepicker({ endDate: '@DateTime.Now.ToShortDateString()' });
-    });
-</script>
+    <script>
+        jQuery(function () {
+            $('#FinancePayDate').datepicker({ endDate: '@DateTime.Now.ToShortDateString()' });
+        });
+    </script>
 }

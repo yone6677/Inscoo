@@ -285,6 +285,8 @@ namespace Inscoo.Controllers
                 var result = _svHealth.DeleteMaster(masterId, User.Identity.Name);
                 if (result)
                 {
+                    var item = _svHealth.GetHealthMaster(masterId);
+                    _svHealth.GetPaymentNoticePdfAsync(item.DateTicks);
                     return RedirectToAction("AuditListSearch", new { pageIndex, pageSize });
                 }
                 else
@@ -297,59 +299,47 @@ namespace Inscoo.Controllers
                 return RedirectToAction("OrderInfo", new { masterId, dateTicks, isDelete = true, pageIndex, pageSize });
             }
         }
-        /// <summary>
-        /// OP  审核订单
-        /// </summary>
-        /// <param name="masterId"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="isLookInfo">是否是查看订单信息</param>
-        /// <returns></returns>
-        public ActionResult AuditOrder(int masterId, string dateTicks, int pageIndex = 1, int pageSize = 15)
-        {
-            try
-            {
-                var model = _svHealth.GetHealthAuditOrder(masterId, dateTicks);
-                model.PageIndex = pageIndex;
-                model.PageSize = pageSize;
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("AuditListSearch", new { masterId });
-            }
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AuditOrder(VHealthAuditOrder model)
+        public ActionResult AuditOrder(string DateTicks, string result)
         {
 
             if (ModelState.IsValid)
             {
-                var master = _svHealth.GetHealthMaster(model.MasterId);
-                if (master.DateTicks != model.DateTicks) RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
-                var result = Request.Form["result"] == "1";
-                master.Status = result ? 11 : 14;
-                master.BaokuConfirmDate = DateTime.Now;
-                master.BaokuConfirmer = User.Identity.Name;
-                _svHealth.UpdateMaster(master);
+                var list = _svHealth.GetByTicks(DateTicks).ToList();
+                var auditResult = result == "1";
+                foreach (var o in list)
+                {
+                    var item = _svHealth.GetHealthMaster(o.Id);
+                    item.Status = auditResult ? 11 : 14;
+                    item.BaokuConfirmDate = DateTime.Now;
+                    item.BaokuConfirmer = User.Identity.Name;
+                    _svHealth.UpdateMaster(item);
+                }
             }
-            return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
+            return RedirectToAction("Audit", new { Ticks = DateTicks });
         }
 
         //财务确认收款
-        public ActionResult FnComfirm(int masterId, string dateTicks, int pageIndex = 1, int pageSize = 15)
+        public ActionResult FnComfirm(string Ticks)
         {
             try
             {
-                var model = new VFNConfirm() { MasterId = masterId, DateTicks = dateTicks, PageIndex = pageIndex, PageSize = pageSize };
-                model.FinanceAmount = _svHealth.GetConfirmPayment(masterId, dateTicks).Amount;
-                return View(model);
+                var model = new VFNConfirm() { DateTicks = Ticks };
+
+                var list = _svHealth.GetByTicks(Ticks);
+                decimal amount = 0;
+                foreach (var a in list)
+                {
+                    amount += a.SellPrice * a.Count;
+                }
+                model.FinanceAmount = amount;
+                return PartialView(model);
 
             }
             catch (Exception)
             {
-                return RedirectToAction("AuditListSearch", new { masterId });
+                return RedirectToAction("AuditListSearch");
             }
         }
         [HttpPost]
@@ -359,21 +349,25 @@ namespace Inscoo.Controllers
 
             if (ModelState.IsValid)
             {
-                if (model.FinancePayDate > DateTime.Now) return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
-                var master = _svHealth.GetHealthMaster(model.MasterId, dateTicks: model.DateTicks);
-
-                master.FinanceAmount = model.FinanceAmount;
-                master.FinanceBankSerialNumber = model.FinanceBankSerialNumber;
-                master.FinanceMemo = model.FinanceMemo;
-                master.FinancePayDate = model.FinancePayDate;
-                master.FinanceConfirmDate = DateTime.Now;
-                master.FinanceConfirmer = User.Identity.Name;
-                master.Status = 17;
-                master.ServicePeriod = model.FinancePayDate.AddDays(180);
-                //master.BaokuOrderCode = "HLTH" + string.Format("{0:0000000000}", master.Id);
-                _svHealth.UpdateMaster(master);
-
-                var mailContent = $"体检订单：{ master.BaokuOrderCode}已确认付款";
+                var query = _svHealth.GetByTicks(model.DateTicks);
+                var list = query.ToList();
+                if (list.Any())
+                {
+                    foreach (var a in list)
+                    {
+                        var item = _svHealth.GetHealthMaster(a.Id);
+                        item.FinanceAmount = item.Count * item.SellPrice;
+                        item.FinanceBankSerialNumber = model.FinanceBankSerialNumber;
+                        item.FinanceMemo = model.FinanceMemo;
+                        item.FinancePayDate = model.FinancePayDate;
+                        item.FinanceConfirmDate = DateTime.Now;
+                        item.FinanceConfirmer = User.Identity.Name;
+                        item.Status = 17;
+                        item.ServicePeriod = model.FinancePayDate.AddDays(180);
+                        _svHealth.UpdateMaster(item);
+                    }
+                }
+                var mailContent = $"体检订单：{ list.FirstOrDefault().BaokuOrderCode}已确认付款";
                 var mailTo = _genericAttributeService.GetByGroup("HealthFinanceMailTo").Select(c => c.Value);
                 MailService.SendMailAsync(new MailQueue()
                 {
@@ -385,9 +379,8 @@ namespace Inscoo.Controllers
                     MQFILE = ""
 
                 });
-
             }
-            return RedirectToAction("AuditListSearch", new { model.PageIndex, model.PageSize });
+            return RedirectToAction("Audit", new { Ticks = model.DateTicks });
         }
         /// <summary>
         /// 上传人员列表
@@ -490,7 +483,49 @@ namespace Inscoo.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-
+        public ActionResult Audit(string Ticks)
+        {
+            var list = _svHealth.GetByTicks(Ticks);
+            var model = new VHealthAuditOrder();
+            model.product = new List<VCheckProductDetail>();
+            if (list.Any())
+            {
+                decimal amount = 0;
+                foreach (var a in list)
+                {
+                    amount += a.SellPrice * a.Count;
+                    var item = new VCheckProductDetail()
+                    {
+                        ProductName = a.HealthCheckProduct.ProductName,
+                        CompanyName = a.HealthCheckProduct.CompanyName,
+                        Count = a.Count,
+                        PublicPrice = a.PublicPrice,
+                        PrivilegePrice = a.SellPrice,
+                        SubTotal = a.SellPrice * a.Count
+                    };
+                    model.product.Add(item);
+                }
+                var ex = list.FirstOrDefault();
+                model.CompanyName = ex.Company.Name;
+                model.Linkman = ex.Company.LinkMan;
+                model.PhoneNumber = ex.Company.Phone;
+                model.Address = ex.Company.Address;
+                model.Amount = amount;
+                model.CreateTime = ex.CreateTime;
+                model.Author = ex.Author;
+                model.State = ex.Status;
+                model.DateTicks = Ticks;
+                if (ex.FinanceConfirmDate.HasValue)
+                {
+                    model.ServicePeriod = ex.FinanceConfirmDate.Value.ToShortDateString() + "至" + ex.ServicePeriod.Value.ToShortDateString();
+                }
+                model.Expire = ex.Expire;
+                model.IsInscooOperator = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooOperator");
+                model.IsFinance = _svAppUserManager.GetRoles(User.Identity.GetUserId()).Contains("InscooFinance");
+                // ViewBag.role=User.Identity.get
+            }
+            return View(model);
+        }
         /// <summary>
         /// 列表
         /// </summary>
@@ -540,6 +575,7 @@ namespace Inscoo.Controllers
                 TotalPages = list.TotalPages
             };
             ViewBag.pageCommand = command;
+            ViewBag.author = User.Identity.Name;
             return PartialView(list);
         }
     }

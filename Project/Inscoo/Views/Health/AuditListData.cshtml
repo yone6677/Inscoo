@@ -59,8 +59,7 @@
                         {
                             <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
                         }
-
-                        if (item.Status > 4 || (!ViewBag.IsInscooOperator && item.Status == 4))
+                        if (item.Status > 4 && !ViewBag.IsInscooOperator && !ViewBag.IsFinance)
                         {
                             @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
                         }
@@ -69,10 +68,12 @@
                         {
                             if (item.Status == 4)
                             {
-                                @Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })
+                                @Html.ActionLink("审核", "Audit", new { Ticks = item.DateTicks })
+                                @*@Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })*@
                             }
                             else if (item.Status == 11)
                             {
+                                @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks })
                                 <span class="text-success">审核通过</span>
                             }
                             else if (item.Status == 14)
@@ -82,14 +83,15 @@
                         }
                         else if (ViewBag.IsFinance)
                         {
-                            <span>|</span>
                             if (item.Status == 11)
                             {
-
-                                @Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })
+                                @Html.ActionLink("确认付款", "Audit", new { Ticks = item.DateTicks })
+                                @*@Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })*@
                             }
                             else if (item.Status == 17)
                             {
+                                @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks })
+                                <span>|</span>
                                 <span class="text-success">已确认</span>
                             }
                         }

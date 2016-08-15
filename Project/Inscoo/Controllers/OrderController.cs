@@ -109,10 +109,41 @@ namespace Inscoo.Controllers
             if (role == "InscooFinance")
             {
                 select.Clear();
+                select.Add(
+         new SelectListItem()
+         {
+             Text = "请选择",
+             Value = "0"
+         });
                 select.Add(new SelectListItem()
                 {
                     Text = "待支付",
                     Value = "5"
+                });
+                select.Add(new SelectListItem()
+                {
+                    Text = "已支付",
+                    Value = "9"
+                });
+            }
+            if (role == "InsuranceCompany")
+            {
+                select.Clear();
+                select.Add(
+          new SelectListItem()
+          {
+              Text = "请选择",
+              Value = "0"
+          });
+                select.Add(new SelectListItem()
+                {
+                    Text = "已支付",
+                    Value = "9"
+                });
+                select.Add(new SelectListItem()
+                {
+                    Text = "已完成",
+                    Value = "6"
                 });
             }
             ViewBag.orderState = select;

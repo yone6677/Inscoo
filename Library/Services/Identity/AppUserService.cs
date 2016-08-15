@@ -617,7 +617,7 @@ namespace Services
             try
             {
                 var model = GetAccountEncryByCode(encry.AccountEncryCode.Trim());
-                if (model == null) return false;
+                if (model == null) throw new WarningException("您的邀请码错误");
                 //if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
                 if (model.EncryBeginDate.Value.Date > DateTime.Now.Date)
                 {

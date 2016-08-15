@@ -55,10 +55,10 @@
                                 @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
                             <div style="width:100%;height:40px;line-height:40px;">
-                                <input type="text" style="width:30%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" />
+                                <input type="text" style="width:26%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" />
 
-                                <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" style="vertical-align:middle;width:35%" />
-                                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:30%;display:inline-block">换一张</a>
+                                <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" style="vertical-align:middle;width:28%" />
+                                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:42%;display:inline-block">看不清?换一张</a>
                             </div>
                             <div style="color:red;text-align:center;width:100%;line-height:2em;">
                                 @if (Model != null)

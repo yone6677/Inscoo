@@ -44,5 +44,7 @@ namespace Domain
         public string PortraitPath { set; get; }
         public string ProdInsurance { set; get; }
         public string ProdSeries { set; get; }
+
+        public string Memo { set; get; }
     }
 }

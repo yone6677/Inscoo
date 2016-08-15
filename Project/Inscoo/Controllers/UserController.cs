@@ -165,7 +165,8 @@ namespace Inscoo.Controllers
                     AccountName = model.AccountName,
                     Rebate = model.Rebate,
                     ProdSeries = ProdSeries,
-                    ProdInsurance = ProdInsurance
+                    ProdInsurance = ProdInsurance,
+                    Memo = model.Memo
 
                 };
                 var defaultPwd = ConfigurationManager.AppSettings["newPwd"];
@@ -228,7 +229,7 @@ namespace Inscoo.Controllers
         public ActionResult TCreate(int id = -1, string type = "Create")
         {
             var model = new TRegisterModel();
-            
+
             if (id != -1)
             {
                 model = _appUserService.GetTRegisterModelById(id);
@@ -498,6 +499,7 @@ namespace Inscoo.Controllers
                     user.Changer = User.Identity.GetUserId();
                     user.ProdSeries = ProdSeries;
                     user.ProdInsurance = ProdInsurance;
+                    user.Memo = model.Memo;
                     if (_appUserService.Update(user))
                     {
                         if (ForRole(user, model.Roles))

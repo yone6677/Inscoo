@@ -155,7 +155,7 @@ namespace Services
         {
             try
             {
-                var list=_archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
+                var list = _archiveRepository.TableNoTracking.Where(a => a.Type == type && a.pId == pId).OrderByDescending(f => f.Id);
                 return list;
             }
             catch (Exception e)
@@ -369,7 +369,7 @@ namespace Services
             }
             return 0;
         }
-        public string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo)
+        public string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo, string type)
         {
             try
             {
@@ -382,6 +382,7 @@ namespace Services
                         pId = masterId,
                         Memo = memo,
                         Type = "WZHuman",
+                        SubType = type,
                         Name = model.Name + model.Postfix,
                         Path = model.Path,
                         Url = model.Path + model.Name + model.Postfix

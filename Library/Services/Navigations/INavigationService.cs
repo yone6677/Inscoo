@@ -21,5 +21,6 @@ namespace Services
         IPagedList<NavigationModel> GetList(int pageIndex = 1, int pageSize = 15, int pId = 0);
         List<NavigationModel> GetAll();
         HomeIndexModel GetHomeIndexModel(string uName);
+        void HasOrderPermission(string uId, out bool insurant, out bool health);
     }
 }

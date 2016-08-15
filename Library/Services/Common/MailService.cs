@@ -46,6 +46,7 @@ namespace Services
                 mailQueue.MQMAILCC = "";
                 mailQueue.MQMAILTO = TestMail;
             }
+            Db.MailQueues.Add(mailQueue);
             return Db.SaveChanges();
         }
         public static async Task SendMailAsync(MailQueue mailQueue)

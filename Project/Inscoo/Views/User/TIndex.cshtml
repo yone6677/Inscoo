@@ -1,10 +1,10 @@
 ﻿@{
-    ViewBag.Title = "账户管理";
+    ViewBag.Title = "建账代码管理";
 }
 
 
 
-@using (Ajax.BeginForm("List", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
+@using (Ajax.BeginForm("TList", null, new AjaxOptions { HttpMethod = "post", UpdateTargetId = "dadaGrid" }, new { @id = "searchForm" }))
 {
 
     <div class="Search">

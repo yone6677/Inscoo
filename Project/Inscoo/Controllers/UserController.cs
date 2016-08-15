@@ -174,7 +174,7 @@ namespace Inscoo.Controllers
                 {
                     if (ForRole(user, model.Roles))
                     {
-                        var mailContent = string.Format("<p><b>(用户名)</b>,您好：{0}</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
+                        var mailContent = string.Format("<p><b>{0}</b>,您好：</p><div style=\"text-indent:4em;\"><p>已为您开通保酷平台的用户权限，请登录使用，详情如下：</p><p>            登录网站：<b>www.inscoo.com</b></p><p>            登录账号：<b>{1}</b></p><p>            密码：<b>inscoo</b></p><p>请您在首次登录后立即修改密码，谢谢！</p><br><p>如果有任何疑问，请随时拨打400-612-6750咨询！</p><p>欢迎加入保酷大家庭，祝您工作愉快，顺祝商祺！</p><br></div><p><b>保酷网 www.inscoo.com</b></p><p style=\"overflow:hidden\"><img src=\"http://www.inscoo.com/Content/img/InscooLogo.png\"alt=\"\"style=\"float: left;\" /><img src=\"http://www.inscoo.com/Content/img/InscooWeChat.png\" alt=\"\" style=\"float: left;\" /></p><p>上海皓为商务咨询有限公司</p>", user.UserName, user.Email);
                         MailService.SendMail(new MailQueue()
                         {
                             MQTYPE = "保酷账号",
@@ -182,7 +182,7 @@ namespace Inscoo.Controllers
                             MQMAILCONTENT = mailContent,
                             MQMAILFRM = "service@inscoo.com",
                             MQMAILTO = user.Email,
-                            MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
+                            //MQFILE = AppDomain.CurrentDomain.BaseDirectory + @"Archive\Template\caozuozhinan.docx"
 
                         });
                         return RedirectToAction("Index", new { successMes = "添加成功" });
@@ -225,9 +225,10 @@ namespace Inscoo.Controllers
 
             return PartialView(list);
         }
-        public ActionResult TCreate(int id = -1)
+        public ActionResult TCreate(int id = -1, string type = "Create")
         {
             var model = new TRegisterModel();
+            
             if (id != -1)
             {
                 model = _appUserService.GetTRegisterModelById(id);
@@ -249,7 +250,7 @@ namespace Inscoo.Controllers
             model.CommissionMethods = CommissionMethods;
             ViewBag.ProdSeriesList = _appUserService.GetProdSeries(uId);
             ViewBag.ProdInsurancesList = _appUserService.GetProdInsurances(uId);
-
+            model.Type = type;
             return View(model);
         }
 
@@ -286,35 +287,66 @@ namespace Inscoo.Controllers
                 //    var u = _appUserService.FindById(User.Identity.GetUserId());
                 //    model.CommissionMethod = _svGenericAttribute.GetByKey(value: u.CommissionMethod).Value;
                 //}
-                var user = new CreateAccountCode()
+                bool result = false;
+                if (model.Type == "Create")
                 {
-                    AccountEncryCode = GetAccountEncryCode(),
-                    EncryBeginDate = model.EncryBeginDate,
-                    EncryEndDate = model.EncryEndDate,
-                    EncryCompanyName = model.CompanyName,
-                    EncryTiYong = model.TiYong,
-                    EncryFanBao = model.FanBao,
-                    Author = User.Identity.Name,
-                    EncryCommissionMethod = model.CommissionMethod,
-                    EncryRebate = model.Rebate,
-                    EncrySeries = ProdSeries,
-                    EncryInsurance = ProdInsurance,
-                    EncryMemo = model.Memo,
-                    EncryCreateID = User.Identity.GetUserId(),
-                    EncryRoleName = model.Roles
-                };
-                var result = _appUserService.AddCreateAccountCode(user);
+                    #region create
+                    var user = new CreateAccountCode()
+                    {
+                        AccountEncryCode = GetAccountEncryCode(),
+                        EncryBeginDate = model.EncryBeginDate,
+                        EncryEndDate = model.EncryEndDate,
+                        EncryCompanyName = model.CompanyName,
+                        EncryTiYong = model.TiYong,
+                        EncryFanBao = model.FanBao,
+                        Author = User.Identity.Name,
+                        EncryCommissionMethod = model.CommissionMethod,
+                        EncryRebate = model.Rebate,
+                        EncrySeries = ProdSeries,
+                        EncryInsurance = ProdInsurance,
+                        EncryMemo = model.Memo,
+                        EncryCreateID = User.Identity.GetUserId(),
+                        EncryRoleName = model.Roles
+                    };
+                    result = _appUserService.AddCreateAccountCode(user);
+                    #endregion
+                }
+                else if (model.Type == "Edit")
+                {
+                    var user = _appUserService.GetCreateAccountCode(model.Id);
+                    //user.AccountEncryCode = GetAccountEncryCode();
+                    user.EncryBeginDate = model.EncryBeginDate;
+                    user.EncryEndDate = model.EncryEndDate;
+                    user.EncryCompanyName = model.CompanyName;
+                    user.EncryTiYong = model.TiYong;
+                    user.EncryFanBao = model.FanBao;
+                    //user.Author = User.Identity.Name;
+                    user.EncryCommissionMethod = model.CommissionMethod;
+                    user.EncryRebate = model.Rebate;
+                    user.EncrySeries = ProdSeries;
+                    user.EncryInsurance = ProdInsurance;
+                    user.EncryMemo = model.Memo;
+                    user.EncryCreateID = User.Identity.GetUserId();
+                    //user.EncryRoleName = model.Roles;
+
+                    result = _appUserService.UpdateAccountCode(user);
+                }
+                else if (model.Type == "Delete")
+                {
+                    result = _appUserService.DeleteAccountCode(model.Id);
+                }
                 if (result)
                 {
-                    return RedirectToAction("TIndex", new { successMes = "添加成功" });
+                    return RedirectToAction("TIndex", new { successMes = "操作成功" });
                 }
             }
-            return RedirectToAction("TIndex", new { errorMes = "添加失败" });
+            return RedirectToAction("TIndex", new { errorMes = "操作失败" });
         }
         [AllowAnonymous]
-        public ActionResult EncryInfo()
+        public ActionResult EncryInfo(string mes)
         {
             var model = new EncryInfoModel();
+            model.Mes = mes;
             return PartialView(model);
         }
 
@@ -338,6 +370,8 @@ namespace Inscoo.Controllers
                     if (result)
                     {
                         model.Mes = "激活成功";
+                        model = new EncryInfoModel();
+                        return RedirectToAction("EncryInfo", new { mes = "激活成功" });
                     }
                     else
                     {

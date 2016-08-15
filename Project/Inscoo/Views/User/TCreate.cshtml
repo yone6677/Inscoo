@@ -9,28 +9,53 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    @Html.HiddenFor(m => m.Type)
+    @Html.HiddenFor(m => m.Id)
     <div class="form-horizontal formCreate">
         <br />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
-                @Html.DropDownList("Roles", Model.RoleSelects, new { @class = "form-control" })
+        @if (Model.Type == "Create")
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.DropDownList("Roles", Model.RoleSelects, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-3" })
+                <label class="control-label col-md-9" style="text-align:left">@Model.Roles</label>
+            </div>
+        }
+
         <div class="form-group">
             @Html.LabelFor(model => model.EncryBeginDate, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.EditorFor(model => model.EncryBeginDate, new { htmlAttributes = new { @class = "form-control inputDate", @readonly = "" } })
+                @if (Model.EncryBeginDate.HasValue)
+                {
+                    <input class="form-control inputDate" readonly value="@Model.EncryBeginDate.Value.ToShortDateString()" />
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.EncryBeginDate, new { htmlAttributes = new { @class = "form-control inputDate", @readonly = "" } })
+                }
                 @Html.ValidationMessageFor(model => model.EncryBeginDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.EncryEndDate, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-9">
-                @Html.EditorFor(model => model.EncryEndDate, new { htmlAttributes = new { @class = "form-control inputDate", @readonly = "" } })
+                @if (Model.EncryEndDate.HasValue)
+                {
+                    <input class="form-control inputDate" readonly value="@Model.EncryEndDate.Value.ToShortDateString()" / />
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.EncryEndDate, new { htmlAttributes = new { @class = "form-control inputDate", @readonly = "" } })
+                }
                 @Html.ValidationMessageFor(model => model.EncryEndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -105,9 +130,21 @@
             </div>*@
         <div class="form-group">
             <div class="col-md-offset-3 col-md-6">
-                @if (Model.Id <= 0)
+                @if (Model.Type == "Create")
                 {
                     <input type="submit" value="保存" class="btn btn-info" />
+                }
+                else if (Model.Type == "Detail")
+                {
+
+                }
+                else if (Model.Type == "Delete")
+                {
+                    <input type="submit" value="确定删除" class="btn btn-info" />
+                }
+                else if (Model.Type == "Edit")
+                {
+                    <input type="submit" value="确定修改" class="btn btn-info" />
                 }
                 @Html.ActionLink("返回列表", "TIndex", null, htmlAttributes: new { @class = "btn btn-default" })
             </div>

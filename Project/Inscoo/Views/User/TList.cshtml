@@ -17,8 +17,8 @@
             有效结束日期
         </th>
         @*<th>
-            是否被使用
-        </th>*@
+                是否被使用
+            </th>*@
         <th>
             操作
         </th>
@@ -50,10 +50,12 @@
                     }
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.IsUsed)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.IsUsed)
+                    </td>*@
                 <td>
-                    @Html.ActionLink("查看", "TCreate", new { id = item.Id })
+                    @Html.ActionLink("查看", "TCreate", new { id = item.Id, type = "Detail" })
+                    @Html.ActionLink("编辑", "TCreate", new { id = item.Id, type = "Edit" })
+                    @Html.ActionLink("删除", "TCreate", new { id = item.Id, type = "Delete" })
                 </td>
             </tr>
         }

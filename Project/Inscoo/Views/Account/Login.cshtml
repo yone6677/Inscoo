@@ -75,9 +75,10 @@
                                 @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd", style = "float:right;text-decoration:none" })
                                 <div style="clear:both"></div>
                             </div>
-
-                            <input type="submit" class="submitBtn" value="登录">
-
+                            <div style="text-align:right">
+                                <input type="submit" class="submitBtn" value="登录" style="display:inline-block;">
+                                <a href="../user/EncryInfo" style="margin-left:10%;">免费注册</a>
+                            </div>
                         }
                     </div>
                 </div>
@@ -428,7 +429,6 @@
                             </ul>
                             <ul class="ulist">
                                 <li class="title">帮助Help</li>
-                                <li><a href="../user/EncryInfo">激活账号</a></li>
                                 <li><a href="javascript:;">新手指南</a></li>
                                 <li><a href="../About/Question">常见问题</a></li>
                                 <li><a href="../About/serveOrder">服务协议</a></li>

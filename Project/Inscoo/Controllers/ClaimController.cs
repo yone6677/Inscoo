@@ -15,6 +15,7 @@ using System.Web;
 using Core.Pager;
 using Microsoft.Ajax.Utilities;
 using OfficeOpenXml.FormulaParsing.Utilities;
+using System.ComponentModel;
 
 namespace Inscoo.Controllers
 {
@@ -61,6 +62,66 @@ namespace Inscoo.Controllers
         {
             return View();
         }
+        public ActionResult ClaimFileListSearch()
+        {
+            var model = new ClaimFilesListSearchModel();
+            return View(model);
+        }
 
+        [AllowAnonymous]
+        public PartialViewResult ClaimFileListData(ClaimFilesListSearchModel model, int pageIndex = 1, int pageSize = 15)
+        {
+            try
+            {
+                model.Author = User.Identity.Name;
+                if (!model.CreateDate.HasValue)
+                {
+                    model.CreateDate = DateTime.Now;
+                }
+                var list = _svClaim.GetClaimFileList(model, pageIndex, pageSize);
+
+
+                var command = new PageCommand()
+                {
+                    PageIndex = list.PageIndex,
+                    PageSize = list.PageSize,
+                    TotalCount = list.TotalCount,
+                    TotalPages = list.TotalPages
+                };
+                ViewBag.pageCommand = command;
+                return PartialView(list);
+            }
+            catch (Exception)
+            {
+                return PartialView();
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadClaimFile(HttpPostedFileBase excel)
+        {
+            try
+            {
+                var userName = User.Identity.Name;
+                var result = _svClaim.InsertClaimFileList(excel, userName);
+                if (result > 0)
+                {
+                    TempData["errorMes"] = "上传成功";
+                }
+                else
+                {
+                    TempData["errorMes"] = "上传失败";
+                }
+            }
+            catch (WarningException e)
+            {
+                TempData["errorMes"] = e.Message;
+            }
+            catch (Exception e)
+            {
+                TempData["errorMes"] = "上传失败";
+            }
+            return RedirectToAction("ClaimFileListSearch");
+        }
     }
 }

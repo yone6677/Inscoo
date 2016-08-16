@@ -1,0 +1,82 @@
+﻿@model Models.ClaimFilesListSearchModel
+
+@{
+    ViewBag.Title = "理赔文件";
+}
+@using (Html.BeginForm("UploadClaimFile", "Claim", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="Search" style="">
+        <dl style="width:100%">
+            <dt>上传扫描文件</dt>
+            <dd style="width:50%">
+                <a href="javascript:;" class="a-upload" style="margin-left:20px">
+                    <input type="file" name="excel" id="excel" />+ 浏览
+                </a>
+                <span class="lab" style="height: 28px; line-height: 28px;"></span>
+            </dd>
+            <dd>
+                <a href="~/Archive/Template/Claim/SaoMiaoTuPianShangChuanMuBan.xlsx" class="btn btn-default">下载模板</a>
+            </dd>
+            <dt></dt>
+            <dd style="padding-left:1.5em;">
+                @if (TempData["errorMes"] != null)
+                {
+                    if (TempData["errorMes"].ToString() == "上传成功")
+                    {
+                        <span class="text-success" tyle="font-size:25px;">上传成功</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger" tyle="font-size:25px;">@TempData["errorMes"].ToString()</span>
+                    }
+                }
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="上传" /></p>
+            </dd>
+        </dl>
+    </div>
+}
+@using (Ajax.BeginForm("ClaimFileListData", null, new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="Search " style="">
+        <dl style="width:100%">
+            <dt>
+                文件名
+            </dt>
+            <dd>
+                @Html.EditorFor(model => model.FileName)
+            </dd>
+            <dt>
+                批次号
+            </dt>
+            <dd>
+                @Html.EditorFor(model => model.BatchCode)
+            </dd>
+            <dt>上传日期</dt>
+            <dd>
+                <input type="text" name="CreateDate" id="CreateDate" value="@DateTime.Now.ToShortDateString()" class="inputDate" style="width:50%" />
+                <small style="opacity:0.6">查询3天内数据</small>
+            </dd>
+            <dt></dt>
+            <dd>
+                <p>
+                    <input type="submit" value="查找" />
+                </p>
+            </dd>
+        </dl>
+
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid">
+        @Html.Action("ClaimFileListData")
+    </div>
+}

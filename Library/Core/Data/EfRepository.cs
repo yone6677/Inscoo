@@ -249,6 +249,10 @@ namespace Core.Data
                 }
                 return _context.SaveChanges();
             }
+            catch (DbEntityValidationException e)
+            {
+                throw e;
+            }
             catch (Exception e)
             {
                 throw e;

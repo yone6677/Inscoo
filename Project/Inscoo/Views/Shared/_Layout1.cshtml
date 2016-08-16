@@ -15,16 +15,27 @@
     @RenderSection("head", required: false)
 </head>
 <body>
+    <div class="header">
+        <div class="wrapper">
+            <div class="logo">
+                <img src="~/Content/imgIndex/logo.png" height="58" alt="">
+            </div>
+            <div class="login">
+                <a href="/Account/Login" class="loginButton">登录</a>
+                <span class="phonecall">400-612-6750</span>
+            </div>
+        </div>
+    </div>
     <div class="contain" style="overflow-y:auto ">
         <div class="slider">
-            <div class="floor floor1" style="overflow:auto">
+            <div class="floor floor1" style="overflow:auto;background:none">
                 <div class="box">
                     <div class="hello">
                         <span class="fontGreen">Hi 我是保酷</span><br>
                         <span class="fontBlack">您企业的健康与保险专家</span>
                     </div>
-                    <div class="loginWrp" style="width:50%">
-                        <h4>@ViewBag.Title</h4>
+                    <div class="loginWrp" style="width:50%;background:#fff">
+                        <h4 style="color:#24A9E4">@ViewBag.Title</h4>
                         @RenderBody()
                     </div>
                 </div>

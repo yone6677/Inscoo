@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Domain.ClaimFilesList>
+
+<table class="table table-bordered table-style-control text-left">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            批次号
+        </th>
+        <th>
+            图片文件名
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaimFilesBatchCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaimFilesName)
+                </td>
+            </tr>
+        }
+    }
+</table>
+@{
+    var pageCommand = ViewBag.pageCommand as PageCommand;
+}
+@Html.Pager(pageCommand)

@@ -97,6 +97,7 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
+    <Compile Include="Mapping\ClaimFilesListMap.cs" />
     <Compile Include="Mapping\CreateAccountCodeMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceDetailMap.cs" />
@@ -281,6 +282,10 @@
     <Compile Include="Migrations\201608150929534_UserAddColumnMemo.Designer.cs">
       <DependentUpon>201608150929534_UserAddColumnMemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608160324004_AddTableClaimFilesList.cs" />
+    <Compile Include="Migrations\201608160324004_AddTableClaimFilesList.Designer.cs">
+      <DependentUpon>201608160324004_AddTableClaimFilesList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -413,6 +418,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608150929534_UserAddColumnMemo.resx">
       <DependentUpon>201608150929534_UserAddColumnMemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608160324004_AddTableClaimFilesList.resx">
+      <DependentUpon>201608160324004_AddTableClaimFilesList.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

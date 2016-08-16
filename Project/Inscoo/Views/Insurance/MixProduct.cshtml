@@ -18,8 +18,8 @@
         <span>SELECT A PROGRAMME</span>
     </div>*@
     <ul id="myTab" class="nav nav-tabs myTab" style="width:96%;margin:0 auto;margin-top:20px;">
-        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>固定方案名称<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>       
-        <li class="active">
+        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>       
+        @*<li class="active">
             <a href="#product_d1" data-toggle="tab">中高端员工福利保险</a>
         </li>
                   
@@ -29,12 +29,12 @@
 
         <li>
             <a href="#product_d3" data-toggle="tab">营运车乘意险</a>
-        </li>
+        </li>*@
        
     </ul>
     @if (ViewBag.ProductSeries.Contains("中高端医疗"))
     {
-        <div class="inscooCase-body inscooCase-body-top" id="product_d1">
+        <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">中高端员工福利保险</div>
             <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
                 <tbody>
@@ -459,7 +459,7 @@
     }
     @if (ViewBag.ProductSeries.Contains("吴中人力资源"))
     {
-        <div class="inscooCase-body inscooCase-body-top" id="product_d2">
+        <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">吴中人力资源</div>
             <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
                 <tbody>
@@ -538,7 +538,7 @@
     }
     @if (ViewBag.ProductSeries.Contains("营运车乘意险系列"))
     {
-        <div class="inscooCase-body inscooCase-body-top" id="product_d3">
+        <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">营运车乘意险</div>
             <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
                 <tbody>

@@ -156,6 +156,7 @@ namespace Inscoo.Controllers
             ViewBag.MasterId = masterId;
             ViewBag.TypeList = new List<SelectListItem>()
             {
+                new SelectListItem() { Value="0",Text="选择类型" },
                 new SelectListItem() { Value="1",Text="投保人员名单上传" },
                 new SelectListItem() { Value="2",Text="退保人员名单上传"},
                 new SelectListItem() { Value="3",Text="报案人员名单上传" }
@@ -201,6 +202,7 @@ namespace Inscoo.Controllers
                 string typeDes = "";
                 switch (typeList)
                 {
+                    case 0: throw new WarningException("请选择类型");
                     case 1: typeDes = "投保"; break;
                     case 2: typeDes = "退保"; break;
                     case 3: typeDes = "报案"; break;

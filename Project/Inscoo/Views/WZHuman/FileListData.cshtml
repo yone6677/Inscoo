@@ -5,6 +5,9 @@
 <table class="table table-bordered table-style-control">
     <tr style="background-color:#24A9E4;color:#fff;">
         <th>
+            文件类型
+        </th>
+        <th>
             文件名
         </th>
         <th>
@@ -13,9 +16,7 @@
         <th>
             上传人
         </th>
-        <th>
-            文件类型
-        </th>
+
         <th>
             备注
         </th>
@@ -27,6 +28,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubType)
+            </td>
             <td class="text-left">
                 @item.Name.Substring(0, item.Name.Length - 18)
             </td>
@@ -36,14 +40,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubType)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Memo)
             </td>
             <td>
                 <a href="@item.Url" target="_blank">下载</a>
+                @*@if(item.)
+                @Html.ActionLink("删除", "Delete", new { item.Id })*@
             </td>
         </tr>
     }

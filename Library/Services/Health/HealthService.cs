@@ -113,7 +113,7 @@ namespace Services
         {
             try
             {
-                var query = _repHealthOrderMaster.Table.Where(q => q.DateTicks == ticks);
+                var query = _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(q => q.DateTicks == ticks);
                 if (!string.IsNullOrEmpty(author))
                 {
                     query = query.Where(q => q.Author == author);
@@ -171,7 +171,7 @@ namespace Services
             try
             {
                 var p = _repHealthOrderMaster.GetById(masterID);
-                if (p.Author == author) _repHealthOrderMaster.DeleteById(masterID, false, true);
+                if (p.Author == author) _repHealthOrderMaster.DeleteById(masterID);
                 return true;
             }
 
@@ -387,20 +387,21 @@ namespace Services
         {
             try
             {
-                IQueryable<HealthOrderMaster> list;
+                var newTab = new List<HealthOrderMaster>();
+                var query = _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).AsNoTracking();
                 if (search.IsInscooOperator)//如果是operator，查询所有已填写信息的订单
                 {
                     if (search.ListType == "2")// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
                     {
-                        list =
-                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 4)
-                            .AsNoTracking();
+                        query = query.Where(h => h.Status == 4);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 4)
+                        //.AsNoTracking();
                     }
                     else if (search.ListType == "3")
                     {
-                        list =
-                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11 || h.Status == 14)
-                                .AsNoTracking();
+                        query = query.Where(h => h.Status == 11 || h.Status == 14);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11 || h.Status == 14)
+                        //    .AsNoTracking();
                     }
                     else
                     {
@@ -408,22 +409,34 @@ namespace Services
                     }
                     if (!string.IsNullOrEmpty(search.UserName))
                     {
-                        list = list.Where(h => h.Author.Contains(search.UserName));
+                        query = query.Where(h => h.Author.Contains(search.UserName));
+                    }
+                    if (!string.IsNullOrEmpty(search.ProductName))
+                    {
+                        query = query.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
+                    }
+                    if (query.Any())//有多个项目的订单合并。
+                    {
+                        var q = from p in query group p by p.DateTicks into g select new { maxId = g.Max(p => p.Id) };
+                        foreach (var s in q)
+                        {
+                            newTab.Add(query.Where(a => a.Id == s.maxId).FirstOrDefault());
+                        }
                     }
                 }
                 else if (search.IsFinance)//如果是财务，查询所有已审核的订单
                 {
                     if (search.ListType == "6")// 6已确认 5 未确认
                     {
-                        list =
-                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 17)
-                            .AsNoTracking();
+                        query = query.Where(h => h.Status == 17);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 17)
+                        //.AsNoTracking();
                     }
                     else if (search.ListType == "5")
                     {
-                        list =
-                            _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11)
-                                .AsNoTracking();
+                        query = query.Where(h => h.Status == 11);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11)
+                        //    .AsNoTracking();
                     }
                     else
                     {
@@ -431,7 +444,19 @@ namespace Services
                     }
                     if (!string.IsNullOrEmpty(search.UserName))
                     {
-                        list = list.Where(h => h.Author.Contains(search.UserName));
+                        query = query.Where(h => h.Author.Contains(search.UserName));
+                    }
+                    if (!string.IsNullOrEmpty(search.ProductName))
+                    {
+                        query = query.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
+                    }
+                    if (query.Any())//有多个项目的订单合并。
+                    {
+                        var q = from p in query group p by p.DateTicks into g select new { maxId = g.Max(p => p.Id) };
+                        foreach (var s in q)
+                        {
+                            newTab.Add(query.Where(a => a.Id == s.maxId).FirstOrDefault());
+                        }
                     }
                 }
                 else//如果不是operator，查询所有当前用户已填写信息的订单
@@ -439,43 +464,40 @@ namespace Services
 
                     if (search.ListType == "1")
                     {
-                        list =
-                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                               .AsNoTracking()
-                               .Where(h => h.Author == uName && h.Status < 4);
+                        query = query.Where(h => h.Author == uName && h.Status < 4);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                        //       .AsNoTracking()
+                        //       .Where(h => h.Author == uName && h.Status < 4);
                     }
                     else if (search.ListType == "4")
                     {
-                        list =
-                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                               .AsNoTracking()
-                               .Where(h => h.Author == uName && h.Status >= 4);
+                        query = query.Where(h => h.Author == uName && h.Status >= 4);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                        //    .AsNoTracking()
+                        //    .Where(h => h.Author == uName && h.Status >= 4);
                     }
                     else if (search.ListType == "1|4" || search.ListType == null)
                     {
-                        list =
-                           _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                               .AsNoTracking()
-                               .Where(h => h.Author == uName);
+                        query = query.Where(h => h.Author == uName);
+                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
+                        //    .AsNoTracking()
+                        //    .Where(h => h.Author == uName);
                     }
                     else
                     {
                         throw new WarningException("无效的请求");
                     }
-                }
-                if (!string.IsNullOrEmpty(search.ProductName))
-                {
-                    list = list.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
+                    newTab = query.ToList();
                 }
 
-                if (!list.Any()) throw new Exception();
-                var totalCount = list.Count();
-                var pList = from h in list.OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
+                if (!newTab.Any()) throw new Exception();
+                var totalCount = newTab.Count();
+                var pList = from h in newTab.OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
                             let p = h.HealthCheckProduct
                             select (new VHealthAuditList()
                             {
                                 MasterId = h.Id,
-                                ProductTypeName = p.ProductTypeName,
+                                ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
                                 ProductName = p.ProductName,
                                 ProductCode = p.ProductCode,
                                 PrivilegePrice = h.SellPrice,

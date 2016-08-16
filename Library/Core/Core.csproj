@@ -273,6 +273,14 @@
     <Compile Include="Migrations\201608120808077_AddTableCreateAccountCode.Designer.cs">
       <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608150843538_FileAddColumnSubType.cs" />
+    <Compile Include="Migrations\201608150843538_FileAddColumnSubType.Designer.cs">
+      <DependentUpon>201608150843538_FileAddColumnSubType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608150929534_UserAddColumnMemo.cs" />
+    <Compile Include="Migrations\201608150929534_UserAddColumnMemo.Designer.cs">
+      <DependentUpon>201608150929534_UserAddColumnMemo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -399,6 +407,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608120808077_AddTableCreateAccountCode.resx">
       <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608150843538_FileAddColumnSubType.resx">
+      <DependentUpon>201608150843538_FileAddColumnSubType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608150929534_UserAddColumnMemo.resx">
+      <DependentUpon>201608150929534_UserAddColumnMemo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

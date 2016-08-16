@@ -21,6 +21,15 @@
             <dd>
                 <input type="text" name="memo" id="memo" placeholder="" class="form-control" />
             </dd>
+            <dt>上传类型</dt>
+            <dd>
+                @Html.DropDownList("TypeList", ViewBag.TypeList as SelectList, new { @class = "form-control" })
+            </dd>
+
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="上传名单" /></p>
+            </dd>
             <dt></dt>
             <dd style="padding-left:1.5em;">
                 @if (TempData["errorMes"] != null)
@@ -35,10 +44,7 @@
                     }
                 }
             </dd>
-            <dt></dt>
-            <dd>
-                <p> <input type="submit" value="上传名单" /></p>
-            </dd>
+
         </dl>
     </div>
 }

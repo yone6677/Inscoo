@@ -138,13 +138,13 @@ namespace Services.Orders
                 }
                 else if (role == "InscooFinance")
                 {
-                    query = query.Where(q => q.State == 5);
+                    query = query.Where(q => q.State == 5 || q.State == 9);
                 }
                 else
                 {
                     if (role == "InsuranceCompany")
                     {
-                        query = query.Where(q => q.Insurer == user.CompanyName);
+                        query = query.Where(q => q.Insurer == user.CompanyName && q.State != 7);
                     }
                     else
                     {

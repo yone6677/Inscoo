@@ -39,7 +39,7 @@ namespace Inscoo.Controllers
             }
             return PartialView(cartList);
         }
-        public ActionResult Add(int id, int num)
+        public int Add(int id, int num)
         {
             var cartCookie = Request.Cookies["InscooCart"];
             var uId = User.Identity.GetUserId();
@@ -100,7 +100,7 @@ namespace Inscoo.Controllers
                     Response.Cookies.Add(cookie);
                 }
             }
-            return RedirectToAction("Index");
+            return 0;
         }
         public ActionResult Delete(int id)
         {

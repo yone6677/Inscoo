@@ -51,5 +51,7 @@ namespace Models
         [Display(Name = "备注")]
         [MaxLength(200, ErrorMessage = "输入字符太多")]
         public string Memo { get; set; }
+
+        public string Type { get; set; }
     }
 }

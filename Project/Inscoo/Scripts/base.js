@@ -337,3 +337,19 @@ $(function() {
 })
 
 
+/*专属产品*/
+$(function () {
+    
+    $("[id^='product_d']").css("display","none");
+    $("[id^='product_d1']").css("display", "block");
+    
+    $(".myTab [data-toggle='tab']").on("click", function () {
+        $(".active").removeClass("active");
+        $(this).parent().addClass("active");
+        
+        var hrefNow = $(this).attr("href");
+        console.log(hrefNow);
+        $("[id^='product_d']").css("display", "none");
+        $(hrefNow).css("display","block");
+    })
+})

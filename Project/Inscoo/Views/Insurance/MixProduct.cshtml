@@ -13,10 +13,25 @@
 }
 
 <div class="panel inscooCase">
-    <div class="inscooCase-title-left">
+    @*<div class="inscooCase-title-left">
         <strong>选择一个方案</strong>
         <span>SELECT A PROGRAMME</span>
-    </div>
+    </div>*@
+    <ul id="myTab" class="nav nav-tabs myTab" style="width:96%;margin:0 auto;margin-top:20px;">
+        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>       
+        @*<li class="active">
+            <a href="#product_d1" data-toggle="tab">中高端员工福利保险</a>
+        </li>
+                  
+        <li>
+            <a href="#product_d2" data-toggle="tab">吴中人力资源</a>
+        </li>
+
+        <li>
+            <a href="#product_d3" data-toggle="tab">营运车乘意险</a>
+        </li>*@
+       
+    </ul>
     @if (ViewBag.ProductSeries.Contains("中高端医疗"))
     {
         <div class="inscooCase-body inscooCase-body-top">
@@ -621,8 +636,8 @@
     }
 </div>
 
-
 <script>
+    
     function purchase(e) {
         var ageRange;
         var price;
@@ -698,4 +713,5 @@
         $("#AgeRangeName").val(ageRangeName);
         $("#purchaseForm").submit();
     }
+
 </script>

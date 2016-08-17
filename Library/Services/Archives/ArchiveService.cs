@@ -71,6 +71,25 @@ namespace Services
             }
             return false;
         }
+        public bool DeleteById(int id, bool disable, string author)
+        {
+            try
+            {
+                var item = _archiveRepository.GetById(id);
+                if (item.Author != author) return false;
+                if (disable)//从硬盘中删除文件
+                {
+                    _fileService.DeleteFile(item.Url);
+                }
+                _archiveRepository.Delete(item, false, disable);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _loggerService.insert(e, LogLevel.Warning, "Archive：Delete");
+            }
+            return false;
+        }
         public async Task DeleteFileInfo(Domain.FileInfo fileInfo)
         {
             try

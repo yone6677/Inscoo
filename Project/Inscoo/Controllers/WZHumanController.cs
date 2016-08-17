@@ -244,6 +244,27 @@ namespace Inscoo.Controllers
             }
             return RedirectToAction("FileListIndex", new { masterId });
         }
+
+        public ActionResult DeleteFile(int id, int masterId)
+        {
+            try
+            {
+                var result = _svArchive.DeleteById(id, true, User.Identity.Name);
+                if (result)
+                {
+                    TempData["errorMes"] = "删除成功";
+                }
+                else
+                {
+                    TempData["errorMes"] = "删除失败";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["errorMes"] = "删除失败";
+            }
+            return RedirectToAction("FileListIndex", new { masterId });
+        }
         bool ForRole(AppUser user, string roleName)
         {
             return _svUser.DeleteBeforeRoleAndNew(user.Id, roleName);

@@ -41,13 +41,23 @@
                 @Html.DisplayFor(modelItem => item.Author)
             </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Memo)
+            <td style="max-width:60px">
+                @if (item.Memo.Length > 8)
+                {
+                    <span title="@item.Memo" style="cursor:help">@item.Memo.Substring(0, 6)...</span>
+                }
+                else
+                {
+                    @item.Memo
+                }
+
             </td>
-            <td>
+            <td style="min-width:100px">
                 <a href="@item.Url" target="_blank">下载</a>
-                @*@if(item.)
-                @Html.ActionLink("删除", "Delete", new { item.Id })*@
+                @if (item.Author == User.Identity.Name)
+                {
+                    @Html.ActionLink("删除", "DeleteFile", new { item.Id, masterId = item.pId }, new { @class = "aDeleteFile" })
+                }
             </td>
         </tr>
     }

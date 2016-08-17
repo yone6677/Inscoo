@@ -28,7 +28,8 @@ namespace Services
         Task DeleteFileInfo(string url);
 
         Task DeleteFileBuUrl(string url);
-
+        bool Delete(Archive item, bool disable = false);
+        bool DeleteById(int id, bool disable, string author);
         IQueryable<Archive> GetByTypeAndPId(int pId, string type);
         CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
         /// <summary>
@@ -112,8 +113,8 @@ namespace Services
         /// <param name="masterId"></param>
         /// <param name="memo"></param>
         /// <returns></returns>
-        string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "", string type= "WZHuman");
-        bool Delete(Archive item, bool disable = false);
+        string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "", string type = "WZHuman");
+
         /// <summary>
         /// 
         /// </summary>

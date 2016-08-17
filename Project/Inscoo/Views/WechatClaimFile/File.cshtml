@@ -24,8 +24,8 @@
 @if (ViewBag.State == 0)
 {
     <div style="width:100%;line-height:3rem;text-align:center;">
+        <a href="/WechatClaimFile" class="btn btn-default">返回列表</a>
         <a href="/WechatClaimFile/Audit/@ViewBag.Id?Status=1" class="btn btn-success">审核通过</a>
-        &nbsp;
         <a href="/WechatClaimFile/Audit/@ViewBag.Id?Status=5" class="btn btn-danger">审核拒绝</a>
     </div>
 }

@@ -34,9 +34,9 @@
             <dd style="padding-left:1.5em;">
                 @if (TempData["errorMes"] != null)
                 {
-                    if (TempData["errorMes"].ToString() == "上传成功")
+                    if (TempData["errorMes"].ToString().Contains("成功"))
                     {
-                        <span class="text-success" tyle="font-size:25px;">上传成功</span>
+                        <span class="text-success" tyle="font-size:25px;">@TempData["errorMes"].ToString()</span>
                     }
                     else
                     {
@@ -89,4 +89,12 @@
     <div id="dataGrid">
         @Html.Action("FileListData", new { ViewBag.MasterId })
     </div>
+}
+@section Scripts {
+    <script>
+        jQuery(".aDeleteFile").click(function () {
+            return confirm("确定删除？");
+
+        });
+    </script>
 }

@@ -287,6 +287,14 @@
     <Compile Include="Migrations\201608160324004_AddTableClaimFilesList.Designer.cs">
       <DependentUpon>201608160324004_AddTableClaimFilesList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608160823069_healthEmployeesTemp.cs" />
+    <Compile Include="Migrations\201608160823069_healthEmployeesTemp.Designer.cs">
+      <DependentUpon>201608160823069_healthEmployeesTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608170224071_wechatClaim.cs" />
+    <Compile Include="Migrations\201608170224071_wechatClaim.Designer.cs">
+      <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -413,6 +421,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608120808077_AddTableCreateAccountCode.resx">
       <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608160823069_healthEmployeesTemp.resx">
+      <DependentUpon>201608160823069_healthEmployeesTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608170224071_wechatClaim.resx">
+      <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

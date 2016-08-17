@@ -112,7 +112,7 @@ namespace Services
         /// <param name="masterId"></param>
         /// <param name="memo"></param>
         /// <returns></returns>
-        string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "");
+        string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "", string type= "WZHuman");
         bool Delete(Archive item, bool disable = false);
         /// <summary>
         /// 

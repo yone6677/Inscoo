@@ -64,5 +64,7 @@ namespace Models
 
         [Display(Name = "佣金计算方法")]
         public string CommissionMethod { get; set; }
+        [Display(Name = "备注")]
+        public string Memo { get; set; }
     }
 }

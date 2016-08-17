@@ -337,3 +337,29 @@ $(function() {
 })
 
 
+/*专属产品*/
+$(function () {
+    var p = $(".inscooCase-body-top").css("display", "block");
+    //console.log(p);
+    for (var i = 0; i < p.length; i++) {
+        var pName = $(p[i]).children(".describe_name").html();
+        //console.log(pName);
+        var ele = $("<li><a href='#product_d" + i + "' data-toggle='tab'>" + pName + "</a></li>");
+        $(".myTab").append(ele);
+        $(p[i]).attr("id","product_d" + i);
+    }
+    
+
+    $("[id^='product_d']").css("display","none");
+    $("[id^='product_d0']").css("display", "block");
+    $("[data-toggle='tab']:first").parent().addClass("active");
+    $(".myTab [data-toggle='tab']").on("click", function () {
+        $(".active").removeClass("active");
+        $(this).parent().addClass("active");
+        
+        var hrefNow = $(this).attr("href");
+        //console.log(hrefNow);
+        $("[id^='product_d']").css("display", "none");
+        $(hrefNow).css("display","block");
+    })
+})

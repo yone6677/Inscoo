@@ -54,11 +54,11 @@
                                 <span class="icon2"></span>
                                 @Html.PasswordFor(m => m.Password, new { @placeholder = "请输入密码" })
                             </div>
-                            <div style="width:100%;height:40px;line-height:40px;">
-                                <span style="display:inline-block; width:30%;float:left"><input type="text" style="width:100%;height:40px;line-height:40px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" required /></span>
+                            <div style="width:100%;height:30px;line-height:30px;">
+                                <span style="display:inline-block; width:28%;float:left"><input type="text" style="width:100%;height:30px;line-height:30px;text-indent:5px;" name="IdentifyCode" value="" placeholder="验证码" required /></span>
 
                                 <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" style="vertical-align:middle;width:28%" />
-                                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:42%;display:inline-block">看不清?换一张</a>
+                                <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:40%;display:inline-block">看不清?换一张</a>
                             </div>
                             <div style="color:red;text-align:center;width:100%;line-height:2em;">
                                 @if (Model != null)
@@ -67,17 +67,18 @@
                                 }
                             </div>
 
-                            <div style="margin:10px 0;">
+                            <div style="margin:10px 0;height:40px;line-height:40px;">
                                 <div style="float:left;">
                                     @Html.CheckBoxFor(m => m.RememberMe, new { @class = "", title = "6小时之内将自动登陆" })
                                     @*<input type="checkbox" name="RememberMe" id="RememberMe" checked="checked" style="vertical-align:middle;margin-bottom:2px;margin-top:-1px;margin-right:3px;" title="6小时之内将自动登陆" />*@记住密码
                                 </div>
-                                @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd", style = "float:right;text-decoration:none" })
+                                <input type="submit" class="submitBtn" value="登录" style="display:inline-block;float:right">
                                 <div style="clear:both"></div>
                             </div>
-                            <div style="text-align:right">
-                                <input type="submit" class="submitBtn" value="登录" style="display:inline-block;">
-                                <a href="../user/EncryInfo" style="margin-left:10%;">免费注册</a>
+                            
+                            <div style="overflow:hidden;border-top:1px solid #ddd;padding:5px 0">
+                                <a href="../user/EncryInfo" style="float:left;color:#24A9E4">免费注册</a>
+                                @Html.ActionLink("忘记密码?", "ForgetPassword", new { }, new { @class = "forgetPwd", style = "float:right;text-decoration:none;color:#24A9E4" })
                             </div>
                         }
                     </div>

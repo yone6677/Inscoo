@@ -397,27 +397,27 @@ a.loginButton {
         }
 
 .floor1 .hello {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     font-size: 34px;
     text-align: center;
 }
 @media screen and (min-width:900px) {
     .floor1 .hello {
-        margin-bottom: 60px;
+        margin-bottom: 30px;
         font-size: 2.8em;
         text-align: center;
     }
 }
 @media screen and (min-width:772px) and (max-width:899px) {
     .floor1 .hello {
-        margin-bottom: 60px;
+        margin-bottom: 30px;
         font-size: 2.2em;
         text-align: center;
     }
 }
 @media screen and (max-width:771px) {
     .floor1 .hello {
-        margin-bottom: 60px;
+        margin-bottom: 30px;
         font-size: 2em;
         text-align: center;
     }
@@ -432,7 +432,7 @@ a.loginButton {
 
 .floor1 .loginWrp {
     margin: 0 auto;
-    width: 250px;
+    width: 300px;
     padding: 10px 20px;
     background: #d8e9f1;
     border-radius: 10px;
@@ -447,7 +447,7 @@ a.loginButton {
 }
 
 .loginWrp .inputControl {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     position: relative;
     padding-left: 50px;
     height: 40px;

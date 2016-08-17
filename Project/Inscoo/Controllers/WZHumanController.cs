@@ -12,6 +12,7 @@ using System.Web;
 using System.Configuration;
 using System.ComponentModel;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Inscoo.Controllers
 {
@@ -153,6 +154,12 @@ namespace Inscoo.Controllers
             //判断是否有权限
             if (!_svWZHuman.HasPerminsion(masterId, User.Identity.Name)) return RedirectToAction("ListIndex");
             ViewBag.MasterId = masterId;
+            ViewBag.TypeList = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="1",Text="投保人员名单上传" },
+                new SelectListItem() { Value="2",Text="退保人员名单上传"},
+                new SelectListItem() { Value="3",Text="报案人员名单上传" }
+            };
             return View();
         }
 
@@ -187,14 +194,22 @@ namespace Inscoo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UploadInsurants(HttpPostedFileBase excel, int masterId, string memo = "")
+        public ActionResult UploadInsurants(HttpPostedFileBase excel, int masterId, int typeList, string memo = "")
         {
             try
             {
+                string typeDes = "";
+                switch (typeList)
+                {
+                    case 1: typeDes = "投保"; break;
+                    case 2: typeDes = "退保"; break;
+                    case 3: typeDes = "报案"; break;
+                    default: typeDes = "WZHuman"; break;
+                }
                 var isFirstUpload = !_svArchive.GetByTypeAndPId(masterId, "WZHuman").Any();
                 var userName = User.Identity.Name;
                 string mailContent, path;
-                path = _svArchive.InsertWZInsurants(excel, userName, masterId, memo);
+                path = _svArchive.InsertWZInsurants(excel, userName, masterId, memo, typeDes);
 
                 if (path != null)
                 {

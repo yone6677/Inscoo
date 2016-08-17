@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="CarInsurance\CarInsuranceDetail.cs" />
     <Compile Include="Claim\ClaimFileFromWechatItem.cs" />
+    <Compile Include="Claim\ClaimFilesList.cs" />
     <Compile Include="Claim\ClaimFromWechatItem.cs" />
     <Compile Include="Claim\ClaimManagementDetail.cs" />
     <Compile Include="CarInsurance\CarInsurance.cs" />

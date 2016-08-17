@@ -14,6 +14,9 @@
             上传人
         </th>
         <th>
+            文件类型
+        </th>
+        <th>
             备注
         </th>
         <th>
@@ -24,7 +27,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td class="text-left">
                 @item.Name.Substring(0, item.Name.Length - 18)
             </td>
             <td>
@@ -32,6 +35,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Memo)

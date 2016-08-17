@@ -358,6 +358,7 @@
     <Content Include="Archive\InsuranceFiles\中高端医疗保险投保单（计划二）.pdf" />
     <Content Include="Archive\InsuranceFiles\永安雇主责任投保单.pdf" />
     <Content Include="Archive\InsuranceFiles\驾乘险条款.pdf" />
+    <Content Include="Archive\Template\Claim\SaoMiaoTuPianShangChuanMuBan.xlsx" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -575,9 +576,8 @@
     <Content Include="Views\Insurance\CarInscuranceDetailList.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceDetailSearch.cshtml" />
     <Content Include="Views\Health\Audit.cshtml" />
-    <Content Include="Views\Health\List.cshtml" />
-    <Content Include="Views\Health\HealthMgr.cshtml" />
-    <Content Include="Views\Health\HealthEmpTemp.cshtml" />
+    <Content Include="Views\Claim\ClaimFileListSearch.cshtml" />
+    <Content Include="Views\Claim\ClaimFileListData.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

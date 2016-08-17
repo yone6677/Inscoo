@@ -359,7 +359,8 @@ namespace Services
                         IsDelete = result.IsDelete,
                         Roles = roles,
                         ProdSeries = result.ProdSeries == null ? nulklStr : result.ProdSeries.Split(';'),
-                        ProdInsurances = result.ProdInsurance == null ? nulklStr : result.ProdInsurance.Split(';')
+                        ProdInsurances = result.ProdInsurance == null ? nulklStr : result.ProdInsurance.Split(';'),
+                        Memo = result.Memo
 
                     };
                 }
@@ -616,7 +617,7 @@ namespace Services
             try
             {
                 var model = GetAccountEncryByCode(encry.AccountEncryCode.Trim());
-                if (model == null) return false;
+                if (model == null) throw new WarningException("您的邀请码错误");
                 //if (model.EncryBeginDate.Value.Date > DateTime.Now.Date || model.IsUsed)
                 if (model.EncryBeginDate.Value.Date > DateTime.Now.Date)
                 {
@@ -646,7 +647,8 @@ namespace Services
                     CommissionMethod = model.EncryCommissionMethod,
                     Rebate = model.EncryRebate,
                     ProdSeries = model.EncrySeries,
-                    ProdInsurance = model.EncryInsurance
+                    ProdInsurance = model.EncryInsurance,
+                    Memo = model.AccountEncryCode
 
                 };
                 var result = await CreateAsync(user, user.UserName, encry.Password);
@@ -687,7 +689,7 @@ namespace Services
         {
             try
             {
-                var dt = DateTime.Now.Ticks.ToString().Substring(9);
+                var dt = DateTime.Now.Ticks.ToString("X").Substring(7, 7);
                 var isExist = _rpCreateAccountCode.TableNoTracking.Where(c => c.AccountEncryCode == dt).Any();
                 while (isExist)
                 {
@@ -770,7 +772,7 @@ namespace Services
                     Id = i.Id,
                     Memo = i.EncryMemo,
                     ProdInsurances = i.EncryInsurance.Split(';'),
-                    Rebate=i.EncryRebate
+                    Rebate = i.EncryRebate
                 });
 
                 return item.FirstOrDefault();

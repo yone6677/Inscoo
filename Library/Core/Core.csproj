@@ -295,6 +295,10 @@
     <Compile Include="Migrations\201608170224071_wechatClaim.Designer.cs">
       <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608170510384_123.cs" />
+    <Compile Include="Migrations\201608170510384_123.Designer.cs">
+      <DependentUpon>201608170510384_123.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -427,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608170224071_wechatClaim.resx">
       <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608170510384_123.resx">
+      <DependentUpon>201608170510384_123.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

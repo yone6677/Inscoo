@@ -111,12 +111,12 @@
     }
 
 </div>
-@if (!ViewBag.IsInline)
+@*@if (!ViewBag.IsInline)
 {
     <div class="orderConfirmBodyNext">
         @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
     </div>
-}
+}*@
 @if (ViewBag.IsDelete)
 {
     <div class="orderConfirmBodyNext">

@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "健康管理";
+}
+@using (Ajax.BeginForm("List", null, new AjaxOptions { UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
+{
+    <div class="Search">
+        <dl>
+            <dt>
+                产品名称
+            </dt>
+            <dd>
+                <input type="text" name="productName" class="form-control" value="" />
+            </dd>
+            <dt>时间起:</dt>
+            <dd>
+                <input type="text" readonly="readonly" name="beginDate" class="form-control" value="">
+            </dd>
+            <dt>时间止:</dt>
+            <dd>
+                <input type="text" readonly="readonly" name="endDate" class="form-control" value="">
+            </dd>
+            <dt>
+            </dt>
+            <dd>
+                <p>
+                    <input type="submit" value="查找" />
+                </p>
+            </dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+    <div id="dadaGrid">
+        @Html.Action("List")
+    </div>
+}
+
+@section Scripts{
+    <script>
+        jQuery(function () {
+            jQuery("[name='beginDate']")
+                .datepicker({
+                });
+            jQuery("[name='endDate']")
+                .datepicker({
+                });
+        });
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Models.Claim.WechatFileModel>
+
+@{
+    ViewBag.Title = "微信理赔文件";
+}
+
+@section head{
+    <style>
+        .wapp {
+            width: 100%;
+        }
+
+            .wapp li {
+                width: 100%;
+                margin-top: 2rem;
+            }
+
+                .wapp li img {
+                    width: 100%;
+                    height: auto;
+                }
+    </style>
+}
+@if (ViewBag.State == 0)
+{
+    <div style="width:100%;line-height:3rem;text-align:center;">
+        <a href="/WechatClaimFile/Audit/@ViewBag.Id?Status=1" class="btn btn-success">审核通过</a>
+        &nbsp;
+        <a href="/WechatClaimFile/Audit/@ViewBag.Id?Status=5" class="btn btn-danger">审核拒绝</a>
+    </div>
+}
+<ul class="wapp">
+    @{
+        foreach (var item in Model)
+        {
+            <li>
+                <img src="@item.Url" />
+            </li>
+        }
+    }
+</ul>

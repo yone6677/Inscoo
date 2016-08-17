@@ -429,6 +429,7 @@
     <Compile Include="Controllers\ApiController\ClaimApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\WechatClaimFileController.cs" />
     <Compile Include="Controllers\WZHumanController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -574,6 +575,9 @@
     <Content Include="Views\Insurance\CarInscuranceDetailList.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceDetailSearch.cshtml" />
     <Content Include="Views\Health\Audit.cshtml" />
+    <Content Include="Views\Health\List.cshtml" />
+    <Content Include="Views\Health\HealthMgr.cshtml" />
+    <Content Include="Views\Health\HealthEmpTemp.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -591,6 +595,9 @@
     <Content Include="Views\User\TList.cshtml" />
     <Content Include="Views\User\EncryInfo.cshtml" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
+    <Content Include="Views\WechatClaimFile\List.cshtml" />
+    <Content Include="Views\WechatClaimFile\Index.cshtml" />
+    <Content Include="Views\WechatClaimFile\File.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

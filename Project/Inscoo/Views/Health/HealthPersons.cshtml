@@ -5,13 +5,10 @@
     <div class="orderConfirmBody form-inline " style="overflow:auto ">
         <dl style="width:130%">
             <dd>
-                <table class="table">
+                <table class="table table-bordered">
                     <tr style="background-color:#24A9E4;color:#fff;">
                         <th>
                             编号
-                        </th>
-                        <th>
-                            操作
                         </th>
                         <th>
                             姓名
@@ -53,9 +50,6 @@
                         <tr>
                             <td>
                                 @num
-                            </td>
-                            <td>
-                                @Html.ActionLink("删除", "DeleteEmp", new { id = item.Id, MasterId = ViewBag.id, DateTicks = ViewBag.ticks })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)

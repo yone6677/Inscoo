@@ -39,6 +39,14 @@
         }
     </div>
 }
+@using (Ajax.BeginForm("HealthEmpTemp", null, new AjaxOptions { UpdateTargetId = "dadaGrid" }, null))
+{
+    <input type="hidden" name="masterId" value="@ViewBag.id" />
+    <input type="hidden" name="ticks" value="@ViewBag.ticks" />
+    <div id="dadaGrid">
+        @Html.Action("HealthEmpTemp", new { masterId = ViewBag.id, ticks = ViewBag.ticks })
+    </div>
+}
 @section Scripts {
     <script>
         function CheckEmpFile() {

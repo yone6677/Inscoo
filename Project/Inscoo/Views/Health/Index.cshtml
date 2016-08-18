@@ -15,16 +15,19 @@
                     <li class="first_li">@p.ProductName</li>
                     <li class="health_content">
                         <div class="content_left">
-                            <img src="@p.CheckProductPic" alt="Alternate Text" />
+                            <a href="/Health/BuyInfo?productName=@p.ProductName&productType=@p.ProductType">
+                                <img src="@p.CheckProductPic" alt="Alternate Text" />
+                            </a>
+                            
                         </div>
                     </li>
                     <li class="project_price">
-                        <p>市场价：<span style="text-decoration:line-through;">￥@p.PublicPrice</span></p>
-                        <div>优惠价：<span>￥@p.PrivilegePrice</span></div>
+                        <p>市场价:<span style="text-decoration:line-through;">￥@p.PublicPrice</span></p>
+                        <div>优惠价:<span>￥@p.PrivilegePrice</span></div>
                     </li>
                     <li>
-                        @Html.ActionLink("立即购买", "BuyInfo", new { p.ProductType, p.ProductName }, new { @class = "btn btn-buy" })
-
+                        <a class="btn btn-buy" href="/Health/BuyInfo?productName=@p.ProductName&productType=@p.ProductType">立即购买</a>
+                        @*@Html.ActionLink("立即购买", "BuyInfo", new { p.ProductType, p.ProductName }, new { @class = "btn btn-buy" })*@
                     </li>
                 </ul>
             }

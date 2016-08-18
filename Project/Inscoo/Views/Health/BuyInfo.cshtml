@@ -36,24 +36,3 @@
     </ul>
     @Html.Partial("detail/_ProDetail_" + product.Id, product)
 </div>
-@section Scripts {
-    <script>
-        function reduce(param) {
-            var Num = $(param).val();
-            if (Num >= 2) {
-                Num--;
-                $(param).val(Num);
-            } else {
-                $(param).val("1");
-            }
-        }
-
-        function add(param) {
-            var Num = $(param).val();
-            if (Num >= 1) {
-                Num++;
-                $(param).val(Num);
-            }
-        }
-    </script>
-}

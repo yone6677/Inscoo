@@ -305,7 +305,6 @@
     <Content Include="Content\imgIndex\新建文件夹\p7.png" />
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
     <Content Include="Content\img\car_insurance_1.png" />
-    <Content Include="Content\img\car_insurance_2.jpg" />
     <Content Include="Content\img\car_insurance_2.png" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
@@ -569,7 +568,6 @@
     <Content Include="Views\Health\detail\_ProDetail_8.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_9.cshtml" />
     <Content Include="Views\Insurance\CarInscuranceAddEOrderCode.cshtml" />
-    <Content Include="Views\Health\detail\_ProDetail_11.cshtml" />
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\WZHuman\FileListIndex.cshtml" />
     <Content Include="Views\WZHuman\FileListData.cshtml" />
@@ -592,6 +590,7 @@
     <Content Include="Views\Health\HealthEmpTemp.cshtml" />
     <Content Include="Views\Health\HealthMgr.cshtml" />
     <Content Include="Views\Health\List.cshtml" />
+    <Content Include="Views\Health\detail\_ProDetail_10.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

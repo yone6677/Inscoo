@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Models.Cart.CartModel>
+<div class="t">
+    <h2 style="width:100%;"><i class="fa fa-shopping-cart"></i>我的购物车</h2>
+</div>
 <table class="table shoppingCart">
     <tr>
         <th width="10%">
@@ -43,13 +46,18 @@
                 </td>
                 <td>
                     <input type="hidden" value="@item.Price" id="@priceName" />
-                    @Html.DisplayFor(modelitem => item.Price)
+                    <span>@string.Format("{0:C}",item.Price)</span>
+                </td>
+                <td class="count-change">
+                    <div class="wrap-input">
+                        <span class="btn-reduce" onclick="reduce('.buy-num')">-</span>
+                        <input type="number" class="cart-total buy-num" id=@countName onchange="checkNum(this,'@item.Id')" value="@item.Total" min="1" max="9999" />
+                        <span class="btn-add" onclick="add('.buy-num')">+</span>
+                        <span></span>
+                    </div>
                 </td>
                 <td>
-                    <input type="number" class="cart-total" id=@countName onchange="checkNum(this,'@item.Id')" value="@item.Total" min="1" max="9999" />
-                </td>
-                <td>
-                    <span id=@subTotalName>@item.Amount</span>
+                    <span id=@subTotalName>@string.Format("{0:C}",item.Amount)</span>
                 </td>
                 <td>
                     @Html.ActionLink("删除", "Delete", new { id = item.Id }, new { @class = "text-danger" })
@@ -68,15 +76,27 @@
     <div class="col-xs-2">
 
     </div>
-    <div class="col-xs-4 cart-amount">
-        总额：
+    <div class="col-xs-6 cart-amount">
+        <h5 style="display:inline-block;height:40px;line-height:40px;">应付商品金额：</h5>
         @{
-            <span id="amount">0.00</span>
+            <span><b>&yen;</b> <span id="amount">0.00</span></span>
             <input type="hidden" name="postData" id="postData" value="" />
         }
 
     </div>
-    <div class="text-right col-xs-2">
-        <a class="btn btn-danger" onclick="buy()">购买选中</a>
+    
+</div>
+<div class="cart-floatbar  text-right row" style="margin-top:10px;">
+    <div class="col-xs-2">
+    </div>
+    <div class="col-xs-2">
+
+    </div>
+    <div class="col-xs-2">
+
+    </div>
+    <div class="col-xs-6">
+        <a class="btn btn-danger" onclick="buy()" style="background:#a61c4b">购买选中</a>
     </div>
 </div>
+

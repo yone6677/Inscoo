@@ -595,10 +595,10 @@ namespace Inscoo.Controllers
             }
             return View();
         }
-        public ActionResult MemberInscuranceDelete(int insuranceId)
+        public ActionResult MemberInscuranceDelete(int insuranceId, int fileType, string fileTypeName)
         {
             _archiveService.DeleteMemberInsuranceExcel(insuranceId);
-            return RedirectToAction("MemberInscuranceSearch");
+            return RedirectToAction("MemberInscuranceSearch", new { fileType, fileTypeName });
         }
         public ActionResult MemberInscuranceDetailSearch(int fileType, string fileTypeName)
         {

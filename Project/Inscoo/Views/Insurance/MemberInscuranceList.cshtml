@@ -52,7 +52,7 @@
                             @Html.ActionLink("更新", "MemberInscuranceCreate", new { ExcelId = item.ExcelId, item.FileType, item.FileTypeName })
                         }
                         <span>|</span>
-                        @Html.ActionLink("删除", "MemberInscuranceDelete", new { insuranceId = item.InsuranceId })
+                        @Html.ActionLink("删除", "MemberInscuranceDelete", new {item.InsuranceId, item.FileType, item.FileTypeName })
                     }
 
                     @if (item.Status == "A")

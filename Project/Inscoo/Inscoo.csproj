@@ -578,9 +578,14 @@
     <Content Include="Views\Health\Audit.cshtml" />
     <Content Include="Views\Claim\ClaimFileListSearch.cshtml" />
     <Content Include="Views\Claim\ClaimFileListData.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceSearch.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceList.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceCreate.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceUploadEinsurance.cshtml" />
     <Content Include="Views\Health\HealthEmpTemp.cshtml" />
     <Content Include="Views\Health\HealthMgr.cshtml" />
     <Content Include="Views\Health\List.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceDetailSearch.cshtml" />
     <Content Include="Views\Health\detail\_ProDetail_10.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />

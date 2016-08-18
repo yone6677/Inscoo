@@ -142,6 +142,7 @@ namespace Inscoo.Controllers
             return null;
         }
 
+        #region 车险
         public ActionResult CarInscuranceSearch(int fileType = 0)
         {
             //ViewBag.RoleId = _appUserService.GetRolesManagerPermissionByUserId(User.Identity.GetUserId(), "Id");
@@ -202,7 +203,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public PartialViewResult CarInscuranceDetailList(CarInsuranceDetailSearchModel model, int pageIndex = 1, int pageSize = 15)
         {
-            
+
             IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, pageIndex, pageSize);
 
             var command = new PageCommand()
@@ -232,19 +233,21 @@ namespace Inscoo.Controllers
             {
                 ViewBag.ExcelId = excelId;
                 ViewBag.FileType = fileType;
+                var uId = User.Identity.GetUserId();
+                var uName = User.Identity.Name;
                 string mailContent, path;
                 if (fileType == 0)
                 {
                     if (string.IsNullOrEmpty(excelId))
                     {
-                        path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
-                           User.Identity.Name, fileType);
-                        mailContent = string.Format("用户：{0}上传车险{1}", User.Identity.Name, excel.FileName);
+                        path = _archiveService.InsertCarInsuranceExcel(excel, uId,
+                           uName, fileType);
+                        mailContent = string.Format("用户：{0}上传车险{1}", uName, excel.FileName);
                     }
                     else
                     {
-                        mailContent = string.Format("用户：{0}重新上传车险{1}", User.Identity.Name, excel.FileName);
-                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                        mailContent = string.Format("用户：{0}重新上传车险{1}", uName, excel.FileName);
+                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId, uName);
                     }
                     var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
                     MailService.SendMailAsync(new MailQueue()
@@ -261,12 +264,12 @@ namespace Inscoo.Controllers
                 {
                     if (string.IsNullOrEmpty(excelId))
                     {
-                        path = _archiveService.InsertCarInsuranceExcel(excel, User.Identity.GetUserId(),
-                           User.Identity.Name, fileType);
+                        path = _archiveService.InsertCarInsuranceExcel(excel, uId,
+                           uName, fileType);
                     }
                     else
                     {
-                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId);
+                        path = _archiveService.UpdateCarInsuranceExcel(excel, excelId, uName);
                     }
 
                 }
@@ -363,6 +366,247 @@ namespace Inscoo.Controllers
             _archiveService.DeleteCarInsuranceExcel(insuranceId);
             return RedirectToAction("CarInscuranceSearch");
         }
+        #endregion
+        #region 会员
+        public ActionResult MemberInscuranceSearch(int fileType, string fileTypeName)
+        {
+            try
+            {
+                if (fileType <= 0 || string.IsNullOrEmpty("fileTypeName")) throw new WarningException("操作有无");
+                //if (_genericAttributeService.GetByKey(fileTypeName).Value != fileType.ToString()) throw new WarningException("操作有无");
 
+                ViewBag.FileType = fileType;
+                ViewBag.FileTypeName = fileTypeName;
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        [AllowAnonymous]
+        public PartialViewResult MemberInscuranceList(int fileType, int pageIndex = 1, int pageSize = 15)
+        {
+            var author = User.Identity.Name;
+            //var roles = _appUserService.GetRolesByUserId(User.Identity.GetUserId());
+            var canEdit = User.IsInRole("MemberCard");
+            ViewBag.isMemberCard = canEdit;
+            ViewBag.FileType = fileType;
+            if (!canEdit) author = "-1";//车险用户可以编辑，只能查看自己上传的文件。车险公司不能编辑，但可以查看所有。
+
+            //出admin外，其他用户只能看到自己创建的用户
+            IPagedList<vMemberInsuranceList> list = _archiveService.GetMemberInsuranceExcel(fileType, pageIndex, pageSize, author);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        /*[AllowAnonymous]
+        public ActionResult CarInscuranceDetailSearch()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public PartialViewResult CarInscuranceDetailList()
+        {
+            var model = new CarInsuranceDetailSearchModel();
+            IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, 1, 15);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public PartialViewResult CarInscuranceDetailList(CarInsuranceDetailSearchModel model, int pageIndex = 1, int pageSize = 15)
+        {
+
+            IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, pageIndex, pageSize);
+
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+
+            return PartialView(list);
+        }*/
+        public ActionResult MemberInscuranceCreate(string excelId, string fileTypeName, int fileType)
+        {
+            ViewBag.ExcelId = excelId;
+            ViewBag.FileType = fileType;
+            ViewBag.FileTypeName = fileTypeName;
+            return View();
+        }
+
+        // POST: User/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MemberInscuranceCreate(HttpPostedFileBase excel, string excelId, int fileType, string fileTypeName)
+        {
+            try
+            {
+                ViewBag.ExcelId = excelId;
+                ViewBag.FileType = fileType;
+                ViewBag.FileTypeName = fileTypeName;
+
+                if (fileType <= 0 || string.IsNullOrEmpty("fileTypeName")) throw new WarningException("操作有无");
+                if (_genericAttributeService.GetByKey(fileTypeName).Value != fileType.ToString()) throw new WarningException("操作有无");
+
+                var uId = User.Identity.GetUserId();
+                var uName = User.Identity.Name;
+                string mailContent, path;
+
+                if (string.IsNullOrEmpty(excelId))
+                {
+                    path = _archiveService.InsertMemberInsuranceExcel(excel,
+                       uName, fileTypeName, fileType);
+                    //mailContent = string.Format("用户：{0}上传车险{1}", uName, excel.FileName);
+                }
+                else
+                {
+                    //mailContent = string.Format("用户：{0}重新上传车险{1}", uName, excel.FileName);
+                    path = _archiveService.UpdateCarInsuranceExcel(excel, excelId, uName);
+                }
+                //var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                //MailService.SendMailAsync(new MailQueue()
+                //{
+                //    MQTYPE = "UploadCarInscurance",
+                //    MQSUBJECT = "上传车险通知",
+                //    MQMAILCONTENT = "",
+                //    MQMAILFRM = "service@inscoo.com",
+                //    MQMAILTO = string.Join(";", mailTo),
+                //    MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
+                //});
+
+                ViewBag.Mes = "上传成功";
+            }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Mes = "上传失败";
+            }
+            return View();
+        }
+        public ActionResult MemberInscuranceUploadEinsurance(int insuranceId, string uKey)
+        {
+            ViewBag.InsuranceId = insuranceId;
+            ViewBag.UKey = uKey;
+            var insurance = _archiveService.GetMemberEInsuranceUrl(insuranceId, uKey);
+            if (insurance.Einsurance != null)
+                ViewBag.Url = insurance.Einsurance.Url;
+            if (insurance.EOrderCode != null)
+                ViewBag.EOrderCode = insurance.EOrderCode;
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MemberInscuranceUploadEinsurance(HttpPostedFileBase excel, int insuranceId, string uKey, string code)
+        {
+            int fileType = 0;
+            string fileTypeName = "";
+            try
+            {
+                ViewBag.InsuranceId = insuranceId;
+                ViewBag.UKey = uKey;
+                var userName = User.Identity.Name;
+                string mailContent;
+                var item = _archiveService.InsertMemberInsuranceEinsurance(excel, userName, insuranceId, uKey, code);
+
+                //if (path != null)
+                //{
+                //    mailContent = string.Format("用户：{0}上传车险电子保单{1}", userName, excel.FileName);
+                //    var mailTo = _genericAttributeService.GetByGroup("CarCustomerMailTo").Select(c => c.Value);
+                //    MailService.SendMailAsync(new MailQueue()
+                //    {
+                //        MQTYPE = "UploadCarInscurance",
+                //        MQSUBJECT = "上传车险电子保单通知",
+                //        MQMAILCONTENT = "",
+                //        MQMAILFRM = "service@inscoo.com",
+                //        MQMAILTO = string.Join(";", mailTo),
+                //        MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
+
+                //    });
+                //}
+                fileType = item.FileType;
+                fileTypeName = item.FileTypeName;
+                ViewBag.Mes = "操作成功";
+            }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Mes = "操作失败";
+            }
+            return RedirectToAction("MemberInscuranceSearch", new { fileType, fileTypeName });
+        }
+
+        public ActionResult MemberInscuranceAddEOrderCode(string insuranceId, string uKey)
+        {
+            ViewBag.InsuranceId = insuranceId;
+            ViewBag.UKey = uKey;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MemberInscuranceAddEOrderCode(int insuranceId, string uKey, string code)
+        {
+            try
+            {
+                ViewBag.InsuranceId = insuranceId;
+                ViewBag.UKey = uKey;
+                _archiveService.UploadMemberInsuranceEOrderCode(code, insuranceId, uKey);
+
+                ViewBag.Mes = "操作成功";
+            }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Mes = "操作失败";
+            }
+            return View();
+        }
+        public ActionResult MemberInscuranceDelete(int insuranceId)
+        {
+            _archiveService.DeleteMemberInsuranceExcel(insuranceId);
+            return RedirectToAction("MemberInscuranceSearch");
+        }
+        public ActionResult MemberInscuranceDetailSearch(int fileType, string fileTypeName)
+        {
+            ViewBag.FileType = fileType;
+            ViewBag.FileTypeName = fileTypeName;
+
+            return View();
+        }
+        #endregion
     }
 }

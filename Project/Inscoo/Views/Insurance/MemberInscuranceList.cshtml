@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Models.vMemberInsuranceList>
+<table class="table table-bordered text-left">
+    <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            保障方案
+        </th>
+        <th>
+            文件名
+        </th>
+        <th>
+            上传时间
+        </th>
+        @*<th>
+                上传人
+            </th>*@
+        <th>
+            电子保单号码
+        </th>
+        <th style="min-width: 180px">
+            操作
+        </th>
+    </tr>
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FileTypeName
+                </td>
+                <td>
+                    @{ string name = item.ExcelName.Substring(0, item.ExcelName.Length - 15);}
+                    <span>@name</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExceCreateTime)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.ExceCreateUser)
+                    </td>*@
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EOrderCode)
+                </td>
+                <td>
+                    <a href="@item.ExceUrl" target="blank">投保单下载</a>
+                    @if (ViewBag.isMemberCard && string.IsNullOrEmpty(item.EinsuranceUrl))
+                    {
+                        if (ViewBag.FileType == 0)
+                        {
+                            <span>|</span>
+                            @Html.ActionLink("更新", "MemberInscuranceCreate", new { ExcelId = item.ExcelId, item.FileType, item.FileTypeName })
+                        }
+                        <span>|</span>
+                        @Html.ActionLink("删除", "MemberInscuranceDelete", new { insuranceId = item.InsuranceId })
+                    }
+
+                    @if (item.Status == "A")
+                    {
+                        <span>|</span>
+                        if (string.IsNullOrEmpty(item.EinsuranceUrl))
+                        {
+                            @Html.ActionLink("上传电子保单", "MemberInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("输入保单号", "MemberInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                            <span>|</span>
+                            <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                        }
+                    }
+                    @*else if (item.Status == "B")
+                        {
+                        <span>|</span>
+                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                        <span>|</span>
+                        @Html.ActionLink("继续", "MemberInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }*@
+                    else if (item.Status == "C")
+                    {
+                        <span>|</span>
+                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(@item.PdfFileName))
+                    {
+                        <span>|</span>
+                        <a href="@item.PdfFileName" target="blank">PDF下载</a>
+                    }
+                </td>
+
+
+
+            </tr>
+
+                            }
+                        }
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

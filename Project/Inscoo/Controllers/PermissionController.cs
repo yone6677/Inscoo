@@ -152,7 +152,19 @@ namespace Inscoo.Controllers
                 if (con == "控制器以外")
                 {
                     var navs = _navService.GetNotControllerNav();
-                    var tasks = navs.Select(a => Task.Run(() =>
+                    //var tasks = navs.Select(a => Task.Run(() =>
+                    //{
+                    //    list.Add(new vPermissionNav()
+                    //    {
+
+                    //        Controller = "控制器以外",
+                    //        Action = a.name,
+                    //        IsUsed = _permisService.HasPermissionByRoleId(a.Id, roleId),
+                    //        Name = a.name
+                    //    });
+                    //})
+                    //);
+                    foreach (var a in navs)
                     {
                         list.Add(new vPermissionNav()
                         {
@@ -163,20 +175,17 @@ namespace Inscoo.Controllers
                             Name = a.name
                         });
                     }
-                 )
-                 );
 
-                    Task.WaitAll(tasks.ToArray());
+
+                    //Task.WaitAll(tasks.ToArray());
                 }
                 else
                 {
-
-
                     var control = typeof(BaseController).Assembly.GetTypes().SingleOrDefault(t => t.Name.Equals(con));
 
                     var controlName = control.Name;
                     var actions = control.GetMethods().Where(m => m.DeclaringType.Name == control.Name && m.ReturnType.Namespace.Equals("System.Web.Mvc", StringComparison.CurrentCultureIgnoreCase)).ToList();
-                    var tasks = actions.Select(a => Task.Run(() =>
+                    foreach (var a in actions)
                     {
                         var nav = _navService.GetByUrl(controlName, a.Name);
                         var hasAllowAnonymousAttribute =
@@ -203,13 +212,45 @@ namespace Inscoo.Controllers
                                 IsUsed = _permisService.HasNavUsedByRole(controlName, a.Name, roleId),
                                 Name = nav == null ? a.Name : nav.name
                             });
+                            //}
                         }
 
-                    }
-                  )
-                  );
+                        /*  var tasks = actions.Select(a => Task.Run(() =>
+                          {
+                              var nav = _navService.GetByUrl(controlName, a.Name);
+                              var hasAllowAnonymousAttribute =
+                                  a.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any();
+                              if (hasAllowAnonymousAttribute)
+                              {
+                                  list.Add(new vPermissionNav()
+                                  {
 
-                    Task.WaitAll(tasks.ToArray());
+                                      Controller = control.Name,
+                                      Action = a.Name,
+                                      IsUsed = true,
+                                      CanEdit = false,//不允许调整权限
+                                      Name = nav == null ? a.Name : nav.name
+                                  });
+                              }
+                              else
+                              {
+                                  list.Add(new vPermissionNav()
+                                  {
+
+                                      Controller = control.Name,
+                                      Action = a.Name,
+                                      IsUsed = _permisService.HasNavUsedByRole(controlName, a.Name, roleId),
+                                      Name = nav == null ? a.Name : nav.name
+                                  });
+                              }
+
+                          }
+                        )
+                        );
+
+                          Task.WaitAll(tasks.ToArray());
+                          */
+                    }
                 }
                 //foreach (var a in actions)
                 //{

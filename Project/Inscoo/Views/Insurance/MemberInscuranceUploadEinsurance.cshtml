@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "上传电子保单";
+}
+@using (Html.BeginForm("MemberInscuranceUploadEinsurance", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="insuranceId" name="insuranceId" value="@ViewBag.InsuranceId" />
+    <input type="hidden" id="uKey" name="uKey" value="@ViewBag.UKey" />
+    <div class="form-horizontal formCreate">
+        <br />
+
+        <div class="form-group">
+            <label class="control-label col-md-3">添加电子保单</label>
+            <div class="col-md-5">
+                <a href="javascript:;" class="a-upload">
+                    <input type="file" name="excel" id="excel" />+ 浏览
+                </a>
+                <span class="lab" style="height: 28px; line-height: 28px;"></span>
+            </div>
+            <div class="col-md-4">
+                @if (ViewBag.Url != null)
+                {
+                    <a href="@ViewBag.Url" target="_blank" style="line-height: 40px;">查看电子保单</a>
+                }
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">电子保单号码</label>
+            <div class="col-md-9">
+                @if (ViewBag.EOrderCode != null)
+                {
+                    <input type="text" name="code" id="code" value="@ViewBag.EOrderCode" class="form-control" />
+                }
+                else
+                {
+                    <input type="text" name="code" id="code" class="form-control" />
+                }
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3"></label>
+            <div class="col-md-9">
+                <input type="submit" class="btn btn-info" value="提交" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3"></label>
+            <div class="col-md-9">
+                @if (ViewBag.Mes == "操作成功")
+                {
+                    <div class="alert alert-success">操作成功</div>
+                }
+                else if (ViewBag.Mes != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Mes</div>
+                }
+            </div>
+        </div>
+    </div>
+}

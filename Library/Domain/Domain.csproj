@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemberInsurance\MemberInsurance.cs" />
+    <Compile Include="MemberInsurance\MemberInsuranceDetail.cs" />
     <Compile Include="CarInsurance\CarInsuranceDetail.cs" />
     <Compile Include="Claim\ClaimFileFromWechatItem.cs" />
     <Compile Include="Claim\ClaimFilesList.cs" />

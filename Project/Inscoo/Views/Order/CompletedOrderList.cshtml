@@ -87,7 +87,10 @@
                     {
                         @Html.ActionLink("确认信息", "BuyMore", new { id = item.Id }); <span>|</span>
                     }
-
+                    if (item.State == 6 && item.BatchState == 8 || item.BatchState == 1 || item.BatchState == 3)
+                    {
+                        <span>审核中</span><span>|</span>
+                    }
                     <a href="/Order/Details/@item.Id">查看详情</a>
                 }
             </td>

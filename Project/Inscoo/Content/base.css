@@ -1154,47 +1154,29 @@ div:after {
   display: block;
   clear: both;
 }
-@media screen and (min-width: 1300px) {
-  .health_box .health_project .health_detail li.project_price {
-    margin: 10px auto;
-  }
-  .health_box .health_project .health_detail li.project_price:after {
-    display: block;
-    content: "";
-    clear: both;
-  }
-  .health_box .health_project .health_detail li.project_price p {
-    margin: 0;
-    float: left;
-    font-size: 0.9em;
-    height: 32px;
-    line-height: 32px;
-  }
-  .health_box .health_project .health_detail li.project_price div {
-    float: right;
-    color: #38A6D9;
-    font-weight: bold;
-  }
-  .health_box .health_project .health_detail li.project_price div span {
-    color: #f00;
-    font-size: 1.5em;
-  }
+.health_box .health_project .health_detail li.project_price {
+  margin: 10px auto;
 }
-@media screen and (max-width: 1299px) {
-  .health_box .health_project .health_detail li.project_price {
-    margin: 10px auto;
-  }
-  .health_box .health_project .health_detail li.project_price p {
-    margin: 0;
-  }
-  .health_box .health_project .health_detail li.project_price div {
-    color: #38A6D9;
-    font-weight: bold;
-  }
-  .health_box .health_project .health_detail li.project_price div span {
-    color: #f00;
-    font-size: 1.5em;
-  }
+.health_box .health_project .health_detail li.project_price:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+.health_box .health_project .health_detail li.project_price p {
+  margin: 0;
+  float: left;
+  font-size: 0.9em;
+  height: 32px;
+  line-height: 32px;
+}
+.health_box .health_project .health_detail li.project_price div {
+  float: right;
+  color: #38A6D9;
+  font-weight: bold;
+}
+.health_box .health_project .health_detail li.project_price div span {
+  color: #f00;
+  font-size: 1.5em;
 }
 .health_box .health_project .health_detail .btn {
   width: 100%;

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Models.VCheckProductList>
+﻿@using system;
+@model IEnumerable<Models.VCheckProductList>
 @{
     ViewBag.Title = "健康酷";
 }
@@ -22,13 +23,12 @@
                         </div>
                     </li>
                     <li class="project_price">
-                        <p>市场价:<span style="text-decoration:line-through;">￥@p.PublicPrice</span></p>
-                        <div>优惠价:<span>￥@p.PrivilegePrice</span></div>
+                        <p>市场价:<span style="text-decoration:line-through;">￥@Convert.ToInt32(p.PublicPrice)</span></p>
+                        <div>优惠价:<span>￥@Convert.ToInt32(p.PrivilegePrice)</span></div>
                     </li>
-                    <li>
+                    @*<li>
                         <a class="btn btn-buy" href="/Health/BuyInfo?productName=@p.ProductName&productType=@p.ProductType">立即购买</a>
-                        @*@Html.ActionLink("立即购买", "BuyInfo", new { p.ProductType, p.ProductName }, new { @class = "btn btn-buy" })*@
-                    </li>
+                    </li>*@
                 </ul>
             }
         </div>

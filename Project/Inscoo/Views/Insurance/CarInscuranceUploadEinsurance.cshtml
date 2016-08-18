@@ -1,7 +1,7 @@
 ﻿@{
-    ViewBag.Title = "上传电子保单";
+    ViewBag.Title = "上传车险电子保单";
 }
-@using (Html.BeginForm("MemberInscuranceUploadEinsurance", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CarInscuranceUploadEinsurance", "Insurance", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="insuranceId" name="insuranceId" value="@ViewBag.InsuranceId" />

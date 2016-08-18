@@ -4,8 +4,15 @@
     ViewBag.Title = "订单详细";
 }
 <div class="orderDetails">
+    @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
+    {
+        <input type="hidden" name="Id" value=@Model.Id />
+            <div id="empTempData">
+                @Html.Action("EmpChanges", new { id = Model.Id })
+            </div>
+    }
     <h4 class="text-primary_color"><span>基本信息</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
-    <dl >
+    <dl>
         <dt>
             @Html.DisplayNameFor(model => model.PolicyNumber)：
         </dt>
@@ -94,96 +101,96 @@
         <dd>
             @Html.DisplayFor(model => model.State)
         </dd>
-        
+
     </dl>
 
     <div class="clearfix"></div>
     <h4 class="text-primary_color"><span>保单信息</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     <div>
-     <dl>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)：
-        </dt>
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Memo)：
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Memo)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Memo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Insurer)：
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Memo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Insurer)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Insurer)
-        </dd>
-         <dt></dt>
-         <dd></dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AnnualExpense)：
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Insurer)
+            </dd>
+            <dt></dt>
+            <dd></dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AnnualExpense)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AnnualExpense)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProdTimeLimit)：
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AnnualExpense)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ProdTimeLimit)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ProdTimeLimit)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)：
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProdTimeLimit)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.StartDate)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)：
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.EndDate)：
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
-    <table class="table table-bordered table-header-blur">
-        <tr>
-            <th>
-                保险责任
-            </th>
-            <th>
-                保障额度
-            </th>
-            <th>
-                赔付比例
-            </th>
-            <th>
-                保障期限
-            </th>
-        </tr>
-        @{
-            if (Model.orderItem != null && Model.orderItem.Count > 0)
-            {
-                foreach (var item in Model.orderItem)
+            <dd>
+                @Html.DisplayFor(model => model.EndDate)
+            </dd>
+        </dl>
+        <table class="table table-bordered table-header-blur">
+            <tr>
+                <th>
+                    保险责任
+                </th>
+                <th>
+                    保障额度
+                </th>
+                <th>
+                    赔付比例
+                </th>
+                <th>
+                    保障期限
+                </th>
+            </tr>
+            @{
+                if (Model.orderItem != null && Model.orderItem.Count > 0)
                 {
-                    <tr class="table-style-control">
-                        <td>@item.SafeguardName</td>
-                        <td>@item.CoverageSum</td>
-                        <td>@item.PayoutRatio</td>
-                        <td>一年</td>
-                    </tr>
+                    foreach (var item in Model.orderItem)
+                    {
+                        <tr class="table-style-control">
+                            <td>@item.SafeguardName</td>
+                            <td>@item.CoverageSum</td>
+                            <td>@item.PayoutRatio</td>
+                            <td>一年</td>
+                        </tr>
+                    }
                 }
             }
-        }
-    </table>
+        </table>
     </div>
     <div class="clearfix"></div>
     <h4 class="text-primary_color"><span>投保批次</span> <b class="toggle_switch_1 text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
@@ -389,15 +396,6 @@
         </div>
     }
     <div class="clearfix"></div>
-    <h4 class="text-primary_color"><span>投保人员变更信息</span></h4>
-    @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
-    {
-        <input type="hidden" name="Id" value=@Model.Id />
-        <div id="empTempData">
-            @Html.Action("EmpChanges", new { id = Model.Id })
-        </div>
-    }
-    <div class="clearfix"></div>
     @Html.Action("AuditOrder", new { id = Model.Id })
 </div>
 
@@ -569,7 +567,7 @@
             $("#id_" + num).css("display", "block").addClass("inscoo");
             $("#nav-pagination li a.selected_haha:last").css({
                 "background": "#24A9E4",
-                "color":"#fff"
+                "color": "#fff"
             });
             $("#nav-pagination").on("click", togglePage);
         })
@@ -580,7 +578,7 @@
         });
         $(function () {
             $(".toggle_switch_1").on("click", function () {
-               $(".inscoo").slideToggle();
+                $(".inscoo").slideToggle();
             });
         })
     </script>

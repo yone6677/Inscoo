@@ -11,7 +11,7 @@ namespace Domain.Orders
         /// </summary>
         public string BNum { get; set; }
         /// <summary>
-        /// 投保批次状态
+        /// 投保批次状态 0.待审核/1.Inscoo已同意/2.Inscoo已拒绝/3.财务已同意/4.财务已拒绝/5.保险公司已同意/7.保险公司已拒绝/8.已确认提交加减保
         /// </summary>
         public int BState { get; set; }
         /// <summary>

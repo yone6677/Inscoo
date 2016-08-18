@@ -8,7 +8,7 @@
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    if (Model.State == 0)
+    if (Model.State == 0|| Model.State == 8)
     {
         if (Model.Role == "InscooOperator" || Model.Role == "Admin")
         {

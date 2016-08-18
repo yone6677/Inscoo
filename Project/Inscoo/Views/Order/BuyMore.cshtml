@@ -9,7 +9,7 @@
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)
-        <ul class="">
+        <ul>
             <li>
                 1. 下载变更人员模板人员信息变更模板:
             </li>
@@ -46,7 +46,7 @@
         <div class="clearfix"></div>
         using (Html.BeginForm("UploadEmpInfoPdf", "Order", FormMethod.Post, new { @class = "orderEntryInfoBody buyMoreFile", enctype = "multipart/form-data", onsubmit = Html.Raw("return checkFile('2')") }))
         {
-            <ul class="">
+            <ul>
                 <li>
                     3. 下载系统生成的盖章文件:
                 </li>
@@ -81,7 +81,7 @@
         }
         if (Model.HasPaymentNotice)
         {
-            <ul class="buyMoreFile" style="border-bottom:1px solid #ddd;overflow:hidden">
+            <ul class="buyMoreFile">
                 <li style="width:35%;float:left;line-height:40px;">
                     5. 请下载付款通知书:
                 </li>
@@ -96,7 +96,7 @@
         }
         else
         {
-            <ul class="buyMoreFile" style="border-bottom:1px solid #ddd;overflow:hidden">
+            <ul class="buyMoreFile">
                 <li style="width:35%;float:left;line-height:40px;">
                     5. 本次退款将用于以后增加人员费用:
                 </li>
@@ -104,7 +104,35 @@
 
                 </li>
             </ul>
-
+        }
+        <p class="clearfix"></p>
+        if (Model.HasEmpInfoFilePDFSeal)
+        {
+            <ul style="border-bottom:1px solid #ddd;overflow:hidden">
+                <li style="width:35%;float:left;line-height:40px;">
+                    6. 请确认提交加减保申请
+                </li>
+                <li style="width:25%;float:left;line-height:40px">
+                    <a class="btn btn-default" href="/Order/BuyMoreConfirm/@Model.Id?bid=@Model.BId">提交申请</a>
+                </li>
+                <li style="width:40%;float:left;line-height:40px">
+                    <span class="text-success">注意：加减保申请提交后无法修改。</span>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <ul style="border-bottom:1px solid #ddd;overflow:hidden">
+                <li style="width:35%;float:left;line-height:40px;">
+                    6. 请确认提交加减保申请
+                </li>
+                <li style="width:25%;float:left;line-height:40px">
+                    <p class="btn btn-default  disabled">提交申请</p>
+                </li>
+                <li style="width:40%;float:left;line-height:40px">
+                    <span class="text-success">注意：请先上传人员盖章PDF.。</span>
+                </li>
+            </ul>
         }
     }
 }

@@ -21,12 +21,14 @@
             @Html.DisplayNameFor(model => model.StateDesc)
         </th>
         <th>
-           保险期间
+            保险期间
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreateDate)
         </th>
-        <th></th>
+        <th>
+            操作
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -75,19 +77,18 @@
                     if (item.State == 7)
                     {
                         @Ajax.ActionLink("删除订单", "Delete", new { id = item.Id, oType = 3 }, new AjaxOptions { HttpMethod = "post", Confirm = "确定要删除该数据？", UpdateTargetId = "dadaGrid" }, new { @style = "color:green" })
+                        <span>|</span>
                     }
                     if (item.State == 6 && item.BatchState == 5)
                     {
-                        @Html.ActionLink("加减保", "BuyMore", new { id = item.Id });
+                        @Html.ActionLink("加减保", "BuyMore", new { id = item.Id }); <span>|</span>
                     }
                     if (item.State == 6 && item.BatchState == 0)
                     {
-                        @Html.ActionLink("基础信息修改", "BuyMore", new { id = item.Id });
+                        @Html.ActionLink("确认信息", "BuyMore", new { id = item.Id }); <span>|</span>
                     }
-                    if (item.State == 6 && item.BatchState == 1 || item.BatchState == 3)
-                    {
-                        <a href="/Order/Details/@item.Id">查看详情</a>
-                    }
+
+                    <a href="/Order/Details/@item.Id">查看详情</a>
                 }
             </td>
         </tr>

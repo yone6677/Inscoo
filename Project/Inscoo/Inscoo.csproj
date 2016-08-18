@@ -596,6 +596,7 @@
     <Content Include="Views\Health\HealthEmpTemp.cshtml" />
     <Content Include="Views\Health\HealthMgr.cshtml" />
     <Content Include="Views\Health\List.cshtml" />
+    <Content Include="Views\Insurance\MemberInscuranceDetailSearch.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />

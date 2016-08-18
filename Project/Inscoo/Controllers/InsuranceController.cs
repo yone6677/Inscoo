@@ -368,10 +368,22 @@ namespace Inscoo.Controllers
         }
         #endregion
         #region 会员
-        public ActionResult MemberInscuranceSearch(int fileType)
+        public ActionResult MemberInscuranceSearch(int fileType, string fileTypeName)
         {
-            ViewBag.FileType = fileType;
-            return View();
+            try
+            {
+                if (fileType <= 0 || string.IsNullOrEmpty("fileTypeName")) throw new WarningException("操作有无");
+                //if (_genericAttributeService.GetByKey(fileTypeName).Value != fileType.ToString()) throw new WarningException("操作有无");
+
+                ViewBag.FileType = fileType;
+                ViewBag.FileTypeName = fileTypeName;
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         [AllowAnonymous]
@@ -439,7 +451,7 @@ namespace Inscoo.Controllers
 
             return PartialView(list);
         }*/
-        public ActionResult MemberInscuranceCreate(string excelId, string fileTypeName, int fileType = 0)
+        public ActionResult MemberInscuranceCreate(string excelId, string fileTypeName, int fileType)
         {
             ViewBag.ExcelId = excelId;
             ViewBag.FileType = fileType;
@@ -456,6 +468,11 @@ namespace Inscoo.Controllers
             {
                 ViewBag.ExcelId = excelId;
                 ViewBag.FileType = fileType;
+                ViewBag.FileTypeName = fileTypeName;
+
+                if (fileType <= 0 || string.IsNullOrEmpty("fileTypeName")) throw new WarningException("操作有无");
+                if (_genericAttributeService.GetByKey(fileTypeName).Value != fileType.ToString()) throw new WarningException("操作有无");
+
                 var uId = User.Identity.GetUserId();
                 var uName = User.Identity.Name;
                 string mailContent, path;
@@ -484,6 +501,10 @@ namespace Inscoo.Controllers
 
                 ViewBag.Mes = "上传成功";
             }
+            catch (WarningException e)
+            {
+                ViewBag.Mes = e.Message;
+            }
             catch (Exception e)
             {
                 ViewBag.Mes = "上传失败";
@@ -506,13 +527,15 @@ namespace Inscoo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult MemberInscuranceUploadEinsurance(HttpPostedFileBase excel, int insuranceId, string uKey, string code)
         {
+            int fileType = 0;
+            string fileTypeName = "";
             try
             {
                 ViewBag.InsuranceId = insuranceId;
                 ViewBag.UKey = uKey;
                 var userName = User.Identity.Name;
-                string mailContent, path;
-                path = _archiveService.InsertMemberInsuranceEinsurance(excel, userName, insuranceId, uKey, code);
+                string mailContent;
+                var item = _archiveService.InsertMemberInsuranceEinsurance(excel, userName, insuranceId, uKey, code);
 
                 //if (path != null)
                 //{
@@ -529,6 +552,8 @@ namespace Inscoo.Controllers
 
                 //    });
                 //}
+                fileType = item.FileType;
+                fileTypeName = item.FileTypeName;
                 ViewBag.Mes = "操作成功";
             }
             catch (WarningException e)
@@ -539,7 +564,7 @@ namespace Inscoo.Controllers
             {
                 ViewBag.Mes = "操作失败";
             }
-            return RedirectToAction("CarInscuranceSearch");
+            return RedirectToAction("MemberInscuranceSearch", new { fileType, fileTypeName });
         }
 
         public ActionResult MemberInscuranceAddEOrderCode(string insuranceId, string uKey)
@@ -574,6 +599,13 @@ namespace Inscoo.Controllers
         {
             _archiveService.DeleteMemberInsuranceExcel(insuranceId);
             return RedirectToAction("MemberInscuranceSearch");
+        }
+        public ActionResult MemberInscuranceDetailSearch(int fileType, string fileTypeName)
+        {
+            ViewBag.FileType = fileType;
+            ViewBag.FileTypeName = fileTypeName;
+
+            return View();
         }
         #endregion
     }

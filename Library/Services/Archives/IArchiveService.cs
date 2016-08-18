@@ -106,7 +106,7 @@ namespace Services
         /// <param name="code"></param>
         /// <returns></returns>
         string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
-        string InsertMemberInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
+        MemberInsurance InsertMemberInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
 
         /// <summary>
         /// 

@@ -1,0 +1,41 @@
+﻿@model Models.CarInsuranceDetailSearchModel
+@{
+    ViewBag.Title = "会员列表";
+}
+@using (Ajax.BeginForm("MemberInscuranceDetailList", "Insurance", new AjaxOptions()
+{
+    HttpMethod = "post",
+    UpdateTargetId = "dataGrid"
+}, new { @id = "searchForm" }))
+{
+    <div class="Search">
+        <dl style="width:100%">
+            @*<dt>
+                投保人
+            </dt>
+            <dd>
+                @Html.TextBoxFor(model => model.InsuredName, new { placeholder = "匹配开头" })
+            </dd>
+            <dt>车牌号</dt>
+            <dd>
+                @Html.TextBoxFor(model => model.InsuredCarNo, new { placeholder = "匹配开头" })
+            </dd>
+            <dt></dt>
+            <dd>
+                <p> <input type="submit" value="查找" /></p>
+            </dd>*@
+            <dt>
+            </dt>
+            <dd>
+                @Html.ActionLink("返回列表", "MemberInscuranceSearch", new { ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-default" })
+            </dd>
+        </dl>
+        <p class="clearfix"></p>
+    </div>
+
+    <div id="dataGrid" style="overflow-x:auto">
+
+        @*@Html.Action("CarInscuranceDetailList")*@
+    </div>
+}
+

@@ -1,19 +1,22 @@
 ﻿@{
-    ViewBag.Title = "投保文件列表";
+    ViewBag.Title = "投保文件列表:" + ViewBag.FileTypeName;
+    bool isRoleMemberCard = User.IsInRole("MemberCard");
 }
 
 
 <div class="Search">
     <dl>
-
-        <dt></dt>
-        <dd>
-            <p>  @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
-        </dd>
+        @if (isRoleMemberCard)
+        {
+            <dt></dt>
+            <dd>
+                <p>  @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            </dd>
+        }
         <dt>
         </dt>
         <dd>
-            <p>  @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
+            <p>  @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-primary", style = "margin-left:0.5em;width:90%" })</p>
         </dd>
     </dl>
     <p class="clearfix"></p>

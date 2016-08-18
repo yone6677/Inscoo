@@ -65,7 +65,7 @@ namespace Services.Permissions
                 {
                     var navs = _navService.GetNotControllerNav();
                     var nav = navs.Single(s => s.name.Equals(action) && string.IsNullOrEmpty(s.controller));
-                    var per = _permissionRepository.Table.SingleOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
+                    var per = _permissionRepository.Table.FirstOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
                     if (per != null)
                     {
                         _permissionRepository.Delete(per, disable: true);
@@ -78,7 +78,7 @@ namespace Services.Permissions
                     var nav = _navService.GetByUrl(controller, action);
                     if (nav != null)
                     {
-                        var per = _permissionRepository.Table.SingleOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
+                        var per = _permissionRepository.Table.FirstOrDefault(p => p.roleId == roleId && p.NavigationId == nav.Id);
                         if (per != null)
                         {
                             _permissionRepository.Delete(per, disable: true);

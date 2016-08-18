@@ -29,9 +29,10 @@ namespace Services
         private readonly IFileService _fileService;
         private readonly IWebHelper _webHelper;
         private readonly IResourceService _resourceService;
-        public ArchiveService(IRepository<Domain.FileInfo> rpFileInfo, IRepository<CarInsurance> rpCarInsurance, IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService,
+        public ArchiveService(IRepository<MemberInsurance> rpMemberInsurance, IRepository<Domain.FileInfo> rpFileInfo, IRepository<CarInsurance> rpCarInsurance, IRepository<Archive> archiveRepository, IAuthenticationManager authenticationManager, ILoggerService loggerService, IFileService fileService,
             IRepository<BusinessLicense> rpBusinessLicense, IWebHelper webHelper, IResourceService resourceService)
         {
+            _rpMemberInsurance = rpMemberInsurance;
             _webHelper = webHelper;
             _rpCarInsurance = rpCarInsurance;
             _archiveRepository = archiveRepository;
@@ -281,7 +282,6 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "Archive：GetMemberInsuranceExcel");
                 return null;
             }
         }
@@ -638,7 +638,6 @@ namespace Services
                     _rpCarInsurance.Update(item);
                 }
 
-                _rpCarInsurance.Update(item);
                 if (item.Einsurance != null)
                     return item.Einsurance.Url;
                 else return null;
@@ -653,7 +652,7 @@ namespace Services
                 throw new WarningException("操作失败");
             }
         }
-        public string InsertMemberInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code)
+        public MemberInsurance InsertMemberInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code)
         {
             try
             {
@@ -685,10 +684,9 @@ namespace Services
                     _rpMemberInsurance.Update(item);
                 }
 
-                _rpMemberInsurance.Update(item);
-                if (item.Einsurance != null)
-                    return item.Einsurance.Url;
-                else return null;
+                //_rpMemberInsurance.Update(item);
+                
+                    return item;
             }
             catch (WarningException e)
             {
@@ -696,7 +694,6 @@ namespace Services
             }
             catch (Exception e)
             {
-                _loggerService.insert(e, LogLevel.Warning, "InsertCarInsuranceEinsurance：Insert");
                 throw new WarningException("操作失败");
             }
         }

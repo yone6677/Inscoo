@@ -135,7 +135,6 @@ function menuNav(name, csskey, cssvalue) {
         }
         if (bgColor == "/Health/HealthMgr") {
             if (urlNow.indexOf("/Health/OrderInfo?") != -1) {
-                console.log(1000);
                 url = '/Health/HealthMgr';
             }
         }

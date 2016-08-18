@@ -60,10 +60,10 @@
                                 <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" style="vertical-align:middle;width:28%" />
                                 <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4;width:40%;display:inline-block">看不清?换一张</a>
                             </div>
-                            <div style="color:red;text-align:center;width:100%;line-height:2em;">
+                            <div style="color:red;width:100%;line-height:2em;">
                                 @if (Model != null)
                                 {
-                                    <span> @Model.Result</span>
+                                    <span style="width: 100%;display: inline-block;text-align: center;"> @Model.Result</span>
                                 }
                             </div>
 

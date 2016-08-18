@@ -372,7 +372,7 @@ $(function () {
 
 
 /*健康酷数量加减*/
-function reduce(param) {
+function reduce(param,i) {
     var Num = $(param).val();
     if (Num >= 2) {
         Num--;
@@ -380,12 +380,14 @@ function reduce(param) {
     } else {
         $(param).val("1");
     }
+    getSubTotal(i);
 }
 
-function add(param) {
+function add(param,i) {
     var Num = $(param).val();
     if (Num >= 1) {
         Num++;
         $(param).val(Num);
     }
+    getSubTotal(i);
 }

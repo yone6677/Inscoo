@@ -37,6 +37,26 @@
             }
             getSubTotal(i);
         }
+        function reduce(param, i) {
+            var Num = $(param).val();
+            if (Num >= 2) {
+                Num--;
+                $(param).val(Num);
+            } else {
+                $(param).val("1");
+            }
+            getSubTotal(i);
+        }
+
+        function add(param, i) {
+            var Num = $(param).val();
+            if (Num >= 1) {
+                Num++;
+                $(param).val(Num);
+            }
+            getSubTotal(i);
+        }
+
         function getSubTotal(e) {
             var price = document.getElementById('price_' + e + '').value;
             var count = document.getElementById('count_' + e).value;

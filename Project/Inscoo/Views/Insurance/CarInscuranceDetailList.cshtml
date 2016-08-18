@@ -25,11 +25,11 @@
                 保费
             </th>
             <th>
-                日期
+                起保日期
             </th>
-            @*<th>
-                    退保日期
-                </th>*@
+            <th>
+                    结束日期
+                </th>
         </tr>
         @if (Model != null)
         {
@@ -64,13 +64,13 @@
                         <span>    @item.InsuredBeginDate.Value.ToShortDateString()</span>
                         }
             </td>
-            @*<td>
+            <td>
                     @if (item.InsuredEndingDate.HasValue)
                     {
                         <span>    @item.InsuredEndingDate.Value.ToShortDateString()</span>
                     }
 
-                </td>*@
+                </td>
         </tr>
             }
         }

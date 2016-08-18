@@ -462,7 +462,7 @@ namespace Services
             }
             return null;
         }
-        public virtual SaveResultModel SaveCarInsuranceExcel(HttpPostedFileBase postedFileBase)
+        public virtual SaveResultModel SaveInsuranceExcel(HttpPostedFileBase postedFileBase, string directory)
         {
             try
             {
@@ -477,7 +477,7 @@ namespace Services
                 var savePath = "/" + filePath + "/";
                 var date = DateTime.Now;
 
-                savePath = savePath += "CarInsuranceExcel/";
+                savePath = savePath += $"{directory}/";
 
                 savePath += date.Year + "/" + date.Month + "/";
                 //保存路径

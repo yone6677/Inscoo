@@ -54,6 +54,6 @@ namespace Services
         /// <returns></returns>
         string SaveProvision(HttpPostedFileBase postedFileBase);
 
-        SaveResultModel SaveCarInsuranceExcel(HttpPostedFileBase postedFileBase);
+        SaveResultModel SaveInsuranceExcel(HttpPostedFileBase postedFileBase, string directory= "CarInsuranceExcel");
     }
 }

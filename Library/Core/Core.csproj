@@ -97,6 +97,7 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Mapping\AppRoleMap.cs" />
+    <Compile Include="Mapping\MemberInsuranceMap.cs" />
     <Compile Include="Mapping\ClaimFilesListMap.cs" />
     <Compile Include="Mapping\CreateAccountCodeMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />

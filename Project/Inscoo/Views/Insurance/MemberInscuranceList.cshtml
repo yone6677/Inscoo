@@ -1,6 +1,9 @@
-﻿@model IEnumerable<Models.vCarInsuranceList>
+﻿@model IEnumerable<Models.vMemberInsuranceList>
 <table class="table table-bordered text-left">
     <tr style="background-color:#24A9E4;color:#fff;">
+        <th>
+            保障方案
+        </th>
         <th>
             文件名
         </th>
@@ -25,6 +28,9 @@
     {
         <tr>
             <td>
+                @item.FileTypeName
+            </td>
+            <td>
                 @{ string name = item.ExcelName.Substring(0, item.ExcelName.Length - 15);}
                 <span>@name</span>
             </td>
@@ -44,29 +50,29 @@
 
             <td>
                 <a href="@item.ExceUrl" target="blank">投保单下载</a>
-                @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
+                @if (ViewBag.isMemberCard && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
                     if (ViewBag.FileType == 0)
                     {
                         <span>|</span>
-                        @Html.ActionLink("更新", "CarInscuranceCreate", new { ExcelId = item.ExcelId, ViewBag.FileType })
+                        @Html.ActionLink("更新", "MemberInscuranceCreate", new { ExcelId = item.ExcelId, item.FileType, item.FileTypeName })
                     }
                     <span>|</span>
-                    @Html.ActionLink("删除", "CarInscuranceDelete", new { insuranceId = item.InsuranceId })
+                    @Html.ActionLink("删除", "MemberInscuranceDelete", new { insuranceId = item.InsuranceId })
                 }
                 else if (ViewBag.FileType == 0)
                 {
                     if (item.Status == "A")
                     {
                         <span>|</span>
-                        @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        @Html.ActionLink("上传电子保单", "MemberInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
                     }
                     else if (item.Status == "B")
                     {
                         <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
                         <span>|</span>
-                        @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        @Html.ActionLink("继续", "MemberInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
                     }
                     else if (item.Status == "C")
                     {

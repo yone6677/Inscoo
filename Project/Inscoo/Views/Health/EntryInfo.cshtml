@@ -32,63 +32,69 @@
         @Html.Hidden("isCompanySelect")
 
         <hr>
-        <div class="orderEntryInfoBody">
-            <p class="basic-information" style="margin-top: 20px;">
+        <div class="health-information">
+            <p class="basic-information">
                 <i class="fa fa-edit fa-2x"></i>发票公司信息
-                <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
             </p>
-            <ul>
-                <li>
-                    @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
-                </li>
+            <div class="health-information-table">
+                <p>
+                    <input type="button" value="新增信息" id="companyInfoEdit" class="btn btn-success" />
+                </p>
+                <div>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
+                        </li>
 
-                <li>
-                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
-                    @if (Model.CompanyNameList != null)
-                    {
-                        @Html.DropDownListFor(m => m.CompanyId, Model.CompanyNameList, null, new { @class = "form-control" })
-                    }
-                </li>
-                <li>
-                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
-                    <span style="color:#888;">(请填写全称用于发票抬头)</span>
-                </li>
-            </ul>
-            <ul>
-                <li style="width:20%;text-align:right">
-                    @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control" } })
-                </li>
-                <li>
-                    @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
-                </li>
-            </ul>
-            <ul style="height:50px">
-                <li>
-                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        <li>
+                            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                            @if (Model.CompanyNameList != null)
+                        {
+                                @Html.DropDownListFor(m => m.CompanyId, Model.CompanyNameList, null, new { @class = "form-control" })
+                        }
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                            <span style="color:#888;">(请填写全称用于发票抬头)</span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.Linkman, htmlAttributes: new { @class = "control-label" })：
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.Linkman, new { htmlAttributes = new { @class = "form-control" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.Linkman, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })：
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
 
-                </li>
-                <li>
-                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                    <sapn style="color:#888;">(供保单及发票寄送)</sapn>
-                </li>
-            </ul>
-            <ul>
-                <li style="width:20%;text-align:right">
-                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
-                </li>
-                <li>
-                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                </li>
-                <li>
-                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                </li>
-            </ul>
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            <sapn style="color:#888;">(供保单及发票寄送)</sapn>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })：
+                        </li>
+                        <li>
+                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        </li>
+                        <li>
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="orderConfirmBodyNext" style="text-align:center;">
             <input type="submit" value="下一步" class="btn btn-primary" style="background-color: #38A6D9;border-color: #38A6D9 " />

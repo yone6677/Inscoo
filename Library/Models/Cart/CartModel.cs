@@ -12,11 +12,11 @@ namespace Models.Cart
         public decimal Price { get; set; }
         [Display(Name = "数量")]
         public int Total { get; set; }
-        [Display(Name = "小计(元)")]
+        [Display(Name = "小计")]
         public decimal Amount { get; set; }
-        [Display(Name ="产品")]
+        [Display(Name ="商品名称")]
         public string PName { get; set; }
-        [Display(Name = "体检单位")]
+        [Display(Name = "体检机构")]
         public string CompanyName { get; set; }
     }
 }

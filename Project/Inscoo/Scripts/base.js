@@ -77,14 +77,14 @@ $(function () {
 /*menu*/
 function menuNav(name, csskey, cssvalue) {
     var url = window.location.pathname + window.location.search;
-    console.log(window.location);
-    console.log(url);
+    //console.log(window.location);
+    //console.log(url);
     
     var bgColor = "";
     $(name).each(function () {
         bgColor = $(this).attr("href");
         var urlNow = '/' + url.split('/')[1] + '/' + url.split('/')[2] + '/';
-        console.log(urlNow);
+        //console.log(urlNow);
         if (bgColor == '/Insurance/CustomizeProduct') {
             if (url == '/Order/Buy') {
                 url = '/order/ordertopay';
@@ -369,3 +369,23 @@ $(function () {
         $(hrefNow).css("display","block");
     })
 })
+
+
+/*健康酷数量加减*/
+function reduce(param) {
+    var Num = $(param).val();
+    if (Num >= 2) {
+        Num--;
+        $(param).val(Num);
+    } else {
+        $(param).val("1");
+    }
+}
+
+function add(param) {
+    var Num = $(param).val();
+    if (Num >= 1) {
+        Num++;
+        $(param).val(Num);
+    }
+}

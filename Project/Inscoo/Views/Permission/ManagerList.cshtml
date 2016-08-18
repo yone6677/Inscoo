@@ -59,7 +59,7 @@
         var roleId = jQuery("#roleId").val();
         var control = jQuery("#control").val();
         var checkbox = event.target.parentNode.previousElementSibling.children[0];
-
+        var lastTd = event.target.parentNode;
         $.ajax({
             url: type,
             type: "post",    //数据发送方式
@@ -76,9 +76,11 @@
                     //console.log(checkbox);
                     if (type == 'AddPermission') {
                         jQuery(checkbox).attr("checked", "checked");
+                        jQuery(lastTd).html("");
                     }
                     else {
                         jQuery(checkbox).removeAttr("checked");
+                        jQuery(lastTd).html("");
                     }
                 }
             }

@@ -794,7 +794,21 @@ namespace Inscoo.Controllers
                             item.Premium = order.AnnualExpense;
                             item.Name = Cells["A" + i].Value.ToString().Trim();
                             item.IDType = Cells["B" + i].Value.ToString().Trim();
-                            item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                            if (Cells["C" + i].Value != null)
+                            {
+                                if (_webHelper.IsIdNumber(Cells["C" + i].Value.ToString().Trim()))
+                                {
+                                    item.IDNumber = Cells["C" + i].Value.ToString().Trim();
+                                }
+                                else
+                                {
+                                    throw new WarningException("请检查第" + i + "行资料[证件号码]格式不正确");
+                                }
+                            }
+                            else
+                            {
+                                throw new WarningException("请检查第" + i + "行资料[证件号码]未填写");
+                            }
                             try
                             {
                                 item.Birthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
@@ -803,7 +817,21 @@ namespace Inscoo.Controllers
                             {
                                 throw new WarningException("请检查第 " + i + " 行资料,出生日期填写有误,示例 :2008/7/15 或者 2008-7-15");
                             }
-                            item.Sex = Cells["E" + i].Value.ToString().Trim();
+                            if (Cells["E" + i].Value == null)
+                            {
+                                throw new WarningException("请检查第 " + i + " 行资料,性别只能填写 男或者女");
+                            }
+                            else
+                            {
+                                if (Cells["E" + i].Value.ToString().Trim() == "男" || Cells["E" + i].Value.ToString().Trim() == "女")
+                                {
+                                    item.Sex = Cells["E" + i].Value.ToString().Trim();
+                                }
+                                else
+                                {
+                                    throw new WarningException("请检查第 " + i + " 行资料,性别只能填写 男或者女");
+                                }
+                            }
                             item.BankCard = Cells["F" + i].Value.ToString().Trim();
                             item.BankName = Cells["G" + i].Value.ToString().Trim();
                             if (Cells["H" + i].Value != null)
@@ -814,7 +842,22 @@ namespace Inscoo.Controllers
                             {
                                 item.Email = Cells["I" + i].Value.ToString().Trim();
                             }
-                            item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                            if (Cells["J" + i].Value == null)
+                            {
+                                throw new WarningException("请检查第 " + i + " 行资料,社保只能填写 有或者无");
+                            }
+                            else
+                            {
+                                if (Cells["J" + i].Value.ToString().Trim() == "有" || Cells["J" + i].Value.ToString().Trim() == "无")
+                                {
+                                    item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                                }
+                                else
+                                {
+                                    throw new WarningException("请检查第 " + i + " 行资料,社保只能填写 有或者无");
+                                }
+                            }
+
                             item.StartDate = order.StartDate;
                             item.EndDate = order.EndDate;
                             bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
@@ -833,7 +876,7 @@ namespace Inscoo.Controllers
                             var item = new OrderEmployee();
                             item.batch_Id = e.BId;
                             item.Premium = e.Premium;// order.AnnualExpense;
-                            item.PMCode = PMType.PM00.ToString();
+                            item.PMCode = _webHelper.GetEnumDescription(PMType.PM00); //PMType.PM00.ToString();
                             item.PMName = _webHelper.GetEnumDescription(PMType.PM00);
                             item.Relationship = "本人";
                             item.Name = e.Name;
@@ -1463,7 +1506,7 @@ namespace Inscoo.Controllers
             {
                 if (order.orderBatch.Count > 0)
                 {
-                    var batch = order.orderBatch.Where(b => b.BState < 5);
+                    var batch = order.orderBatch.Where(b => b.BState < 5 || b.BState == 8);
                     if (batch.Any())
                     {
                         var mid = batch.Max(o => o.Id);
@@ -1859,7 +1902,17 @@ namespace Inscoo.Controllers
                     {
                         if (Cells["A" + i].Value == null)
                             break;
-
+                        if (Cells["C" + i].Value != null)
+                        {
+                            if (!_webHelper.IsIdNumber(Cells["C" + i].Value.ToString().Trim()))
+                            {
+                                throw new Exception("第" + i + "行资料[证件号码]格式不正确");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("第" + i + "行资料[证件号码]未填写");
+                        }
                         if (Cells["E" + i].Value == null)
                         {
                             throw new Exception($"第{i}行保全类型不能为空");
@@ -1867,7 +1920,7 @@ namespace Inscoo.Controllers
                         var insType = Cells["E" + i].Value.ToString().Trim();
                         if (insType != "加保" && insType != "减保")
                         {
-                            throw new Exception($"第{i}行保全类型不正确,只能是加保或减保,请检查");
+                            throw new Exception($"第{i}行保全类型不正确,只能填写 加保或减保,请检查");
                         }
                         DateTime changeDate = new DateTime();
                         try
@@ -1911,12 +1964,19 @@ namespace Inscoo.Controllers
                             if (Cells["G" + i].Value != null)
                             {
                                 item.Sex = Cells["G" + i].Value.ToString().Trim();
+                                if (Cells["G" + i].Value.ToString().Trim() == "男" || Cells["G" + i].Value.ToString().Trim() == "女")
+                                {
+                                    item.Sex = Cells["G" + i].Value.ToString().Trim();
+                                }
+                                else
+                                {
+                                    throw new Exception("第" + i + "行资料[性别]填写有误，只能填写 男或者女！");
+                                }
                             }
                             else
                             {
                                 throw new Exception("第" + i + "行资料[性别]未填写,类型为加保的资料为必须填写！");
                             }
-
                         }
                         if (insType == "减保")
                         {
@@ -1946,6 +2006,7 @@ namespace Inscoo.Controllers
                                 item.Sex = Cells["G" + i].Value.ToString().Trim();
                             }
                         }
+                        item.IDNumber = Cells["C" + i].Value.ToString().Trim();
                         item.Relationship = "本人";
                         if (Cells["A" + i].Value != null)
                         {
@@ -1961,16 +2022,9 @@ namespace Inscoo.Controllers
                         }
                         else
                         {
-                            throw new Exception("第" + i + "行资料[证据类型]未填写");
+                            throw new Exception("第" + i + "行资料[证件类型]未填写");
                         }
-                        if (Cells["C" + i].Value != null)
-                        {
-                            item.IDNumber = Cells["C" + i].Value.ToString().Trim();
-                        }
-                        else
-                        {
-                            throw new Exception("第" + i + "行资料[证据号码]未填写");
-                        }
+
                         try
                         {
                             item.BirBirthday = DateTime.Parse(Cells["D" + i].Value.ToString().Trim());
@@ -1989,7 +2043,14 @@ namespace Inscoo.Controllers
                         }
                         if (Cells["L" + i].Value != null)
                         {
-                            item.HasSocialSecurity = Cells["L" + i].Value.ToString().Trim();
+                            if (Cells["L" + i].Value.ToString().Trim() == "有" || Cells["L" + i].Value.ToString().Trim() == "无")
+                            {
+                                item.HasSocialSecurity = Cells["J" + i].Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                throw new Exception("请检查第 " + i + " 行资料,社保只能填写 有或者无");
+                            }
                         }
                         bool idCon = eList.Where(e => e.IDNumber == item.IDNumber).Any();
                         if (idCon)
@@ -2117,6 +2178,17 @@ namespace Inscoo.Controllers
 
             }
             return null;
+        }
+        public ActionResult BuyMoreConfirm(int id, int bid)
+        {
+            var batch = _orderBatchService.GetById(bid);
+            var name = User.Identity.Name;
+            if (name == batch.Author)
+            {
+                batch.BState = 8;
+                _orderBatchService.Update(batch);
+            }
+            return RedirectToAction("BuyMore", new { id = id });
         }
         #endregion
 

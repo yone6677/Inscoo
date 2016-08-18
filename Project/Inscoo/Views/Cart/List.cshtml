@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Models.Cart.CartModel>
 <div class="t">
-    <h2 style="width:100%;"><i class="fa fa-shopping-cart"></i>我的购物车</h2>
+    <h2 style="width:100%;border-bottom:none"><i class="fa fa-shopping-cart"></i>我的购物车</h2>
 </div>
 <table class="table shoppingCart">
     <tr>
@@ -51,7 +51,7 @@
                 <td class="count-change">
                     <div class="wrap-input">
                         <span class="btn-reduce" onclick="reduce('.buy-num', '@item.Id')">-</span>
-                        <input type="number" class="cart-total buy-num" id=@countName onchange="checkNum(this,@item.Id)" value="@item.Total" min="1" max="9999" />
+                        <input type="number"  class="cart-total buy-num" id=@countName onchange="checkNum(this,@item.Id)" value="@item.Total" min="1" max="9999" />
                         <span class="btn-add" onclick="add('.buy-num','@item.Id')">+</span>
                         <span></span>
                     </div>

@@ -1894,3 +1894,40 @@ div:after {
   border: 1px solid #ff6407;
   background: url("../../Content/imgIndex/tri.png") no-repeat bottom right;
 }
+/*会员卡专属*/
+.member_cards table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.member_cards table th {
+  background: #f7f7f7;
+  border-top: 1px dashed #ddd;
+}
+.member_cards table th:first-child {
+  width: 25%;
+}
+.member_cards table th:nth-child(2) {
+  width: 20%;
+}
+.member_cards table th:last-child {
+  width: 55%;
+}
+.member_cards table th,
+.member_cards table td {
+  padding: 3px 0;
+  border-right: 1px dashed #ddd;
+  border-bottom: 1px dashed #ddd;
+}
+.member_cards table th:last-child {
+  border-right: none;
+}
+.member_cards table td:last-child {
+  text-align: left;
+  padding-left: 1em;
+  border-right: none;
+}
+.member_cards table td,
+.member_cards table th {
+  text-align: left;
+  padding-left: 1em;
+}

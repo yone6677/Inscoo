@@ -2266,3 +2266,46 @@ div:after {
     border: 1px solid #ff6407;
     background: url("../../Content/imgIndex/tri.png") no-repeat bottom right;
 }
+
+
+/*会员卡专属*/
+.member_cards{
+    table{
+        border-collapse:collapse;
+        width:100%;
+
+        
+        th{
+            background:#f7f7f7;
+            border-top:1px dashed #ddd;
+            &:first-child{
+                width:25%;
+            }
+            &:nth-child(2){
+                width:20%;
+            }
+            &:last-child{
+                width:55%;
+            }
+        }
+        th,td{
+            padding:3px 0;
+            border-right:1px dashed #ddd;
+            border-bottom:1px dashed #ddd;
+         
+        }
+        th:last-child{
+            border-right:none;
+           
+        }
+        td:last-child{
+            text-align:left;
+            padding-left:1em;
+            border-right:none;
+        }
+        td,th{
+            text-align:left;
+            padding-left:1em;
+        }
+    }
+}

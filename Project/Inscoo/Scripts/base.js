@@ -77,14 +77,14 @@ $(function () {
 /*menu*/
 function menuNav(name, csskey, cssvalue) {
     var url = window.location.pathname + window.location.search;
-    //console.log(window.location);
-    //console.log(url);
+    console.log(window.location);
+    console.log(url);
     
     var bgColor = "";
     $(name).each(function () {
         bgColor = $(this).attr("href");
         var urlNow = '/' + url.split('/')[1] + '/' + url.split('/')[2] + '/';
-        //console.log(urlNow);
+        console.log(urlNow);
         if (bgColor == '/Insurance/CustomizeProduct') {
             if (url == '/Order/Buy') {
                 url = '/order/ordertopay';
@@ -127,12 +127,18 @@ function menuNav(name, csskey, cssvalue) {
                 url = '/Health/AuditListSearch';
             }
             if (urlNow.indexOf("/Health/OrderInfo") != -1) {
-                url = '/Health/AuditListSearch';
+                url = '/Health/HealthMgr/';
             }
             if (urlNow.indexOf("/Health/AuditListSearch") != -1) {
                 url = '/Health/AuditListSearch';
             }
         }
+        if (bgColor == "/Health/HealthMgr") {
+            if (urlNow.indexOf("/Health/OrderInfo?") != -1) {
+                url = '/Health/HealthMgr';
+            }
+        }
+
         if (bgColor == "/Cart/Index") {
            
             if (urlNow.indexOf("/Cart") != -1) {

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Models.VHealthAuditList>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            订单状态
+        </th>
+        <th>
+            数量(购买/剩余)
+        </th>
+        <th>操作</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.ProductTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CreateTime)
+            </td>
+            <td>
+                @{
+                    if (item.FinConfirmDate.HasValue)
+                    {
+                        if (item.FinConfirmDate.Value.AddDays(180) < DateTime.Now)
+                        {
+                            <span>已过期</span>
+                        }
+                        else
+                        {
+                            <span>已付款</span>
+                        }
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    var avNum = item.Count - item.EmpSum;
+                }
+                <span class="text-danger">
+
+                    @item.Count
+                </span> /
+                <span class="text-success">
+                    @avNum
+                </span>
+            </td>
+            <td>
+                @if (item.Author == ViewBag.author && item.Count > item.EmpSum)
+                {
+                    <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
+                }
+                @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks }, new { style = "color:#036c96;" })
+            </td>
+        </tr>
+                    }
+</table>
+@{
+    PageCommand command = ViewBag.pageCommand;
+    @Html.Pager(command)
+}

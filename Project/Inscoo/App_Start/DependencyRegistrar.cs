@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.Mvc;
 using Core;
 using Services.Finance;
+using Services.Api;
 
 namespace Inscoo
 {
@@ -82,6 +83,9 @@ namespace Inscoo
             builder.RegisterType<CashFlowDetailsService>().As<ICashFlowDetailsService>().InstancePerDependency();
             builder.RegisterType<WZHumanService>().As<IWZHumanService>().InstancePerDependency();
             builder.RegisterType<CarInsuranceService>().As<ICarInsuranceService>().InstancePerDependency();
+            //Api
+            builder.RegisterType<ClaimApiService>().As<IClaimAPiService>().InstancePerDependency();
+            builder.RegisterType<ClaimFileApiService>().As<IClaimFileApiService>().InstancePerDependency();
         }
     }
 }

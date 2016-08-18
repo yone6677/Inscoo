@@ -102,6 +102,7 @@
     <Compile Include="Mapping\CreateAccountCodeMap.cs" />
     <Compile Include="Mapping\AppUserMap.cs" />
     <Compile Include="Mapping\CarInsuranceDetailMap.cs" />
+    <Compile Include="Mapping\HealthEmpTempMap.cs" />
     <Compile Include="Mapping\HealthFileMap.cs" />
     <Compile Include="Mapping\WZHumanMasterMap.cs" />
     <Compile Include="Mapping\CarInsuranceMap.cs" />
@@ -287,6 +288,18 @@
     <Compile Include="Migrations\201608160324004_AddTableClaimFilesList.Designer.cs">
       <DependentUpon>201608160324004_AddTableClaimFilesList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608160823069_healthEmployeesTemp.cs" />
+    <Compile Include="Migrations\201608160823069_healthEmployeesTemp.Designer.cs">
+      <DependentUpon>201608160823069_healthEmployeesTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608170224071_wechatClaim.cs" />
+    <Compile Include="Migrations\201608170224071_wechatClaim.Designer.cs">
+      <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608170510384_123.cs" />
+    <Compile Include="Migrations\201608170510384_123.Designer.cs">
+      <DependentUpon>201608170510384_123.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Pager\IPagedList.cs" />
     <Compile Include="Pager\PagedList.cs" />
@@ -414,14 +427,14 @@
     <EmbeddedResource Include="Migrations\201608120808077_AddTableCreateAccountCode.resx">
       <DependentUpon>201608120808077_AddTableCreateAccountCode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608150843538_FileAddColumnSubType.resx">
-      <DependentUpon>201608150843538_FileAddColumnSubType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608160823069_healthEmployeesTemp.resx">
+      <DependentUpon>201608160823069_healthEmployeesTemp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608150929534_UserAddColumnMemo.resx">
-      <DependentUpon>201608150929534_UserAddColumnMemo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608170224071_wechatClaim.resx">
+      <DependentUpon>201608170224071_wechatClaim.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608160324004_AddTableClaimFilesList.resx">
-      <DependentUpon>201608160324004_AddTableClaimFilesList.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608170510384_123.resx">
+      <DependentUpon>201608170510384_123.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -90,5 +90,6 @@ namespace Domain.Claim
         /// 文件列表
         /// </summary>
         public ICollection<ClaimFileFromWechatItem> ImageList { get; set; }
+        public int State { get; set; }
     }
 }

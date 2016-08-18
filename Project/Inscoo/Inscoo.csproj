@@ -304,12 +304,23 @@
     <Content Include="Content\imgIndex\新建文件夹\p6.png" />
     <Content Include="Content\imgIndex\新建文件夹\p7.png" />
     <Content Include="Content\imgIndex\新建文件夹\patternGroup.png" />
+    <Content Include="Content\img\car_insurance_1.png" />
+    <Content Include="Content\img\car_insurance_2.jpg" />
+    <Content Include="Content\img\car_insurance_2.png" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\health\health_1_8.png" />
     <Content Include="Content\img\health\health_1_9.png" />
     <Content Include="Content\img\inscoo.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\member_card_1.png" />
+    <Content Include="Content\img\member_card_2.png" />
+    <Content Include="Content\img\member_card_3.png" />
+    <Content Include="Content\img\member_card_4.png" />
+    <Content Include="Content\img\member_card_5.png" />
+    <Content Include="Content\img\member_card_6.png" />
+    <Content Include="Content\img\member_card_7.png" />
+    <Content Include="Content\img\member_card_8.png" />
     <Content Include="Content\img\p1.jpg" />
     <Content Include="Content\img\p2.jpg" />
     <Content Include="Content\img\p3.jpg" />
@@ -430,6 +441,7 @@
     <Compile Include="Controllers\ApiController\ClaimApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\WechatClaimFileController.cs" />
     <Compile Include="Controllers\WZHumanController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -581,6 +593,9 @@
     <Content Include="Views\Insurance\MemberInscuranceList.cshtml" />
     <Content Include="Views\Insurance\MemberInscuranceCreate.cshtml" />
     <Content Include="Views\Insurance\MemberInscuranceUploadEinsurance.cshtml" />
+    <Content Include="Views\Health\HealthEmpTemp.cshtml" />
+    <Content Include="Views\Health\HealthMgr.cshtml" />
+    <Content Include="Views\Health\List.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -598,6 +613,9 @@
     <Content Include="Views\User\TList.cshtml" />
     <Content Include="Views\User\EncryInfo.cshtml" />
     <Content Include="Views\Shared\_Layout1.cshtml" />
+    <Content Include="Views\WechatClaimFile\List.cshtml" />
+    <Content Include="Views\WechatClaimFile\Index.cshtml" />
+    <Content Include="Views\WechatClaimFile\File.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

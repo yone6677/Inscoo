@@ -21,6 +21,7 @@ using Microsoft.Owin.Security;
 using Models.Infrastructure;
 using Services.FileHelper;
 using Models.Cart;
+using Domain.Health;
 
 namespace Services
 {
@@ -30,6 +31,7 @@ namespace Services
         private readonly IRepository<HealthOrderDetail> _repHealthOrderDetail;
         private readonly IRepository<HealthOrderMaster> _repHealthOrderMaster;
         private readonly IRepository<HealthFile> _repHealthFile;
+        private readonly IRepository<HealthEmpTemp> _repHealthEmpTemp;
         private readonly IRepository<Company> _repCompany;
         private readonly IArchiveService _svArchive;
         private readonly ILoggerService _svLogger;
@@ -40,7 +42,7 @@ namespace Services
         public HealthService(IRepository<Company> repCompany, IAuthenticationManager svAuthentication, IFileService svFile,
             IRepository<HealthOrderMaster> repHealthOrderMaster, ILoggerService svLogger, IArchiveService svArchive,
             IRepository<HealthOrderDetail> repHealthOrderDetail, AppRoleManager roleManager, AppUserManager userManager,
-            IRepository<HealthCheckProduct> repHealthProduct, IRepository<HealthFile> repHealthFile)
+            IRepository<HealthCheckProduct> repHealthProduct, IRepository<HealthFile> repHealthFile, IRepository<HealthEmpTemp> repHealthEmpTemp)
         {
             _repCompany = repCompany;
             _svAuthentication = svAuthentication;
@@ -53,6 +55,7 @@ namespace Services
             _svLogger = svLogger;
             _svFile = svFile;
             _repHealthFile = repHealthFile;
+            _repHealthEmpTemp = repHealthEmpTemp;
         }
 
 
@@ -595,6 +598,7 @@ namespace Services
                 return new SelectList(list, "Value", "Text");
             }
         }
+        #region 上传人员资料
         public string UploadEmpExcel(HttpPostedFileBase empinfo, int masterId, string author)
         {
             try
@@ -617,21 +621,20 @@ namespace Services
                         throw new WarningException($"人数超出范围,体检人数为 {master.Count} ，最多可再上传 {empAvai} 人，请检查文件");
                     }
                     //若有旧数据先删除
-                    //var oldInfo = _repHealthOrderDetail.Table.Where(h => h.HealthOrderMasterId == masterId);
-                    //if (oldInfo.Any())
-                    //{
-                    //    _repHealthOrderDetail.Delete(oldInfo);
+                    var oldInfo = _repHealthEmpTemp.Table.Where(h => h.HealthOrderMasterId == masterId);
+                    if (oldInfo.Any())
+                    {
+                        _repHealthEmpTemp.Delete(oldInfo);
 
-                    //}
-
+                    }
                     var fileModel = _svArchive.InsertFileInfo(empinfo, author);
 
                     //读取excel数据
                     var Cells = worksheet.Cells;
                     if (Cells["A1"].Value.ToString().Trim() != "姓名" || Cells["B1"].Value.ToString().Trim() != "性别(男/女)" || Cells["C1"].Value.ToString().Trim() != "出生日期" || Cells["D1"].Value.ToString().Trim() != "证件号码" || Cells["E1"].Value.ToString().Trim() != "婚姻状况" || Cells["F1"].Value.ToString().Trim() != "移动电话" || Cells["G1"].Value.ToString().Trim() != "邮箱地址" || Cells["H1"].Value.ToString().Trim() != "所在城市" || Cells["I1"].Value.ToString().Trim() != "公司名称" || Cells["J1"].Value.ToString().Trim() != "部门" || Cells["K1"].Value.ToString().Trim() != "职位")
                         throw new WarningException("请检查上传文件和下载模板是否拥有相同的列");
-                    var list = new List<HealthOrderDetail>();
-                    var dateTicks = DateTime.Now.Ticks;
+                    var list = new List<HealthEmpTemp>();
+                    var dateTicks = master.DateTicks;
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
@@ -651,7 +654,7 @@ namespace Services
 
                         if (Cells["B" + i].Value.ToString().Trim() != "男" && Cells["B" + i].Value.ToString().Trim() != "女")
                             throw new WarningException($"第{i}行 [性别] 只能是男或者女");
-                        var item = new HealthOrderDetail();
+                        var item = new HealthEmpTemp();
                         item.HealthOrderMasterId = masterId;//批次号
                         item.Name = Cells["A" + i].Value.ToString().Trim();
                         item.Sex = Cells["B" + i].Value.ToString().Trim() == "男";
@@ -665,11 +668,11 @@ namespace Services
                         item.DepartMent = Cells["J" + i].Value == null ? "" : Cells["J" + i].Value.ToString().Trim();
                         item.Chair = Cells["K" + i].Value == null ? "" : Cells["K" + i].Value.ToString().Trim();
                         item.Author = author;
-                        item.Ticks = dateTicks;
+                        item.Ticks = long.Parse(dateTicks);
                         list.Add(item);
 
                     }
-                    var result = _repHealthOrderDetail.InsertRange(list);
+                    _repHealthEmpTemp.Insert(list);
 
                     var empFile = new HealthFile()
                     {
@@ -678,23 +681,7 @@ namespace Services
                         HId = master.Id
                     };
                     _repHealthFile.Insert(empFile);
-
-                    //if (!string.IsNullOrEmpty(master.PersonExcelPath))
-                    //{
-                    //    _svArchive.DeleteFileBuUrl(master.PersonExcelPath);
-                    //}
                     var errorMes = "";
-                    //if (master.Count > list.Count)
-                    //{
-                    //    errorMes = "上传人数小于购买人数,支付价格仍会按照购买人数计算.";
-                    //}
-                    //if (master.Count < list.Count)
-                    //{
-                    //    master.Count = list.Count;
-                    //    errorMes = "上传人数大于购买人数,已自动将购买人数调整为实际上传人数.";
-                    //}
-                    //master.PersonExcelPath = fileModel.Url;
-                    //_repHealthOrderMaster.Update(master);
                     return errorMes;
                 }
                 else
@@ -713,12 +700,13 @@ namespace Services
 
             }
         }
+        #endregion
 
         public void UpdateMaster(HealthOrderMaster master)
         {
             _repHealthOrderMaster.Update(master);
         }
-
+        #region 付款通知书
         public async Task GetPaymentNoticePdfAsync(string dateTicks)
         {
             try
@@ -734,6 +722,7 @@ namespace Services
                 _svLogger.insert(exc, LogLevel.Warning, "HealthService：GetPaymentNoticePdf");
             }
         }
+
         public string GetPaymentNoticePdf(string dateTicks)
         {
             try
@@ -973,6 +962,7 @@ namespace Services
                 return "";
             }
         }
+        #endregion
         public bool InsertHealthFile(HealthFile item)
         {
             try
@@ -998,6 +988,125 @@ namespace Services
                 _svLogger.insert(e, LogLevel.Warning, "HealthService：DeleteHealthEmp");
             }
             return false;
+        }
+        /// <summary>
+        /// 健康管理
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public IPagedList<VHealthAuditList> GetHealthList(int status = 0, DateTime? beginDate = null, DateTime? endDate = null, string productName = null, int pageIndex = 1, int pageSize = 15)
+        {
+            var list = new List<VHealthAuditList>();
+            try
+            {
+                var query = _repHealthOrderMaster.Table.Include(q => q.HealthCheckProduct).AsNoTracking();
+                if (!string.IsNullOrEmpty(productName))
+                {
+                    query = query.Where(q => q.HealthCheckProduct.ProductName.Contains(productName));
+                }
+                if (status > 0)
+                {
+                    query = query.Where(q => q.Status == status);
+                }
+                if (beginDate.HasValue)
+                {
+                    query = query.Where(q => q.CreateTime > beginDate);
+                }
+                if (endDate.HasValue)
+                {
+                    query = query.Where(q => q.CreateTime < endDate);
+                }
+                var userName = _svAuthentication.User.Identity.Name;
+                var role = _roleManager.FindById(_userManager.FindByName(userName).Roles.First().RoleId);
+                if (role.Name != "Admin")
+                {
+                    query = query.Where(q => q.Author == userName);
+                }
+                if (query.Any())
+                {
+                    var nlist = from q in query
+                                let p = q.HealthCheckProduct
+                                select (new VHealthAuditList()
+                                {
+                                    MasterId = q.Id,
+                                    ProductName = p.ProductName,
+                                    ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
+                                    Author = q.Author,
+                                    Count = q.Count,
+                                    EmpSum = q.HealthOrderDetails.Count,
+                                    DateTicks = q.DateTicks,
+                                    CreateTime = q.CreateTime,
+                                    Status = q.Status,
+                                    FinConfirmDate = q.FinanceConfirmDate
+                                });
+                    if (nlist.Any())
+                    {
+                        list = nlist.OrderByDescending(q => q.MasterId).ToList();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Warning, _svAuthentication.User.Identity.Name);
+            }
+            return new PagedList<VHealthAuditList>(list, pageIndex, pageSize);
+        }
+        public IPagedList<HealthEmpTemp> GetHealthEmpTemp(int pageIndex, int pageSize, int masterId, long ticks)
+        {
+            try
+            {
+                var list = _repHealthEmpTemp.TableNoTracking.Where(h => h.HealthOrderMasterId == masterId && h.Ticks == ticks);
+                if (!list.Any()) throw new Exception();
+                return new PagedList<HealthEmpTemp>(list.ToList(), pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+                return new PagedList<HealthEmpTemp>(new List<HealthEmpTemp>(), pageIndex, pageSize);
+            }
+        }
+        public void PutEmp(int id)
+        {
+            try
+            {
+                var empTempList = _repHealthEmpTemp.Table.Where(a => a.HealthOrderMasterId == id).AsNoTracking();
+                if (empTempList.Any())
+                {
+                    var list = new List<HealthOrderDetail>();
+                    var newList = empTempList.ToList();
+                    var ticks = DateTime.Now.Ticks;
+                    foreach (var s in newList)
+                    {
+                        var item = new HealthOrderDetail()
+                        {
+                            Address = s.Address,
+                            Ticks = ticks,
+                            Author = s.Author,
+                            Birthday = s.Birthday,
+                            Chair = s.Chair,
+                            CompanyName = s.CompanyName,
+                            CreateTime = s.CreateTime,
+                            DepartMent = s.DepartMent,
+                            Email = s.Email,
+                            HealthOrderMasterId = id,
+                            IdNumber = s.IdNumber,
+                            Marriage = s.Marriage,
+                            Name = s.Name,
+                            Phone = s.Phone,
+                            Sex = s.Sex
+                        };
+                        list.Add(item);
+                        var empTemp = _repHealthEmpTemp.GetById(s.Id);
+                        _repHealthEmpTemp.Delete(empTemp);
+                    }
+                    _repHealthOrderDetail.Insert(list);
+                }
+            }
+            catch (Exception e)
+            {
+                _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
+            }
         }
         #region private
 

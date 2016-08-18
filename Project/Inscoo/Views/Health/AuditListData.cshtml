@@ -55,10 +55,10 @@
                     }
                     else
                     {
-                        if (item.Count > item.EmpSum && item.CreateTime.AddDays(60) > DateTime.Now && item.Author == ViewBag.author)
+                        @*if (item.Count > item.EmpSum && item.CreateTime.AddDays(60) > DateTime.Now && item.Author == ViewBag.author)
                         {
                             <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
-                        }
+                        }*@
                         if (item.Status > 4 && !ViewBag.IsInscooOperator && !ViewBag.IsFinance)
                         {
                             @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
@@ -110,11 +110,6 @@
                             {
                                 @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId, item.DateTicks })
                             }
-                            else if (item.Status == 17)
-                            {
-                                <span>已付款</span>
-                            }
-
                         }
                     }
                 }

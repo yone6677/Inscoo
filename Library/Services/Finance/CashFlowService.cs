@@ -167,7 +167,7 @@ namespace Services.Finance
             {
                 _loggerService.insert(e, LogLevel.Warning, "CashFlowService：GetListOfPager");
             }
-            return new PagedList<CashFlowModel>(new List<CashFlowModel>(), pageIndex, pageSize); ;
+            return new PagedList<CashFlowModel>(new List<CashFlowModel>(), pageIndex, pageSize); 
         }
     }
 }

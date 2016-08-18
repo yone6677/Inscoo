@@ -397,5 +397,14 @@ namespace Services
             //#endregion
         }
         #endregion
+        public bool IsIdNumber(string idNumber)
+        {
+            Regex r = new Regex(@"^(^\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$");
+            if (r.IsMatch(idNumber))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

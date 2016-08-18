@@ -15,6 +15,7 @@ using Models.Order;
 using Services;
 using Newtonsoft.Json;
 using Models.Cart;
+using Domain.Health;
 
 namespace Inscoo.Controllers
 {
@@ -409,6 +410,25 @@ namespace Inscoo.Controllers
             }
             return null;
         }
+        public ActionResult HealthEmpTemp(int masterId, long ticks, int pageIndex = 1, int pageSize = 15)
+        {
+            if (masterId > 0)
+            {
+                var model = _svHealth.GetHealthEmpTemp(pageIndex, pageSize, masterId, ticks);
+                var command = new PageCommand()
+                {
+                    PageIndex = model.PageIndex,
+                    PageSize = model.PageSize,
+                    TotalCount = model.TotalCount,
+                    TotalPages = model.TotalPages
+                };
+                ViewBag.pageCommand = command;
+                ViewBag.id = masterId;
+                ViewBag.ticks = ticks;
+                return PartialView(model);
+            }
+            return null;
+        }
         public ActionResult DeleteEmp(int id, string MasterId, string DateTicks)
         {
             _svHealth.DeleteHealthEmp(id);
@@ -439,15 +459,12 @@ namespace Inscoo.Controllers
             catch (WarningException e)
             {
                 TempData["error"] = e.Message;
-                return RedirectToAction("UploadEmp", new { id = id });
-
             }
             catch (Exception e)
             {
                 TempData["error"] = "上传失败！";
-                return RedirectToAction("UploadEmp", new { id = id });
             }
-            return RedirectToAction("OrderInfo", new { masterId = id, dateTicks = ticks });
+            return RedirectToAction("UploadEmp", new { id = id });
         }
         /// <summary>
         /// 确认付款
@@ -577,6 +594,33 @@ namespace Inscoo.Controllers
             ViewBag.pageCommand = command;
             ViewBag.author = User.Identity.Name;
             return PartialView(list);
+        }
+        public ActionResult HealthMgr()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 健康管理列表
+        /// </summary>
+        public PartialViewResult List(DateTime? beginDate = null, DateTime? endDate = null, string productName = null, int pageIndex = 1, int pageSize = 15)
+        {
+            var list = _svHealth.GetHealthList(17, beginDate, endDate, productName, pageIndex, pageSize);
+            var command = new PageCommand()
+            {
+                PageIndex = list.PageIndex,
+                PageSize = list.PageSize,
+                TotalCount = list.TotalCount,
+                TotalPages = list.TotalPages
+            };
+            ViewBag.pageCommand = command;
+            ViewBag.author = User.Identity.Name;
+            return PartialView(list);
+        }
+        public ActionResult PutEmp(int id)
+        {
+            var master = _svHealth.GetHealthMaster(id);
+            _svHealth.PutEmp(id);
+            return RedirectToAction("OrderInfo", new { masterId = master.Id, dateTicks = master.DateTicks });
         }
     }
 }

@@ -86,5 +86,11 @@ namespace Services
         string GetEnumDescription(Enum enumValue);
         string EncryptCookie(string name);
         string DecryptCookie(string temp);
+        /// <summary>
+        /// 验证身份证
+        /// </summary>
+        /// <param name="idNumber"></param>
+        /// <returns></returns>
+        bool IsIdNumber(string idNumber);
     }
 }

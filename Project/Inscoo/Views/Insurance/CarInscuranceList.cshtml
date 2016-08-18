@@ -56,7 +56,7 @@
                 }
                 else if (ViewBag.FileType == 0)
                 {
-                    if (item.Status == "A")
+                    if (item.Status == "A" && User.IsInRole("CarInscuranceCompany"))
                     {
                         <span>|</span>
                         if (string.IsNullOrEmpty(item.EinsuranceUrl))
@@ -71,15 +71,15 @@
                         }
                     }
                     @*else if (item.Status == "B")
-                    {
-                        <span>|</span>
-                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
-                        <span>|</span>
-                        @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
-                    }*@
-                    else if (item.Status == "C")
-                    {
-                        <span>|</span>
+                        {
+                            <span>|</span>
+                            <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                            <span>|</span>
+                            @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }*@
+                else if (item.Status == "C")
+                {
+                    <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
                     }
 

@@ -50,14 +50,14 @@
                 </td>
                 <td class="count-change">
                     <div class="wrap-input">
-                        <span class="btn-reduce" onclick="reduce('.buy-num', '@item.Id')">-</span>
+                        <span class="btn-reduce" onclick="reduce(this, @item.Id)">-</span>
                         <input type="number"  class="cart-total buy-num" id=@countName onchange="checkNum(this,@item.Id)" value="@item.Total" min="1" max="9999" />
-                        <span class="btn-add" onclick="add('.buy-num','@item.Id')">+</span>
+                        <span class="btn-add" onclick="add(this,@item.Id)">+</span>
                         <span></span>
                     </div>
                 </td>
                 <td>
-                    <span id=@subTotalName>@string.Format("{0:C}",item.Amount)</span>
+                    <span>&yen; </span><span id=@subTotalName>@item.Amount</span>
                 </td>
                 <td>
                     @Html.ActionLink("删除", "Delete", new { id = item.Id }, new { @class = "text-danger" })

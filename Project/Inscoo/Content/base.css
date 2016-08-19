@@ -1180,7 +1180,7 @@ div:after {
 }
 .health_box .health_project .health_detail li.project_price div span {
   color: #f00;
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: bold;
 }
 .health_box .health_project .health_detail .btn {

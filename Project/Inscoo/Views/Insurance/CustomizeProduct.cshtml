@@ -51,6 +51,20 @@
                 compangName += "getPriceAndIds(c='" + s.Value + "',e=1);getPriceAndIds(c='" + s.Value + "',e=2);getPriceAndIds(c='" + s.Value + "',e=3);";
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
+                        <div class="programme-query-list" style="height:auto;padding-top:20px;">
+                                @if (s.Value == "YAIC")
+                                {
+                                    <p style="border:1px solid #f00;border-radius:3px;padding:0 3px;margin-right:20px;color:#f00;line-height:30px;">永安保险：1996年成立，资金实力雄厚，健康险性价比高，全程线上投保，简单便捷，500元以下赔案金额可以微信理赔，无需提供发票原件。</p>
+                                }
+                                else if (s.Value == "CHINALIFE")
+                                {
+                                    <p style="border:1px solid #f00;border-radius:3px;padding:0 3px;margin-right:20px;color:#f00;line-height:30px;">中国人寿保险公司：A股上市，信誉保障，风控强，线上可完成投保，须寄送投保资料原件，理赔须提供发票原件。</p>
+                                }
+                                else if (s.Value == "PICC")
+                                {
+                                    <p style="border:1px solid #f00;border-radius:3px;padding:0 3px;margin-right:20px;color:#f00;line-height:30px;">中国人民保险公司：港股上市，健康险方案灵活，线上可完成投保，须补寄投保资料原件，理赔须提供发票原件。</p>
+                                }
+                        </div>
                         <div class="programme-query-list">
                             <b>请选择保险类别：</b>
                             <label class="checkbox-inline">

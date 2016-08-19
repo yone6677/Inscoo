@@ -540,9 +540,9 @@
     {
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">营运车乘意险</div>
-            <div style="overflow:hidden;">
+            <div>
                 <div style="float:left;width:80%;">
-                    <table style="width:100%;border:1px solid #ddd;border-bottom:none;border-right:none;">
+                    <table style="width:100%;height:254px; border:1px solid #ddd;border-bottom:none;border-right:none;">
                         <tbody>
                             <tr>
                                 <td style="width:20%;padding:10px;">
@@ -603,7 +603,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;border-right:none;">
+                    <table style="width:100%;height:254px;border:1px solid #ddd;margin-bottom:15px;border-right:none;">
                         <tbody>
                             <tr>
                                 <td style="width:20%;padding:10px;">
@@ -662,24 +662,22 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div style="width:20%;float:left">
-                    <div style="background:#F5F5F5;height:415px; border:1px solid #ddd;border-left:none;text-align:center;vertical-align:middle">
-                        <div style="height:auto;margin-top:130px;">
+                </div>  
+                <div style="width:20%; float:left;background:#F5F5F5; height:508px;border:1px solid #ddd;border-left:none;text-align:center;">
+                    <div style="height:auto;margin-top:175px;">
+                        <p>
+                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
+                        </p>
+                        @if (User.IsInRole("CarInscuranceCustomer"))
+                        {
                             <p>
-                                @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
                             </p>
-                            @if (User.IsInRole("CarInscuranceCustomer"))
-                            {
-                                <p>
-                                    @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
-                                </p>
-                                <p>
-                                    @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
-                                </p>
-                            }
-                            <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
-                        </div>
+                            <p>
+                                @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
+                            </p>
+                        }
+                        <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
                     </div>
                 </div>
             </div>

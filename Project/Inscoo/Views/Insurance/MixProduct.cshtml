@@ -669,6 +669,11 @@
                             <p>
                                 @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
                             </p>
+							@if (User.IsInRole("CarInscuranceCompany"))
+                            {
+							<p>
+                                 @Html.ActionLink("车险列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-success" })
+                            </p>}
                             @if (User.IsInRole("CarInscuranceCustomer"))
                             {
                                 <p>
@@ -749,6 +754,11 @@
                             <p>
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
                             </p>
+							@if (User.IsInRole("CarInscuranceCompany"))
+                            {
+							<p>
+                                 @Html.ActionLink("投保列表", "", new { fileType = 0 }, new { @class = "btn btn-success" })
+                            </p>}
                             @if (isRoleMemberCard)
                             {
                                 <p>

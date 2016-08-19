@@ -54,5 +54,7 @@ namespace Models
         /// 订单状态 7:付款确认 11:OP审核通过 14:OP审核未通过 17:确认收款
         /// </summary>
         public decimal State { get; set; }
+        [DisplayName("订单号")]
+        public string BaokuOrderCode { set; get; }
     }
 }

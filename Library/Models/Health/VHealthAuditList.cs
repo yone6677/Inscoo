@@ -21,7 +21,8 @@ namespace Models
 
         [DisplayName("订单状态")]
         public decimal Status { set; get; }
-
+        [DisplayName("公司名称")]
+        public string CompanyName { get; set; }
         [DisplayName("订单状态")]
         public string StatusDes { set; get; }
         [DisplayName("优惠价")]
@@ -41,5 +42,8 @@ namespace Models
         /// 财务确认时间
         /// </summary>
         public DateTime? FinConfirmDate { get; set; }
+        public List<VHealthAuditList> Recursive { get; set; }
+        [DisplayName("订单号")]
+        public string BaokuOrderCode { set; get; }
     }
 }

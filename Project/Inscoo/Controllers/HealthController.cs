@@ -602,9 +602,9 @@ namespace Inscoo.Controllers
         /// <summary>
         /// 健康管理列表
         /// </summary>
-        public PartialViewResult List(DateTime? beginDate = null, DateTime? endDate = null, string productName = null, int pageIndex = 1, int pageSize = 15)
+        public PartialViewResult List(DateTime? beginDate = null, DateTime? endDate = null, string productName = null, string orderNumber = null, int pageIndex = 1, int pageSize = 15)
         {
-            var list = _svHealth.GetHealthList(17, beginDate, endDate, productName, pageIndex, pageSize);
+            var list = _svHealth.GetHealthList(17, beginDate, endDate, productName, orderNumber, pageIndex, pageSize);
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,

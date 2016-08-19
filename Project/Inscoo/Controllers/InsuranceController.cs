@@ -17,6 +17,8 @@ using Domain;
 using Innscoo.Infrastructure;
 using Microsoft.AspNet.Identity;
 using Models.Common;
+using System.IO;
+using System.Text;
 
 namespace Inscoo.Controllers
 {
@@ -203,9 +205,7 @@ namespace Inscoo.Controllers
         [HttpPost]
         public PartialViewResult CarInscuranceDetailList(CarInsuranceDetailSearchModel model, int pageIndex = 1, int pageSize = 15)
         {
-
             IPagedList<CarInsuranceDetail> list = _svCarInsuranceService.GetDetails(model, pageIndex, pageSize);
-
             var command = new PageCommand()
             {
                 PageIndex = list.PageIndex,
@@ -217,6 +217,24 @@ namespace Inscoo.Controllers
 
             return PartialView(list);
         }
+
+        [AllowAnonymous]
+        public FileStreamResult GetInscuranceDetailList(string InsurancePolicy, string InsuredCarNo, string InsuredName)
+        {
+            if (string.IsNullOrEmpty(InsurancePolicy) && string.IsNullOrEmpty(InsuredCarNo) && string.IsNullOrEmpty(InsuredName))
+            {
+                Response.End();
+                return null;
+            }
+            var bytes = _svCarInsuranceService.DownLoadDetails(new CarInsuranceDetailSearchModel { InsurancePolicy = InsurancePolicy, InsuredName = InsuredName, InsuredCarNo = InsuredCarNo });
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment;  filename=车险列表.xlsx");
+            Response.BinaryWrite(bytes);
+            Response.End();
+            return null;
+        }
+
         public ActionResult CarInscuranceCreate(string excelId, int fileType = 0)
         {
             ViewBag.ExcelId = excelId;
@@ -481,23 +499,23 @@ namespace Inscoo.Controllers
                 {
                     path = _archiveService.InsertMemberInsuranceExcel(excel,
                        uName, fileTypeName, fileType);
-                    //mailContent = string.Format("用户：{0}上传车险{1}", uName, excel.FileName);
+                    mailContent = string.Format("用户：{0}上传投保文件{1}", uName, excel.FileName);
                 }
                 else
                 {
-                    //mailContent = string.Format("用户：{0}重新上传车险{1}", uName, excel.FileName);
+                    mailContent = string.Format("用户：{0}上传投保文件{1}", uName, excel.FileName);
                     path = _archiveService.UpdateCarInsuranceExcel(excel, excelId, uName);
                 }
-                //var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
-                //MailService.SendMailAsync(new MailQueue()
-                //{
-                //    MQTYPE = "UploadCarInscurance",
-                //    MQSUBJECT = "上传车险通知",
-                //    MQMAILCONTENT = "",
-                //    MQMAILFRM = "service@inscoo.com",
-                //    MQMAILTO = string.Join(";", mailTo),
-                //    MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
-                //});
+                var mailTo = _genericAttributeService.GetByGroup("CarInscuranceMailTo").Select(c => c.Value);
+                MailService.SendMailAsync(new MailQueue()
+                {
+                    MQTYPE = "UploadMemberInsurance",
+                    MQSUBJECT = "上传投保文件通知",
+                    MQMAILCONTENT = "",
+                    MQMAILFRM = "service@inscoo.com",
+                    MQMAILTO = string.Join(";", mailTo),
+                    MQFILE = AppDomain.CurrentDomain.BaseDirectory + path.Substring(1)
+                });
 
                 ViewBag.Mes = "上传成功";
             }

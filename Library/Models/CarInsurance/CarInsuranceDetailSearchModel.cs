@@ -8,11 +8,13 @@ namespace Models
 {
     public class CarInsuranceDetailSearchModel
     {
-
         [DisplayName("投保人")]
         public string InsuredName { set; get; }
 
         [DisplayName("车牌")]
         public string InsuredCarNo { set; get; }
+
+        [DisplayName("保单号码")]
+        public string InsurancePolicy { set; get; }
     }
 }

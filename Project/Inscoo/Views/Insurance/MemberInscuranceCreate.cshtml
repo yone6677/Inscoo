@@ -28,7 +28,7 @@
             <label class="control-label col-md-3"></label>
             <div class="col-md-7">
                 <input type="submit" class="btn btn-info" value="提交" />
-                @Html.ActionLink("返回列表", "MemberInscuranceSearch", new { ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-default" })
+                @*@Html.ActionLink("返回列表", "MemberInscuranceSearch", new { ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-default" })*@
             </div>
         </div>
         <div class="form-group">
@@ -55,4 +55,11 @@
                 </div>
             }
         }*@
+}
+@using (Ajax.BeginForm("MemberInscuranceList", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "dadaGrid" }, new { @class = "form-inline", role = "form", id = "searchForm" }))
+{
+    <input type="hidden" id="fileType" name="fileType" value="@ViewBag.FileType" />
+    <div id="dadaGrid">
+        @Html.Action("MemberInscuranceList", new { ViewBag.FileType })
+    </div>
 }

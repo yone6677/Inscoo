@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Models.Insurance.RecommendationModel>
 
 
-@using (Html.BeginForm("Buy", "Order", FormMethod.Post, new { id = "purchaseForm" }))
-{
+    @using (Html.BeginForm("Buy", "Order", FormMethod.Post, new { id = "purchaseForm" }))
+    {
     <input type="hidden" name="companyName" value="YAIC" />
     <input type="hidden" name="productIds" id="productIds" value="" />
     <input type="hidden" name="StaffsNum" id="StaffsNum" value="0" />
@@ -10,16 +10,17 @@
     <input type="hidden" name="Price" id="Price" value="0.00" />
     <input type="hidden" name="CaseName" id="CaseName" value="" />
     <input type="hidden" name="AgeRangeName" id="AgeRangeName" value="" />
-}
+    }
 
-<div class="panel inscooCase">
-    @*<div class="inscooCase-title-left">
+    <div class="panel inscooCase">
+        @*<div class="inscooCase-title-left">
             <strong>选择一个方案</strong>
             <span>SELECT A PROGRAMME</span>
         </div>*@
-    <ul id="myTab" class="nav nav-tabs myTab" style="width:96%;margin:0 auto;margin-top:20px;">
-        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>
-        @*<li class="active">
+        <ul id="myTab" class="nav nav-tabs myTab" style="width:96%;margin:0 auto;margin-top:20px;">
+            <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>
+            @*
+            <li class="active">
                 <a href="#product_d1" data-toggle="tab">中高端员工福利保险</a>
             </li>
 
@@ -31,9 +32,9 @@
                 <a href="#product_d3" data-toggle="tab">营运车乘意险</a>
             </li>*@
 
-    </ul>
-    @if (ViewBag.ProductSeries.Contains("中高端医疗"))
-    {
+        </ul>
+        @if (ViewBag.ProductSeries.Contains("中高端医疗"))
+        {
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">中高端员工福利保险</div>
             <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
@@ -456,9 +457,9 @@
                 </tbody>
             </table>
         </div>
-    }
-    @if (ViewBag.ProductSeries.Contains("吴中人力资源"))
-    {
+        }
+        @if (ViewBag.ProductSeries.Contains("吴中人力资源"))
+        {
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">吴中人力资源</div>
             <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
@@ -528,16 +529,16 @@
             </table>
 
         </div>
-    }
+        }
 
-    @if (ViewBag.ProductSeries.Contains("旅行险系列"))
-    {
-    }
-    @if (ViewBag.ProductSeries.Contains("代理人系列"))
-    {
-    }
-    @if (ViewBag.ProductSeries.Contains("营运车乘意险系列"))
-    {
+        @if (ViewBag.ProductSeries.Contains("旅行险系列"))
+        {
+        }
+        @if (ViewBag.ProductSeries.Contains("代理人系列"))
+        {
+        }
+        @if (ViewBag.ProductSeries.Contains("营运车乘意险系列"))
+        {
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">营运车乘意险</div>
             <div style="overflow:hidden;">
@@ -658,7 +659,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </td>      
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -669,19 +670,19 @@
                             <p>
                                 @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
                             </p>
-							@if (User.IsInRole("CarInscuranceCompany"))
+                            @if (User.IsInRole("CarInscuranceCompany"))
                             {
-							<p>
-                                 @Html.ActionLink("车险列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-success" })
+                            <p>
+                                @Html.ActionLink("车险列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-success" })
                             </p>}
                             @if (User.IsInRole("CarInscuranceCustomer"))
                             {
-                                <p>
-                                    @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
-                                </p>
-                                <p>
-                                    @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
-                                </p>
+                            <p>
+                                @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
+                            </p>
+                            <p>
+                                @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
+                            </p>
                             }
                             <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
                         </div>
@@ -689,10 +690,13 @@
                 </div>
             </div>
         </div>
-    }
-    @{ bool isRoleMemberCard = User.IsInRole("MemberCard");}
-    @if (ViewBag.ProductSeries.Contains("会员卡系列"))
-    {
+        }
+        @{
+        bool isRoleMemberCard = User.IsInRole("MemberCard");
+        bool isCarInscuranceCompany= User.IsInRole("CarInscuranceCompany");
+        }
+        @if (ViewBag.ProductSeries.Contains("会员卡系列"))
+        {
 
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">会员卡系列</div>
@@ -750,20 +754,21 @@
 
 
                         <td style="width:20%;background:#F5F5F5">
-                            
+
                             <p>
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
                             </p>
-							@if (User.IsInRole("CarInscuranceCompany"))
+                            @if (isCarInscuranceCompany)
                             {
-							<p>
-                                 @Html.ActionLink("投保列表", "", new { fileType = 0 }, new { @class = "btn btn-success" })
-                            </p>}
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
-                                </p>
+                            <p>
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
+                            </p>
                             }
                             <a href="#" target="_blank">保险条款</a>
                         </td>
@@ -825,11 +830,17 @@
                             <p>
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -890,11 +901,17 @@
                             <p>
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -953,12 +970,18 @@
                                 @*<a href="#" class="">查看保险清单</a>*@
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType =4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @*<a href="#" class="">查看保险清单</a>*@
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -1018,12 +1041,18 @@
                                 @*<a href="#" class="">查看保险清单</a>*@
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @*<a href="#" class="">查看保险清单</a>*@
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -1095,12 +1124,18 @@
                                 @*<a href="#" class="">查看保险清单</a>*@
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @*<a href="#" class="">查看保险清单</a>*@
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -1172,12 +1207,18 @@
                                 @*<a href="#" class="">查看保险清单</a>*@
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @*<a href="#" class="">查看保险清单</a>*@
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
@@ -1234,22 +1275,28 @@
                                 @*<a href="#" class="">查看保险清单</a>*@
                                 @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
                             </p>
+                            @if (isCarInscuranceCompany)
+                            {
+                            <p>
+                                @Html.ActionLink("投保列表", "MemberInscuranceSearch", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
+                            </p>
+                            }
                             @if (isRoleMemberCard)
                             {
-                                <p>
-                                    @*<a href="#" class="">查看保险清单</a>*@
-                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
-                                </p>}
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
+                            </p>}
                             <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    }
-</div>
+        }
+    </div>
 
-<script>
+    <script>
 
     function purchase(e) {
         var ageRange;
@@ -1327,4 +1374,4 @@
         $("#purchaseForm").submit();
     }
 
-</script>
+    </script>

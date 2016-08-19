@@ -28,6 +28,10 @@
             <dd>
                 @Html.EditorFor(model => model.ProductName)
             </dd>
+            <dt>@Html.DisplayNameFor(model => model.OrderNumber)</dt>
+            <dd>
+                @Html.EditorFor(model => model.OrderNumber)
+            </dd>
             <dt>订单状态</dt>
             <dd>
                 @Html.DropDownListFor(m => m.ListType, Model.ListTypeList, null, new { })

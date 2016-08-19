@@ -14,6 +14,10 @@ namespace Models.Order
         }
         [DisplayName("方案名称")]
         public string Name { get; set; }
+        [DisplayName("下单人")]
+        public string Author { get; set; }
+        [DisplayName("下单时间")]
+        public DateTime CreateTime { get; set; }
         [DisplayName("订单编号")]
         public string OrderNum { get; set; }
         [DisplayName("产品备注")]

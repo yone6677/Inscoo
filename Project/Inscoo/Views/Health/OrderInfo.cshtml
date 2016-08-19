@@ -11,6 +11,18 @@
     <h4 class="text-primary_color"><span>订单信息</span></h4>
     <dl>
         <dt>
+            <label class="control-label">编号</label>：
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MasterId, new { htmlAttributes = new { @class = "form-control control-label" } })
+        </dd>
+        <dt>
+            @Html.LabelFor(model => model.BaokuOrderCode, htmlAttributes: new { @class = "control-label" })：
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BaokuOrderCode, new { htmlAttributes = new { @class = "form-control control-label" } })
+        </dd>
+        <dt>
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })：
         </dt>
         <dd>
@@ -112,11 +124,11 @@
 
 </div>
 @*@if (!ViewBag.IsInline)
-{
-    <div class="orderConfirmBodyNext">
-        @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
-    </div>
-}*@
+    {
+        <div class="orderConfirmBodyNext">
+            @Html.ActionLink("返回列表", "AuditListSearch", new { Model.PageIndex, Model.PageSize }, new { @class = "btn btn-primary" })
+        </div>
+    }*@
 @if (ViewBag.IsDelete)
 {
     <div class="orderConfirmBodyNext">

@@ -354,7 +354,8 @@ namespace Services
                         prodName = master.HealthCheckProduct.ProductName,
                         Expire = master.Expire,
                         ServicePeriod = servicePeriod,
-                        ticksGroup = longTicks
+                        ticksGroup = longTicks,
+                        BaokuOrderCode = master.BaokuOrderCode
                     };
                 }
             }
@@ -388,23 +389,24 @@ namespace Services
         /// <returns></returns>
         public IPagedList<VHealthAuditList> GetHealthAuditList(int pageIndex, int pageSize, string uName, VHealthSearch search)
         {
+            var newTab = new List<VHealthAuditList>();
             try
             {
-                var newTab = new List<HealthOrderMaster>();
                 var query = _repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).AsNoTracking();
+                if (!string.IsNullOrEmpty(search.OrderNumber))
+                {
+                    search.OrderNumber = search.OrderNumber.Trim().ToUpper();
+                    query = query.Where(q => q.BaokuOrderCode == search.OrderNumber);
+                }
                 if (search.IsInscooOperator)//如果是operator，查询所有已填写信息的订单
                 {
                     if (search.ListType == "2")// 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
                     {
                         query = query.Where(h => h.Status == 4);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 4)
-                        //.AsNoTracking();
                     }
                     else if (search.ListType == "3")
                     {
                         query = query.Where(h => h.Status == 11 || h.Status == 14);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11 || h.Status == 14)
-                        //    .AsNoTracking();
                     }
                     else
                     {
@@ -417,14 +419,6 @@ namespace Services
                     if (!string.IsNullOrEmpty(search.ProductName))
                     {
                         query = query.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
-                    }
-                    if (query.Any())//有多个项目的订单合并。
-                    {
-                        var q = from p in query group p by p.DateTicks into g select new { maxId = g.Max(p => p.Id) };
-                        foreach (var s in q)
-                        {
-                            newTab.Add(query.Where(a => a.Id == s.maxId).FirstOrDefault());
-                        }
                     }
                 }
                 else if (search.IsFinance)//如果是财务，查询所有已审核的订单
@@ -432,14 +426,10 @@ namespace Services
                     if (search.ListType == "6")// 6已确认 5 未确认
                     {
                         query = query.Where(h => h.Status == 17);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 17)
-                        //.AsNoTracking();
                     }
                     else if (search.ListType == "5")
                     {
                         query = query.Where(h => h.Status == 11);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct).Where(h => h.Status == 11)
-                        //    .AsNoTracking();
                     }
                     else
                     {
@@ -452,14 +442,6 @@ namespace Services
                     if (!string.IsNullOrEmpty(search.ProductName))
                     {
                         query = query.Where(h => h.HealthCheckProduct.ProductName.Contains(search.ProductName));
-                    }
-                    if (query.Any())//有多个项目的订单合并。
-                    {
-                        var q = from p in query group p by p.DateTicks into g select new { maxId = g.Max(p => p.Id) };
-                        foreach (var s in q)
-                        {
-                            newTab.Add(query.Where(a => a.Id == s.maxId).FirstOrDefault());
-                        }
                     }
                 }
                 else//如果不是operator，查询所有当前用户已填写信息的订单
@@ -468,64 +450,114 @@ namespace Services
                     if (search.ListType == "1")
                     {
                         query = query.Where(h => h.Author == uName && h.Status < 4);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                        //       .AsNoTracking()
-                        //       .Where(h => h.Author == uName && h.Status < 4);
                     }
                     else if (search.ListType == "4")
                     {
                         query = query.Where(h => h.Author == uName && h.Status >= 4);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                        //    .AsNoTracking()
-                        //    .Where(h => h.Author == uName && h.Status >= 4);
                     }
                     else if (search.ListType == "1|4" || search.ListType == null)
                     {
                         query = query.Where(h => h.Author == uName);
-                        //_repHealthOrderMaster.Table.Include(h => h.HealthCheckProduct)
-                        //    .AsNoTracking()
-                        //    .Where(h => h.Author == uName);
                     }
                     else
                     {
                         throw new WarningException("无效的请求");
                     }
-                    newTab = query.ToList();
                 }
-
-                if (!newTab.Any()) throw new Exception();
-                var totalCount = newTab.Count();
-                var pList = from h in newTab.OrderByDescending(h => h.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList()
-                            let p = h.HealthCheckProduct
-                            select (new VHealthAuditList()
+                if (query.Any())
+                {
+                    var ticks = from q in query group q by q.DateTicks into g select new { DateTimeTicks = g.Key };
+                    foreach (var t in ticks)
+                    {
+                        var masterGroup = query.Where(q => q.DateTicks == t.DateTimeTicks).ToList();
+                        if (masterGroup.Any())
+                        {
+                            if (masterGroup.Count() == 1)
                             {
-                                MasterId = h.Id,
-                                ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
-                                ProductName = p.ProductName,
-                                ProductCode = p.ProductCode,
-                                PrivilegePrice = h.SellPrice,
-                                StatusDes = GetHealthOrderStatus(h.Status),
-                                Status = h.Status,
-                                Author = h.Author,
-                                CreateTime = h.CreateTime,
-                                DateTicks = h.DateTicks,
-                                Count = h.Count,
-                                EmpSum = h.HealthOrderDetails.Count,
-                                FinConfirmDate = h.FinanceConfirmDate
-                            });
+                                var q = masterGroup.FirstOrDefault();
+                                var p = q.HealthCheckProduct;
+                                var item = new VHealthAuditList()
+                                {
+                                    MasterId = q.Id,
+                                    ProductName = p.ProductName,
+                                    ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
+                                    Author = q.Author,
+                                    Count = q.Count,
+                                    EmpSum = q.HealthOrderDetails.Count,
+                                    DateTicks = q.DateTicks,
+                                    CreateTime = q.CreateTime,
+                                    Status = q.Status,
+                                    FinConfirmDate = q.FinanceConfirmDate,
+                                    StatusDes = GetHealthOrderStatus(q.Status),
+                                    Recursive = new List<VHealthAuditList>(),
+                                    CompanyName = q.Company == null ? null : q.Company.Name,
+                                    BaokuOrderCode = q.BaokuOrderCode
+                                };
+                                newTab.Add(item);
+                            }
+                            else
+                            {
+                                var item = new VHealthAuditList();
+                                for (var i = 0; i < masterGroup.Count(); i++)
+                                {
+                                    var q = new HealthOrderMaster();
+                                    q = masterGroup[i];
+                                    var p = q.HealthCheckProduct;
+                                    if (i == 0)
+                                    {
+                                        item.MasterId = q.Id;
+                                        item.ProductName = p.ProductName;
+                                        item.ProductTypeName = p.ProductTypeName + "-" + p.CompanyName;
+                                        item.Author = q.Author;
+                                        item.Count = q.Count;
+                                        item.EmpSum = q.HealthOrderDetails.Count;
+                                        item.DateTicks = q.DateTicks;
+                                        item.CreateTime = q.CreateTime;
+                                        item.Status = q.Status;
+                                        item.FinConfirmDate = q.FinanceConfirmDate;
+                                        item.Recursive = new List<VHealthAuditList>();
+                                        item.StatusDes = GetHealthOrderStatus(q.Status);
+                                        item.CompanyName = q.Company == null ? null : q.Company.Name;
+                                        item.BaokuOrderCode = q.BaokuOrderCode;
+                                    }
+                                    else
+                                    {
+                                        var subItem = new VHealthAuditList()
+                                        {
+                                            MasterId = q.Id,
+                                            ProductName = p.ProductName,
+                                            ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
+                                            Author = q.Author,
+                                            Count = q.Count,
+                                            EmpSum = q.HealthOrderDetails.Count,
+                                            DateTicks = q.DateTicks,
+                                            CreateTime = q.CreateTime,
+                                            Status = q.Status,
+                                            FinConfirmDate = q.FinanceConfirmDate,
+                                            Recursive = new List<VHealthAuditList>(),
+                                            StatusDes = GetHealthOrderStatus(q.Status),
+                                            CompanyName = q.Company == null ? null : q.Company.Name,
+                                            BaokuOrderCode = q.BaokuOrderCode
+                                        };
+                                        item.Recursive.Add(subItem);
+                                    }
+                                }
+                                newTab.Add(item);
+                            }
+                        }
+                    }
 
-                return new PagedList<VHealthAuditList>(pList, pageIndex, pageSize, totalCount);
-
-            }
-            catch (WarningException e)
-            {
-                return new PagedList<VHealthAuditList>(new List<VHealthAuditList>(), pageIndex, pageSize);
+                }
+                if (newTab.Any())
+                {
+                    newTab = newTab.OrderByDescending(q => q.MasterId).ToList();
+                }
             }
             catch (Exception e)
             {
                 _svLogger.InsertAsync(e, LogLevel.Error, _svAuthentication.User.Identity.Name);
-                return new PagedList<VHealthAuditList>(new List<VHealthAuditList>(), pageIndex, pageSize);
             }
+            return new PagedList<VHealthAuditList>(newTab, pageIndex, pageSize);
         }
         public VCheckProductDetail GetHealthProductById(int id, string uId)
         {
@@ -634,7 +666,7 @@ namespace Services
                     if (Cells["A1"].Value.ToString().Trim() != "姓名" || Cells["B1"].Value.ToString().Trim() != "性别(男/女)" || Cells["C1"].Value.ToString().Trim() != "出生日期" || Cells["D1"].Value.ToString().Trim() != "证件号码" || Cells["E1"].Value.ToString().Trim() != "婚姻状况" || Cells["F1"].Value.ToString().Trim() != "移动电话" || Cells["G1"].Value.ToString().Trim() != "邮箱地址" || Cells["H1"].Value.ToString().Trim() != "所在城市" || Cells["I1"].Value.ToString().Trim() != "公司名称" || Cells["J1"].Value.ToString().Trim() != "部门" || Cells["K1"].Value.ToString().Trim() != "职位")
                         throw new WarningException("请检查上传文件和下载模板是否拥有相同的列");
                     var list = new List<HealthEmpTemp>();
-                    var dateTicks = master.DateTicks;
+                    var dateTicks = DateTime.Now.Ticks;//根据不同Ticks判断批次
                     for (var i = 2; i <= rowNumber; i++)
                     {
                         if (Cells["A" + i].Value == null)
@@ -668,7 +700,7 @@ namespace Services
                         item.DepartMent = Cells["J" + i].Value == null ? "" : Cells["J" + i].Value.ToString().Trim();
                         item.Chair = Cells["K" + i].Value == null ? "" : Cells["K" + i].Value.ToString().Trim();
                         item.Author = author;
-                        item.Ticks = long.Parse(dateTicks);
+                        item.Ticks = dateTicks;
                         list.Add(item);
 
                     }
@@ -995,12 +1027,18 @@ namespace Services
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IPagedList<VHealthAuditList> GetHealthList(int status = 0, DateTime? beginDate = null, DateTime? endDate = null, string productName = null, int pageIndex = 1, int pageSize = 15)
+        public IPagedList<VHealthAuditList> GetHealthList(int status = 0, DateTime? beginDate = null, DateTime? endDate = null, string productName = null, string orderNumber = null, int pageIndex = 1, int pageSize = 15)
         {
             var list = new List<VHealthAuditList>();
             try
             {
+
                 var query = _repHealthOrderMaster.Table.Include(q => q.HealthCheckProduct).AsNoTracking();
+                if (!string.IsNullOrEmpty(orderNumber))
+                {
+                    orderNumber = orderNumber.Trim().ToUpper();
+                    query = query.Where(q => q.BaokuOrderCode == orderNumber);
+                }
                 if (!string.IsNullOrEmpty(productName))
                 {
                     query = query.Where(q => q.HealthCheckProduct.ProductName.Contains(productName));
@@ -1023,11 +1061,20 @@ namespace Services
                 {
                     query = query.Where(q => q.Author == userName);
                 }
+                var newTab = new List<VHealthAuditList>();
                 if (query.Any())
                 {
-                    var nlist = from q in query
-                                let p = q.HealthCheckProduct
-                                select (new VHealthAuditList()
+                    var ticks = from q in query group q by q.DateTicks into g select new { DateTimeTicks = g.Key };
+                    foreach (var t in ticks)
+                    {
+                        var masterGroup = query.Where(q => q.DateTicks == t.DateTimeTicks).ToList();
+                        if (masterGroup.Any())
+                        {
+                            if (masterGroup.Count() == 1)
+                            {
+                                var q = masterGroup.FirstOrDefault();
+                                var p = q.HealthCheckProduct;
+                                var item = new VHealthAuditList()
                                 {
                                     MasterId = q.Id,
                                     ProductName = p.ProductName,
@@ -1038,11 +1085,65 @@ namespace Services
                                     DateTicks = q.DateTicks,
                                     CreateTime = q.CreateTime,
                                     Status = q.Status,
-                                    FinConfirmDate = q.FinanceConfirmDate
-                                });
-                    if (nlist.Any())
+                                    FinConfirmDate = q.FinanceConfirmDate,
+                                    Recursive = new List<VHealthAuditList>(),
+                                    CompanyName = q.Company.Name,
+                                    BaokuOrderCode = q.BaokuOrderCode
+                                };
+                                newTab.Add(item);
+                            }
+                            else
+                            {
+                                var item = new VHealthAuditList();
+                                for (var i = 0; i < masterGroup.Count(); i++)
+                                {
+                                    var q = new HealthOrderMaster();
+                                    q = masterGroup[i];
+                                    var p = q.HealthCheckProduct;
+                                    if (i == 0)
+                                    {
+                                        item.MasterId = q.Id;
+                                        item.ProductName = p.ProductName;
+                                        item.ProductTypeName = p.ProductTypeName + "-" + p.CompanyName;
+                                        item.Author = q.Author;
+                                        item.Count = q.Count;
+                                        item.EmpSum = q.HealthOrderDetails.Count;
+                                        item.DateTicks = q.DateTicks;
+                                        item.CreateTime = q.CreateTime;
+                                        item.Status = q.Status;
+                                        item.FinConfirmDate = q.FinanceConfirmDate;
+                                        item.Recursive = new List<VHealthAuditList>();
+                                        item.CompanyName = q.Company.Name;
+                                        item.BaokuOrderCode = q.BaokuOrderCode;
+                                    }
+                                    else
+                                    {
+                                        var subItem = new VHealthAuditList()
+                                        {
+                                            MasterId = q.Id,
+                                            ProductName = p.ProductName,
+                                            ProductTypeName = p.ProductTypeName + "-" + p.CompanyName,
+                                            Author = q.Author,
+                                            Count = q.Count,
+                                            EmpSum = q.HealthOrderDetails.Count,
+                                            DateTicks = q.DateTicks,
+                                            CreateTime = q.CreateTime,
+                                            Status = q.Status,
+                                            FinConfirmDate = q.FinanceConfirmDate,
+                                            Recursive = new List<VHealthAuditList>(),
+                                            CompanyName = q.Company.Name,
+                                            BaokuOrderCode = q.BaokuOrderCode
+                                        };
+                                        item.Recursive.Add(subItem);
+                                    }
+                                }
+                                newTab.Add(item);
+                            }
+                        }
+                    }
+                    if (newTab.Any())
                     {
-                        list = nlist.OrderByDescending(q => q.MasterId).ToList();
+                        list = newTab.OrderByDescending(q => q.MasterId).ToList();
                     }
                 }
             }

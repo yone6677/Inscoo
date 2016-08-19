@@ -668,14 +668,19 @@
                         <p>
                             @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
                         </p>
+                        @if (User.IsInRole("CarInscuranceCompany"))
+                        {
+                        <p>
+                            @Html.ActionLink("车险列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-success" })
+                        </p>}
                         @if (User.IsInRole("CarInscuranceCustomer"))
                         {
-                            <p>
-                                @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
-                            </p>
-                            <p>
-                                @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
-                            </p>
+                        <p>
+                            @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
+                        </p>
+                        <p>
+                            @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
+                        </p>
                         }
                         <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
                     </div>

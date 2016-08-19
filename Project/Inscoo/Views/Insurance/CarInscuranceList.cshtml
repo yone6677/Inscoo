@@ -44,7 +44,7 @@
 
             <td>
                 <a href="@item.ExceUrl" target="blank">投保单下载</a>
-                @if (ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
+                @if (item.Status == "A"&&ViewBag.CanEdit && string.IsNullOrEmpty(item.EinsuranceUrl))
                 {
                     if (ViewBag.FileType == 0)
                     {

@@ -104,5 +104,6 @@ namespace Domain.Products
         /// 投保单生成方式
         /// </summary>
         public string ProdCreateType { get; set; }
+        public bool ClaimFromWechat { get; set; }
     }
 }

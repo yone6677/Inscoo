@@ -20,15 +20,17 @@
             <dd>
                 @Html.TextBoxFor(model => model.InsuredCarNo, new { placeholder = "匹配开头" })
             </dd>
+            <dt>保单号</dt>
+            <dd>
+                @Html.TextBoxFor(model => model.InsurancePolicy, new { placeholder = "匹配开头" })
+            </dd>
             <dt></dt>
             <dd>
-                <p> <input type="submit" value="查找" /></p>
+                <p>
+                    <input type="submit" class="btn  btn-success" id="sbCheck" value="查找" style="width:40%;padding:0 0" />
+                    <a href="GetInscuranceDetailList" id="aXiaZai" onclick="return DownloadFile()" class="btn btn-success" style="width:40%">下载</a>
+                </p>
             </dd>
-            @*<dt>
-            </dt>
-            <dd>
-                @Html.ActionLink("返回列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-default" })
-            </dd>*@
         </dl>
         <p class="clearfix"></p>
     </div>
@@ -38,4 +40,20 @@
         @Html.Action("CarInscuranceDetailList")
     </div>
 }
+<script>
 
+    function DownloadFile() {
+        var InsuredName = jQuery("#InsuredName").val();
+        var InsuredCarNo = jQuery("#InsuredCarNo").val();
+        var InsurancePolicy = jQuery("#InsurancePolicy").val();
+        var result = InsuredName + InsuredCarNo + InsurancePolicy + "";
+        if (result.trim().length <= 0) {
+            jQuery("#ddError").html("若要下载请至少填写一个查询条件");
+            return false;
+        }
+
+        jQuery("#aXiaZai").attr("href", "GetInscuranceDetailList?InsuredName=" + InsuredName + "&InsuredCarNo=" + InsuredCarNo + "&InsurancePolicy=" + InsurancePolicy);
+
+    }
+
+</script>

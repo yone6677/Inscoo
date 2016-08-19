@@ -1364,6 +1364,8 @@ namespace Inscoo.Controllers
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);//安全起见，role为hr或者channel只能看自己的
                     }
                 }
+                model.Author = order.Author;
+                model.CreateTime = order.CreateTime;
                 model.Address = order.Address;
                 model.AgeRange = order.AgeRange;
                 model.AnnualExpense = order.AnnualExpense;

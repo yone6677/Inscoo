@@ -25,52 +25,58 @@
                 保费
             </th>
             <th>
+                保单号码
+            </th>
+            <th>
                 起保日期
             </th>
             <th>
-                    结束日期
-                </th>
+                结束日期
+            </th>
         </tr>
         @if (Model != null)
         {
             foreach (var item in Model)
             {
-        <tr>
-            <td>
-                @item.InsuredName
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredCarNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredCarID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredCompanyID)
-            </td>
+                <tr>
+                    <td>
+                        @item.InsuredName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredCarNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredCarID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredCompanyID)
+                    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredTel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredSetNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InsuredExpense)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredTel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredSetNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsuredExpense)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsurancePolicy)
             </td>
             <td>
                 @if (item.InsuredBeginDate.HasValue)
                     {
-                        <span>    @item.InsuredBeginDate.Value.ToShortDateString()</span>
-                        }
+                    <span>    @item.InsuredBeginDate.Value.ToShortDateString()</span>
+                }
             </td>
             <td>
-                    @if (item.InsuredEndingDate.HasValue)
+                @if (item.InsuredEndingDate.HasValue)
                     {
-                        <span>    @item.InsuredEndingDate.Value.ToShortDateString()</span>
-                    }
+                    <span>    @item.InsuredEndingDate.Value.ToShortDateString()</span>
+                }
 
-                </td>
+            </td>
         </tr>
             }
         }

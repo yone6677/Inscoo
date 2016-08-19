@@ -42,45 +42,45 @@
             }
         }
         <div class="form-group">
-            @Html.LabelFor(model => model.AccountEncryCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-9">
+            @Html.LabelFor(model => model.AccountEncryCode, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.AccountEncryCode, new { htmlAttributes = new { @class = "form-control inputDate" } })
                 @Html.ValidationMessageFor(model => model.AccountEncryCode, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-9">
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.LinkMan, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.LinkMan, htmlAttributes: new { @class = "control-label col-md-3" })
 
-            <div class="col-md-9">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.LinkMan, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LinkMan, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-9">
+            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-9">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-2"><input type="text" style="width:100%;height:34px;line-height:34px;text-indent:5px;border:1px solid #ccc" name="IdentifyCode" value="" placeholder="验证码" /></div>
-            <div class="col-md-4" style="height:34px;line-height:34px;">
+            <div class="col-md-offset-3 col-md-2"><input type="text" style="width:100%;height:34px;line-height:34px;text-indent:5px;border:1px solid #ccc" name="IdentifyCode" value="" placeholder="验证码" /></div>
+            <div class="col-md-5" style="height:34px;line-height:34px;">
                 <img id="imgIdentifyCode" src="~/Account/IdentifyCode" alt="验证码" />
                 <a href="#" onclick="IdentifyCodeChange()" style="color:#24A9E4">看不清?换一张</a>
             </div>

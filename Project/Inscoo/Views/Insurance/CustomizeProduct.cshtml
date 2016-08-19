@@ -52,7 +52,7 @@
                 <div class="tab-pane fade @isShow" id="@s.Value">
                     <div class="programme-query">
                         <div class="programme-query-list">
-                            请选择保险类别：
+                            <b>请选择保险类别：</b>
                             <label class="checkbox-inline">
                                 <input type="radio" name=@radioName value="员工福利保险" checked="checked" onchange="getProduct('@Html.Raw(s.Value)', this.value)" />
                                 员工福利保险
@@ -63,7 +63,7 @@
                             </label>
                         </div>
                         <div class="programme-query-list">
-                            请选择投保信息：
+                            <b>请选择投保信息：</b>
                             <label class="checkbox-inline">
                                 @Html.DisplayNameFor(m => m.StaffsNumber)
                                 @Html.DropDownList(staffsNumName, Model.StaffsNumber, new { onchange = Html.Raw(changeCon) })

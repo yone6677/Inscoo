@@ -56,27 +56,36 @@
                 }
                 else if (ViewBag.FileType == 0)
                 {
-                    if (item.Status == "A")
+                    if (item.Status == "A" && User.IsInRole("CarInscuranceCompany"))
                     {
                         <span>|</span>
-                        @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        if (string.IsNullOrEmpty(item.EinsuranceUrl))
+                        {
+                            @Html.ActionLink("上传电子保单", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }
+                        else
+                        {
+                            <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                            <span>|</span>
+                            @Html.ActionLink("输入保单号", "CarInscuranceUploadEinsurance", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }
                     }
-                    else if (item.Status == "B")
-                    {
-                        <span>|</span>
-                        <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
-                        <span>|</span>
-                        @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
-                    }
-                    else if (item.Status == "C")
-                    {
-                        <span>|</span>
+                    @*else if (item.Status == "B")
+                        {
+                            <span>|</span>
+                            <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
+                            <span>|</span>
+                            @Html.ActionLink("继续", "CarInscuranceAddEOrderCode", new { insuranceId = item.InsuranceId, uKey = item.UniqueKey })
+                        }*@
+                else if (item.Status == "C")
+                {
+                    <span>|</span>
                         <a href="@item.EinsuranceUrl" target="blank">电子保单</a>
                     }
 
 
                 }
-                @if (!string.IsNullOrEmpty(@item.PdfFileName) && User.IsInRole("CarInscuranceCompany"))
+                @if (!string.IsNullOrEmpty(@item.PdfFileName))
                 {
                     <span>|</span>
                     <a href="@item.PdfFileName" target="blank">PDF下载</a>

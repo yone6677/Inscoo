@@ -6,26 +6,28 @@
         th, td {
             text-align: left;
             text-indent: .5rem;
-            font-weight: lighter;
             color: dimgray;
         }
     }
 
     tr:first-child {
-        background-color: #eee;
+        background-color: #24A9E4;
+        th{
+            color:#fff;
+            font-weight:bold;
+        }
     }
 }
 
 .cart-total {
-    height: 2rem;
-    line-height: 2rem;
-    width: 6rem;
+    height: 24px;
+    line-height: 24px;
+    width: 4rem;
     text-align: center;
     border: 1px solid #ccc;
 }
 
 .cart-floatbar {
-    border: 1px solid #ddd;
     padding: 0 2%;
     height: 4rem;
     line-height: 4rem;
@@ -34,9 +36,38 @@
 
 .cart-amount {
     color:#666;
-    span {
-        color: darkred;
-        font-size: 1.1em;
-        letter-spacing:1px;
+    height:40px;
+    line-height:40px;
+   
+    span,b {
+        color: #f00;
+        font-size: 1.4em;
+        font-weight:bold;
     }
+    
+}
+
+.count-change{
+     .btn-reduce, .btn-add {
+        display: inline-block;
+        width: 24px;
+        text-align: center;
+        border: 1px solid #aaa;
+        background: #f7f7f7;
+        cursor: pointer;
+        padding: 2px 0;
+    }
+
+    .btn-reduce {
+        border-right: none;
+        margin-right: -4px;
+    }
+
+    .btn-add {
+        border-left: none;
+        margin-left: -4px;
+    }
+   input{
+       height:26px;
+   }
 }

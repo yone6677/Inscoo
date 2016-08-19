@@ -1,8 +1,8 @@
 ﻿@model Models.CarInsuranceDetailSearchModel
 @{
-    ViewBag.Title = "车险列表";
+    ViewBag.Title = "会员列表";
 }
-@using (Ajax.BeginForm("CarInscuranceDetailList", "Insurance", new AjaxOptions()
+@using (Ajax.BeginForm("MemberInscuranceDetailList", "Insurance", new AjaxOptions()
 {
     HttpMethod = "post",
     UpdateTargetId = "dataGrid"
@@ -10,7 +10,7 @@
 {
     <div class="Search">
         <dl style="width:100%">
-            <dt>
+            @*<dt>
                 投保人
             </dt>
             <dd>
@@ -23,19 +23,19 @@
             <dt></dt>
             <dd>
                 <p> <input type="submit" value="查找" /></p>
-            </dd>
-            @*<dt>
+            </dd>*@
+            <dt>
             </dt>
             <dd>
-                @Html.ActionLink("返回列表", "CarInscuranceSearch", new { fileType = 0 }, new { @class = "btn btn-default" })
-            </dd>*@
+                @Html.ActionLink("返回列表", "MemberInscuranceSearch", new { ViewBag.FileType, ViewBag.FileTypeName }, new { @class = "btn btn-default" })
+            </dd>
         </dl>
         <p class="clearfix"></p>
     </div>
 
     <div id="dataGrid" style="overflow-x:auto">
 
-        @Html.Action("CarInscuranceDetailList")
+        @*@Html.Action("CarInscuranceDetailList")*@
     </div>
 }
 

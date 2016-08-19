@@ -1383,7 +1383,10 @@ div:after {
             width: 32%;
             text-align: center;
             padding-left: 5%;
-
+            li.first_li{
+                font-weight:bold;
+                font-size:1.2em;
+            }
             li.health_content {
                 padding: 5px;
                 margin-top: 5px;
@@ -1406,20 +1409,34 @@ div:after {
                     clear: both;
                 }
             }
+            
+                li.project_price {
+                    margin: 10px auto;
+                    &:after{
+                        display:block;
+                        content:"";
+                        clear:both;
+                    }
 
-            li.project_price {
-                margin: 10px auto;
+                    p {
+                        margin: 0;
+                        float:left;
+                        font-size:0.9em;
+                        height:48px;
+                        line-height:48px;
+                    }
 
-                p {
-                    margin: 0;
+                    div {
+                        float:right;
+                        color: #38A6D9;
+                        font-weight: bold;
+                         span{
+                            color:#f00;
+                            font-size:1.8em;
+                            font-weight:bold;
+                        }
+                    }
                 }
-
-                div {
-                    color: #38A6D9;
-                    font-size: 16px;
-                    font-weight: bold;
-                }
-            }
 
             .btn {
                 width: 100%;
@@ -1655,7 +1672,14 @@ div:after {
         .product_order, .product_rule, .product_shop {
             display: none;
         }
-
+        .product_order{
+            h2{
+                width:18%;
+            }
+            .text-left-again{
+                text-align:left;
+            }
+        }
         .product_order, .product_rule {
             padding: 10px;
             width: 100%;
@@ -1848,7 +1872,7 @@ div:after {
     margin: 10px 0;
 
     img {
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
     }
 
@@ -1886,7 +1910,50 @@ div:after {
     filter: alpha(opacity=0);
     cursor: pointer;
 }
+/*体检购买信息填写*/
+.health-information{
+    margin-top:30px;
 
+    .health-information-table{
+        overflow:hidden;
+
+        p{
+            float:left;
+            width:15%;
+            text-align:center;
+        }
+        >div{
+            width:75%;
+            padding:20px 10px;
+            float:left;
+            border:1px solid #ddd;
+            >ul{
+                width:100%;
+                overflow:hidden;
+                li{
+                    float:left;
+                    height:34px;
+                    line-height:34px;
+                }
+                li:first-child{
+                    width:18%;
+                    padding-right:1em;
+                    text-align:right;
+                }
+                li:nth-child(2){
+                    width:40%;
+                }
+                li:last-child{
+                    padding-left:1em;
+                    width:40%;
+                }
+            }
+        }
+    }
+}
+
+
+/*上传文件（浏览）*/
 .a-upload:hover {
     color: #444;
     background: #eee;

@@ -14,6 +14,7 @@ namespace Services
     public interface IArchiveService
     {
         void DeleteCarInsuranceExcel(int insuranceId);
+        void DeleteMemberInsuranceExcel(int insuranceId);
         /// <summary>
         /// 删除表记录及文件
         /// </summary>
@@ -32,6 +33,7 @@ namespace Services
         bool DeleteById(int id, bool disable, string author);
         IQueryable<Archive> GetByTypeAndPId(int pId, string type);
         CarInsurance GetCarEInsuranceUrl(int insuranceId, string uKey);
+        MemberInsurance GetMemberEInsuranceUrl(int insuranceId, string uKey);
         /// <summary>
         /// 
         /// </summary>
@@ -42,6 +44,16 @@ namespace Services
         /// <returns></returns>
         IPagedList<Archive> GetPagelistByTypeAndPId(int pageIndex, int pageSize, int pId, string type);
         IPagedList<Archive> GetWZFileDataModels(WZFileSearchModel model, int pageIndex, int pageSize);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="createrId"></param>
+        /// <returns></returns>
+        IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int fileType, int pageIndex, int pageSize, string createrId = "-1");
+        IPagedList<vMemberInsuranceList> GetMemberInsuranceExcel(int fileType, int pageIndex, int pageSize, string author = "-1");
         int InsertByWechat(DownLoadWechatFileApi model);
         int InsertByUrl(List<string> fileInfo, string type, int pid, string memo = null);
         /// <summary>
@@ -83,6 +95,7 @@ namespace Services
         /// <param name="userName"></param>
         /// <returns></returns>
         string InsertCarInsuranceExcel(HttpPostedFileBase file, string userId, string userName, int fileType);
+        string InsertMemberInsuranceExcel(HttpPostedFileBase file, string userName, string fileTypeName, int fileType);
         /// <summary>
         /// 上传电子表单
         /// </summary>
@@ -93,8 +106,8 @@ namespace Services
         /// <param name="code"></param>
         /// <returns></returns>
         string InsertCarInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
+        MemberInsurance InsertMemberInsuranceEinsurance(HttpPostedFileBase file, string userName, int insuranceId, string uKey, string code);
 
-        void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
         /// <summary>
         /// 
         /// </summary>
@@ -115,15 +128,8 @@ namespace Services
         /// <returns></returns>
         string InsertWZInsurants(HttpPostedFileBase file, string author, int masterId, string memo = "", string type = "WZHuman");
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="createrId"></param>
-        /// <returns></returns>
-        IPagedList<vCarInsuranceList> GetCarInsuranceExcel(int fileType, int pageIndex, int pageSize, string createrId = "-1");
-
-        string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId);
+        string UpdateCarInsuranceExcel(HttpPostedFileBase file, string excelId, string author);
+        void UploadCarInsuranceEOrderCode(string code, int insuranceId, string uKey);
+        void UploadMemberInsuranceEOrderCode(string code, int insuranceId, string uKey);
     }
 }

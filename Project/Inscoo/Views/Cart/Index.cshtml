@@ -28,6 +28,7 @@
             getAmount();
         }
         function checkNum(e, i) {
+            console.log(i);
             var num = e.value;
             if (num < 1) {
                 e.value = 1;
@@ -37,6 +38,26 @@
             }
             getSubTotal(i);
         }
+        function reduce(param, i) {
+            var Num = $(param).next().val();
+            if (Num >= 2) {
+                Num--;
+                $(param).next().val(Num);
+            } else {
+                $(param).next().val("1");
+            }
+            getSubTotal(i);
+        }
+
+        function add(param, i) {
+            var Num = $(param).prev().val();
+            if (Num >= 1) {
+                Num++;
+                $(param).prev().val(Num);
+            }
+            getSubTotal(i);
+        }
+
         function getSubTotal(e) {
             var price = document.getElementById('price_' + e + '').value;
             var count = document.getElementById('count_' + e).value;

@@ -1135,6 +1135,10 @@ div:after {
   text-align: center;
   padding-left: 5%;
 }
+.health_box .health_project .health_detail li.first_li {
+  font-weight: bold;
+  font-size: 1.2em;
+}
 .health_box .health_project .health_detail li.health_content {
   padding: 5px;
   margin-top: 5px;
@@ -1157,12 +1161,26 @@ div:after {
 .health_box .health_project .health_detail li.project_price {
   margin: 10px auto;
 }
+.health_box .health_project .health_detail li.project_price:after {
+  display: block;
+  content: "";
+  clear: both;
+}
 .health_box .health_project .health_detail li.project_price p {
   margin: 0;
+  float: left;
+  font-size: 0.9em;
+  height: 48px;
+  line-height: 48px;
 }
 .health_box .health_project .health_detail li.project_price div {
+  float: right;
   color: #38A6D9;
-  font-size: 16px;
+  font-weight: bold;
+}
+.health_box .health_project .health_detail li.project_price div span {
+  color: #f00;
+  font-size: 1.8em;
   font-weight: bold;
 }
 .health_box .health_project .health_detail .btn {
@@ -1367,6 +1385,12 @@ div:after {
 .health_box .product_detail .product_shop {
   display: none;
 }
+.health_box .product_detail .product_order h2 {
+  width: 18%;
+}
+.health_box .product_detail .product_order .text-left-again {
+  text-align: left;
+}
 .health_box .product_detail .product_order,
 .health_box .product_detail .product_rule {
   padding: 10px;
@@ -1527,7 +1551,7 @@ div:after {
   margin: 10px 0;
 }
 .product_order_content img {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 .product_order_content li p {
@@ -1560,6 +1584,46 @@ div:after {
   filter: alpha(opacity=0);
   cursor: pointer;
 }
+/*体检购买信息填写*/
+.health-information {
+  margin-top: 30px;
+}
+.health-information .health-information-table {
+  overflow: hidden;
+}
+.health-information .health-information-table p {
+  float: left;
+  width: 15%;
+  text-align: center;
+}
+.health-information .health-information-table > div {
+  width: 75%;
+  padding: 20px 10px;
+  float: left;
+  border: 1px solid #ddd;
+}
+.health-information .health-information-table > div > ul {
+  width: 100%;
+  overflow: hidden;
+}
+.health-information .health-information-table > div > ul li {
+  float: left;
+  height: 34px;
+  line-height: 34px;
+}
+.health-information .health-information-table > div > ul li:first-child {
+  width: 18%;
+  padding-right: 1em;
+  text-align: right;
+}
+.health-information .health-information-table > div > ul li:nth-child(2) {
+  width: 40%;
+}
+.health-information .health-information-table > div > ul li:last-child {
+  padding-left: 1em;
+  width: 40%;
+}
+/*上传文件（浏览）*/
 .a-upload:hover {
   color: #444;
   background: #eee;

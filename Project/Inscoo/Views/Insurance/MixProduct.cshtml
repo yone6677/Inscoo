@@ -14,23 +14,23 @@
 
 <div class="panel inscooCase">
     @*<div class="inscooCase-title-left">
-        <strong>选择一个方案</strong>
-        <span>SELECT A PROGRAMME</span>
-    </div>*@
+            <strong>选择一个方案</strong>
+            <span>SELECT A PROGRAMME</span>
+        </div>*@
     <ul id="myTab" class="nav nav-tabs myTab" style="width:96%;margin:0 auto;margin-top:20px;">
-        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>       
+        <li class="myTab-title"><i class="fa fa-folder-open-o" style="margin-right:5px;color:#666;"></i>专属方案<i class="fa fa-caret-down" style="color:#666;margin-left:5px"></i></li>
         @*<li class="active">
-            <a href="#product_d1" data-toggle="tab">中高端员工福利保险</a>
-        </li>
-                  
-        <li>
-            <a href="#product_d2" data-toggle="tab">吴中人力资源</a>
-        </li>
+                <a href="#product_d1" data-toggle="tab">中高端员工福利保险</a>
+            </li>
 
-        <li>
-            <a href="#product_d3" data-toggle="tab">营运车乘意险</a>
-        </li>*@
-       
+            <li>
+                <a href="#product_d2" data-toggle="tab">吴中人力资源</a>
+            </li>
+
+            <li>
+                <a href="#product_d3" data-toggle="tab">营运车乘意险</a>
+            </li>*@
+
     </ul>
     @if (ViewBag.ProductSeries.Contains("中高端医疗"))
     {
@@ -540,25 +540,171 @@
     {
         <div class="inscooCase-body inscooCase-body-top">
             <div class="describe_name">营运车乘意险</div>
-            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
+            <div>
+                <div style="float:left;width:80%;">
+                    <table style="width:100%;height:254px; border:1px solid #ddd;border-bottom:none;border-right:none;">
+                        <tbody>
+                            <tr>
+                                <td style="width:20%;padding:10px;">
+                                    <div class="inscoo-programme-left" style="width:100%">
+                                        <a>
+                                            <img src="/Content/img/car_insurance_1.png" class="img-circle" />
+                                        </a>
+                                        <div>
+                                            营运车乘意险
+                                            <p>方案一</p>
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <td style="width:80%">
+                                    <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                        <div class="inscooCase-title-right inscooCase-title-right-title">
+                                            <p style="text-align:center">
+                                                方案一
+                                            </p>
+                                        </div>
+                                        <div class="member_cards">
+                                            <table style="margin-top:10px;color:#111;">
+                                                <tr>
+                                                    <th>保险责任</th>
+                                                    <th>保险金额</th>
+                                                    <th>保障说明</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外身故</td>
+                                                    <td>50万元/座</td>
+                                                    <td>按100%赔付</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外伤残</td>
+                                                    <td>50万元/座</td>
+                                                    <td>按比例赔付</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外医疗</td>
+                                                    <td>5万/座</td>
+                                                    <td>
+                                                        每次事故绝对免赔额300元，90%赔付
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外住院津贴</td>
+                                                    <td>150元/日</td>
+                                                    <td>
+                                                        单次以90日为限，年累计赔付不超过180日
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="width:100%;height:254px;border:1px solid #ddd;margin-bottom:15px;border-right:none;">
+                        <tbody>
+                            <tr>
+                                <td style="width:20%;padding:10px;">
+                                    <div class="inscoo-programme-left" style="width:100%">
+                                        <a>
+                                            <img src="/Content/img/car_insurance_2.png" class="img-circle" />
+                                        </a>
+                                        <div>
+                                            营运车乘意险
+                                            <p>方案一</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width:80%">
+                                    <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                        <div class="inscooCase-title-right inscooCase-title-right-title">
+                                            <p style="text-align:center">
+                                                方案二
+                                            </p>
+                                        </div>
+                                        <div class="member_cards">
+                                            <table style="margin-top:10px;color:#111;">
+                                                <tr>
+                                                    <th>保险责任</th>
+                                                    <th>保险金额</th>
+                                                    <th>保障说明</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外身故</td>
+                                                    <td>50万元/座</td>
+                                                    <td>按100%赔付</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外伤残</td>
+                                                    <td>50万元/座</td>
+                                                    <td>按比例赔付</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外医疗</td>
+                                                    <td>10万/座</td>
+                                                    <td>
+                                                        每次事故绝对免赔额300元，90%赔付
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>意外住院津贴</td>
+                                                    <td>150元/日</td>
+                                                    <td>
+                                                        单次以90日为限，年累计赔付不超过180日
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>      
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>  
+                <div style="width:20%; float:left;background:#F5F5F5; height:508px;border:1px solid #ddd;border-left:none;text-align:center;">
+                    <div style="height:auto;margin-top:175px;">
+                        <p>
+                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
+                        </p>
+                        @if (User.IsInRole("CarInscuranceCustomer"))
+                        {
+                            <p>
+                                @Html.ActionLink("投保上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
+                            </p>
+                            <p>
+                                @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
+                            </p>
+                        }
+                        <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @{ bool isRoleMemberCard = User.IsInRole("MemberCard");}
+    @if (ViewBag.ProductSeries.Contains("会员卡系列"))
+    {
+
+        <div class="inscooCase-body inscooCase-body-top">
+            <div class="describe_name">会员卡系列</div>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
                 <tbody>
                     <tr>
                         <td style="width:20%;padding:10px;">
                             <div class="inscoo-programme-left" style="width:100%">
                                 <a>
-                                    <img src="/Content/img/car_insurance_1.png" class="img-circle" />
+                                    <img src="/Content/img/member_card_1.png" class="img-circle" />
                                 </a>
-                                <div>营运车乘意险
-                                    <p>方案一</p>
-                                </div>
-                                
+                                <p>保酷少儿A</p>
                             </div>
                         </td>
                         <td style="width:60%">
                             <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
                                 <div class="inscooCase-title-right inscooCase-title-right-title">
                                     <p style="text-align:center">
-                                        方案一
+                                        保酷少儿A
                                     </p>
                                 </div>
                                 <div class="member_cards">
@@ -569,27 +715,25 @@
                                             <th>保障说明</th>
                                         </tr>
                                         <tr>
-                                            <td>意外身故</td>
-                                            <td>50万元/座</td>
-                                            <td>按100%赔付</td>
-                                        </tr>
-                                        <tr>
-                                            <td>意外伤残</td>
-                                            <td>50万元/座</td>
-                                            <td>按比例赔付</td>
+                                            <td>意外伤害</td>
+                                            <td>2万</td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td>意外医疗</td>
-                                            <td>5万/座</td>
-                                            <td>
-                                                每次事故绝对免赔额300元，90%赔付
-                                            </td>
+                                            <td>0.5万</td>
+                                            <td>社保范围内100元免赔，100%赔付</td>
                                         </tr>
                                         <tr>
-                                            <td>意外住院津贴</td>
-                                            <td>150元/日</td>
+                                            <td>住院医疗</td>
+                                            <td>3.6万</td>
                                             <td>
-                                                单次以90日为限，年累计赔付不超过180日
+                                                疾病住院30天等待期，连续投保无等待期;<br>
+                                                社保范围内，100元免赔;<br>
+                                                1000元以下赔付比例70%;<br>
+                                                1000—5000赔付比例80%;<br>
+                                                5000-10000赔付比例90%;<br>
+                                                10000以上赔付比例100%;
                                             </td>
                                         </tr>
                                     </table>
@@ -599,45 +743,37 @@
 
 
                         <td style="width:20%;background:#F5F5F5">
-
+                            
                             <p>
-                                @*<a href="#" class="">查看保险清单</a>*@
-                                @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
                             </p>
-                            @if (User.IsInRole("CarInscuranceCustomer"))
+                            @if (isRoleMemberCard)
                             {
                                 <p>
-                                    @Html.ActionLink("数据上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
-                                    @*<a href="#" class="btn btn-default">数据上传</a>*@
-                                </p>
-                                <p class="programme-clause">
-                                    @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
-                                    @*<a href="#" class="btn btn-success">退保</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 1, fileTypeName = "保酷少儿A" }, new { @class = "btn btn-success" })
                                 </p>
                             }
-                            <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
+                            <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px;">
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
                 <tbody>
                     <tr>
                         <td style="width:20%;padding:10px;">
                             <div class="inscoo-programme-left" style="width:100%">
                                 <a>
-                                    <img src="/Content/img/car_insurance_2.png" class="img-circle" />
+                                    <img src="/Content/img/member_card_2.png" class="img-circle" />
                                 </a>
-                                <div>营运车乘意险
-                                    <p>方案一</p>
-                                </div>
+                                <p>保酷少儿B</p>
                             </div>
                         </td>
                         <td style="width:60%">
                             <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
                                 <div class="inscooCase-title-right inscooCase-title-right-title">
                                     <p style="text-align:center">
-                                        方案二
+                                        保酷少儿B
                                     </p>
                                 </div>
                                 <div class="member_cards">
@@ -648,27 +784,23 @@
                                             <th>保障说明</th>
                                         </tr>
                                         <tr>
-                                            <td>意外身故</td>
-                                            <td>50万元/座</td>
-                                            <td>按100%赔付</td>
-                                        </tr>
-                                        <tr>
-                                            <td>意外伤残</td>
-                                            <td>50万元/座</td>
-                                            <td>按比例赔付</td>
+                                            <td>意外伤害</td>
+                                            <td>3万</td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td>意外医疗</td>
-                                            <td>10万/座</td>
-                                            <td>
-                                                每次事故绝对免赔额300元，90%赔付
-                                            </td>
+                                            <td>0.3万</td>
+                                            <td>社保范围内100元免赔，80%赔付</td>
                                         </tr>
                                         <tr>
-                                            <td>意外住院津贴</td>
-                                            <td>150元/日</td>
+                                            <td>住院医疗</td>
+                                            <td>3万</td>
                                             <td>
-                                                单次以90日为限，年累计赔付不超过180日
+                                                疾病住院30天等待期，连续投保无等待期;<br>
+                                                社保范围内，100元免赔后;<br>
+                                                有医保（或农合），赔付比例80%;<br>
+                                                无医保，赔付比例60%;
                                             </td>
                                         </tr>
                                     </table>
@@ -678,572 +810,435 @@
 
 
                         <td style="width:20%;background:#F5F5F5">
-
                             <p>
-                                @*<a href="#" class="">查看保险清单</a>*@
-                                @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
                             </p>
-                            @if (User.IsInRole("CarInscuranceCustomer"))
+                            @if (isRoleMemberCard)
                             {
                                 <p>
-                                    @Html.ActionLink("数据上传", "CarInscuranceCreate", new { fileType = 0 }, new { @class = "btn btn-success" })
-                                    @*<a href="#" class="btn btn-default">数据上传</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 2, fileTypeName = "保酷少儿B" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_3.png" class="img-circle" />
+                                </a>
+                                <p>保酷少儿C</p>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷少儿C
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>1万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外医疗</td>
+                                            <td>0.3万</td>
+                                            <td>社保范围内100元免赔，90%赔付</td>
+                                        </tr>
+                                        <tr>
+                                            <td>住院医疗</td>
+                                            <td>1万</td>
+                                            <td>
+                                                疾病住院30天等待期，连续投保无等待期;<br>
+                                                社保范围内，100元免赔后;<br>
+                                                有医保（或农合），赔付比例80%;<br>
+                                                无医保，赔付比例60%;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 3, fileTypeName = "保酷少儿C" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_4.png" class="img-circle" />
+                                </a>
+                                <p>保酷意外A</p>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷意外A
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>10万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外医疗</td>
+                                            <td>1万</td>
+                                            <td>社保范围内100元免赔，100%赔付</td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外住院津贴</td>
+                                            <td>50元/天</td>
+                                            <td>
+                                                每次最高90天，累计不超过180天
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @*<a href="#" class="">查看保险清单</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 4, fileTypeName = "保酷意外A" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_5.png" class="img-circle" />
+                                </a>
+                                <p>保酷意外B</p>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷意外B
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>5万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外医疗</td>
+                                            <td>1万</td>
+                                            <td>社保范围内100元免赔，100%赔付</td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外住院津贴</td>
+                                            <td>50元/天</td>
+                                            <td>
+                                                每次最高90天，累计不超过180天
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @*<a href="#" class="">查看保险清单</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 5, fileTypeName = "保酷意外B" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_6.png" class="img-circle" />
+                                </a>
+                                <p>保酷成人A</p>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷成人A
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>乘客意外</td>
+                                            <td>20万</td>
+                                            <td>乘坐营运性的飞机、火车、轮船、汽车</td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>10万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外医疗</td>
+                                            <td>1万</td>
+                                            <td>社保范围内100元免赔，100%赔付</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>住院医疗</td>
+                                            <td>1万</td>
+                                            <td>
+                                                社保范围内100元免赔，100%赔付；等待期60天。
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外住院津贴</td>
+                                            <td>50元/天</td>
+                                            <td>
+                                                每次最高90天，累计不超过180天
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @*<a href="#" class="">查看保险清单</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 6, fileTypeName = "保酷成人A" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_7.png" class="img-circle" />
+                                </a>
+                                <p>保酷成人B</p>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷成人B
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>乘客意外</td>
+                                            <td>30万</td>
+                                            <td>乘坐营运性的飞机、火车、轮船、汽车</td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>10万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外医疗</td>
+                                            <td>1万</td>
+                                            <td>社保范围内100元免赔，100%赔付</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>住院医疗</td>
+                                            <td>1万</td>
+                                            <td>
+                                                社保范围内100元免赔，100%赔付；等待期60天。
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>意外住院津贴</td>
+                                            <td>50元/天</td>
+                                            <td>
+                                                每次最高90天，累计不超过180天
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @*<a href="#" class="">查看保险清单</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 7, fileTypeName = "保酷成人B" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;padding:10px;">
+                            <div class="inscoo-programme-left" style="width:100%">
+                                <a>
+                                    <img src="/Content/img/member_card_8.png" class="img-circle" />
+                                </a>
+                                <p>
+                                    保酷健康
+                                    <div>(5年期)</div>
                                 </p>
-                                <p class="programme-clause">
-                                    @Html.ActionLink("退保上传", "CarInscuranceCreate", new { fileType = 1 }, new { @class = "btn btn-success" })
-                                    @*<a href="#" class="btn btn-success">退保</a>*@
-                                </p>
-                            }
-                            <a href="http://www.inscoo.com/Archive/InsuranceFiles/驾乘险条款.pdf" target="_blank">保险条款</a>
+                            </div>
+                        </td>
+                        <td style="width:60%">
+                            <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
+                                <div class="inscooCase-title-right inscooCase-title-right-title">
+                                    <p style="text-align:center">
+                                        保酷健康(5年期)
+                                    </p>
+                                </div>
+                                <div class="member_cards">
+                                    <table style="margin-top:10px;color:#111;">
+                                        <tr>
+                                            <th>保险责任</th>
+                                            <th>保险金额</th>
+                                            <th>保障说明</th>
+                                        </tr>
+                                        <tr>
+                                            <td>意外伤害</td>
+                                            <td>0.5万</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>重大疾病</td>
+                                            <td>1万</td>
+                                            <td></td>
+                                        </tr>
+
+
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td style="width:20%;background:#F5F5F5">
+                            <p>
+                                @*<a href="#" class="">查看保险清单</a>*@
+                                @Html.ActionLink("保险清单", "MemberInscuranceDetailSearch", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
+                            </p>
+                            @if (isRoleMemberCard)
+                            {
+                                <p>
+                                    @*<a href="#" class="">查看保险清单</a>*@
+                                    @Html.ActionLink("数据上传", "MemberInscuranceCreate", new { fileType = 8, fileTypeName = "保酷健康(5年期)" }, new { @class = "btn btn-success" })
+                                </p>}
+                            <a href="#" target="_blank">保险条款</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     }
-   
-    <div class="inscooCase-body inscooCase-body-top">
-        <div class="describe_name">会员卡系列</div>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_1.png" class="img-circle" />
-                            </a>
-                            <p>保酷少儿A</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷少儿A
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>2万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>0.5万</td>
-                                        <td>社保范围内100元免赔，100%赔付</td>
-                                    </tr>
-                                    <tr>
-                                        <td>住院医疗</td>
-                                        <td>3.6万</td>
-                                        <td>
-                                            疾病住院30天等待期，连续投保无等待期;<br>
-                                            社保范围内，100元免赔;<br>
-                                            1000元以下赔付比例70%;<br>
-                                            1000—5000赔付比例80%;<br>
-                                            5000-10000赔付比例90%;<br>
-                                            10000以上赔付比例100%;
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">40元 / 年</div>
-                        <p>
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_2.png" class="img-circle" />
-                            </a>
-                            <p>保酷少儿B</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷少儿B
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>3万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>0.3万</td>
-                                        <td>社保范围内100元免赔，80%赔付</td>
-                                    </tr>
-                                    <tr>
-                                        <td>住院医疗</td>
-                                        <td>3万</td>
-                                        <td>
-                                            疾病住院30天等待期，连续投保无等待期;<br>
-                                            社保范围内，100元免赔后;<br>
-                                            有医保（或农合），赔付比例80%;<br>
-                                            无医保，赔付比例60%;
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">50元 / 年</div>
-                        <p>
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_3.png" class="img-circle" />
-                            </a>
-                            <p>保酷少儿C</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷少儿C
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>1万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>0.3万</td>
-                                        <td>社保范围内100元免赔，90%赔付</td>
-                                    </tr>
-                                    <tr>
-                                        <td>住院医疗</td>
-                                        <td>1万</td>
-                                        <td>
-                                            疾病住院30天等待期，连续投保无等待期;<br>
-                                            社保范围内，100元免赔后;<br>
-                                            有医保（或农合），赔付比例80%;<br>
-                                            无医保，赔付比例60%;
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">25元 / 年</div>
-                        <p>
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_4.png" class="img-circle" />
-                            </a>
-                            <p>保酷意外A</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷意外A
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>10万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>1万</td>
-                                        <td>社保范围内100元免赔，100%赔付</td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外住院津贴</td>
-                                        <td>50元/天</td>
-                                        <td>
-                                            每次最高90天，累计不超过180天
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">25元 / 年</div>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_5.png" class="img-circle" />
-                            </a>
-                            <p>保酷意外B</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷意外B
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>5万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>1万</td>
-                                        <td>社保范围内100元免赔，100%赔付</td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外住院津贴</td>
-                                        <td>50元/天</td>
-                                        <td>
-                                            每次最高90天，累计不超过180天
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">17元 / 年</div>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_6.png" class="img-circle" />
-                            </a>
-                            <p>保酷成人A</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷成人A
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>乘客意外</td>
-                                        <td>20万</td>
-                                        <td>乘坐营运性的飞机、火车、轮船、汽车</td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>10万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>1万</td>
-                                        <td>社保范围内100元免赔，100%赔付</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>住院医疗</td>
-                                        <td>1万</td>
-                                        <td>
-                                            社保范围内100元免赔，100%赔付；等待期60天。
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外住院津贴</td>
-                                        <td>50元/天</td>
-                                        <td>
-                                            每次最高90天，累计不超过180天
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">元 / 年</div>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_7.png" class="img-circle" />
-                            </a>
-                            <p>保酷成人B</p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷成人B
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>乘客意外</td>
-                                        <td>30万</td>
-                                        <td>乘坐营运性的飞机、火车、轮船、汽车</td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>10万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外医疗</td>
-                                        <td>1万</td>
-                                        <td>社保范围内100元免赔，100%赔付</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>住院医疗</td>
-                                        <td>1万</td>
-                                        <td>
-                                            社保范围内100元免赔，100%赔付；等待期60天。
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>意外住院津贴</td>
-                                        <td>50元/天</td>
-                                        <td>
-                                            每次最高90天，累计不超过180天
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">元 / 年</div>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table style="width:100%;border:1px solid #ddd;margin-bottom:15px; ">
-            <tbody>
-                <tr>
-                    <td style="width:20%;padding:10px;">
-                        <div class="inscoo-programme-left" style="width:100%">
-                            <a>
-                                <img src="/Content/img/member_card_8.png" class="img-circle" />
-                            </a>
-                            <p>
-                                保酷健康
-                                <div>(5年期)</div>
-                            </p>
-                        </div>
-                    </td>
-                    <td style="width:60%">
-                        <div class="panel inscooCase inscooCase-extend" id="programme_1" style="display:block">
-                            <div class="inscooCase-title-right inscooCase-title-right-title">
-                                <p style="text-align:center">
-                                    保酷健康(5年期)
-                                </p>
-                            </div>
-                            <div class="member_cards">
-                                <table style="margin-top:10px;color:#111;">
-                                    <tr>
-                                        <th>保险责任</th>
-                                        <th>保险金额</th>
-                                        <th>保障说明</th>
-                                    </tr>
-                                    <tr>
-                                        <td>意外伤害</td>
-                                        <td>0.5万</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>重大疾病</td>
-                                        <td>1万</td>
-                                        <td></td>
-                                    </tr>
-
-
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td style="width:20%;background:#F5F5F5">
-                        <div class="programme-price" id="programme-price1">元 / 年</div>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("保险清单", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <p>
-                            @*<a href="#" class="">查看保险清单</a>*@
-                            @Html.ActionLink("数据上传", "CarInscuranceDetailSearch", new { }, new { @class = "btn btn-success" })
-                        </p>
-                        <a href="#" target="_blank">保险条款</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
 </div>
 
 <script>
-    
+
     function purchase(e) {
         var ageRange;
         var price;

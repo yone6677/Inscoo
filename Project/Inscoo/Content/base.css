@@ -1135,6 +1135,10 @@ div:after {
   text-align: center;
   padding-left: 5%;
 }
+.health_box .health_project .health_detail li.first_li {
+  font-weight: bold;
+  font-size: 1.2em;
+}
 .health_box .health_project .health_detail li.health_content {
   padding: 5px;
   margin-top: 5px;
@@ -1166,8 +1170,8 @@ div:after {
   margin: 0;
   float: left;
   font-size: 0.9em;
-  height: 32px;
-  line-height: 32px;
+  height: 48px;
+  line-height: 48px;
 }
 .health_box .health_project .health_detail li.project_price div {
   float: right;
@@ -1176,7 +1180,8 @@ div:after {
 }
 .health_box .health_project .health_detail li.project_price div span {
   color: #f00;
-  font-size: 1.5em;
+  font-size: 1.8em;
+  font-weight: bold;
 }
 .health_box .health_project .health_detail .btn {
   width: 100%;

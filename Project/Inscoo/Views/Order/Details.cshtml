@@ -7,9 +7,9 @@
     @using (Ajax.BeginForm("EmpChanges", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "empTempData" }, new { id = "empTempInfo" }))
     {
         <input type="hidden" name="Id" value=@Model.Id />
-            <div id="empTempData">
-                @Html.Action("EmpChanges", new { id = Model.Id })
-            </div>
+        <div id="empTempData">
+            @Html.Action("EmpChanges", new { id = Model.Id })
+        </div>
     }
     <h4 class="text-primary_color"><span>基本信息</span> <b class="toggle_switch text-content-pack" style="float:right;margin-right:30px;height:2em;line-height:2em;cursor:pointer;font-weight:bold"></b></h4>
     <dl>
@@ -102,6 +102,20 @@
             @Html.DisplayFor(model => model.State)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateTime)：
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateTime)
+        </dd>
     </dl>
 
     <div class="clearfix"></div>

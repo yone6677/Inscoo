@@ -1,12 +1,19 @@
 ﻿@model IEnumerable<Models.VHealthAuditList>
 
-
 @{
     PageCommand pageCommand = ViewBag.pageCommand as PageCommand;
 }
-
-<table class="table table-bordered table-style-control">
-    <tr style="background-color:#24A9E4;color:#fff;">
+<table class="table table-bordered table-header-blur">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BaokuOrderCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductTypeName)
         </th>
@@ -14,109 +21,244 @@
             @Html.DisplayNameFor(model => model.ProductName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
+            数量
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
+            未使用
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            订单状态
         </th>
+        <th>操作</th>
         <th>
-            操作
+
         </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @item.Author.Split('@')[0]
-            </td>
-            <td>
-                @item.CreateTime
-            </td>
+        if (item.Recursive.Count == 0)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.BaokuOrderCode)
+                </td>
+                <td>
+                    <span>@item.CreateTime.ToShortDateString()</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ProductTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ProductName)
+                </td>
+                <td>
+                    <span class="text-danger">
+                        @item.Count
+                    </span>
+                </td>
+                <td>
+                    @{
+                        var avNum = item.Count - item.EmpSum;
+                    }
+                    <span class="text-success">
+                        @avNum
+                    </span>
+                </td>
+                <td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusDes)
-            </td>
-            <td>
-                @{
-                    if (item.CreateTime.AddDays(30) < DateTime.Now && !item.FinConfirmDate.HasValue)
+                    @if (item.CreateTime.AddDays(30) < DateTime.Now && !item.FinConfirmDate.HasValue)
                     {
-                        <span style="color:red;">30天未付款,已过期 |</span>
+                        <span style="color:red;">已过期 |</span>
                         @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
                     }
                     else
                     {
-                        @*if (item.Count > item.EmpSum && item.CreateTime.AddDays(60) > DateTime.Now && item.Author == ViewBag.author)
+                        @Html.DisplayFor(modelItem => item.StatusDes)
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.IsInscooOperator)
+                    {
+                        if (item.Status == 4)
                         {
-                            <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
-                        }*@
-                        if (item.Status > 4 && !ViewBag.IsInscooOperator && !ViewBag.IsFinance)
-                        {
-                            @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { style = "color:#036c96;" })
+                            @Html.ActionLink("审核", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-primary" })
                         }
-
-                        if (ViewBag.IsInscooOperator)
+                        else if (item.Status > 4)
                         {
-                            if (item.Status == 4)
-                            {
-                                @Html.ActionLink("审核", "Audit", new { Ticks = item.DateTicks })
-                                @*@Html.ActionLink("审核", "AuditOrder", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize })*@
-                            }
-                            else if (item.Status == 11)
-                            {
-                                @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks })
-                                <span class="text-success">审核通过</span>
-                            }
-                            else if (item.Status == 14)
-                            {
-                                <span class="text-warning">审核未通过</span>
-                            }
+                            @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-success" })
                         }
-                        else if (ViewBag.IsFinance)
+                    }
+                    else if (ViewBag.IsFinance)
+                    {
+                        if (item.Status == 11)
                         {
-                            if (item.Status == 11)
-                            {
-                                @Html.ActionLink("确认付款", "Audit", new { Ticks = item.DateTicks })
-                                @*@Html.ActionLink("确认付款", "FnComfirm", new { item.MasterId, item.DateTicks, isInline = true, pageCommand.PageIndex, pageCommand.PageSize })*@
-                            }
-                            else if (item.Status == 17)
-                            {
-                                @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks })
-                                <span>|</span>
-                                <span class="text-success">已确认</span>
-                            }
+                            @Html.ActionLink("确认付款", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-primary" })
+                        }
+                        else if (item.Status > 4)
+                        {
+                            @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-success" })
+                        }
+                    }
+                    else
+                    {
+                        if (item.Status == 1)
+                        {
+                            @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks }, new { @class = "text-primary" })
+                        }
+                        else if (item.Status == 4)
+                        {
+                            @Html.ActionLink("付款通知", "ConfirmPayment", new { item.MasterId, item.DateTicks }, new { @class = "text-primary" })
+                        }
+                        else if (item.Status > 4)
+                        {
+                            @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-success" })
+                        }
+                    }
+                </td>
+                <td>
+                    @if (!ViewBag.IsInscooOperator && !ViewBag.IsFinance)
+                    {
+                        if (item.Status <= 4)
+                        {
+                            @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                        }
+                    }
+                </td>
+            </tr>
                         }
                         else
                         {
-                            if (item.Status <= 4)
-                            {
-                                @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
-                                <span>|</span>
-                            }
-                            if (item.Status == 1)
-                            {
-                                @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks })
-                            }
-                            else if (item.Status == 4)
-                            {
-                                @Html.ActionLink("确认付款", "ConfirmPayment", new { item.MasterId, item.DateTicks })
-                            }
-                        }
-                    }
-                }
-            </td>
-        </tr>
-                    }
+                            var rowspan = item.Recursive.Count + 1;
+                            <tr>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    @Html.DisplayFor(model => item.BaokuOrderCode)
+                                </td>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    <span>@item.CreateTime.ToShortDateString()</span>
+                                </td>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    @Html.DisplayFor(model => item.CompanyName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.ProductTypeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.ProductName)
+                                </td>
 
+                                <td>
+                                    <span class="text-danger">
+                                        @item.Count
+                                    </span>
+                                </td>
+                                <td>
+                                    @{
+                                        var avNum = item.Count - item.EmpSum;
+                                    }
+                                    <span class="text-success">
+                                        @avNum
+                                    </span>
+                                </td>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+
+                                    @if (item.CreateTime.AddDays(30) < DateTime.Now && !item.FinConfirmDate.HasValue)
+                    {
+                                        <span style="color:red;">已过期 |</span>
+                                        @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.StatusDes)
+                                    }
+                                </td>
+
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    @if (ViewBag.IsInscooOperator)
+                    {
+                        if (item.Status == 4)
+                        {
+                                    @Html.ActionLink("审核", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-primary" })
+                                        }
+                                        else if (item.Status > 4)
+                                        {
+                                    @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-success" })
+                                        }
+                                    }
+                                    else if (ViewBag.IsFinance)
+                                    {
+                                        if (item.Status == 11)
+                                        {
+                                    @Html.ActionLink("确认付款", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-primary" })
+                                        }
+                                        else if (item.Status > 11)
+                                        {
+                                    @Html.ActionLink("订单信息", "Audit", new { Ticks = item.DateTicks }, new { @class = "text-success" })
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (item.Status == 1)
+                                        {
+                                    @Html.ActionLink("信息填写", "EntryInfo", new { ticks = item.DateTicks }, new { @class = "text-primary" })
+                                        }
+                                        else if (item.Status == 4)
+                                        {
+                                    @Html.ActionLink("付款通知", "ConfirmPayment", new { item.MasterId, item.DateTicks }, new { @class = "text-primary" })
+                                        }
+                                        else if (item.Status > 4)
+                                        {
+                                    @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-success" })
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (!ViewBag.IsInscooOperator && !ViewBag.IsFinance)
+                    {
+                        if (item.Status <= 4)
+                        {
+                                    @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                                        foreach (var subItem in item.Recursive)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(model => subItem.ProductTypeName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(model => subItem.ProductName)
+                                                </td>
+                                                <td>
+                                                    <span class="text-danger">
+                                                        @subItem.Count
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var subAvNum = subItem.Count - subItem.EmpSum;
+                                                    }
+                                                    <span class="text-success">
+                                                        @subAvNum
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @if (!ViewBag.IsInscooOperator && !ViewBag.IsFinance)
+                                                    {
+                                                        if (item.Status <= 4)
+                                                        {
+                                                            @Html.ActionLink("删除", "OrderInfo", new { item.MasterId, item.DateTicks, isDelete = true, pageCommand.PageIndex, pageCommand.PageSize }, new { @class = "text-warning" })
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                                                }
+                                                            }
+                                                        }
 </table>
 @Html.Pager(pageCommand)
-

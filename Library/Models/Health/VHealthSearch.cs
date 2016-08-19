@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using System.Web.Mvc;
 
 namespace Models
@@ -12,6 +9,8 @@ namespace Models
         /// 列表类型 1客户未完成，2客户已完成，未审核，3已审核,4客户已完成
         /// </summary>
         public string ListType { set; get; }
+        [DisplayName("订单号")]
+        public string OrderNumber { get; set; }
         public SelectList ListTypeList { set; get; }
         [DisplayName("客户")]
         public string UserName { set; get; }

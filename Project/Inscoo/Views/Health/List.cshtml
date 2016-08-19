@@ -1,79 +1,165 @@
 ﻿@model IEnumerable<Models.VHealthAuditList>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-header-blur">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BaokuOrderCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductTypeName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductName)
         </th>
+        @*<th>
+                订单状态
+            </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.Author)
+            数量
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </th>
-        <th>
-            订单状态
-        </th>
-        <th>
-            数量(购买/剩余)
+            未使用
         </th>
         <th>操作</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.ProductTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.CreateTime)
-            </td>
-            <td>
-                @{
-                    if (item.FinConfirmDate.HasValue)
+        if (item.Recursive.Count == 0)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.BaokuOrderCode)
+                </td>
+                <td>
+                    <span>@item.CreateTime.ToShortDateString()</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ProductTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.ProductName)
+                </td>
+                @*<td>
+                        @{
+                            if (item.FinConfirmDate.HasValue)
+                            {
+                                if (item.FinConfirmDate.Value.AddDays(180) < DateTime.Now)
+                                {
+                        <span>已过期</span>
+                                }
+                                else
+                                {
+                        <span>已付款</span>
+                                }
+                            }
+                        }
+                    </td>*@
+                <td>
+                    <span class="text-danger">
+                        @item.Count
+                    </span>
+                </td>
+                <td>
+                    @{
+                        var avNum = item.Count - item.EmpSum;
+                    }
+                    <span class="text-success">
+                        @avNum
+                    </span>
+                </td>
+                <td>
+                    @if (item.Author == ViewBag.author && item.Count > item.EmpSum)
                     {
-                        if (item.FinConfirmDate.Value.AddDays(180) < DateTime.Now)
-                        {
-                            <span>已过期</span>
+                        <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
+                    }
+                    @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks }, new { @class = "text-success" })
+                </td>
+            </tr>
                         }
                         else
                         {
-                            <span>已付款</span>
-                        }
-                    }
-                }
-            </td>
-            <td>
-                @{
-                    var avNum = item.Count - item.EmpSum;
-                }
-                <span class="text-danger">
+                            var rowspan = item.Recursive.Count + 1;
+                            <tr>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    @Html.DisplayFor(model => item.BaokuOrderCode)
+                                </td>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    <span>@item.CreateTime.ToShortDateString()</span>
+                                </td>
+                                <td rowspan="@rowspan" style="vertical-align:middle;">
+                                    @Html.DisplayFor(model => item.CompanyName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.ProductTypeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.ProductName)
+                                </td>
+                                <td>
+                                    <span class="text-danger">
+                                        @item.Count
+                                    </span>
+                                </td>
+                                <td>
+                                    @{
+                                        var avNum = item.Count - item.EmpSum;
+                                    }
+                                    <span class="text-success">
+                                        @avNum
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (item.Author == ViewBag.author && item.Count > item.EmpSum)
+                                    {
+                                        <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
+                                    }
+                                    @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks }, new { @class = "text-success" })
+                                </td>
+                            </tr>
+                                        foreach (var subItem in item.Recursive)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(model => subItem.ProductTypeName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(model => subItem.ProductName)
+                                                </td>
+                                                <td>
+                                                    <span class="text-danger">
+                                                        @subItem.Count
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        var subAvNum = subItem.Count - subItem.EmpSum;
+                                                    }
+                                                    <span class="text-success">
+                                                        @subAvNum
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @if (subItem.Author == ViewBag.author && subItem.Count > subItem.EmpSum)
+                                                    {
+                                                        <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = subItem.MasterId }) |</span>
+                                                    }
+                                                    @Html.ActionLink("订单信息", "OrderInfo", new { subItem.MasterId, subItem.DateTicks }, new { @class = "text-success" })
+                                                </td>
+                                            </tr>
+                                                                }
+                                                            }
 
-                    @item.Count
-                </span> /
-                <span class="text-success">
-                    @avNum
-                </span>
-            </td>
-            <td>
-                @if (item.Author == ViewBag.author && item.Count > item.EmpSum)
-                {
-                    <span>@Html.ActionLink("上传名单", "UploadEmp", new { id = item.MasterId }) |</span>
-                }
-                @Html.ActionLink("订单信息", "OrderInfo", new { item.MasterId, item.DateTicks }, new { style = "color:#036c96;" })
-            </td>
-        </tr>
-                    }
+                                                        }
 </table>
 @{
     PageCommand command = ViewBag.pageCommand;
